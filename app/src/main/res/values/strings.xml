@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">Mi agenda DAM</string>
-    <string name="title_activity_login">Login</string>
+    <string name="app_name">Mi agenda FP</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="app_version">v.1.0</string>
+    <!-- Strings related to login -->
+    <string name="hint_nombre_usuario">Nombre de usuario</string>
+    <string name="hint_clave">Contraseña</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

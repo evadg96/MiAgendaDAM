@@ -9,6 +9,6 @@ public class PantallaPrincipal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_principal);
-        setTitle("Mi agenda");
+        setTitle("Mi agenda FP");
     }
 }
