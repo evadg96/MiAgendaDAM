@@ -38,8 +38,6 @@ public class PantallaLogin extends AppCompatActivity {
         btnIniciarSesion = (Button) findViewById(R.id.btn_iniciar_sesion);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
-        final Context context = this;
-        final SharedPreferences sharprefs = getSharedPreferences("ArchivoSP", context.MODE_PRIVATE);
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 final String nUsuario = txtNombreUsuario.getText().toString();
@@ -75,6 +73,13 @@ public class PantallaLogin extends AppCompatActivity {
                                                 if (response.equals("correcto")) {
                                                     try {
                                                         System.out.println("LOGIN CORRECTO :)");
+                                                        nombre_usuario = nUsuario; // si hemos llegado hasta aquí, es que el nombre de usuario
+                                                        // y la clave introducidos por el usuario son válidos, por tanto se guarda el dato que el
+                                                        // usuario ha introducido para mostrar luego los datos que le correspondan
+                                                        // También, en el script php, se cambiará el campo del usuario isLogged a 1, para que al
+                                                        // cargar la PantallaCarga, el programa seleccione su campo, y, si es 1 pase directamente
+                                                        // a la pantalla principal, o si es 0, entre en la pantalla Login.
+                                                        guardarPreferencias();
                                                         Intent intent = new Intent(PantallaLogin.this, PantallaPrincipal.class);
                                                         startActivity(intent);
                                                     } catch (Exception e) {
@@ -109,5 +114,16 @@ public class PantallaLogin extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /*********************************************************************************************************************************
+     * Mediante este método guardamos como preferencias el nombre de usuario que el usuario haya introducido al hacer sesión.
+     * para poder utilizarlo después en todas las consultas que utilicen como filtro el nombre del usuario (que serán casi todas)
+     ********************************************************************************************************************************/
+    private void guardarPreferencias() {
+        SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("nombre_de_usuario", nombre_usuario);
+        editor.commit();
     }
 }
