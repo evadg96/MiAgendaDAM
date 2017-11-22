@@ -1,10 +1,28 @@
 <resources>
     <string name="app_name">Mi agenda FP</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Inicio de sesión</string>
     <string name="app_version">v.1.0</string>
-    <!-- Strings related to login -->
+    <!-- Strings LOGIN -->
     <string name="hint_nombre_usuario">Nombre de usuario</string>
     <string name="hint_clave">Contraseña</string>
-    <string name="iniciar_sesion">Iniciar sesión</string>
-    <string name="mensaje_login">Iniciando sesión</string>
+    <string name="btn_iniciar_sesion">Iniciar sesión</string>
+    <string name="btn_registrar_usuario">Registrarse</string>
+
+    <!-- String REGISTRO -->
+    <string name="sNombre">Nombre</string>
+    <string name="sApe_uno">Primer apellido</string>
+    <string name="sApe_dos">Segundo apellido</string>
+    <string name="sProvincia">Provincia</string>
+    <string name="sLocalidad">Localidad</string>
+    <string name="sCentro_estudios">Centro de estudios</string>
+    <string name="sCiclo">Ciclo formativo</string>
+    <string name="sCentro_practicas">Centro de prácticas</string>
+    <string name="sCorreo">Correo electrónico</string>
+    <string name="sNombreUsuario">Usuario (entre 6 y 20 caracteres)</string>
+    <string name="sClave">Contraseña (entre 8 y 20 caracteres)</string>
+    <string name="sClave2">Repita la contraseña</string>
+
+    <string name="btn_aceptar_dialog">Aceptar</string>
+    <string name="title_dialog_registro_correcto">Registro completado</string>
+    <string name="text_dialog_registro_correcto">A continuación inicie sesión con sus datos.</string>
 </resources>

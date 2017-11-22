@@ -27,6 +27,7 @@
         </activity>
         <activity android:name=".PantallaPrincipal" />
         <activity android:name=".PantallaLogin" />
+        <activity android:name=".RegistroNuevoUsuario"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package es.proyecto.eva.miagendadam;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion;
+    private Button btnRegistroUsuario;
     private EditText txtNombreUsuario;
     private EditText txtClave;
     private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_datos_usuario2.php";
@@ -36,8 +38,20 @@ public class PantallaLogin extends AppCompatActivity {
         setContentView(R.layout.activity_pantalla_login);
         setTitle("Inicio de sesión");
         btnIniciarSesion = (Button) findViewById(R.id.btn_iniciar_sesion);
+        btnRegistroUsuario = (Button) findViewById(R.id.btn_registrarse);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
+
+        // AL HACER CLICK EN LOS BOTONES...
+        // Botón Registrarse, abre actividad de RegistroNuevoUsuario
+        btnRegistroUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PantallaLogin.this, RegistroNuevoUsuario.class);
+                startActivity(intent);
+            }
+        });
+        // Botón Iniciar sesión
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 final String nUsuario = txtNombreUsuario.getText().toString();
@@ -72,6 +86,11 @@ public class PantallaLogin extends AppCompatActivity {
                                             } else {
                                                 if (response.equals("correcto")) {
                                                     try {
+                                                        // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
+                                                        ProgressDialog progressDialog = new ProgressDialog(PantallaLogin.this);
+                                                        progressDialog.setTitle("Carga");
+                                                        progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
+                                                        progressDialog.show();
                                                         System.out.println("LOGIN CORRECTO :)");
                                                         nombre_usuario = nUsuario; // si hemos llegado hasta aquí, es que el nombre de usuario
                                                         // y la clave introducidos por el usuario son válidos, por tanto se guarda el dato que el
@@ -79,7 +98,7 @@ public class PantallaLogin extends AppCompatActivity {
                                                         // También, en el script php, se cambiará el campo del usuario isLogged a 1, para que al
                                                         // cargar la PantallaCarga, el programa seleccione su campo, y, si es 1 pase directamente
                                                         // a la pantalla principal, o si es 0, entre en la pantalla Login.
-                                                        guardarPreferencias();
+                                                        guardarPreferencias(); // almacenamos el nombre de usuario que se ha introducido
                                                         Intent intent = new Intent(PantallaLogin.this, PantallaPrincipal.class);
                                                         startActivity(intent);
                                                     } catch (Exception e) {
