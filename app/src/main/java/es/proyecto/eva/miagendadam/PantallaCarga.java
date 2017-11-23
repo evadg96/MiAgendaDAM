@@ -22,11 +22,18 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import static es.proyecto.eva.miagendadam.PantallaLogin.nombre_usuario;
+import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.correo;
 
 public class PantallaCarga extends AppCompatActivity {
     private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
     private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
+    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
+    static StringRequest request;
+    // *************  PARA REFERENCIAR A LOS VALORES GUARDADOS EN PREFERENCIAS *********************
     static String nombre_de_usuario;
+    static String codigo_de_confirmacion;
+    static String correo_electronico;
+    // *********************************************************************************************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,87 +45,165 @@ public class PantallaCarga extends AppCompatActivity {
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
 
+
         // ****************** ¡¡¡¡ UTILIZAR ESTE FRAGMENTO CADA VEZ QUE SE QUIERA REFERENCIAR AL NOMBRE DE USUARIO ALMACENADO POR LA APLICACIÓN !!!! **********************
-          nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
+        nombre_de_usuario = preferences.getString("nombre_de_usuario", ""); // habiendo declarado la variable CON EL MISMO NOMBRE arriba
         // ****************************************************************************************************************************************************************
+        codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", "");
+        correo_electronico = preferences.getString("correo_electronico", "");
 
         System.out.println("NOMBRE DE USUARIO ALMACENADO: " + nombre_de_usuario); // mostramos el nombre de usuario que esté guardado al momento de ejecutar la aplicación (debug)
+        System.out.println("CÓDIGO DE CONFIRMACIÓN!: " + codigo_de_confirmacion);
+        System.out.println("CORREO ELECTRÓNICO ALMACENADO!: " + correo_electronico);
+
+        /*******************************************************************************************
+         *              COMPROBAMOS SI EL USUARIO HA CONFIRMADO SU REGISTRO
+         ******************************************************************************************/
+        if (!codigo_de_confirmacion.isEmpty()) { // si hay un código de confirmación... quiere decir que se ha hecho un registro
+            // con lo cual disponemos de todas las preferencias (salvo quizá el nombre de usuario, que solo se almacena al hacer login)
+            // Así pues, comprobaremos si el usuario está confirmado
+            request = new StringRequest(Request.Method.POST, url_consulta2,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // SE EJECUTA CUANDO LA CONSULTA SALE BIEN
+                            try {
+                                if (response.equals("0")) { // si devuelve 0 significará que no ha confirmado su registro
+                                    // así que le mandamos a la pantalla de confirmación de registro para que introduzca
+                                    // el código que se le ha enviado al correo que introdujo en el formulario de registro
+
+                                    // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
+                                    new Handler().postDelayed(new Runnable() {
+                                        public void run() {
+                                            // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
+                                            Intent intent = new Intent(PantallaCarga.this, ConfirmaRegistro.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+
+                                        ;
+                                    }, DURACION_SPLASH);
+                                } else { // si no devuelve un 0, asumimos que el usuario sí está confirmado, y pasamos a comprobar si está logeado
+                                    compruebaLogin();
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                            Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                    Map<String, String> parametros = new HashMap<>();
+                    parametros.put("correo", correo_electronico);
+                    return parametros;
+                }
+            };
+            AppController.getInstance().addToRequestQueue(request);
+
+        } // fin de if que comprueba el isConfirmed
+        else {
+            // si no hay datos del correo, se procede a comprobar el valor de isLogged
+            // pues podría darse el siguiente caso:
+            // 1. El usuario instaló la app por primera vez, se registró y se confirmó.
+            // 2. El usuario borra la aplicación, pero mantiene su cuenta de usuario
+            // 3. El usuario, pasado un tiempo, vuelve a instalar la app, y, lógicamente, ya no
+            // tiene que registrarse, así que va directamente a hacer inicio de sesión.
+            // por tanto, se generaría en preferencias el nombre_usuario PERO NO EL CORREO O EL
+            // CÓDIGO DE CONFIRMACIÓN, porque NO HA PASADO POR EL FORMULARIO DE REGISTRO en ningún momento
+            // Así que sería un error mandar siempre de aquí a la pantalla de login, porque
+            // la preferencia "codigo_de_confirmacion" nunca tendría ningún dato, y SIEMPRE le llevaría
+            // a la pantalla de login, aunque isLogged estuviese activado.
+            compruebaLogin();
+        }
+    }
+
+    public void compruebaLogin(){
         if (!nombre_de_usuario.isEmpty()) { // Validamos si hay contenido en nombre_de_usuario (es decir, ya se ha hecho login previamente y se ha guardado)
             // si no se cumple esta condición, es que nunca se ha hecho ningún inicio de sesión con la aplicación
+            // o que no hay preferencias almacenadas, y por tanto, tenemos que obligar a iniciar sesión
+            /***************************************************************************************
+             *              COMPROBAMOS SI EL USUARIO HA INICIADO YA SESIÓN (valor de isLogged)
+             ***************************************************************************************/
+            // INICIAMOS CONEXIÓN CON VOLLEY
+            request = new StringRequest(Request.Method.POST, url_consulta,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // SE EJECUTA CUANDO LA CONSULTA SALE BIEN
+                            try {
+                                System.out.println("YA SE HA LOGEADO? (1 = SI, 0 = NO): " + response); // visualizamos la respuesta obtenida
+                                if (response.equals("1")) { // si devuelve 1, significará que sí se había logeado
+                                    // así que le mandaremos a la pantalla principal, sin hacer el login de nuevo
 
-            // **************************** COMPROBAMOS VALOR DE isLogged PARA IR A UNA PANTALLA U OTRA ******************************************
-                // INICIAMOS CONEXIÓN CON VOLLEY
-                StringRequest request = new StringRequest(Request.Method.POST, url_consulta,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // SE EJECUTA CUANDO LA CONSULTA SALE BIEN
-                               try {
-                                   System.out.println("YA SE HA LOGEADO? (1 = SI, 0 = NO): " + response); // visualizamos la respuesta obtenida
-                                    if (response.equals("1")) { // si devuelve 1, significará que sí se había logeado
-                                        // así que le mandaremos a la pantalla principal, sin hacer el login de nuevo
-
-                                        // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
-                                        new Handler().postDelayed(new Runnable() {
-                                            public void run() {
-                                                // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
-                                                Intent intent = new Intent(PantallaCarga.this, PantallaPrincipal.class);
-                                                startActivity(intent);
-                                                finish();
-                                            };
-                                        }, DURACION_SPLASH);
-                                    } else {
-                                        if (response.equals("0")){ // si devuelve 0 significará que no se ha logeado (o ha cerrado sesión)
-                                            // así que le mandamos a la pantalla de login para que introduzca sus datos de usuarioIntent intent = new Intent(PantallaCarga.this, PantallaPrincipal.class);
-
-                                            // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
-                                            new Handler().postDelayed(new Runnable() {
-                                                public void run() {
-                                                    // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
-                                                    Intent intent = new Intent(PantallaCarga.this, PantallaLogin.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                };
-                                            }, DURACION_SPLASH);
-                                        }
+                                    // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
+                                    new Handler().postDelayed(new Runnable() {
+                                        public void run() {
+                                            // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
+                                            Intent intent = new Intent(PantallaCarga.this, PantallaPrincipal.class);
+                                            startActivity(intent);
+                                            finish();
+                                        };
+                                    }, DURACION_SPLASH);
+                                } else {
+                                    if (response.equals("0")){ // si devuelve 0 significará que no se ha logeado (o ha cerrado sesión)
+                                        // así que le mandamos a la pantalla de login para que introduzca sus datos de usuario
+                                        abrePantallaLogin();
                                     }
-                               } catch (Exception e){
-                                   e.printStackTrace();
-                               }
+                                }
+                            } catch (Exception e){
+                                e.printStackTrace();
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-                            }
-                        }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                        Map<String, String> parametros = new HashMap<>();
-                        parametros.put("nUsuario", nombre_de_usuario);
-                        return parametros;
-                    }
-                };
-                AppController.getInstance().addToRequestQueue(request);
-
-        } else { // Se cumplirá este caso por ejemplo cuando la aplicación esté recién instalada en el dispositivo o nunca se haya hecho inicio de sesión,
-            // y por tanto, no se puede haber almacenado ningún usuario.
-            System.out.println("NO HAY DATOS DE USUARIOS PREVIOS!!");
-            // Para dejar la actividad visible durante 3 segundos
-            // Después se pasa a la otra pantalla
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
-                    Intent intent = new Intent(PantallaCarga.this, PantallaLogin.class);
-                    startActivity(intent);
-                    finish();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                            Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                    Map<String, String> parametros = new HashMap<>();
+                    parametros.put("nUsuario", nombre_de_usuario);
+                    return parametros;
                 }
+            };
+            AppController.getInstance().addToRequestQueue(request);
 
-                ;
-            }, DURACION_SPLASH);
+        } else { // se cumple cuando no se ha hecho un inicio de sesión, o cuando se haya borrado y reinstalado
+            // la aplicación, por ejemplo, que no tendremos los datos de las preferencias para hacer las validaciones,
+            // así que le obligaremos a ir a la pantalla de inicio de sesión.
+            abrePantallaLogin();
         }
+    }
+
+    /**********************************************************
+     * Método que abre la pantalla de inicio de sesión        *
+     *********************************************************/
+    public void abrePantallaLogin(){
+        System.out.println("NO HAY DATOS PARA INICIAR SESIÓN, O isLogged ESTÁ A 0");
+        // Para dejar la actividad visible durante 3 segundos
+        // Después se pasa a la otra pantalla
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
+                Intent intent = new Intent(PantallaCarga.this, PantallaLogin.class);
+                startActivity(intent);
+                finish();
+            }
+
+            ;
+        }, DURACION_SPLASH);
     }
 }

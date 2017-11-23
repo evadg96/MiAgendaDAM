@@ -20,9 +20,26 @@
     <string name="sCorreo">Correo electrónico</string>
     <string name="sNombreUsuario">Usuario (entre 6 y 20 caracteres)</string>
     <string name="sClave">Contraseña (entre 8 y 20 caracteres)</string>
-    <string name="sClave2">Repita la contraseña</string>
+    <string name="sClave2">Repite la contraseña</string>
 
+    <!-- Strings diálogo registrado -->
     <string name="btn_aceptar_dialog">Aceptar</string>
     <string name="title_dialog_registro_correcto">Registro completado</string>
-    <string name="text_dialog_registro_correcto">Se ha completado el registro, a continuación inicie sesión con sus datos.</string>
+    <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa
+        tu bandeja de entrada.
+    </string>
+
+    <!-- Strings diálogo al pulsar botón de registro -->
+    <string name="btn_aceptar_confirm">Confirmar registro</string>
+    <string name="text_dialog_confirm">No se ha confirmado el registro de este usuario. Por favor, introduce el código de confirmación que se te ha enviado.</string>
+    <string name="btn_cancelar_confirm">Cancelar</string>
+
+    <!-- String activity ConfirmaRegistro -->
+    <string name="hint_codigo_confirmacion">Código de confirmación</string>
+    <string name="btn_confirmar">Confirmar registro</string>
+    <string name="btn_reenviar_codigo">Reenviar código de confirmación</string>
+
+    <!-- Strings activity ReenviarCodigoConfirmacion -->
+    <string name="hint_reenviar_correo">Correo electrónico</string>
+    <string name="btn_enviar">Enviar código</string>
 </resources>

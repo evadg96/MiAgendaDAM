@@ -4,6 +4,10 @@
 
     <!-- Permiso para acceder a internet para poder hacer las consultas a la base de datos de los archivos php -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -27,7 +31,9 @@
         </activity>
         <activity android:name=".PantallaPrincipal" />
         <activity android:name=".PantallaLogin" />
-        <activity android:name=".RegistroNuevoUsuario"></activity>
+        <activity android:name=".RegistroNuevoUsuario" />
+        <activity android:name=".ConfirmaRegistro" />
+        <activity android:name=".ReenviarCodigoConfirmacion"></activity>
     </application>
 
 </manifest>
