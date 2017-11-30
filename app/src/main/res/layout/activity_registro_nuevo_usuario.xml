@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="es.proyecto.eva.miagendadam.RegistroNuevoUsuario">
+
+    <LinearLayout
+        android:id="@+id/form_registro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editText_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sNombre"
+                    android:inputType="textPersonName"
+                    android:maxLength="20" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText_ape_uno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/sApe_uno"
+                        android:inputType="textPersonName"
+                        android:maxLength="25" />
+
+                    <EditText
+                        android:id="@+id/editText_ape_dos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/sApe_dos"
+                        android:inputType="textPersonName"
+                        android:maxLength="25" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText_provincia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/sProvincia"
+                        android:inputType="textPersonName"
+                        android:maxLength="50" />
+
+                    <EditText
+                        android:id="@+id/editText_localidad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/sLocalidad"
+                        android:inputType="textPersonName"
+                        android:maxLength="50" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/editText_centro_estudios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sCentro_estudios"
+                    android:inputType="textPersonName"
+                    android:maxLength="50" />
+
+                <EditText
+                    android:id="@+id/editText_ciclo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sCiclo"
+                    android:inputType="textPersonName"
+                    android:maxLength="100" />
+
+                <EditText
+                    android:id="@+id/editText_centro_practicas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sCentro_practicas"
+                    android:inputType="textPersonName"
+                    android:maxLength="50" />
+
+                <EditText
+                    android:id="@+id/editText_correo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sCorreo"
+                    android:inputType="textPersonName"
+                    android:maxLength="100" />
+
+                <EditText
+                    android:id="@+id/editText_nombre_usuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sNombreUsuario"
+                    android:inputType="textPersonName"
+                    android:maxLength="20" />
+
+                <EditText
+                    android:id="@+id/editText_clave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sClave"
+                    android:inputType="textPassword"
+                    android:maxLength="20" />
+
+                <EditText
+                    android:id="@+id/editText_confirma_clave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/sClave2"
+                    android:inputType="textPassword"
+                    android:maxLength="20" />
+
+                <Button
+                    android:id="@+id/btn_registrar_usuario"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="registro"
+                    android:text="@string/btn_registrar_usuario" />
+
+            </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
