@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -66,6 +68,10 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     private static String clave="";
     static boolean isConfirmed = false;
     static Session session;
+    private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"; // declaramos patrón para validar el formato del correo electrónico introducido
+    // por el usuario
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,129 +110,136 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         n_Usuario = txtNombreUsuario.getText().toString();
         clave = txtClave.getText().toString();
         final String clave2 = txtClave2.getText().toString();
-        // *****************************************************************************************
-        //                      OBTENEMOS EL DATO fecha_registro
-        //******************************************************************************************
+
+        // OBTENEMOS EL DATO fecha_registro, que guarda en la base de datos la fecha en el momento de pulsar
+        // el botón de registrarse
         Date fechaR = new Date();
         final String fecha_registro = fechaR.toString();
         System.out.println("FECHA REGISTRO: " + fecha_registro);
 
+        // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         if (nombre.isEmpty() || apellido_uno.isEmpty() || apellido_dos.isEmpty() || provincia.isEmpty() || localidad.isEmpty() || centro_estudios.isEmpty() ||
                 ciclo_formativo.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
             Toast.makeText(RegistroNuevoUsuario.this, "Debes rellenar todos los campos.", Toast.LENGTH_SHORT).show();
         } else {
-            if (n_Usuario.length() < 6) {
-                Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir un nombre de usuario que contenga entre 6 y 20 caracteres.", Toast.LENGTH_LONG).show();
+            Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
+            Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
+            if (!matcher.matches()){ // si el correo no cumple con el formato del patrón, salta el mensaje de error
+                Toast.makeText(RegistroNuevoUsuario.this, "El correo electrónico introducido no es válido.", Toast.LENGTH_SHORT).show();
             } else {
-                if (clave.length() < 8) {
-                    Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir una clave que contenga entre 8 y 20 caracteres.", Toast.LENGTH_LONG).show();
+                if (n_Usuario.length() < 6) {
+                    Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir un nombre de usuario que contenga entre 6 y 20 caracteres.", Toast.LENGTH_LONG).show();
                 } else {
-                    if (!clave.equals(clave2)) {
-                        Toast.makeText(RegistroNuevoUsuario.this, "Las claves introducidas no coinciden", Toast.LENGTH_SHORT).show();
-                        System.out.println("CLAVES!!!" + clave + clave2);
-                        txtClave.setText(""); // Borramos los campos de clave
-                        txtClave2.setText("");
+                    if (clave.length() < 8) {
+                        Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir una clave que contenga entre 8 y 20 caracteres.", Toast.LENGTH_LONG).show();
                     } else {
-                        System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellido_uno + "\n" + apellido_dos + "\n" + provincia + "\n" + localidad + "\n"
-                                + centro_estudios + "\n" + ciclo_formativo + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
-                        // INICIAMOS CONEXIÓN CON VOLLEY
-                        System.out.println("INICIAMOS CONEXIÓN");
-                        StringRequest request = new StringRequest(Request.Method.POST, url_consulta,
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
-                                        System.out.println("CONEXIÓN INICIADA!");
-                                        if (response.equals("1")) {
-                                            try {
-
-                                                Toast.makeText(RegistroNuevoUsuario.this, "Ya hay un usuario registrado con ese email.", Toast.LENGTH_SHORT).show();
-                                                System.out.println("ERROR: Correo ya registrado.");
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            if (response.equals("2")) {
+                        if (!clave.equals(clave2)) {
+                            Toast.makeText(RegistroNuevoUsuario.this, "Las claves introducidas no coinciden", Toast.LENGTH_SHORT).show();
+                            System.out.println("CLAVES!!!" + clave + clave2);
+                            txtClave.setText(""); // Borramos los campos de clave
+                            txtClave2.setText("");
+                        } else {
+                            System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellido_uno + "\n" + apellido_dos + "\n" + provincia + "\n" + localidad + "\n"
+                                    + centro_estudios + "\n" + ciclo_formativo + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
+                            // INICIAMOS CONEXIÓN CON VOLLEY
+                            System.out.println("INICIAMOS CONEXIÓN");
+                            StringRequest request = new StringRequest(Request.Method.POST, url_consulta,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
+                                            System.out.println("CONEXIÓN INICIADA!");
+                                            if (response.equals("1")) {
                                                 try {
-                                                    Toast.makeText(RegistroNuevoUsuario.this, "Ya existe un usuario con ese nombre.", Toast.LENGTH_SHORT).show();
-                                                    System.out.println("ERROR: Usuario ya existe.");
+
+                                                    Toast.makeText(RegistroNuevoUsuario.this, "Ya hay un usuario registrado con ese email.", Toast.LENGTH_SHORT).show();
+                                                    System.out.println("ERROR: Correo ya registrado.");
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
                                             } else {
-                                                if (response.equals("0")) { // datos y registro correcto
+                                                if (response.equals("2")) {
                                                     try {
-                                                        // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
-                                                        /**
-                                                        ProgressDialog progressDialog = new ProgressDialog(RegistroNuevoUsuario.this);
-                                                        progressDialog.setTitle("Carga");
-                                                        progressDialog.setMessage("Creando usuario. Por favor, espere un momento.");
-                                                        progressDialog.show();*/
-                                                        System.out.println("USUARIO CREADO CORRECTAMENTE :)");
-
-                                                        enviarCorreoConfirmacion();
-                                                        // Creamos alerta de confirmación  para decir que se ha creado correctamente
-                                                        // y mandamos a la pantalla de confirmación de usuario
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistroNuevoUsuario.this);
-                                                        builder.setTitle(R.string.title_dialog_registro_correcto); // titulo del diálogo
-                                                        builder.setMessage(R.string.text_dialog_registro_correcto)
-                                                                .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
-                                                                    public void onClick(DialogInterface dialog, int id) {
-                                                                        finish(); // cerramos la aplicación para forzar la apertura de nuevo
-                                                                        // y mandar a la pantalla de carga, que se encargará de comprobar
-                                                                        // si ya ha confirmado o no.
-                                                                    }
-                                                                });
-                                                        /**.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                                         public void onClick(DialogInterface dialog, int id) {
-                                                         // User cancelled the dialog
-                                                         }
-                                                         });*/
-                                                        // Create the AlertDialog object and return it
-                                                        Dialog dialog = builder.create();
-                                                        dialog.show();
-
+                                                        Toast.makeText(RegistroNuevoUsuario.this, "Ya existe un usuario con ese nombre.", Toast.LENGTH_SHORT).show();
+                                                        System.out.println("ERROR: Usuario ya existe.");
                                                     } catch (Exception e) {
                                                         e.printStackTrace();
                                                     }
+                                                } else {
+                                                    if (response.equals("0")) { // datos y registro correcto
+                                                        try {
+                                                            // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
+                                                            /**
+                                                             ProgressDialog progressDialog = new ProgressDialog(RegistroNuevoUsuario.this);
+                                                             progressDialog.setTitle("Carga");
+                                                             progressDialog.setMessage("Creando usuario. Por favor, espere un momento.");
+                                                             progressDialog.show();*/
+                                                            System.out.println("USUARIO CREADO CORRECTAMENTE :)");
+
+                                                            enviarCorreoConfirmacion();
+                                                            // Creamos alerta de confirmación  para decir que se ha creado correctamente
+                                                            // y mandamos a la pantalla de confirmación de usuario
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(RegistroNuevoUsuario.this);
+                                                            builder.setTitle(R.string.title_dialog_registro_correcto); // titulo del diálogo
+                                                            builder.setMessage(R.string.text_dialog_registro_correcto)
+                                                                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            finish(); // cerramos la aplicación para forzar la apertura de nuevo
+                                                                            // y mandar a la pantalla de carga, que se encargará de comprobar
+                                                                            // si ya ha confirmado o no.
+                                                                        }
+                                                                    });
+                                                            /**.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                                             public void onClick(DialogInterface dialog, int id) {
+                                                             // User cancelled the dialog
+                                                             }
+                                                             });*/
+                                                            // Create the AlertDialog object and return it
+                                                            Dialog dialog = builder.create();
+                                                            dialog.show();
+
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
                                                 }
                                             }
+
                                         }
 
-                                    }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                                            Toast.makeText(RegistroNuevoUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
 
-                                },
-                                new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                        Toast.makeText(RegistroNuevoUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                // AQUI SE ENVIARÁN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                                Map<String, String> parametros = new HashMap<>();
-                                parametros.put("nombre", nombre);
-                                parametros.put("apellido_uno", apellido_uno);
-                                parametros.put("apellido_dos", apellido_uno);
-                                parametros.put("provincia", provincia);
-                                parametros.put("localidad", localidad);
-                                parametros.put("centro_estudios", centro_estudios);
-                                parametros.put("ciclo_formativo", ciclo_formativo);
-                                parametros.put("centro_practicas", centro_practicas);
-                                parametros.put("correo", correo);
-                                parametros.put("nUsuario", n_Usuario);
-                                parametros.put("clave", clave);
-                                parametros.put("fecha_registro", fecha_registro);
-                                return parametros;
-                            }
-                        };
-                        AppController.getInstance().addToRequestQueue(request);
+                                        }
+                                    }) {
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    // AQUI SE ENVIARÁN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                                    Map<String, String> parametros = new HashMap<>();
+                                    parametros.put("nombre", nombre);
+                                    parametros.put("apellido_uno", apellido_uno);
+                                    parametros.put("apellido_dos", apellido_uno);
+                                    parametros.put("provincia", provincia);
+                                    parametros.put("localidad", localidad);
+                                    parametros.put("centro_estudios", centro_estudios);
+                                    parametros.put("ciclo_formativo", ciclo_formativo);
+                                    parametros.put("centro_practicas", centro_practicas);
+                                    parametros.put("correo", correo);
+                                    parametros.put("nUsuario", n_Usuario);
+                                    parametros.put("clave", clave);
+                                    parametros.put("fecha_registro", fecha_registro);
+                                    return parametros;
+                                }
+                            };
+                            AppController.getInstance().addToRequestQueue(request);
+                        }
                     }
-                }
 
+                }
             }
         }
     }
