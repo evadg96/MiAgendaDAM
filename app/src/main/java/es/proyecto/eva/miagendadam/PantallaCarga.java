@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,9 +27,23 @@ import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.correo;
 
 public class PantallaCarga extends AppCompatActivity {
     private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
-    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
+  //  private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
+  //  private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
+  //  private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_update_fechaLogin.php";
+
+    private String url_consulta = "http://192.168.0.157/MiAgenda/consulta_isLogged.php";
+    private String url_consulta2 = "http://192.168.0.157/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta3 = "http://192.168.0.157/MiAgenda/consulta_update_fechaLogin.php";
+
+    /*******************************************************************
+     *                          SERVIDOR REMOTO
+     ******************************************************************/
+//    private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_isLogged.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+  //  private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+    //private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_update_fechaLogin.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+
     static StringRequest request;
+    static String fecha_ultimo_login = "";
     // *************  PARA REFERENCIAR A LOS VALORES GUARDADOS EN PREFERENCIAS *********************
     static String nombre_de_usuario;
     static String codigo_de_confirmacion;
@@ -59,7 +74,7 @@ public class PantallaCarga extends AppCompatActivity {
         /*******************************************************************************************
          *              COMPROBAMOS SI EL USUARIO HA CONFIRMADO SU REGISTRO
          ******************************************************************************************/
-        if (!codigo_de_confirmacion.isEmpty()) { // si hay un código de confirmación... quiere decir que se ha hecho un registro
+        if (!nombre_de_usuario.isEmpty()) { // si hay un código de confirmación... quiere decir que se ha hecho un registro
             // con lo cual disponemos de todas las preferencias (salvo quizá el nombre de usuario, que solo se almacena al hacer login)
             // Así pues, comprobaremos si el usuario está confirmado
             request = new StringRequest(Request.Method.POST, url_consulta2,
@@ -79,9 +94,7 @@ public class PantallaCarga extends AppCompatActivity {
                                             Intent intent = new Intent(PantallaCarga.this, ConfirmaRegistro.class);
                                             startActivity(intent);
                                             finish();
-                                        }
-
-                                        ;
+                                        };
                                     }, DURACION_SPLASH);
                                 } else { // si no devuelve un 0, asumimos que el usuario sí está confirmado, y pasamos a comprobar si está logeado
                                     compruebaLogin();
@@ -97,13 +110,15 @@ public class PantallaCarga extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                            System.out.println("ERROR ONCREATE()");
                         }
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                     Map<String, String> parametros = new HashMap<>();
-                    parametros.put("correo", correo_electronico);
+                    parametros.put("nUsuario", nombre_de_usuario);
+
                     return parametros;
                 }
             };
@@ -148,7 +163,10 @@ public class PantallaCarga extends AppCompatActivity {
                                     new Handler().postDelayed(new Runnable() {
                                         public void run() {
                                             // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
-                                            Intent intent = new Intent(PantallaCarga.this, PantallaPrincipal.class);
+                                            // Almacenamos el dato de la fecha como dato de última sesión iniciada:
+                                            actualizaFechaLogin(); // solo se actualiza (en esta clase) si isLogged está a 1, que es
+                                            // cuando se hace inicio de sesión automático
+                                            Intent intent = new Intent(PantallaCarga.this, NavMenu.class);
                                             startActivity(intent);
                                             finish();
                                         };
@@ -169,6 +187,7 @@ public class PantallaCarga extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                            System.out.println("ERROR  COMPRUEBALOGIN();");
                         }
                     }) {
                 @Override
@@ -186,6 +205,45 @@ public class PantallaCarga extends AppCompatActivity {
             // así que le obligaremos a ir a la pantalla de inicio de sesión.
             abrePantallaLogin();
         }
+    }
+
+
+    /***********************************************************************************************
+     * Método que actualiza el registro con la fecha de último inicio de sesión del usuario
+     **********************************************************************************************/
+    public void actualizaFechaLogin(){
+        request = new StringRequest(Request.Method.POST, url_consulta3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Al cerrar sesión estaremos actualizando el campo isLogged a 0 para que no se detecte como sesión iniciada en la pantalla
+                        // de carga al volver a abrir la aplicación
+                        Date fecha = new Date();
+                        fecha_ultimo_login = fecha.toString();
+                        System.out.println("FECHA DE ÚLTIMO INICIO DE SESIÓN: "+ fecha_ultimo_login);
+                        System.out.println("FECHA DE ÚLTIMO INICIO DE SESIÓN ACTUALIZADA.");
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        System.out.println("ERROR ACTUALIZAFECHALOGIN()");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_de_usuario);
+                parametros.put("fecha_ultimo_login", fecha_ultimo_login);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+
     }
 
     /**********************************************************

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,14 +26,24 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
+/**
+ *       Clase que confirma al usuario con el co
+ */
 
 public class ConfirmaRegistro extends AppCompatActivity {
+    /**
+     *      SE VALIDARÁ AL USUARIO POR SU CORREO, NO POR NOMBRE. ES DECIR, SE CONFIRMARÁ AL USUARIO CON EL CORREO QUE SE HAYA INTRODUCIDO
+     *      EN EL CAMPO DE CORREO, BIEN DURANTE EL REGISTRO, BIEN EN LA PETICIÓN DE REENVÍO DE CÓDIGO DE CONFIRMACIÓN
+     */
     Button btnConfirmar;
     Button btnReenviar;
     EditText txtCodigo;
     static String codigo_de_confirmacion;
     static String correo_electronico;
-    static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php";
+    //static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php";
+    static String url_consulta="http://192.168.0.157/MiAgenda/consulta_update_isConfirmed.php";
+    // *********************************** SERVIDOR REMOTO *****************************************
+    //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_update_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     static StringRequest request;
 
     @Override
@@ -40,6 +51,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirma_registro);
         setTitle("Confirmar registro");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // para VER la flecha atrás en el actionbar
         btnConfirmar = (Button) findViewById(R.id.btn_confirmar);
         btnReenviar = (Button) findViewById(R.id.btn_reenviar_codigo);
         txtCodigo = (EditText) findViewById(R.id.editText_codigo);
@@ -123,5 +135,17 @@ public class ConfirmaRegistro extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // PARA DAR FUNCIONALIDAD AL BOTÓN DE ATRÁS
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Intent intent = new Intent (ConfirmaRegistro.this, PantallaLogin.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

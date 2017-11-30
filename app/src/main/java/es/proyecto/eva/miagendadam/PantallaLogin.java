@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,14 +35,27 @@ public class PantallaLogin extends AppCompatActivity {
     private Button btnRegistroUsuario;
     private EditText txtNombreUsuario;
     private EditText txtClave;
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_datos_usuario3.php";
-    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
+  //  private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_datos_usuario3.php";
+  //  private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
+  //  private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
+
+    private String url_consulta = "http://192.168.0.157/MiAgenda/consulta_datos_usuario3.php";
+    private String url_consulta2 = "http://192.168.0.157/MiAgenda/consulta_update_isLogged.php";
+    private String url_consulta3 = "http://192.168.0.157/MiAgenda/consulta_isLocked.php";
+
+    /*****************************************************************************************
+     *                              SERVIDOR REMOTO
+     ****************************************************************************************/
+   // private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_datos_usuario3.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+    //private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_update_isLogged.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+    //private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_isLocked.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+
     static String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
     static String clave="";
     static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
     static StringRequest request;
+    static String fecha_ultimo_login= "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,7 +199,12 @@ public class PantallaLogin extends AppCompatActivity {
                         // También, en el script php, se cambiará el campo del usuario isLogged a 1, para que al
                         // cargar la PantallaCarga, el programa seleccione su campo, y, si es 1 pase directamente
                         // a la pantalla principal, o si es 0, entre en la pantalla Login.
-                        Intent intent = new Intent(PantallaLogin.this, PantallaPrincipal.class);
+
+                        // Ahora obtenemos la fecha en la que ha iniciado sesión para controlar la última vez que entró
+                        Date fechaR = new Date();
+                        fecha_ultimo_login = fechaR.toString();
+                        System.out.println("FECHA ULTIMO LOGIN: " + fecha_ultimo_login);
+                        Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
                         startActivity(intent);
                     }
                 },
@@ -203,6 +222,7 @@ public class PantallaLogin extends AppCompatActivity {
                 // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_usuario);
+                parametros.put("fecha_ultimo_login", fecha_ultimo_login);
                 return parametros;
             }
         };

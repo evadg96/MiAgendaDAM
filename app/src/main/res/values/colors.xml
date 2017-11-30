@@ -6,4 +6,5 @@
     <color name="azul_fondo">#40B7AD</color>
     <color name="azul_barra_notificaciones">#2f867f</color>
     <color name="gris_claro">#dadada</color>
+    <color name="transparente">#00ffffff</color>
 </resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_perfil"
+            android:checkable="false"
+            android:icon="@drawable/perfil_trans"
+            android:title="Mi perfil" />
+        <item
+            android:id="@+id/nav_diario"
+            android:checkable="false"
+            android:icon="@drawable/calendario_mano_u"
+            android:title="Diario" />
+        <item
+            android:id="@+id/nav_horas"
+            android:icon="@drawable/reloj_mano"
+            android:title="Horas" />
+        <item
+            android:id="@+id/nav_c_reco"
+            android:icon="@drawable/contenido_reco"
+            android:title="Material recomendado" />
+        <item
+            android:id="@+id/nav_c_perso"
+            android:icon="@drawable/contenidos_p_5"
+            android:title="Material personalizado" />
+        <item
+            android:id="@+id/nav_festivos"
+            android:icon="@drawable/festivo2"
+            android:title="Festivos/No lectivos" />
+    </group>
+
+    <group >
+        <item
+            android:id="@+id/nav_contacto"
+            android:icon="@android:drawable/ic_dialog_email"
+            android:title="Contacto" />
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/cerrar_sesion_draw"
+            android:title="Cerrar sesión" />
+    </group>
+
+</menu>

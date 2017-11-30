@@ -33,7 +33,11 @@
         <activity android:name=".PantallaLogin" />
         <activity android:name=".RegistroNuevoUsuario" />
         <activity android:name=".ConfirmaRegistro" />
-        <activity android:name=".ReenviarCodigoConfirmacion"></activity>
+        <activity android:name=".ReenviarCodigoConfirmacion" />
+        <activity
+            android:name=".NavMenu"
+            android:label="@string/title_activity_nav_menu"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

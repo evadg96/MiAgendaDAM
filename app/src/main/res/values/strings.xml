@@ -42,4 +42,10 @@
     <!-- Strings activity ReenviarCodigoConfirmacion -->
     <string name="hint_reenviar_correo">Correo electrónico</string>
     <string name="btn_enviar">Enviar código</string>
+    <string name="title_activity_nav_menu">NavMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
