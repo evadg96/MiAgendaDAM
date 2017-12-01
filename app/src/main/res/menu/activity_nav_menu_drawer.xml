@@ -33,7 +33,8 @@
             android:title="Festivos/No lectivos" />
     </group>
 
-    <group >
+    <item android:title="">
+        <menu>
         <item
             android:id="@+id/nav_contacto"
             android:icon="@android:drawable/ic_dialog_email"
@@ -42,6 +43,7 @@
             android:id="@+id/nav_cerrar_sesion"
             android:icon="@drawable/cerrar_sesion_draw"
             android:title="Cerrar sesión" />
-    </group>
+        </menu>
+    </item>
 
 </menu>

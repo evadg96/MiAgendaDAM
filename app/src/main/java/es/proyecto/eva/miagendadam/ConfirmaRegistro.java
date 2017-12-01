@@ -40,8 +40,8 @@ public class ConfirmaRegistro extends AppCompatActivity {
     EditText txtCodigo;
     static String codigo_de_confirmacion;
     static String correo_electronico;
-    //static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php";
-    static String url_consulta="http://192.168.0.156/MiAgenda/consulta_update_isConfirmed.php";
+    static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php";
+    //static String url_consulta="http://192.168.0.156/MiAgenda/consulta_update_isConfirmed.php";
     // *********************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_update_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     static StringRequest request;
