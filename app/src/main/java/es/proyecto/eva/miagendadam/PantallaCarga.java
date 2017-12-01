@@ -31,9 +31,9 @@ public class PantallaCarga extends AppCompatActivity {
   //  private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
   //  private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_update_fechaLogin.php";
 
-    private String url_consulta = "http://192.168.0.157/MiAgenda/consulta_isLogged.php";
-    private String url_consulta2 = "http://192.168.0.157/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta3 = "http://192.168.0.157/MiAgenda/consulta_update_fechaLogin.php";
+    private String url_consulta = "http://192.168.0.156/MiAgenda/consulta_isLogged.php";
+    private String url_consulta2 = "http://192.168.0.156/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta3 = "http://192.168.0.156/MiAgenda/consulta_update_fechaLogin.php";
 
     /*******************************************************************
      *                          SERVIDOR REMOTO
@@ -110,7 +110,7 @@ public class PantallaCarga extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-                            System.out.println("ERROR ONCREATE()");
+                            System.out.println("ERROR ONCREATE() HAS COMPROBADO SI LA IP ES CORRECTA?");
                         }
                     }) {
                 @Override

@@ -7,3 +7,8 @@
 /build
 /captures
 .externalNativeBuild
+app/src/main/java/es/proyecto/eva/miagendadam/ConfirmaRegistro.java
+.hg/cur-message.txt
+.hg/thgstatus
+*.java
+*.java

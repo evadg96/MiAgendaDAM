@@ -57,7 +57,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     EditText txtClave;
     EditText txtClave2;
     //private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_inserta_nuevo_usuario.php";
-    private String url_consulta = "http://192.168.0.157/MiAgenda/consulta_inserta_nuevo_usuario.php";
+    private String url_consulta = "http://192.168.0.156/MiAgenda/consulta_inserta_nuevo_usuario.php";
     // **************************************** SERVIDOR REMOTO ************************************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_inserta_nuevo_usuario.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     public static String correo="";

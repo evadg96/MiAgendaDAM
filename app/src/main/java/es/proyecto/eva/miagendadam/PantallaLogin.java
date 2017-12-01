@@ -39,9 +39,9 @@ public class PantallaLogin extends AppCompatActivity {
   //  private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
   //  private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
 
-    private String url_consulta = "http://192.168.0.157/MiAgenda/consulta_datos_usuario3.php";
-    private String url_consulta2 = "http://192.168.0.157/MiAgenda/consulta_update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.157/MiAgenda/consulta_isLocked.php";
+    private String url_consulta = "http://192.168.0.156/MiAgenda/consulta_datos_usuario3.php";
+    private String url_consulta2 = "http://192.168.0.156/MiAgenda/consulta_update_isLogged.php";
+    private String url_consulta3 = "http://192.168.0.156/MiAgenda/consulta_isLocked.php";
 
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
