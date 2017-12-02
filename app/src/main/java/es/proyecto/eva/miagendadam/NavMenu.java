@@ -1,6 +1,7 @@
 package es.proyecto.eva.miagendadam;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,8 +16,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /***************************************************************************************************
  *  Menú lateral desplegable con las opciones de la aplicación.
@@ -30,6 +43,8 @@ public class NavMenu extends AppCompatActivity
     TextView texto;
     static String nombre_de_usuario;
     static String correo_electronico;
+    static StringRequest request;
+    static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_cerrar_sesion.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +137,46 @@ public class NavMenu extends AppCompatActivity
 
         } else if (id == R.id.nav_contacto) {
 
+        } else if (id == R.id.nav_cerrar_sesion) {
+            cerrarSesion();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void cerrarSesion(){
+        request = new StringRequest(Request.Method.POST, url_consulta,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Al cerrar sesión estaremos actualizando el campo isLogged a 0 para que no se detecte como sesión iniciada en la pantalla
+                        // de carga al volver a abrir la aplicación
+                        System.out.println("SESIÓN DE USUARIO CERRADA.");
+                        Intent intent = new Intent(NavMenu.this, PantallaLogin.class);
+                        startActivity(intent);
+
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(NavMenu.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_de_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+
     }
 }

@@ -82,8 +82,7 @@ public class PantallaPrincipal extends AppCompatActivity {
             }
         };
         AppController.getInstance().addToRequestQueue(request);
-
-}
+    }
 
 
     // NO BORRAR
