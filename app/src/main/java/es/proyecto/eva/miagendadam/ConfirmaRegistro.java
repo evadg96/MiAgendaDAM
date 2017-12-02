@@ -26,9 +26,12 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-/**
- *       Clase que confirma al usuario con el co
- */
+/***************************************************************************************************
+ *  Clase que confirma el registro de un usuario. Al momento del registro se le envía un código
+ *  de confirmación al correo que haya introducido en el formulario de registro, y en esta pantalla
+ *  deberá introducir el código. Esta clase se encargará de comprobar que el código introducido
+ *  coincide con el código que se generó y se le mandó por correo, y le confirma en la base de datos.
+ ***************************************************************************************************/
 
 public class ConfirmaRegistro extends AppCompatActivity {
     /**
@@ -40,10 +43,12 @@ public class ConfirmaRegistro extends AppCompatActivity {
     EditText txtCodigo;
     static String codigo_de_confirmacion;
     static String correo_electronico;
-    static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php";
+    static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php"; // ip local
     //static String url_consulta="http://192.168.0.156/MiAgenda/consulta_update_isConfirmed.php";
+
     // *********************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_update_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+    // *********************************************************************************************
     static StringRequest request;
 
     @Override

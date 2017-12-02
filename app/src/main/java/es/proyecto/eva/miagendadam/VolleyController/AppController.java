@@ -11,6 +11,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/***************************************************************************************************
+ *  Clase que maneja las peticiones de Volley para hacer las consultas a la base de datos
+ **************************************************************************************************/
 public class AppController extends Application {
 
     public static final String TAG = AppController.class

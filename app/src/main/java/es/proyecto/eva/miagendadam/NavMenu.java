@@ -18,6 +18,13 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+/***************************************************************************************************
+ *  Menú lateral desplegable con las opciones de la aplicación.
+ *  Será a su vez la clase contenedora del layout que contenga los fragments
+ *  de las distintas opciones de la app, que se mostrarán en función de la opción
+ *  seleccionada en el menú.
+ **************************************************************************************************/
+
 public class NavMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TextView texto;

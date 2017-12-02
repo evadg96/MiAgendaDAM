@@ -35,6 +35,11 @@ import javax.mail.internet.MimeMessage;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
+/***************************************************************************************************
+ * Clase que se llama con la pulsación del botón de reenviar un código de confirmación al usuario.
+ * Se solicita un correo electrónico y se le envía un código nuevo que deberá introducir en la
+ * pantalla de confirmación de registro.
+ **************************************************************************************************/
 public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     Button btnEnviar;
     EditText txtCorreo;

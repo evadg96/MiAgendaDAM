@@ -55,7 +55,7 @@ public class PantallaLogin extends AppCompatActivity {
     static String clave="";
     static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
     static StringRequest request;
-    static String fecha_ultimo_login= "";
+    static String fecha_ultimo_login = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

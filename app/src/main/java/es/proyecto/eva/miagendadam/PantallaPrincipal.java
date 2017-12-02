@@ -23,6 +23,12 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
+/*****************************************************************************************************************
+ * Activity que hasta haber implementado la clase NavMenu hacía de pantalla de simulación de pantalla
+ * principal de la aplicación. Por ahora solo contiene un botón de cerrar sesión y un texto de saludo al usuario
+ * logeado. Actualmente no se abre desde ningún punto. Se puede conservar por si no sale bien la implementación
+ * de los fragments, para partir de este punto como pantalla principal.
+ ****************************************************************************************************************/
 public class PantallaPrincipal extends AppCompatActivity {
 
     Button btn;
