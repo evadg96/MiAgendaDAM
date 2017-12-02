@@ -282,4 +282,10 @@ public class PantallaLogin extends AppCompatActivity {
         editor.putString("nombre_de_usuario", nombre_usuario);
         editor.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        // DEJO EN BLANCO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
+        // PANTALLA, NO SE PUEDA VOLVER A LA PANTALLA PRINCIPAL HABIENDO CERRADO YA SESIÓN.
+    }
 }

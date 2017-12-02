@@ -88,12 +88,14 @@ public class NavMenu extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        // COMENTO T0DO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
+        // PANTALLA, NO SE PUEDA VOLVER A LA PANTALLA DE LOGIN.
+       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       // if (drawer.isDrawerOpen(GravityCompat.START)) {
+       //     drawer.closeDrawer(GravityCompat.START);
+       // } else {
+       //     super.onBackPressed();
+       // }
     }
 
     @Override
@@ -179,4 +181,6 @@ public class NavMenu extends AppCompatActivity
         AppController.getInstance().addToRequestQueue(request);
 
     }
+
+
 }
