@@ -55,7 +55,8 @@ public class PantallaLogin extends AppCompatActivity {
     static String clave="";
     static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
     static StringRequest request;
-    static String fecha_ultimo_login = "";
+    static Date fecha = new Date();
+    static String fecha_ultimo_login = fecha.toString();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,8 +202,6 @@ public class PantallaLogin extends AppCompatActivity {
                         // a la pantalla principal, o si es 0, entre en la pantalla Login.
 
                         // Ahora obtenemos la fecha en la que ha iniciado sesión para controlar la última vez que entró
-                        Date fechaR = new Date();
-                        fecha_ultimo_login = fechaR.toString();
                         System.out.println("FECHA ULTIMO LOGIN: " + fecha_ultimo_login);
                         Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
                         startActivity(intent);
