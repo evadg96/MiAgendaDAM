@@ -45,6 +45,7 @@ public class NavMenu extends AppCompatActivity
     static String correo_electronico;
     static StringRequest request;
     static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_cerrar_sesion.php";
+   // static String url_consulta = "http://192.168.0.156/MiAgenda/consulta_cerrar_sesion.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

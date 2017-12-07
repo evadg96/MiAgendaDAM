@@ -8,16 +8,16 @@
         <item
             android:id="@+id/nav_perfil"
             android:checkable="false"
-            android:icon="@drawable/perfil_trans"
+            android:icon="@drawable/perfil"
             android:title="Mi perfil" />
         <item
             android:id="@+id/nav_diario"
             android:checkable="false"
-            android:icon="@drawable/calendario_mano_u"
+            android:icon="@drawable/calendario"
             android:title="Diario" />
         <item
             android:id="@+id/nav_horas"
-            android:icon="@drawable/reloj_mano"
+            android:icon="@drawable/reloj"
             android:title="Horas" />
         <item
             android:id="@+id/nav_c_reco"
@@ -25,12 +25,16 @@
             android:title="Material recomendado" />
         <item
             android:id="@+id/nav_c_perso"
-            android:icon="@drawable/contenidos_p_5"
+            android:icon="@drawable/contenido_perso"
             android:title="Material personalizado" />
         <item
             android:id="@+id/nav_festivos"
-            android:icon="@drawable/festivo2"
+            android:icon="@drawable/descanso2"
             android:title="Festivos/No lectivos" />
+        <item
+            android:id="@+id/nav_anotaciones"
+            android:icon="@drawable/anotaciones"
+            android:title="Anotaciones" />
     </group>
 
     <item android:title="">
@@ -41,7 +45,7 @@
             android:title="Contacto" />
         <item
             android:id="@+id/nav_cerrar_sesion"
-            android:icon="@drawable/cerrar_sesion_draw"
+            android:icon="@drawable/cerrar_sesion"
             android:title="Cerrar sesión" />
         </menu>
     </item>
