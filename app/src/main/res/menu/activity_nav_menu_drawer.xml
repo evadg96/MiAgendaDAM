@@ -20,6 +20,14 @@
             android:icon="@drawable/reloj"
             android:title="Horas" />
         <item
+            android:id="@+id/nav_anotaciones"
+            android:icon="@drawable/anotaciones"
+            android:title="Anotaciones" />
+        <item
+            android:id="@+id/nav_festivos"
+            android:icon="@drawable/descanso2"
+            android:title="Festivos/No lectivos" />
+        <item
             android:id="@+id/nav_c_reco"
             android:icon="@drawable/contenido_reco"
             android:title="Material recomendado" />
@@ -27,14 +35,6 @@
             android:id="@+id/nav_c_perso"
             android:icon="@drawable/contenido_perso"
             android:title="Material personalizado" />
-        <item
-            android:id="@+id/nav_festivos"
-            android:icon="@drawable/descanso2"
-            android:title="Festivos/No lectivos" />
-        <item
-            android:id="@+id/nav_anotaciones"
-            android:icon="@drawable/anotaciones"
-            android:title="Anotaciones" />
     </group>
 
     <item android:title="">

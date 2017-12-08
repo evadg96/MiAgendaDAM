@@ -85,7 +85,7 @@ public class PantallaPrincipal extends AppCompatActivity {
     }
 
 
-    // NO BORRAR
+    // NO BORRAR!!
     @Override
     public void onBackPressed (){
         /**

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,8 +56,12 @@ public class PantallaLogin extends AppCompatActivity {
     static String clave="";
     static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
     static StringRequest request;
+    // OBTENEMOS LA FECHA DESDE AQUÍ DIRECTAMENTE, SI NO NO LA GUARDA BIEN EN LA BASE DE DATOS
     static Date fecha = new Date();
     static String fecha_ultimo_login = fecha.toString();
+    // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
+    static int intentosRestantes = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,23 +112,36 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
-                        if (response.equals("2")) { // usuario no existe
+                        if (response.equals("2")) { // ERROR: usuario no existe
                             try {
                                 Toast.makeText(PantallaLogin.this, "No existe ningún usuario con ese nombre.", Toast.LENGTH_SHORT).show();
                                 System.out.println("USUARIO NO EXISTE");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else {
-                            if (response.equals("3")) { // contraseña errónea
+                        } else { // Sí existe el usuario. Comprobamos su contraseña...
+                            // INTENTO FALLIDO DE INICIO DE SESIÓN
+                            if (response.equals("3")) { // ERROR: CONTRASEÑA ERRÓNEA
                                 try {
-                                    Toast.makeText(PantallaLogin.this, "La clave introducida no es correcta.", Toast.LENGTH_SHORT).show();
+                                    if (intentosRestantes != 0){ // si todavía le quedan intentos...
                                     System.out.println("ERROR DE CLAVE");
+                                    intentosRestantes--; // restamos un intento restante por cada intento fallido
+                                    System.out.println("NÚMERO DE INTENTOS DE INICIO DE SESIÓN RESTANTES: "+ intentosRestantes);
+                                    Toast.makeText(PantallaLogin.this, "La clave introducida no es correcta. Intentos restantes: "+ intentosRestantes, Toast.LENGTH_LONG).show();
+                                        if (intentosRestantes == 2){ // cuando sólo le queden dos intentos, le avisaremos que tenga cuidado, que se le va a bloquear...
+                                            Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo te quedan "+ intentosRestantes + " intentos restantes. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
+                                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                            toast.show();
+                                        }
+                                    } else { // ya no le quedan intentos
+                                        // EJECUTAMOS SCRIPT AQUÍ PARA BLOQUEAR AL USUARIO
+                                        // Le bloqueamos y mostramos mensaje de info
+                                    }
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            } else {
+                            } else { // Usuario y contraseña correctos. Comprobamos si está confirmado...
                                 if (response.equals("1")) { // ESTÁ CONFIRMADO
                                     System.out.println("USUARIO CONFIRMADO");
                                     check_isLocked(); // comprobamos si está bloqueado
@@ -182,7 +200,10 @@ public class PantallaLogin extends AppCompatActivity {
      ********************************************************************************************************************/
     private void loginCorrecto(){
         nombre_usuario = nUsuario;
+        // si hemos llegado hasta aquí, es que el nombre de usuario y la clave introducidos por el usuario son válidos,
+        // por tanto se guarda el dato en las preferencias que el usuario ha introducido para mostrar luego los datos que le correspondan.
         guardarPreferencias();
+        intentosRestantes = 5; // reseteamos el número de intentos de inicio de sesión
         // Pero antes cambiamos el valor de isLogged a 1 para ahorrarnos t0do este proceso
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -194,9 +215,7 @@ public class PantallaLogin extends AppCompatActivity {
                         progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
                         progressDialog.show();
                         System.out.println("LOGIN CORRECTO :)");
-                         // si hemos llegado hasta aquí, es que el nombre de usuario
-                        // y la clave introducidos por el usuario son válidos, por tanto se guarda el dato que el
-                        // usuario ha introducido para mostrar luego los datos que le correspondan
+
                         // También, en el script php, se cambiará el campo del usuario isLogged a 1, para que al
                         // cargar la PantallaCarga, el programa seleccione su campo, y, si es 1 pase directamente
                         // a la pantalla principal, o si es 0, entre en la pantalla Login.
@@ -282,6 +301,7 @@ public class PantallaLogin extends AppCompatActivity {
         editor.commit();
     }
 
+    // NO BORRAR!!
     @Override
     public void onBackPressed() {
         // DEJO EN BLANCO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
