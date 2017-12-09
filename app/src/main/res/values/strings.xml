@@ -10,7 +10,7 @@
 
     <!-- String REGISTRO -->
     <string name="sNombre">Nombre</string>
-    <string name="sApe_uno">Primer apellido</string>
+    <string name="sApe_uno">Apellidos</string>
     <string name="sApe_dos">Segundo apellido</string>
     <string name="sProvincia">Provincia</string>
     <string name="sLocalidad">Localidad</string>

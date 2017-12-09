@@ -44,7 +44,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
     static String codigo_de_confirmacion;
     static String correo_electronico;
     static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php"; // ip local
-//    static String url_consulta="http://192.168.0.156/MiAgenda/consulta_update_isConfirmed.php";
+//    static String url_consulta="http://192.168.0.158/MiAgenda/consulta_update_isConfirmed.php";
 
     // *********************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_update_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
@@ -83,7 +83,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                             if (codigo.equals(codigo_de_confirmacion)) {
                                                 // Creamos ventana alerta de aviso que lleva a pantalla login
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmaRegistro.this);
-                                                builder.setMessage("Usuario confirmado. Ya puedes iniciar sesión.")
+                                                builder.setMessage("¡Usuario confirmado! Ya puedes iniciar sesión.")
                                                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int id) {
                                                                 Intent intent = new Intent(ConfirmaRegistro.this, PantallaLogin.class);

@@ -49,13 +49,13 @@ public class PantallaCarga extends AppCompatActivity {
     private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
     private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
     private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_update_fechaLogin.php";
-
-  //  private String url_consulta = "http://192.168.0.156/MiAgenda/consulta_isLogged.php";
-  //  private String url_consulta2 = "http://192.168.0.156/MiAgenda/consulta_isConfirmed.php";
-  //  private String url_consulta3 = "http://192.168.0.156/MiAgenda/consulta_update_fechaLogin.php";
+//
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_isLogged.php";
+//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
+//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_update_fechaLogin.php";
 
     /***********************************************************************************************
-     *                            SERVIDOR REMOTO (no funciona a día 01/12)
+     *                            SERVIDOR REMOTO (no funciona desde día 01/12)
      **********************************************************************************************/
 //    private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_isLogged.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
   //  private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
@@ -255,7 +255,7 @@ public class PantallaCarga extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-                        System.out.println("ERROR ACTUALIZAFECHALOGIN() ¿? ");
+                        System.out.println("ERROR ACTUALIZAFECHALOGIN()");
                     }
                 }) {
             @Override
