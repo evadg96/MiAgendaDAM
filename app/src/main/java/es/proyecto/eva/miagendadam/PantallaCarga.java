@@ -46,13 +46,13 @@ public class PantallaCarga extends AppCompatActivity {
     private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
 
     // Servidor local
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
-    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_update_fechaLogin.php";
-//
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_isLogged.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
-//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_update_fechaLogin.php";
+//    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
+//    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
+//    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_update_fechaLogin.php";
+
+    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_isLogged.php";
+    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_update_fechaLogin.php";
 
     /***********************************************************************************************
      *                            SERVIDOR REMOTO (no funciona desde día 01/12)

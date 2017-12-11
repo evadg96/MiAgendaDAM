@@ -34,21 +34,22 @@ import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.isConfirmed;
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion;
     private Button btnRegistroUsuario;
+    private Button btnRecuperarClave;
     private EditText txtNombreUsuario;
     private EditText txtClave;
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_datos_usuario3.php";
-    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
-    private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_update_isLocked.php";
-    private String url_consulta5 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";
-//
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_datos_usuario3.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
-//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
-//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_update_isLocked.php";
-//    private String url_consulta5 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
+//    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_usuario_existe.php";
+//    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
+//    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
+//    private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_update_isLocked.php";
+//    private String url_consulta5 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
+//    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";
 
+    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
+    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
+    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
+    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_update_isLocked.php";
+    private String url_consulta5 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta6 = "http://192.168.0.158/MiAgenda/consulta_check_clave.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/
@@ -80,6 +81,7 @@ public class PantallaLogin extends AppCompatActivity {
         setTitle("Inicio de sesión");
         btnIniciarSesion = (Button) findViewById(R.id.btn_iniciar_sesion);
         btnRegistroUsuario = (Button) findViewById(R.id.btn_registrarse);
+        btnRecuperarClave = (Button) findViewById(R.id.btn_recuperar_clave);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
@@ -94,6 +96,16 @@ public class PantallaLogin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Botón He olvidado mi contraseña, abre actividad de RecuperarClave
+        btnRecuperarClave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PantallaLogin.this, RecuperarClave.class);
+                startActivity(intent);
+            }
+        });
+
         // Botón Iniciar sesión
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

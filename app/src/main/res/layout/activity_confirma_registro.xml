@@ -25,10 +25,11 @@
 
         <Button
             android:id="@+id/btn_confirmar"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_confirmar" />
+            android:text="@string/btn_confirmar"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/btn_reenviar_codigo"

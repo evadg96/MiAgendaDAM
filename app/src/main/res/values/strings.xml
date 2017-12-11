@@ -7,6 +7,7 @@
     <string name="hint_clave">Contraseña</string>
     <string name="btn_iniciar_sesion">Iniciar sesión</string>
     <string name="btn_registrar_usuario">Registrarse</string>
+    <string name="btn_recuperar_clave">He olvidado mi contraseña :(</string>
 
     <!-- String REGISTRO -->
     <string name="sNombre">Nombre</string>
@@ -46,6 +47,12 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- activity RecuperarClave -->
+    <string name="btn_clave_nueva">Enviar contraseña nueva</string>
+    <string name="txt_instrucciones_recuperar_clave">Para poder enviarte una contraseña nueva necesitamos que nos indiques tu
+        nombre de usuario. Si no lo recuerdas, puedes consultarlo en el correo de confirmación que se te envió al completar tu registro.</string>
+    <string name="txt_dialog_recuperar_clave">Se ha enviado un correo con tu contraseña nueva a la dirección de correo electrónico del usuario introducido.</string>
 
     <string name="action_settings">Settings</string>
 </resources>

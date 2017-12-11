@@ -4,31 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.proyecto.eva.miagendadam.ReenviarCodigoConfirmacion">
+    tools:context="es.proyecto.eva.miagendadam.RecuperarClave">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_instrucciones_recuperar_clave"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            android:gravity="start" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/editText_correo"
+                android:id="@+id/txt_nombre_usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_reenviar_correo" />
+                android:hint="@string/hint_nombre_usuario" />
+
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_enviar"
+            android:id="@+id/btn_enviar_nueva_clave"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_enviar"
-            android:textStyle="bold"/>
+            android:text="@string/btn_clave_nueva"
+            android:textStyle="bold" />
+
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -43,8 +43,8 @@ public class ConfirmaRegistro extends AppCompatActivity {
     EditText txtCodigo;
     static String codigo_de_confirmacion;
     static String correo_electronico;
-    static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php"; // ip local
-//    static String url_consulta="http://192.168.0.158/MiAgenda/consulta_update_isConfirmed.php";
+//    static String url_consulta="http://192.168.0.10/MiAgenda/consulta_update_isConfirmed.php"; // ip local
+    static String url_consulta="http://192.168.0.158/MiAgenda/consulta_update_isConfirmed.php";
 
     // *********************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_update_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
@@ -103,7 +103,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                 Toast.makeText(ConfirmaRegistro.this, "El código introducido no es correcto.", Toast.LENGTH_SHORT).show();
                                             }
                                         } else { // si no hay codigo de confirmación en las preferencias, le decimos que ha expirado, para que solicite uno nuevo
-                                            Toast.makeText(ConfirmaRegistro.this, "El código ha expirado.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ConfirmaRegistro.this, "El código ha expirado o no hay ningún usuario que confirmar.", Toast.LENGTH_SHORT).show();
                                         }
                                 }
                             },

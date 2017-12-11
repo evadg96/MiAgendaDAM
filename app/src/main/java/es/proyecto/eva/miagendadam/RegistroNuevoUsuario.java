@@ -56,8 +56,8 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     EditText txtNombreUsuario;
     EditText txtClave;
     EditText txtClave2;
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_inserta_nuevo_usuario.php";
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_inserta_nuevo_usuario.php";
+//    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_inserta_nuevo_usuario.php";
+    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_inserta_nuevo_usuario.php";
     // **************************************** SERVIDOR REMOTO ************************************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_inserta_nuevo_usuario.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     public static String correo="";
@@ -135,9 +135,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                         if (!clave.matches("(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
                                 + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
                                 + "|0|1|2|3|4|5|6|7|8|9" // números
-                                + "|!|=|-|_|@|:|%|~|#)+")) { // símbolos
+                                + "|!|=|-|_|@|:|%|~|#|&)+")) { // símbolos
                             Toast.makeText(RegistroNuevoUsuario.this, "No se pueden introducir espacios, tildes ni caracteres que no sean letras, números ó ! = - _ @" +
-                                    " : % ~ #.", Toast.LENGTH_LONG).show();
+                                    " : % ~ # &", Toast.LENGTH_LONG).show();
 
                         } else {
 
