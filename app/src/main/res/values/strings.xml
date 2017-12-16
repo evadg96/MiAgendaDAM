@@ -7,7 +7,7 @@
     <string name="hint_clave">Contraseña</string>
     <string name="btn_iniciar_sesion">Iniciar sesión</string>
     <string name="btn_registrar_usuario">Registrarse</string>
-    <string name="btn_recuperar_clave">He olvidado mi contraseña :(</string>
+    <string name="btn_recuperar_clave">He olvidado mis datos de usuario :(</string>
 
     <!-- String REGISTRO -->
     <string name="sNombre">Nombre</string>
@@ -50,9 +50,26 @@
 
     <!-- activity RecuperarClave -->
     <string name="btn_clave_nueva">Enviar contraseña nueva</string>
+    <string name="btn_recupera_usuario">Recordar nombre de usuario</string>
     <string name="txt_instrucciones_recuperar_clave">Para poder enviarte una contraseña nueva necesitamos que nos indiques tu
         nombre de usuario. Si no lo recuerdas, puedes consultarlo en el correo de confirmación que se te envió al completar tu registro.</string>
     <string name="txt_dialog_recuperar_clave">Se ha enviado un correo con tu contraseña nueva a la dirección de correo electrónico del usuario introducido.</string>
+
+    <!-- String opciones menu nav draw -->
+    <string name="opc_diario">Diario</string>
+    <string name="opc_horas">Horas</string>
+    <string name="opc_festivos_no_lectivos">Festivos/No lectivos</string>
+    <string name="opc_proyecto">Proyecto</string>
+    <string name="opc_anteproyecto">Anteproyecto</string>
+    <string name="opc_ideas_proyecto">Ideas</string>
+    <string name="opc_guia_proyecto">Guía de proyecto</string>
+    <string name="opc_guia_anteproyecto">Guía de anteproyecto</string>
+    <string name="opc_cerrar_sesion">Cerrar sesión</string>
+    <string name="opc_contacto">Contacto</string>
+    <string name="opc_anotaciones">Anotaciones</string>
+    <string name="opc_mat_reco">Material recomendado</string>
+    <string name="opc_mat_perso">Material personalizado</string>
+    <string name="opc_perfil">Mi perfil</string>
 
     <string name="action_settings">Settings</string>
 </resources>

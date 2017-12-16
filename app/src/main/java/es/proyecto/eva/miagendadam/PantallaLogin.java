@@ -37,19 +37,19 @@ public class PantallaLogin extends AppCompatActivity {
     private Button btnRecuperarClave;
     private EditText txtNombreUsuario;
     private EditText txtClave;
-//    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_usuario_existe.php";
-//    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
-//    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
-//    private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_update_isLocked.php";
-//    private String url_consulta5 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
-//    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";
-
-    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
-    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
-    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_update_isLocked.php";
-    private String url_consulta5 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta6 = "http://192.168.0.158/MiAgenda/consulta_check_clave.php";
+    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_usuario_existe.php";
+    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
+    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
+    private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_update_isLocked.php";
+    private String url_consulta5 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";
+//
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
+//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
+//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
+//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_update_isLocked.php";
+//    private String url_consulta5 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
+//    private String url_consulta6 = "http://192.168.0.158/MiAgenda/consulta_check_clave.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/
@@ -62,9 +62,13 @@ public class PantallaLogin extends AppCompatActivity {
     static String clave="";
     static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
     static StringRequest request;
-    // OBTENEMOS LA FECHA DESDE AQUÍ DIRECTAMENTE, SI NO NO LA GUARDA BIEN EN LA BASE DE DATOS
-    static Date fecha = new Date();
-    static String fecha_ultimo_login = fecha.toString();
+
+    public static String getFecha() {
+        Date date = new Date();
+        String fecha = date.toString();
+        return fecha;
+    }
+    static String fecha_ultimo_login = getFecha();
     // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
     static int intentosRestantes = 5;
     // EL PROBLEMA CON ESTO ES QUE EN EL PRIMER INTENTO ME COGE EL VALOR QUE ESTÉ AQUÍ, ES DECIR, QUE SI AQUÍ TIENE UN 2, LO PRIMERO QUE VA A COGER
@@ -234,7 +238,7 @@ public class PantallaLogin extends AppCompatActivity {
                         } else {
                             // LE PROHIBIMOS ACCEDER
                             System.out.println("SÍ ESTÁ BLOQUEADO DESDE CHECKISLOCKED :(");
-                            Toast.makeText(PantallaLogin.this, "Usuario bloqueado.  No se ha podido iniciar sesión.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
                             System.out.println("USUARIO BLOQUEADO.");
                         }
                     }
@@ -253,7 +257,6 @@ public class PantallaLogin extends AppCompatActivity {
                 // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nUsuario);
-                parametros.put("clave", clave);
                 return parametros;
             }
         };
@@ -401,8 +404,6 @@ public class PantallaLogin extends AppCompatActivity {
                         progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
                         progressDialog.show();
                         System.out.println("LOGIN CORRECTO :)");
-
-                        // Ahora obtenemos la fecha en la que ha iniciado sesión para controlar la última vez que entró
                         System.out.println("FECHA ULTIMO LOGIN: " + fecha_ultimo_login);
                         Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
                         startActivity(intent);

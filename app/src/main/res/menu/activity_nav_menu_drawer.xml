@@ -9,44 +9,57 @@
             android:id="@+id/nav_perfil"
             android:checkable="false"
             android:icon="@drawable/perfil"
-            android:title="Mi perfil" />
+            android:title="@string/opc_perfil" />
         <item
             android:id="@+id/nav_diario"
             android:checkable="false"
             android:icon="@drawable/calendario"
-            android:title="Diario" />
+            android:title="@string/opc_diario" />
         <item
             android:id="@+id/nav_horas"
             android:icon="@drawable/reloj"
-            android:title="Horas" />
+            android:title="@string/opc_horas" />
         <item
             android:id="@+id/nav_anotaciones"
             android:icon="@drawable/anotaciones"
-            android:title="Anotaciones" />
+            android:title="@string/opc_anotaciones" />
         <item
             android:id="@+id/nav_festivos"
             android:icon="@drawable/descanso2"
-            android:title="Festivos/No lectivos" />
+            android:title="@string/opc_festivos_no_lectivos" />
         <item
             android:id="@+id/nav_c_reco"
             android:icon="@drawable/contenido_reco"
-            android:title="Material recomendado" />
+            android:title="@string/opc_mat_reco" />
         <item
             android:id="@+id/nav_c_perso"
             android:icon="@drawable/contenido_perso"
-            android:title="Material personalizado" />
+            android:title="@string/opc_mat_perso" />
+        <item
+            android:id="@+id/nav_proyecto"
+            android:icon="@drawable/idea"
+            android:title="@string/opc_proyecto">
+            <menu>
+                <item
+                    android:id="@+id/nav_anteproyecto"
+                    android:icon="@drawable/idea"
+                    android:title="@string/opc_anteproyecto"/>
+
+            </menu>
+        </item>
+
     </group>
 
     <item android:title="">
         <menu>
-        <item
-            android:id="@+id/nav_contacto"
-            android:icon="@android:drawable/ic_dialog_email"
-            android:title="Contacto" />
-        <item
-            android:id="@+id/nav_cerrar_sesion"
-            android:icon="@drawable/cerrar_sesion"
-            android:title="Cerrar sesión" />
+            <item
+                android:id="@+id/nav_contacto"
+                android:icon="@android:drawable/ic_dialog_email"
+                android:title="@string/opc_contacto" />
+            <item
+                android:id="@+id/nav_cerrar_sesion"
+                android:icon="@drawable/cerrar_sesion"
+                android:title="@string/opc_cerrar_sesion" />
         </menu>
     </item>
 

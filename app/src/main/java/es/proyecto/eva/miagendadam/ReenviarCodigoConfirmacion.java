@@ -49,8 +49,8 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     static String codigo_de_confirmacion;
     static Session session;
     static StringRequest request;
-//    static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_correo.php";
-    static String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_correo.php";
+    static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_correo.php";
+//    static String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_correo.php";
     // ************************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_check_correo.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     @Override
