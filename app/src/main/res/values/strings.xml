@@ -49,7 +49,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- activity RecuperarClave -->
-    <string name="btn_clave_nueva">Enviar contraseña nueva</string>
+    <string name="btn_clave_nueva">Solicitar contraseña nueva</string>
     <string name="btn_recupera_usuario">Recordar nombre de usuario</string>
     <string name="txt_instrucciones_recuperar_clave">Para poder enviarte una contraseña nueva necesitamos que nos indiques tu
         nombre de usuario. Si no lo recuerdas, puedes consultarlo en el correo de confirmación que se te envió al completar tu registro.</string>
