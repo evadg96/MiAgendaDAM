@@ -70,7 +70,10 @@ public class PantallaCarga extends AppCompatActivity {
         return fecha;
     }
 
-    static String fecha_ultimo_login = getFecha();
+    static String fecha_ultimo_login = getFecha(); // aquí lo obtenemos así porque el usuario no interacciona de ninguna manera con la interfaz, se carga t0do
+    // automático y no hay tiempos de espera para que el usuario interaccione, con lo que la fecha se va a obtener bien
+    // Por ejemplo, en PantallaLogin se podría dar el caso de que el usuario se quede en la pantalla 5 minutos porque está poniendo mal la contraseña.
+    // Si lo hiciesemos de esta misma manera, se obtendría la hora en la que se ha abierto la actividad, no en la que realmente puede haber hecho el login
 
     // ****************  PARA REFERENCIAR A LOS VALORES GUARDADOS EN PREFERENCIAS ******************
     static String nombre_de_usuario = "";
@@ -93,11 +96,12 @@ public class PantallaCarga extends AppCompatActivity {
         codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", "");
         correo_electronico = preferences.getString("correo_electronico", "");
         // ********************************************************************************************************************************************
-
         // Las mostramos en la consola de debug para controlar los datos que tenemos almacenados por el momento
         System.out.println("NOMBRE DE USUARIO ALMACENADO: " + nombre_de_usuario);
         System.out.println("CÓDIGO DE CONFIRMACIÓN!: " + codigo_de_confirmacion);
         System.out.println("CORREO ELECTRÓNICO ALMACENADO!: " + correo_electronico);
+
+        System.out.println("HORA ACTUAL: "+fecha_ultimo_login);
 
         if (!nombre_de_usuario.isEmpty()) { // si hay nombre de usuario almacenado...
             // Comprobamos bloqueo:
@@ -271,6 +275,7 @@ public class PantallaCarga extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        fecha_ultimo_login = getFecha();
                         System.out.println("FECHA DE ÚLTIMO INICIO DE SESIÓN: "+ fecha_ultimo_login);
                         System.out.println("FECHA DE ÚLTIMO INICIO DE SESIÓN ACTUALIZADA.");
                     }

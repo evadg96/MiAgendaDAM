@@ -58,6 +58,12 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     EditText txtClave2;
     private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_inserta_nuevo_usuario.php";
     static String url_consulta2 = "http://192.168.0.10/MiAgenda/clave_gmail.php";
+    public static String getFecha(){
+        Date date = new Date();
+        String fecha = date.toString();
+        return fecha;
+    }
+    private String fecha_registro = getFecha();
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_inserta_nuevo_usuario.php";
     // **************************************** SERVIDOR REMOTO ************************************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_inserta_nuevo_usuario.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
@@ -110,11 +116,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         n_Usuario = txtNombreUsuario.getText().toString();
         clave = txtClave.getText().toString();
         final String clave2 = txtClave2.getText().toString();
-
-        // OBTENEMOS EL DATO fecha_registro, que guarda en la base de datos la fecha en el momento de pulsar
-        // el botón de registrarse
-        Date fechaR = new Date();
-        final String fecha_registro = fechaR.toString();
+        fecha_registro = getFecha();
         System.out.println("FECHA REGISTRO: " + fecha_registro);
 
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
@@ -327,10 +329,10 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Confirmación de registro");
-                message.setContent("<p style=\"text-align:justify\">¡Hola " + nombre + "! Ya estás un paso más cerca de finalizar tu registro como usuario de <b>Mi agenda FP</b>, tan solo nos queda confirmar\n" +
-                        "    tu cuenta introduciendo el código de confirmación que se indica aquí abajo. </p><br/>\n" +
+                message.setContent("<p style=\"text-align:justify\">¡Hola " + nombre + "! Ya estás un paso más cerca de finalizar tu registro como usuario de <b>Mi agenda FP</b>, tan solo nos queda confirmar" +
+                        "    tu cuenta introduciendo el código de confirmación que se indica aquí abajo.</p>" +
                         "       <p style=\"text-align:justify\"> Código de confirmación: <b>"+ codigoConfirmacion + "</b></p> " +
-                        "        <p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p><br/>"+
+                        "        <p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p>"+
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
                         "<p style=\"margin-left: 10px; margin-right: 10px\">" +
                         "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +

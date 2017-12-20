@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import java.sql.SQLOutput;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";;
     private String url_consulta7 = "http://192.168.0.10/MiAgenda/consulta_check_num_intentos_login.php";
     private String url_consulta8 = "http://192.168.0.10/MiAgenda/consulta_update_intentos_login.php";
+    private String url_consulta9 = "http://192.168.0.10/MiAgenda/consulta_update_fecha_bloqueo.php";
 //
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
@@ -70,7 +72,8 @@ public class PantallaLogin extends AppCompatActivity {
         String fecha = date.toString();
         return fecha;
     }
-    static String fecha_ultimo_login = getFecha();
+    private String fecha_ultimo_login = "";
+    private String fecha_bloqueo = "";
     // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
     private String intentos_login = "";
 
@@ -112,6 +115,10 @@ public class PantallaLogin extends AppCompatActivity {
             public void onClick(View view) {
                 nUsuario = txtNombreUsuario.getText().toString();
                 clave = txtClave.getText().toString();
+                // Actualizamos la hora cada vez que se pulse el botón
+                fecha_bloqueo = getFecha();
+                fecha_ultimo_login = getFecha();
+                System.out.println("HORA ACTUAL: "+ getFecha());
                 if (nUsuario.isEmpty()) { // validamos que el campo no se haya dejado en blanco
                     Toast.makeText(PantallaLogin.this, "Debes introducir un nombre de usuario.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -136,9 +143,21 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("BLOQUEO CORRECTO DESDE MÉTODO BLOQUEARUSUARIO :)");
-                        Toast toast = Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_LONG);
-                        toast.show();
+                        if (response.equals("0")) { // el dato que se obtiene como respuesta es el valor de isLocked. Si está a 0, es que no está bloqueado, así que se bloquea
+                            // Esta validación se hace porque este método se ejecuta cada vez que se detecte que los intentos de login están a 0, y si se le ha bloqueado tendrá
+                            // siempre los intentos a 0, así que siempre se ejecutará este método.
+                            // Validamos para que no se cambie la fecha de bloqueo cada vez que se ejecute el método.
+                            actualizaFechaBloqueo();
+                            System.out.println("NO ESTABA BLOQUEADO (RESPUESTA = "+response+")");
+                            System.out.println(fecha_bloqueo);
+                            System.out.println("BLOQUEO CORRECTO DESDE MÉTODO BLOQUEARUSUARIO :)");
+                            Toast toast = Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_LONG);
+                            toast.show();
+                        } else {
+                            System.out.println("YA ESTABA BLOQUEADO. NO SE ACTUALIZA LA FECHA.");
+                            Toast toast = Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
                     }
                 },
 
@@ -155,6 +174,36 @@ public class PantallaLogin extends AppCompatActivity {
                 // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    public void actualizaFechaBloqueo(){
+        request = new StringRequest(Request.Method.POST, url_consulta9,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        fecha_bloqueo = getFecha();
+                        System.out.println("FECHA DE BLOQUEO: "+ fecha_bloqueo);
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        System.out.println("ERROR ACTUALIZAFECHABLOQUEO()");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                parametros.put("fecha_bloqueo", fecha_bloqueo);
                 return parametros;
             }
         };
@@ -281,8 +330,6 @@ public class PantallaLogin extends AppCompatActivity {
                         } else { // Usuario y contraseña correctos
                             if (response.equals("4")) { // Respuesta "4" = login correcto.
                                 System.out.println("RESPUESTA 4, DATOS CORRECTOS.");
-                                // reseteamos número de intentos de login restantes
-                                reseteaIntentos();
                                 check_isLocked(); // comprobamos si está bloqueado
                             }
                         }
@@ -493,6 +540,8 @@ public class PantallaLogin extends AppCompatActivity {
         // del usuario en el método de comprobación de datos)
         guardarPreferencias(); // guardamos el dato de nombre_usuario en las preferencias, para usarlo en clases futuras para
         // el resto de funcionalidades
+        // reseteamos número de intentos de login restantes
+        reseteaIntentos();
         // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga.
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -504,6 +553,7 @@ public class PantallaLogin extends AppCompatActivity {
                         progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
                         progressDialog.show();
                         System.out.println("LOGIN CORRECTO :)");
+                        fecha_ultimo_login = getFecha();
                         System.out.println("FECHA ULTIMO LOGIN: " + fecha_ultimo_login);
                         Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
                         startActivity(intent);

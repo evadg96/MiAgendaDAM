@@ -229,7 +229,7 @@ public class RecuperarClave extends AppCompatActivity {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo)); // a quién lo envía
                 message.setSubject("No-reply: Solicitud de contraseña nueva"); // asunto del correo
                 message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de cambio de contraseña para su cuenta de <b>Mi agenda FP</b>.</p>" +
-                        " <p style=\"text-align:justify\">Su contraseña nueva es: <b>"+ claveNueva + "</b></p><br/>" +
+                        " <p style=\"text-align:justify\">Su contraseña nueva es: <b>"+ claveNueva + "</b></p>" +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
                         "<p style=\"margin-left: 10px; margin-right: 10px\">" +
                         "Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de cambio de contraseña para el usuario registrado con este correo. "+
