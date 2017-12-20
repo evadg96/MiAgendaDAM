@@ -42,7 +42,9 @@ public class PantallaLogin extends AppCompatActivity {
     private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
     private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_update_isLocked.php";
     private String url_consulta5 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";
+    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";;
+    private String url_consulta7 = "http://192.168.0.10/MiAgenda/consulta_check_num_intentos_login.php";
+    private String url_consulta8 = "http://192.168.0.10/MiAgenda/consulta_update_intentos_login.php";
 //
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
@@ -70,12 +72,7 @@ public class PantallaLogin extends AppCompatActivity {
     }
     static String fecha_ultimo_login = getFecha();
     // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
-    static int intentosRestantes = 5;
-    // EL PROBLEMA CON ESTO ES QUE EN EL PRIMER INTENTO ME COGE EL VALOR QUE ESTÉ AQUÍ, ES DECIR, QUE SI AQUÍ TIENE UN 2, LO PRIMERO QUE VA A COGER
-    // POR MUCHO QUE EJECUTE UNA LLAMADA AL MÉTODO, VA A SER ESTE VALOR. ASÍ PASA, QUE NO SE CUMPLE LA CONDICIÓN LA PRIMERA VEZ PORQUE NO ES EL VALOR
-    // ESPERADO... SOLO FUNCIONA A PARTIR DE LA SEGUNDA EJECUCION
-     // LO QUE HAY QUE HACER ES METERLE AQUÍ DIRECTAMENTE EL VALOR QUE SE OBTENGA
-    // DE LOS MÉTODOS DE COMPROBACIÓN
+    private String intentos_login = "";
 
 
     @Override
@@ -134,13 +131,14 @@ public class PantallaLogin extends AppCompatActivity {
      *   Método que bloquea a un usuario cuando ha hecho demasiados intentos de inicio de sesión
      **********************************************************************************************/
     public void bloquearUsuario() {
-        intentosRestantes = 5;
         request = new StringRequest(Request.Method.POST, url_consulta4,
 
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         System.out.println("BLOQUEO CORRECTO DESDE MÉTODO BLOQUEARUSUARIO :)");
+                        Toast toast = Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 },
 
@@ -173,9 +171,9 @@ public class PantallaLogin extends AppCompatActivity {
                     public void onResponse(String response) {
                         // SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                         try {
-                            if (response.equals("1")) { // SÍ está confirmado, comprobamos si está bloqueado
+                            if (response.equals("1")) { // SÍ está confirmado, hacemos login
                                 System.out.println("SÍ ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :) )");
-                                check_isLocked();
+                                loginCorrecto();
                             } else { // NO está confirmado, obligamos a confirmar
                                 System.out.println(" NOOOOO ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :( )");
                                 // no hace falta comprobar isLogged, porque lógicamente es imposible que esté en 1 si no ha confirmado su registro
@@ -234,11 +232,11 @@ public class PantallaLogin extends AppCompatActivity {
                         //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                         if (response.equals("0")) { // usuario NO BLOQUEADO
                             System.out.println("NO ESTÁ BLOQUEADO DESDE CHECKISLOCKED :)");
-                            comprobarClave();
+                            check_isConfirmed(); // comprobamos si está confirmado
                         } else {
                             // LE PROHIBIMOS ACCEDER
                             System.out.println("SÍ ESTÁ BLOQUEADO DESDE CHECKISLOCKED :(");
-                            Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaLogin.this, "El usuario está bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
                             System.out.println("USUARIO BLOQUEADO.");
                         }
                     }
@@ -256,7 +254,7 @@ public class PantallaLogin extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nUsuario);
+                parametros.put("nUsuario", nombre_usuario);
                 return parametros;
             }
         };
@@ -264,8 +262,7 @@ public class PantallaLogin extends AppCompatActivity {
     }
 
     /***********************************************************************************************
-     *  Método que comprueba la clave introducida por el usuario una vez que se ha comprobado
-     *  que el usuario en cuestión está confirmado
+     *  Método que comprueba la clave introducida por el usuario
      **********************************************************************************************/
     public void comprobarClave() {
         request = new StringRequest(Request.Method.POST, url_consulta6,
@@ -276,29 +273,17 @@ public class PantallaLogin extends AppCompatActivity {
                             // INTENTO FALLIDO DE INICIO DE SESIÓN
                             System.out.println("RESPUESTA 3: ERROR DE CLAVE");
                             try {
-                                if (intentosRestantes > 1) { // si todavía le quedan intentos...
-                                    // ESTO SE EJECUTA HASTA QUE EL NÚMERO DE INTENTOS RESTANTES SEA 0
-                                    intentosRestantes--; // restamos un intento restante por cada intento fallido
-                                    System.out.println("NÚMERO DE INTENTOS DE INICIO DE SESIÓN RESTANTES: " + intentosRestantes);
-                                    Toast.makeText(PantallaLogin.this, "La clave introducida no es correcta. Intentos restantes: " + intentosRestantes, Toast.LENGTH_LONG).show();
-                                    if (intentosRestantes == 2) { // cuando sólo le queden dos intentos, le avisaremos que tenga cuidado, que se le va a bloquear...
-                                        Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo te quedan " + intentosRestantes + " intentos restantes. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
-                                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                        toast.show();
-                                    }
-                                } else { // ya no le quedan intentos
-                                    // EJECUTAMOS SCRIPT AQUÍ PARA BLOQUEAR AL USUARIO
-                                    bloquearUsuario();
-                                    Toast.makeText(PantallaLogin.this, "Usuario bloqueado.", Toast.LENGTH_SHORT).show();
-                                }
-
+                                // restamos intentos restantes de inicio de sesión
+                                restaIntentos();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else { // Usuario y contraseña correctos, llamamos a método que hace el login
+                        } else { // Usuario y contraseña correctos
                             if (response.equals("4")) { // Respuesta "4" = login correcto.
                                 System.out.println("RESPUESTA 4, DATOS CORRECTOS.");
-                                loginCorrecto();
+                                // reseteamos número de intentos de login restantes
+                                reseteaIntentos();
+                                check_isLocked(); // comprobamos si está bloqueado
                             }
                         }
                     }
@@ -325,22 +310,137 @@ public class PantallaLogin extends AppCompatActivity {
     }
 
     /***********************************************************************************************
+     * Método que obtiene el número de intentos de inicio de sesión disponibles del usuario
+     * y los actualiza
+     **********************************************************************************************/
+    public void restaIntentos(){
+        request = new StringRequest(Request.Method.POST, url_consulta7,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { // la respuesta que se obtiene es el número de intentos restantes del usuario
+                        try {
+                            int intentos_restantes = Integer.valueOf(response);
+                            System.out.println("RESPUESTA: "+ response);
+                            if (intentos_restantes > 0) { //  mientras quede algún intento, se siguen restando
+                                Toast.makeText(PantallaLogin.this, "La clave introducida no es correcta. Intentos restantes: " + intentos_restantes, Toast.LENGTH_LONG).show();
+                                intentos_restantes--; // restamos un intento
+                                intentos_login = String.valueOf(intentos_restantes);
+                                actualizaIntentos();
+                                System.out.println("INTENTOS RESTANTES: "+intentos_restantes);
+                                System.out.println("INTENTOS LOGIN: "+intentos_login);
+                                if (intentos_restantes == 1) {
+                                    Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo te quedan "+ (intentos_restantes+1)+ " intentos restantes. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                    toast.show();
+                                }
+                            } else { // cuando estén en 0, se bloquea
+                                bloquearUsuario();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        System.out.println("ERROR RESTAINTENTOS()");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+
+    /***********************************************************************************************
+     * Método que actualiza el número de intentos de login restantes del usuario
+     **********************************************************************************************/
+    public void actualizaIntentos(){
+        request = new StringRequest(Request.Method.POST, url_consulta8,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Se actualiza el número de intentos
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        System.out.println("ERROR ACTUALIZAINTENTOS()");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                parametros.put("intentos_login", intentos_login);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    /***********************************************************************************************
+     * Método que resetea el número de intentos de login restantes del usuario a 5 otra vez
+     * cuando el usuario inicia sesión correctamente
+     **********************************************************************************************/
+    public void reseteaIntentos(){
+        intentos_login = "5";
+        request = new StringRequest(Request.Method.POST, url_consulta8,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Se resetea el número de intentos
+                        System.out.println("INTENTOS RESTANTES RESETEADOS A 5.");
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        System.out.println("ERROR ACTUALIZAINTENTOS()");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                parametros.put("intentos_login", intentos_login);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+    /***********************************************************************************************
      * Método que inicia el flujo de comprobación de datos:
      * 1. Comprueba si el usuario introducido existe. Si existe, continúa con las comprobaciones (2),
      * si no, muestra alerta de que no existe.
-     * 2. Comprueba si el usuario ya confirmó su registro (hace consulta que devuelve 1 o 0, siendo 1
-     * que sí y 0 que no). Si está confirmado, continúa con la siguiente comprobación, si el usuario
-     * está bloqueado (3). Si no está confirmado, le muestra un cuadro de diálogo de alerta que le
+     * 2. Comprueba  la clave introducida. Si es correcta pasa a la siguiente comprobación, si está bloqueado (3).
+     * Si no es correcta, resta intentos de inicio, llegando a bloquear al usuario si agota los intentos.
      * permite obviar el mensaje o ir a la pantalla de confirmación.
      * 3. Comprueba si el usuario está bloqueado. Si es así, le muestra un mensaje informándole. Si
-     * no, pasa a comprobar la contraseña del usuario (4).
-     * 4. Comprueba la clave introducida. Si es correcta, se habrá validado t0do y se hará un login
-     * correcto mediante el método loginCorrecto(). Si no es correcta, le restará el número de
-     * intentos restantes de inicio de sesión (tendrá 5). Si se llega a 2 intentos restantes, se le
-     * notificará de que tenga cuidado, porque si se queda sin intentos se le va a bloquear.
-     * Si el número de intentos llega a 0, se bloqueará al usuario.
-     * Si consigue hacer el login correcto antes de llegar a 0, se reseteará el número de intentos y
-     * se hará el login correcto.
+     * no, pasa a comprobar la confirmación del usuario (4).
+     * 4. Comprueba si el usuario ya confirmó su registro (hace consulta que devuelve 1 o 0, siendo 1
+     * que sí y 0 que no). Si está confirmado, pasará a login correcto, abriendo la pantalla principal
+     * de la aplicación. (3). Si no está confirmado, le muestra un cuadro de diálogo de alerta que le
+     * permite obviar el mensaje o ir a la pantalla de confirmación.
      ***********************************************************************************************/
     private void compruebaDatos(){
         request = new StringRequest(Request.Method.POST, url_consulta,
@@ -360,7 +460,8 @@ public class PantallaLogin extends AppCompatActivity {
                             System.out.println("EL USUARIO INTRODUCIDO EXISTE... PROCEDEMOS A COMPROBAR CONFIRMACIÓN Y BLOQUEO...");
                             // Comprobamos si el usuario está confirmado
                             // (desde este método empieza el flujo de comprobaciones)
-                            check_isConfirmed();
+                           // check_isConfirmed();
+                            comprobarClave();
                         }
                     }
 
@@ -392,7 +493,6 @@ public class PantallaLogin extends AppCompatActivity {
         // del usuario en el método de comprobación de datos)
         guardarPreferencias(); // guardamos el dato de nombre_usuario en las preferencias, para usarlo en clases futuras para
         // el resto de funcionalidades
-        intentosRestantes = 5; // reseteamos nuevamente el número de intentos restantes
         // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga.
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {

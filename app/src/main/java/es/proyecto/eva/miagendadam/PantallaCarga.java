@@ -125,7 +125,7 @@ public class PantallaCarga extends AppCompatActivity {
                         } else {
                             // LE PROHIBIMOS ACCEDER
                             System.out.println("SÍ ESTÁ BLOQUEADO DESDE CHECKISLOCKED :(");
-                            Toast.makeText(PantallaCarga.this, "Usuario bloqueado. Contacte con soporte para más info.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaCarga.this, "El usuario está bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
                             System.out.println("USUARIO BLOQUEADO.");
                             abrePantallaLogin();
                         }
