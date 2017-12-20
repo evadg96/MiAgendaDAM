@@ -50,6 +50,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     static Session session;
     static StringRequest request;
     static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_correo.php";
+    static String url_consulta2 = "http://192.168.0.10/MiAgenda/clave_gmail.php";
 //    static String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_correo.php";
     // ************************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_check_correo.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
@@ -148,24 +149,43 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
      * Método que envía el correo con la nueva clave a la dirección de correo del usuario inroducido
      **********************************************************************************************/
     public void enviarCorreoConfirmacion(){
-        // enviamos correo de confirmación al usuario
-
         generaCodigoConfirmacion();
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        request = new StringRequest(Request.Method.POST, url_consulta2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            final String clave_gmail = response;
+                            Properties props = new Properties();
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.smtp.socketFactory.port", "465");
+                            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.port", "465");
 
-        session = Session.getDefaultInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("noreply.miagendafp@gmail.com", "fY6TKB#yvwSnX@ZvJkCu");
-            }
-        });
+                            session = Session.getDefaultInstance(props, new Authenticator() {
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication("noreply.miagendafp@gmail.com", clave_gmail);
+                                }
+                            });
 
-        RetreiveFeedTask task = new RetreiveFeedTask();
-        task.execute();
+                            RetreiveFeedTask task = new RetreiveFeedTask();
+                            task.execute();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(ReenviarCodigoConfirmacion.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     class RetreiveFeedTask extends AsyncTask<String, Void, String> {
