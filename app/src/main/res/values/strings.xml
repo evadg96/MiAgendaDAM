@@ -9,7 +9,7 @@
     <string name="btn_registrar_usuario">Registrarse</string>
     <string name="btn_recuperar_clave">He olvidado mis datos de usuario :(</string>
 
-    <!-- String REGISTRO -->
+    <!-- Strings REGISTRO -->
     <string name="sNombre">Nombre</string>
     <string name="sApe_uno">Apellidos</string>
     <string name="sApe_dos">Segundo apellido</string>
@@ -23,14 +23,14 @@
     <string name="sClave">Contraseña (entre 8 y 20 caracteres)</string>
     <string name="sClave2">Repite la contraseña</string>
 
-    <!-- Strings diálogo registrado -->
+    <!-- Strings diálogo Registro -->
     <string name="btn_aceptar_dialog">Aceptar</string>
-    <string name="title_dialog_registro_correcto">Registro completado</string>
+    <string name="title_dialog_registro_correcto">¡Registro (casi) completado!</string>
     <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa
         tu bandeja de entrada.
     </string>
 
-    <!-- Strings diálogo al pulsar botón de registro -->
+    <!-- Strings diálogo al pulsar botón de registro en PantallaLogin -->
     <string name="btn_aceptar_confirm">Confirmar registro</string>
     <string name="text_dialog_confirm">No se ha confirmado el registro de este usuario. Por favor, introduce el código de confirmación que se te ha enviado.</string>
     <string name="btn_cancelar_confirm">Cancelar</string>
@@ -71,5 +71,5 @@
     <string name="opc_mat_perso">Material personalizado</string>
     <string name="opc_perfil">Mi perfil</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ajustes</string>
 </resources>

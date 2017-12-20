@@ -57,6 +57,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     EditText txtClave;
     EditText txtClave2;
     private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_inserta_nuevo_usuario.php";
+    static String url_consulta2 = "http://192.168.0.10/MiAgenda/clave_gmail.php";
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_inserta_nuevo_usuario.php";
     // **************************************** SERVIDOR REMOTO ************************************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_inserta_nuevo_usuario.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
@@ -274,25 +275,45 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
     }
 
-    public void enviarCorreoConfirmacion(){
+    public void enviarCorreoConfirmacion() {
         // enviamos correo de confirmación al usuario
-
         generaCodigoConfirmacion();
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        StringRequest request = new StringRequest(Request.Method.POST, url_consulta2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            final String clave_gmail = response;
+                            Properties props = new Properties();
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.smtp.socketFactory.port", "465");
+                            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.port", "465");
 
-        session = Session.getDefaultInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("noreply.miagendafp@gmail.com", "fY6TKB#yvwSnX@ZvJkCu");
-            }
-        });
+                            session = Session.getDefaultInstance(props, new Authenticator() {
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication("noreply.miagendafp@gmail.com", clave_gmail);
+                                }
+                            });
 
-        RetreiveFeedTask task = new RetreiveFeedTask();
-        task.execute();
+                            RetreiveFeedTask task = new RetreiveFeedTask();
+                            task.execute();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(RegistroNuevoUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     class RetreiveFeedTask extends AsyncTask<String, Void, String> {
@@ -306,14 +327,16 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Confirmación de registro");
-                message.setContent("¡Hola " + nombre + "! Ya estás un paso más cerca de finalizar tu registro como usuario de <b>Mi agenda FP</b>, tan solo nos queda confirmar\n" +
-                        "    tu cuenta introduciendo el código de confirmación que se indica aquí abajo. <br/><br/>\n" +
-                        "        Código de confirmación: <b>"+ codigoConfirmacion + "</b><br/><br/> " +
-                        "        Usuario: " + n_Usuario + "<br/><br/>"+
+                message.setContent("<p style=\"text-align:justify\">¡Hola " + nombre + "! Ya estás un paso más cerca de finalizar tu registro como usuario de <b>Mi agenda FP</b>, tan solo nos queda confirmar\n" +
+                        "    tu cuenta introduciendo el código de confirmación que se indica aquí abajo. </p><br/>\n" +
+                        "       <p style=\"text-align:justify\"> Código de confirmación: <b>"+ codigoConfirmacion + "</b></p> " +
+                        "        <p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p><br/>"+
+                        "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
+                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
                         "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
-                        "    <br/> Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        "        <br/> Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        "        <br/> Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
+                        "    <br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        "        <br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
+                        "        <br/>Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
                 Transport.send(message);
             } catch(MessagingException e) {
                 e.printStackTrace();

@@ -199,11 +199,14 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                 message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Confirmación de registro");
-                message.setContent(" Código de confirmación: <b>"+ nuevoCodigo + "</b><br/><br/> " +
-                        "       Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
-                        "    <br/> Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        "        <br/> Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        "        <br/> Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
+                message.setContent("<p style=\"text-align:justify\"> ¡Hola! Hemos recibido una solicitud de reenvío de código de confirmación de registro para la app <b>Mi agenda FP.</b></p><br/>" +
+                        "<p style=\"text-align:justify\">El código de confirmación es: <b>"+ nuevoCodigo + "</b></p><br/> " +
+                        "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
+                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
+                        "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
+                        "<br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        "<br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
+                        "<br/>Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
                 Transport.send(message);
             } catch(MessagingException e) {
                 e.printStackTrace();

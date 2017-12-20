@@ -225,17 +225,19 @@ public class RecuperarClave extends AppCompatActivity {
 
             try{
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
-                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
-                message.setSubject("No-reply: Solicitud de contraseña nueva");
-                message.setContent("Hemos recibido una solicitud de cambio de contraseña para su cuenta de <b>Mi agenda FP</b>." +
-                        " <br/>Su contraseña nueva es: <b>"+ claveNueva + "</b><br/><br/>" +
-                        " Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de cambio de contraseña para el usuario registrado con este correo. "+
+                message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com")); // quién lo envía
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo)); // a quién lo envía
+                message.setSubject("No-reply: Solicitud de contraseña nueva"); // asunto del correo
+                message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de cambio de contraseña para su cuenta de <b>Mi agenda FP</b>.</p>" +
+                        " <p style=\"text-align:justify\">Su contraseña nueva es: <b>"+ claveNueva + "</b></p><br/>" +
+                        "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
+                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
+                        "Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de cambio de contraseña para el usuario registrado con este correo. "+
                         " Puede volver a cambiar su contraseña desde su perfil de usuario." +
-                        " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
-                        " <br/><br/> Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        " <br/><br/> Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        " <br/><br/> Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
+                        " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta." +
+                        " <br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        " <br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
+                        " <br/>Atentamente, el equipo de <b>Mi agenda FP</b>. </p></div>", "text/html; charset=utf-8");
                 Transport.send(message);
             } catch(MessagingException e) {
                 e.printStackTrace();
@@ -263,14 +265,16 @@ public class RecuperarClave extends AppCompatActivity {
                 message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Solicitud de recordatorio de nombre de usuario");
-                message.setContent("Hemos recibido una solicitud de recuperación de usuario para su cuenta de <b>Mi agenda FP</b>." +
-                        " <br/>Su nombre de usuario es: <b>"+ nUsuario + "</b><br/><br/>" +
+                message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de recuperación de usuario para su cuenta de <b>Mi agenda FP</b>.</p>" +
+                        " <p style=\"text-align:justify\">Su nombre de usuario es: <b>"+ nUsuario + "</b></p><br/>" +
+                        "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
+                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
                         " Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de recuperación de nombre de usuario para el usuario registrado con este correo. "+
                         " Puede volver a cambiar su contraseña desde su perfil de usuario." +
                         " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
-                        " <br/><br/> Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        " <br/><br/> Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        " <br/><br/> Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
+                        " <br/> Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        " <br/> Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
+                        " <br/> Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
                 Transport.send(message);
             } catch(MessagingException e) {
                 e.printStackTrace();
