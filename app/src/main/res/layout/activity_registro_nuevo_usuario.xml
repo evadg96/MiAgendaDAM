@@ -88,15 +88,31 @@
                     android:inputType="textPersonName"
                     android:maxLength="50" />
 
-                <EditText
-                    android:id="@+id/editText_ciclo"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/sCiclo"
-                    android:inputType="textPersonName"
-                    android:maxLength="100" />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText_ciclo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/sCiclo"
+                        android:inputType="textPersonName"
+                        android:maxLength="100" />
+
+                    <EditText
+                        android:id="@+id/editText_horas_fct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/sHorasFct"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/editText_centro_practicas"

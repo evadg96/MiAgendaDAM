@@ -231,7 +231,7 @@ public class RecuperarClave extends AppCompatActivity {
                 message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de cambio de contraseña para su cuenta de <b>Mi agenda FP</b>.</p>" +
                         " <p style=\"text-align:justify\">Su contraseña nueva es: <b>"+ claveNueva + "</b></p>" +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
-                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
+                        "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         "Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de cambio de contraseña para el usuario registrado con este correo. "+
                         " Puede volver a cambiar su contraseña desde su perfil de usuario." +
                         " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta." +
@@ -268,7 +268,7 @@ public class RecuperarClave extends AppCompatActivity {
                 message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de recuperación de usuario para su cuenta de <b>Mi agenda FP</b>.</p>" +
                         " <p style=\"text-align:justify\">Su nombre de usuario es: <b>"+ nUsuario + "</b></p><br/>" +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
-                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
+                        "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         " Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de recuperación de nombre de usuario para el usuario registrado con este correo. "+
                         " Puede volver a cambiar su contraseña desde su perfil de usuario." +
                         " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +

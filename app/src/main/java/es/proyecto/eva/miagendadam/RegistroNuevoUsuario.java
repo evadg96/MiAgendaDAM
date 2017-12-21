@@ -50,6 +50,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     EditText txtProvincia;
     EditText txtLocalidad;
     EditText txtCentroEstudios;
+    EditText txtHorasFct;
     EditText txtCiclo;
     EditText txtCentroPracticas;
     EditText txtCorreo;
@@ -73,11 +74,16 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     private static String nombre="";
     private static String n_Usuario ="";
     private static String clave="";
+    private static String horas_fct="";
     static boolean isConfirmed = false;
     static Session session;
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"; // declaramos patrón para validar el formato del correo electrónico introducido
     // por el usuario
+    private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+            + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
+            + "|0|1|2|3|4|5|6|7|8|9" // números
+            + "|!|=|-|_|@|:|%|~|#|&)+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +99,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         txtLocalidad = (EditText) findViewById(R.id.editText_localidad);
         txtCentroEstudios = (EditText) findViewById(R.id.editText_centro_estudios);
         txtCiclo = (EditText) findViewById(R.id.editText_ciclo);
+        txtHorasFct = (EditText) findViewById(R.id.editText_horas_fct);
         txtCentroPracticas = (EditText) findViewById(R.id.editText_centro_practicas);
         txtCorreo = (EditText) findViewById(R.id.editText_correo);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
@@ -111,6 +118,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         final String localidad = txtLocalidad.getText().toString();
         final String centro_estudios = txtCentroEstudios.getText().toString();
         final String ciclo_formativo = txtCiclo.getText().toString();
+        horas_fct = txtHorasFct.getText().toString();
         final String centro_practicas = txtCentroPracticas.getText().toString();
         correo = txtCorreo.getText().toString();
         n_Usuario = txtNombreUsuario.getText().toString();
@@ -121,9 +129,12 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         if (nombre.isEmpty() || apellidos.isEmpty() || provincia.isEmpty() || localidad.isEmpty() || centro_estudios.isEmpty() ||
-                ciclo_formativo.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
+                ciclo_formativo.isEmpty() || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
             Toast.makeText(RegistroNuevoUsuario.this, "Debes rellenar todos los campos.", Toast.LENGTH_SHORT).show();
         } else {
+            if(Integer.valueOf(horas_fct) > 400){
+                Toast.makeText(RegistroNuevoUsuario.this, "No se pueden cursar más de 400 horas de prácticas.", Toast.LENGTH_LONG).show();
+            }else {
             Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
             Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
             if (!matcher.matches()){ // si el correo no cumple con el formato del patrón, salta el mensaje de error
@@ -135,15 +146,10 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     if (clave.length() < 8) {
                         Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir una clave que contenga entre 8 y 20 caracteres.", Toast.LENGTH_LONG).show();
                     } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE:
-                        if (!clave.matches("(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
-                                + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
-                                + "|0|1|2|3|4|5|6|7|8|9" // números
-                                + "|!|=|-|_|@|:|%|~|#|&)+")) { // símbolos
+                        if (!clave.matches(pattern_formato) || !n_Usuario.matches(pattern_formato)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
                             Toast.makeText(RegistroNuevoUsuario.this, "No se pueden introducir espacios, tildes ni caracteres que no sean letras, números ó ! = - _ @" +
                                     " : % ~ # &", Toast.LENGTH_LONG).show();
-
                         } else {
-
                             if (!clave.equals(clave2)) {
                                 Toast.makeText(RegistroNuevoUsuario.this, "Las claves introducidas no coinciden", Toast.LENGTH_SHORT).show();
                                 System.out.println("CLAVES!!!" + clave + clave2);
@@ -151,7 +157,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                 txtClave2.setText("");
                             } else {
                                 System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellidos + "\n" + provincia + "\n" + localidad + "\n"
-                                        + centro_estudios + "\n" + ciclo_formativo + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
+                                        + centro_estudios + "\n" + ciclo_formativo + "\n" + horas_fct + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
                                 // INICIAMOS CONEXIÓN CON VOLLEY
                                 System.out.println("INICIAMOS CONEXIÓN");
                                 StringRequest request = new StringRequest(Request.Method.POST, url_consulta,
@@ -196,7 +202,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                         .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
                                                                             public void onClick(DialogInterface dialog, int id) {
                                                                                 // mandamos a la pantalla de confirmación de registro
-                                                                                Intent intent = new Intent (RegistroNuevoUsuario.this, ConfirmaRegistro.class);
+                                                                                Intent intent = new Intent(RegistroNuevoUsuario.this, ConfirmaRegistro.class);
                                                                                 startActivity(intent);
                                                                             }
                                                                         });
@@ -233,11 +239,12 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                         Map<String, String> parametros = new HashMap<>();
                                         parametros.put("nombre", nombre);
                                         parametros.put("apellidos", apellidos);
-                                       // parametros.put("apellido_dos", apellido_dos);
+                                        // parametros.put("apellido_dos", apellido_dos);
                                         parametros.put("provincia", provincia);
                                         parametros.put("localidad", localidad);
                                         parametros.put("centro_estudios", centro_estudios);
                                         parametros.put("ciclo_formativo", ciclo_formativo);
+                                        parametros.put("horas_fct", horas_fct);
                                         parametros.put("centro_practicas", centro_practicas);
                                         parametros.put("correo", correo);
                                         parametros.put("nUsuario", n_Usuario);
@@ -252,6 +259,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     }
 
                 }
+            }
             }
         }
     }
@@ -334,7 +342,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                         "       <p style=\"text-align:justify\"> Código de confirmación: <b>"+ codigoConfirmacion + "</b></p> " +
                         "        <p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p>"+
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
-                        "<p style=\"margin-left: 10px; margin-right: 10px\">" +
+                        "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
                         "    <br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
                         "        <br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +

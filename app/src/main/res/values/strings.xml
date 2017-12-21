@@ -9,7 +9,7 @@
     <string name="btn_registrar_usuario">Registrarse</string>
     <string name="btn_recuperar_clave">He olvidado mis datos de usuario :(</string>
 
-    <!-- Strings REGISTRO -->
+    <!-- Strings registro -->
     <string name="sNombre">Nombre</string>
     <string name="sApe_uno">Apellidos</string>
     <string name="sApe_dos">Segundo apellido</string>
@@ -17,6 +17,7 @@
     <string name="sLocalidad">Localidad</string>
     <string name="sCentro_estudios">Centro de estudios</string>
     <string name="sCiclo">Ciclo formativo</string>
+    <string name="sHorasFct">Horas FCT</string>
     <string name="sCentro_practicas">Centro de prácticas</string>
     <string name="sCorreo">Correo electrónico</string>
     <string name="sNombreUsuario">Usuario (entre 6 y 20 caracteres)</string>
