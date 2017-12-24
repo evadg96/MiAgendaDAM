@@ -10,7 +10,10 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,24 +32,21 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.isConfirmed;
-
-
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion;
     private Button btnRegistroUsuario;
     private Button btnRecuperarClave;
     private EditText txtNombreUsuario;
     private EditText txtClave;
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_check_usuario_existe.php";
-    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
-    private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_update_isLocked.php";
-    private String url_consulta5 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta6 = "http://192.168.0.10/MiAgenda/consulta_check_clave.php";;
-    private String url_consulta7 = "http://192.168.0.10/MiAgenda/consulta_check_num_intentos_login.php";
-    private String url_consulta8 = "http://192.168.0.10/MiAgenda/consulta_update_intentos_login.php";
-    private String url_consulta9 = "http://192.168.0.10/MiAgenda/consulta_update_fecha_bloqueo.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_check_usuario_existe.php";
+    private String url_consulta2 = "http://192.168.0.12/MiAgenda/consulta_update_isLogged.php";
+    private String url_consulta3 = "http://192.168.0.12/MiAgenda/consulta_isLocked.php";
+    private String url_consulta4 = "http://192.168.0.12/MiAgenda/consulta_update_isLocked.php";
+    private String url_consulta5 = "http://192.168.0.12/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta6 = "http://192.168.0.12/MiAgenda/consulta_check_clave.php";;
+    private String url_consulta7 = "http://192.168.0.12/MiAgenda/consulta_check_num_intentos_login.php";
+    private String url_consulta8 = "http://192.168.0.12/MiAgenda/consulta_update_intentos_login.php";
+    private String url_consulta9 = "http://192.168.0.12/MiAgenda/consulta_update_fecha_bloqueo.php";
 //
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
@@ -54,6 +54,9 @@ public class PantallaLogin extends AppCompatActivity {
 //    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_update_isLocked.php";
 //    private String url_consulta5 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
 //    private String url_consulta6 = "http://192.168.0.158/MiAgenda/consulta_check_clave.php";
+//    private String url_consulta7 = "http://192.168.0.158/MiAgenda/consulta_check_num_intentos_login.php";
+//    private String url_consulta8 = "http://192.168.0.158/MiAgenda/consulta_update_intentos_login.php";
+//    private String url_consulta9 = "http://192.168.0.158/MiAgenda/consulta_update_fecha_bloqueo.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/
@@ -65,8 +68,7 @@ public class PantallaLogin extends AppCompatActivity {
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
     static String clave="";
     static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
-    static StringRequest request;
-
+    private StringRequest request;
     public static String getFecha() {
         Date date = new Date();
         String fecha = date.toString();
@@ -180,6 +182,12 @@ public class PantallaLogin extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+
+
+
+    /***********************************************************************************************
+     * Método que obtiene la fecha en la que se ha bloqueado al usuario y se introduce en la bd
+     **********************************************************************************************/
     public void actualizaFechaBloqueo(){
         request = new StringRequest(Request.Method.POST, url_consulta9,
                 new Response.Listener<String>() {
@@ -591,10 +599,42 @@ public class PantallaLogin extends AppCompatActivity {
         editor.commit();
     }
 
+    /***********************************************************************************************
+     * Asociamos el menú de toolbar_login a esta actividad
+     * @param menu
+     * @return
+     **********************************************************************************************/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar_login, menu); // la R referencia a la ubicación del archivo
+        return true; // .menu es el directorio, y .toolbar el archivo
+    }
+
+    /***********************************************************************************************
+     * Programamos acciones con las pulsaciones de las opciones del menú
+     * @param item
+     * @return
+     **********************************************************************************************/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_acerca_de:
+                Log.i("ActionBar", "Acerca de!");
+                Intent intent = new Intent (PantallaLogin.this, AcercaDe.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     // NO BORRAR!!
     @Override
     public void onBackPressed() {
         // DEJO EN BLANCO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
         // PANTALLA, NO SE PUEDA VOLVER A LA PANTALLA PRINCIPAL HABIENDO CERRADO YA SESIÓN.
+
     }
 }

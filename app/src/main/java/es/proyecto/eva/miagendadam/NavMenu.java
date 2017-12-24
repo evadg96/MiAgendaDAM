@@ -1,5 +1,6 @@
 package es.proyecto.eva.miagendadam;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +30,8 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.Fragments.Diario;
+import es.proyecto.eva.miagendadam.Fragments.Horas;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /***************************************************************************************************
@@ -43,9 +46,9 @@ public class NavMenu extends AppCompatActivity
     TextView texto;
     static String nombre_de_usuario;
     static String correo_electronico;
-    static StringRequest request;
-    static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_cerrar_sesion.php";
-//    static String url_consulta = "http://192.168.0.158/MiAgenda/consulta_cerrar_sesion.php";
+    private StringRequest request;
+    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_cerrar_sesion.php";
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_cerrar_sesion.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +59,18 @@ public class NavMenu extends AppCompatActivity
         setTitle("");
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-
         // ****************** ¡¡¡¡ UTILIZAR ESTE FRAGMENTO CADA VEZ QUE SE QUIERA REFERENCIAR AL NOMBRE DE USUARIO ALMACENADO POR LA APLICACIÓN !!!! **********************
         nombre_de_usuario = preferences.getString("nombre_de_usuario", ""); // habiendo declarado la variable CON EL MISMO NOMBRE arriba
         // ****************************************************************************************************************************************************************
         correo_electronico = preferences.getString("correo_electronico", "");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -99,39 +100,17 @@ public class NavMenu extends AppCompatActivity
        // }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
         int id = item.getItemId();
-
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_diario) {
-            // Handle the camera action
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new Diario()).commit();
         } else if (id == R.id.nav_horas) {
-
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new Horas()).commit();
         } else if (id == R.id.nav_c_reco) {
 
         } else if (id == R.id.nav_c_perso) {

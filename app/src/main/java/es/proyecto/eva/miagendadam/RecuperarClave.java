@@ -43,15 +43,17 @@ public class RecuperarClave extends AppCompatActivity {
     Button btnEnviarUsuario;
     static String correo;
     static String nUsuario;
-    static Session session;
-    static StringRequest request;
+    private Session session;
+    private StringRequest request;
 
-    static String url_consulta = "http://192.168.0.10/MiAgenda/consulta_recuperar_clave.php";
-    static String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_check_correo.php";
-    static String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_recuperar_usuario.php";
-    static String url_consulta4 = "http://192.168.0.10/MiAgenda/clave_gmail.php";
-//    static String url_consulta = "http://192.168.0.158/MiAgenda/consulta_recuperar_clave.php";
-//    static String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_recuperar_clave.php";
+    private String url_consulta2 = "http://192.168.0.12/MiAgenda/consulta_check_correo.php";
+    private String url_consulta3 = "http://192.168.0.12/MiAgenda/consulta_recuperar_usuario.php";
+    private String url_consulta4 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_recuperar_clave.php";
+//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_check_correo.php";
+//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_recuperar_usuario.php";
+//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/clave_gmail.php";
 
     // VARIABLES PARA GENERAR LA CLAVE NUEVA
     private static final String dCase = "abcdefghijklmnopqrstuvwxyz";
@@ -60,11 +62,11 @@ public class RecuperarClave extends AppCompatActivity {
     private static final String intChar = "0123456789";
     private static Random r = new Random();
     // ------- Usamos los booleanos para determinar qué botón ha pulsado el usuario y qué método queremos ejecutar --------
-    private static boolean enviarClave = false;
-    private static boolean enviarUsuario = false;
+    private boolean enviarClave = false;
+    private boolean enviarUsuario = false;
     // --------------------------------------------------------------------------------------------------------------------
     // Generamos la clave directamente en el string
-    private static String generaClave(){
+    private String generaClave(){
         String pass = "";
         while (pass.length () != 10) { // establecemos longitud de la clave
             int rPick = r.nextInt(4);

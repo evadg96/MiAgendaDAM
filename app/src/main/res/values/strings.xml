@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mi agenda FP</string>
     <string name="title_activity_login">Inicio de sesión</string>
-    <string name="app_version">v.1.0</string>
+    <string name="version_num">1.0</string>
     <!-- Strings LOGIN -->
     <string name="hint_nombre_usuario">Nombre de usuario</string>
     <string name="hint_clave">Contraseña</string>
@@ -72,5 +72,27 @@
     <string name="opc_mat_perso">Material personalizado</string>
     <string name="opc_perfil">Mi perfil</string>
 
+    <!-- Strings acerca de pantalla login-->
+    <string name="acerca_de">Esta aplicacion se ha realizado como proyecto final de la alumna Eva Díaz García para el ciclo formativo
+    de grado superior Desarrollo de Aplicaciones Multiplataforma para el IES María Moliner.</string>
+    <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo y, en menor medida, del proyecto final.
+    Permite el seguimiento diario de la jornada de prácticas mediante la creación de registros con fecha, horas, descripción y valoración; cálculo automático de horas
+    cursadas y restantes en función de las introducidas en los registros diarios, visualización de días no lectivos y festivos, creación de anotaciones simples personales, recomendación y
+        personalización de materiales útiles categorizados para el estudiante, guías para la realización de anteproyecto y proyecto final... </string>
+    <string name="creditos"></string>
+    <string name="version">Versión:</string>
+    <string name="contacto">Soporte:</string>
+    <string name="correo_soporte">soportemiagendafp@gmail.com</string>
+
+    <!-- Strings opciones menu toolbar -->
+    <string name="menu_guardar">Guardar</string>
+    <string name="menu_nuevo">Nuevo</string>
+    <string name="menu_editar">Editar</string>
+    <string name="menu_contacto">Contacto</string>
+    <string name="menu_acerca_de">Acerca de...</string>
+
     <string name="action_settings">Ajustes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

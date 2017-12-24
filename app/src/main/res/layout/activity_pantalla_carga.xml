@@ -62,7 +62,7 @@
             android:layout_marginStart="38dp"
             android:layout_toEndOf="@+id/relativeLayout5"
             android:layout_toRightOf="@+id/relativeLayout5"
-            android:text="@string/app_version"
+            android:text="@string/version_num"
             android:textColor="@android:color/background_light"
             tools:layout_editor_absoluteX="174dp"
             tools:layout_editor_absoluteY="241dp" />

@@ -46,15 +46,15 @@ public class PantallaCarga extends AppCompatActivity {
     private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
 
     // Servidor local
-    private String url_consulta = "http://192.168.0.10/MiAgenda/consulta_isLogged.php";
-    private String url_consulta2 = "http://192.168.0.10/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta3 = "http://192.168.0.10/MiAgenda/consulta_update_fechaLogin.php";
-    private String url_consulta4 = "http://192.168.0.10/MiAgenda/consulta_isLocked.php";
-
+    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_isLogged.php";
+    private String url_consulta2 = "http://192.168.0.12/MiAgenda/consulta_isConfirmed.php";
+    private String url_consulta3 = "http://192.168.0.12/MiAgenda/consulta_update_fechaLogin.php";
+    private String url_consulta4 = "http://192.168.0.12/MiAgenda/consulta_isLocked.php";
+//
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_isLogged.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
 //    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_update_fechaLogin.php";
-
+//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
     /***********************************************************************************************
      *                            SERVIDOR REMOTO (no funciona desde día 01/12)
      **********************************************************************************************/
@@ -62,7 +62,7 @@ public class PantallaCarga extends AppCompatActivity {
   //  private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     //private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_update_fechaLogin.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
 
-    static StringRequest request;
+    private StringRequest request;
 
     public static String getFecha(){
         Date date = new Date();
@@ -70,7 +70,7 @@ public class PantallaCarga extends AppCompatActivity {
         return fecha;
     }
 
-    static String fecha_ultimo_login = getFecha(); // aquí lo obtenemos así porque el usuario no interacciona de ninguna manera con la interfaz, se carga t0do
+    private String fecha_ultimo_login = getFecha(); // aquí lo obtenemos así porque el usuario no interacciona de ninguna manera con la interfaz, se carga t0do
     // automático y no hay tiempos de espera para que el usuario interaccione, con lo que la fecha se va a obtener bien
     // Por ejemplo, en PantallaLogin se podría dar el caso de que el usuario se quede en la pantalla 5 minutos porque está poniendo mal la contraseña.
     // Si lo hiciesemos de esta misma manera, se obtendría la hora en la que se ha abierto la actividad, no en la que realmente puede haber hecho el login
