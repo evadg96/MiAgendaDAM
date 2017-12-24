@@ -93,6 +93,14 @@
 
     <string name="action_settings">Ajustes</string>
 
+    <!-- String pantalla NuevoRegistroDiario -->
+    <string name="fecha_registro">Fecha (dd/mm/aa)</string>
+    <string name="horas_registro">Horas</string>
+    <string name="descripcion_registro">Descripción</string>
+    <string name="valoracion_registro">Valoración del día:</string>
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
