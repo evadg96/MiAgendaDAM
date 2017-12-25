@@ -141,7 +141,7 @@ public class NavMenu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    // ___
     public void obtenDatosDiario(){
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -189,10 +189,6 @@ public class NavMenu extends AppCompatActivity
 
         };
         AppController.getInstance().addToRequestQueue(request);
-    }
-
-    public JSONArray getJsonArrayDiario(){
-        return jsonArrayDiario;
     }
 
     public void cerrarSesion(){
