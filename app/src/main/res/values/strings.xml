@@ -71,6 +71,7 @@
     <string name="opc_mat_reco">Material recomendado</string>
     <string name="opc_mat_perso">Material personalizado</string>
     <string name="opc_perfil">Mi perfil</string>
+    <string name="opc_tutores">Tutores</string>
 
     <!-- Strings acerca de pantalla login-->
     <string name="acerca_de">Esta aplicacion se ha realizado como proyecto final de la alumna Eva Díaz García para el ciclo formativo

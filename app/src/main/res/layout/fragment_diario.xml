@@ -15,8 +15,7 @@
         <ListView
             android:id="@+id/lista"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="match_parent"></ListView>
 
     </LinearLayout>
 
@@ -27,7 +26,7 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <android.support.design.widget.FloatingActionButton
+       <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_nuevo_registro"
             style="@style/Widget.Design.FloatingActionButton"
             android:layout_width="match_parent"

@@ -44,8 +44,8 @@ public class ConfirmaRegistro extends AppCompatActivity {
     static String codigo_de_confirmacion;
     static String correo_electronico;
     private StringRequest request;
-    private String url_consulta="http://192.168.0.12/MiAgenda/consulta_update_isConfirmed.php"; // ip local
-//    private String url_consulta="http://192.168.0.158/MiAgenda/consulta_update_isConfirmed.php";
+    private String url_consulta="http://192.168.0.12/MiAgenda/update_isConfirmed.php"; // ip local
+//    private String url_consulta="http://192.168.0.158/MiAgenda/update_isConfirmed.php";
 
     // *********************************** SERVIDOR REMOTO *****************************************
     //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_update_isConfirmed.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";

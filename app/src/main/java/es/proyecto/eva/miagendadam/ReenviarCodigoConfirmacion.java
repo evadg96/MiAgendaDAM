@@ -49,7 +49,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     static String codigo_de_confirmacion;
     private Session session;
     private StringRequest request;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_check_correo.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/check_correo.php";
     private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_correo.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/clave_gmail.php";

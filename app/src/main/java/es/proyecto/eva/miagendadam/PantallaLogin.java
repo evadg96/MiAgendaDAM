@@ -38,25 +38,25 @@ public class PantallaLogin extends AppCompatActivity {
     private Button btnRecuperarClave;
     private EditText txtNombreUsuario;
     private EditText txtClave;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_check_usuario_existe.php";
-    private String url_consulta2 = "http://192.168.0.12/MiAgenda/consulta_update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.12/MiAgenda/consulta_isLocked.php";
-    private String url_consulta4 = "http://192.168.0.12/MiAgenda/consulta_update_isLocked.php";
-    private String url_consulta5 = "http://192.168.0.12/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta6 = "http://192.168.0.12/MiAgenda/consulta_check_clave.php";;
-    private String url_consulta7 = "http://192.168.0.12/MiAgenda/consulta_check_num_intentos_login.php";
-    private String url_consulta8 = "http://192.168.0.12/MiAgenda/consulta_update_intentos_login.php";
-    private String url_consulta9 = "http://192.168.0.12/MiAgenda/consulta_update_fecha_bloqueo.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/check_usuario_existe.php";
+    private String url_consulta2 = "http://192.168.0.12/MiAgenda/update_isLogged.php";
+    private String url_consulta3 = "http://192.168.0.12/MiAgenda/check_isLocked.php";
+    private String url_consulta4 = "http://192.168.0.12/MiAgenda/update_isLocked.php";
+    private String url_consulta5 = "http://192.168.0.12/MiAgenda/check_isConfirmed.php";
+    private String url_consulta6 = "http://192.168.0.12/MiAgenda/check_clave.php";
+    private String url_consulta7 = "http://192.168.0.12/MiAgenda/check_num_intentos_login.php";
+    private String url_consulta8 = "http://192.168.0.12/MiAgenda/update_intentos_login.php";
+    private String url_consulta9 = "http://192.168.0.12/MiAgenda/update_fecha_bloqueo.php";
 //
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_check_usuario_existe.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_update_isLogged.php";
-//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
-//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_update_isLocked.php";
-//    private String url_consulta5 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
-//    private String url_consulta6 = "http://192.168.0.158/MiAgenda/consulta_check_clave.php";
-//    private String url_consulta7 = "http://192.168.0.158/MiAgenda/consulta_check_num_intentos_login.php";
-//    private String url_consulta8 = "http://192.168.0.158/MiAgenda/consulta_update_intentos_login.php";
-//    private String url_consulta9 = "http://192.168.0.158/MiAgenda/consulta_update_fecha_bloqueo.php";
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/check_usuario_existe.php";
+//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/update_isLogged.php";
+//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/check_isLocked.php";
+//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/update_isLocked.php";
+//    private String url_consulta5 = "http://192.168.0.158/MiAgenda/check_isConfirmed.php";
+//    private String url_consulta6 = "http://192.168.0.158/MiAgenda/check_clave.php";
+//    private String url_consulta7 = "http://192.168.0.158/MiAgenda/check_num_intentos_login.php";
+//    private String url_consulta8 = "http://192.168.0.158/MiAgenda/update_intentos_login.php";
+//    private String url_consulta9 = "http://192.168.0.158/MiAgenda/update_fecha_bloqueo.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/

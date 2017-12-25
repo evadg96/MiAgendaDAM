@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_acerca_de"
-        android:icon="@android:drawable/ic_menu_help"
+        android:icon="@drawable/ic_live_help_black_24dp"
         android:title="@string/menu_acerca_de"
         app:showAsAction="ifRoom" />
 </menu>

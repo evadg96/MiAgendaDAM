@@ -3,12 +3,15 @@ package es.proyecto.eva.miagendadam;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -44,17 +47,17 @@ import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.correo;
 
 public class PantallaCarga extends AppCompatActivity {
     private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
-
+    ProgressBar progressBar;
     // Servidor local
-    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_isLogged.php";
-    private String url_consulta2 = "http://192.168.0.12/MiAgenda/consulta_isConfirmed.php";
-    private String url_consulta3 = "http://192.168.0.12/MiAgenda/consulta_update_fechaLogin.php";
-    private String url_consulta4 = "http://192.168.0.12/MiAgenda/consulta_isLocked.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/check_isLogged.php";
+    private String url_consulta2 = "http://192.168.0.12/MiAgenda/check_isConfirmed.php";
+    private String url_consulta3 = "http://192.168.0.12/MiAgenda/update_fechaLogin.php";
+    private String url_consulta4 = "http://192.168.0.12/MiAgenda/check_isLocked.php";
 //
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_isLogged.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/consulta_isConfirmed.php";
-//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_update_fechaLogin.php";
-//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/consulta_isLocked.php";
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/check_isLogged.php";
+//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/check_isConfirmed.php";
+//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/update_fechaLogin.php";
+//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/check_isLocked.php";
     /***********************************************************************************************
      *                            SERVIDOR REMOTO (no funciona desde día 01/12)
      **********************************************************************************************/
@@ -87,7 +90,9 @@ public class PantallaCarga extends AppCompatActivity {
         getSupportActionBar().hide(); // para ocultar la barra de titulo de la pantalla (la toolbar)
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, // para poner en pantalla completa la actividad, así no se verá la barra
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);        // de notificaciones con la hora etc. (luego vuelve a aparecer)
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN); // coloreamos el progressbar circular
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         // ************* ¡¡¡¡ UTILIZAR ESTAS LÍNEAS CADA VEZ QUE SE QUIERA REFERENCIAR A LAS PREFERENCIAS ALMACENADAS !!!! ****************************

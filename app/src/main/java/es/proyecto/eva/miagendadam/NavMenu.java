@@ -1,7 +1,10 @@
 package es.proyecto.eva.miagendadam;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +28,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
@@ -47,8 +52,17 @@ public class NavMenu extends AppCompatActivity
     static String nombre_de_usuario;
     static String correo_electronico;
     private StringRequest request;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/consulta_cerrar_sesion.php";
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_cerrar_sesion.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
+    private String  url_consulta2 = "http://192.168.0.12/MiAgenda/select_dias.php";
+//    private String url_consulta = "http://192.168.0.158/MiAgenda/cerrar_sesion.php";
+    private static boolean diarioVacio = false;
+    private static boolean horasVacio = false;
+    private static boolean anotacionesVacio = false;
+    private static boolean contenidoRecoVacio = false;
+    private static boolean contenidoPersoVacio = false;
+    public static JSONArray jsonArrayDiario;
+    private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +120,9 @@ public class NavMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
 
         int id = item.getItemId();
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+
         if (id == R.id.nav_diario) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new Diario()).commit();
+            obtenDatosDiario();
         } else if (id == R.id.nav_horas) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new Horas()).commit();
         } else if (id == R.id.nav_c_reco) {
@@ -126,6 +140,59 @@ public class NavMenu extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void obtenDatosDiario(){
+        request = new StringRequest(Request.Method.POST, url_consulta2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
+                            if (response.equals("0")){
+                                diarioVacio = true;
+                                // meter un item que diga "no hay nada!"
+                            } else {
+                                try {
+                                    response = response.replace("][",","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
+                                    // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
+                                    // DENTRO DE UN ÚNICO ARRAY
+                                    // YA QUE LOS ARRAYS TIENEN FORMATO [{...}][{...}], ... CON LO QUE, SI OBTIENE ASÍ LOS RESULTADOS, SOLO VA A COGER EL PRIMERO
+                                    // Y UN ARRAY DE OBJETOS TENDRÍA ESTE OTRO FORMATO [{...}, {...}, {...}] DONDE LOS CORCHETES DETERMINAN EL ARRAY, Y LAS LLAVES LOS OBJETOS.
+                                    jsonArrayDiario = new JSONArray(response);
+                                    //System.out.println("Respuesta de servidor: " + response); // debug
+                                    //System.out.println("LONGITUD DEL ARRAY: "+ jsonArrayDominios.length()); // debug
+                                    fragmentManager.beginTransaction().replace(R.id.contenedor, new Diario()).commit();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else { // si no hay preferencias, notificamos
+                            Toast.makeText(NavMenu.this, "No se pudo obtener el nombre de usuario.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(NavMenu.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_de_usuario); // pasamos el nombre de usuario como parámetro de la consulta para obtener sus registros del diario
+                return parametros;
+            }
+
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    public JSONArray getJsonArrayDiario(){
+        return jsonArrayDiario;
     }
 
     public void cerrarSesion(){
