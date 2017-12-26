@@ -1,24 +1,17 @@
 package es.proyecto.eva.miagendadam;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +23,12 @@ import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.Fragments.Diario;
-import es.proyecto.eva.miagendadam.Fragments.Horas;
+import es.proyecto.eva.miagendadam.Fragments.DiarioFragment;
+import es.proyecto.eva.miagendadam.Fragments.HorasFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /***************************************************************************************************
@@ -48,18 +40,19 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class NavMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    TextView texto;
+    TextView nombreUsuario, correoUsuario;
     static String nombre_de_usuario;
     static String correo_electronico;
     private StringRequest request;
     private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
     private String  url_consulta2 = "http://192.168.0.12/MiAgenda/select_dias.php";
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/cerrar_sesion.php";
-    private static boolean diarioVacio = false;
-    private static boolean horasVacio = false;
-    private static boolean anotacionesVacio = false;
-    private static boolean contenidoRecoVacio = false;
-    private static boolean contenidoPersoVacio = false;
+//    private String  url_consulta2 = "http://192.168.0.158/MiAgenda/select_dias.php";
+    public static boolean diarioVacio = false;
+    public static boolean horasVacio = false;
+    public static boolean anotacionesVacio = false;
+    public static boolean contenidoRecoVacio = false;
+    public static boolean contenidoPersoVacio = false;
     public static JSONArray jsonArrayDiario;
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -93,13 +86,13 @@ public class NavMenu extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        // añadimos en el menú lateral el nombre y correo del usuario
+        nombreUsuario = (TextView) headerView.findViewById(R.id.nombre_usuario_nav);
+        nombreUsuario.setText(nombre_de_usuario);
+        correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
+        correoUsuario.setText(correo_electronico);
         navigationView.setNavigationItemSelectedListener(this);
-        texto = (TextView) findViewById(R.id.txt_correo_nav);
-       // if (!correo_electronico.isEmpty()) {
-        //    texto.setText(correo_electronico);
-        //} else {
-         //   texto.setText(nombre_de_usuario);
-        //}
     }
 
     @Override
@@ -118,13 +111,12 @@ public class NavMenu extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-
         int id = item.getItemId();
 
         if (id == R.id.nav_diario) {
             obtenDatosDiario();
         } else if (id == R.id.nav_horas) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new Horas()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new HorasFragment()).commit();
         } else if (id == R.id.nav_c_reco) {
 
         } else if (id == R.id.nav_c_perso) {
@@ -141,7 +133,7 @@ public class NavMenu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    // ___
+
     public void obtenDatosDiario(){
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -151,6 +143,7 @@ public class NavMenu extends AppCompatActivity
                             if (response.equals("0")){
                                 diarioVacio = true;
                                 // meter un item que diga "no hay nada!"
+                                System.out.println("NO HAY REGISTROS DE DIARIO PARA ESTE USUARIO.");
                             } else {
                                 try {
                                     response = response.replace("][",","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
@@ -161,7 +154,7 @@ public class NavMenu extends AppCompatActivity
                                     jsonArrayDiario = new JSONArray(response);
                                     //System.out.println("Respuesta de servidor: " + response); // debug
                                     //System.out.println("LONGITUD DEL ARRAY: "+ jsonArrayDominios.length()); // debug
-                                    fragmentManager.beginTransaction().replace(R.id.contenedor, new Diario()).commit();
+                                    fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
