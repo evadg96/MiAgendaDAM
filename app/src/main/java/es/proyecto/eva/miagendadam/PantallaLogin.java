@@ -25,6 +25,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
+
 import java.sql.SQLOutput;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +49,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String url_consulta7 = "http://192.168.0.12/MiAgenda/check_num_intentos_login.php";
     private String url_consulta8 = "http://192.168.0.12/MiAgenda/update_intentos_login.php";
     private String url_consulta9 = "http://192.168.0.12/MiAgenda/update_fecha_bloqueo.php";
+    private String url_consulta10 = "http://192.168.0.12/MiAgenda/consulta_recuperar_correo.php";
 //
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/update_isLogged.php";
@@ -57,6 +60,7 @@ public class PantallaLogin extends AppCompatActivity {
 //    private String url_consulta7 = "http://192.168.0.158/MiAgenda/check_num_intentos_login.php";
 //    private String url_consulta8 = "http://192.168.0.158/MiAgenda/update_intentos_login.php";
 //    private String url_consulta9 = "http://192.168.0.158/MiAgenda/update_fecha_bloqueo.php";
+//    private String url_consulta10 = "http://192.168.0.158/MiAgenda/consulta_recuperar_correo.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/
@@ -67,7 +71,7 @@ public class PantallaLogin extends AppCompatActivity {
     static String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
     static String clave="";
-    static String correo_electronico=""; // el email que el usuario introdujo en el registro para registrarse como nuevo usuario
+    static String correo_electronico=""; // será el email que le corresponde al usuario, y se obtendrá por consulta
     private StringRequest request;
     public static String getFecha() {
         Date date = new Date();
@@ -90,8 +94,6 @@ public class PantallaLogin extends AppCompatActivity {
         btnRecuperarClave = (Button) findViewById(R.id.btn_recuperar_clave);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
-        SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        correo_electronico = preferences.getString("correo_electronico", "");
         // AL HACER CLICK EN LOS BOTONES...
 
         // Botón Registrarse, abre actividad de RegistroNuevoUsuario
@@ -512,6 +514,7 @@ public class PantallaLogin extends AppCompatActivity {
                         } else { // Sí existe el usuario, lo guardamos para utilizarlo como parámetro en las consultas
                             // posteriores
                             nombre_usuario = nUsuario;
+                            obtenerCorreo();
                             System.out.println("EL USUARIO INTRODUCIDO EXISTE... PROCEDEMOS A COMPROBAR CONFIRMACIÓN Y BLOQUEO...");
                             // Comprobamos si el usuario está confirmado
                             // (desde este método empieza el flujo de comprobaciones)
@@ -540,13 +543,50 @@ public class PantallaLogin extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    /*******************************************************************************************************************
+     * Método que obtiene el correo que le corresponde al usuario que hace login una vez verificado que existe
+     ******************************************************************************************************************/
+    private void obtenerCorreo(){
+        request = new StringRequest(Request.Method.POST, url_consulta10,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
+                            correo_electronico = jsonArray.getJSONObject(0).getString("correo");
+                            System.out.println("CORREO DEL USUARIO "+ nombre_usuario + ":" + correo_electronico );
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
     /*********************************************************************************************************************
      * Método que se ejecuta cuando se han verificado todos los datos necesarios para hacer un inicio de sesión correcto
      ********************************************************************************************************************/
     private void loginCorrecto(){
        // nombre_usuario = nUsuario; (comentamos línea, ya habíamos guardado este dato en la comprobación
         // del usuario en el método de comprobación de datos)
-        guardarPreferencias(); // guardamos el dato de nombre_usuario en las preferencias, para usarlo en clases futuras para
+        guardarPreferencias(); // guardamos el dato de nombre_usuario y correo_electronico en las preferencias, para usarlo en clases futuras para
         // el resto de funcionalidades
         // reseteamos número de intentos de login restantes
         reseteaIntentos();
@@ -596,6 +636,7 @@ public class PantallaLogin extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("nombre_de_usuario", nombre_usuario);
+        editor.putString("correo_de_usuario", correo_electronico);
         editor.commit();
     }
 

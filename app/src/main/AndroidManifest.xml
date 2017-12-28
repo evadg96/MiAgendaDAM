@@ -40,7 +40,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RecuperarClave" />
         <activity android:name=".AcercaDe" />
-        <activity android:name=".Acciones.NuevoRegistroDiario"></activity>
+        <activity android:name=".Acciones.NuevoRegistroDiario" />
     </application>
 
 </manifest>

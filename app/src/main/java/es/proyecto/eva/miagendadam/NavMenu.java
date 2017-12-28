@@ -32,10 +32,10 @@ import es.proyecto.eva.miagendadam.Fragments.HorasFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /***************************************************************************************************
- *  Menú lateral desplegable con las opciones de la aplicación.
- *  Será a su vez la clase contenedora del layout que contenga los fragments
- *  de las distintas opciones de la app, que se mostrarán en función de la opción
- *  seleccionada en el menú.
+ *  Menú lateral desplegable con las opciones de la aplicación.                                    *
+ *  Será a su vez la clase contenedora del layout que contenga los fragments                       *
+ *  de las distintas opciones de la app, que se mostrarán en función de la opción                  *
+ *  seleccionada en el menú.                                                                       *
  **************************************************************************************************/
 
 public class NavMenu extends AppCompatActivity
@@ -53,6 +53,7 @@ public class NavMenu extends AppCompatActivity
     public static boolean anotacionesVacio = false;
     public static boolean contenidoRecoVacio = false;
     public static boolean contenidoPersoVacio = false;
+    public static int vacio = 0;
     public static JSONArray jsonArrayDiario;
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -69,7 +70,7 @@ public class NavMenu extends AppCompatActivity
         // ****************** ¡¡¡¡ UTILIZAR ESTE FRAGMENTO CADA VEZ QUE SE QUIERA REFERENCIAR AL NOMBRE DE USUARIO ALMACENADO POR LA APLICACIÓN !!!! **********************
         nombre_de_usuario = preferences.getString("nombre_de_usuario", ""); // habiendo declarado la variable CON EL MISMO NOMBRE arriba
         // ****************************************************************************************************************************************************************
-        correo_electronico = preferences.getString("correo_electronico", "");
+        correo_electronico = preferences.getString("correo_de_usuario", "");
 
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -93,8 +94,13 @@ public class NavMenu extends AppCompatActivity
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
         correoUsuario.setText(correo_electronico);
         navigationView.setNavigationItemSelectedListener(this);
+        obtenDatosDiario();
+        setTitle("Diario");
     }
 
+    /***********************************************************************************************
+     *      Acciones a realizar al pulsar el botón Atrás                                           *
+     **********************************************************************************************/
     @Override
     public void onBackPressed() {
         // COMENTO T0DO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
@@ -107,43 +113,58 @@ public class NavMenu extends AppCompatActivity
        // }
     }
 
+    /***********************************************************************************************
+     *  Acciones a realizar con la selección de cada opción del menú lateral                       *
+     **********************************************************************************************/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        // OPCIONES DEL MENÚ LATERAL:
         if (id == R.id.nav_diario) {
+            setTitle("Diario");
             obtenDatosDiario();
         } else if (id == R.id.nav_horas) {
+            setTitle("Horas");
             fragmentManager.beginTransaction().replace(R.id.contenedor, new HorasFragment()).commit();
         } else if (id == R.id.nav_c_reco) {
-
+            setTitle("Contenidos recomendados");
         } else if (id == R.id.nav_c_perso) {
-
+            setTitle("Contenidos personalizados");
         } else if (id == R.id.nav_festivos) {
-
+            setTitle("Festivos y no lectivos");
         } else if (id == R.id.nav_contacto) {
-
+            setTitle("Contacto");
         } else if (id == R.id.nav_cerrar_sesion) {
             cerrarSesion();
+        } else if (id == R.id.nav_anotaciones) {
+            setTitle("Anotaciones");
+        } else if (id == R.id.nav_tutores) {
+            setTitle("Tutores");
+        } else if (id == R.id.nav_anteproyecto) {
+            setTitle("Anteproyecto");
+        } else if (id == R.id.nav_perfil) {
+            setTitle("Mi perfil");
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    /***********************************************************************************************
+     * Método que obtiene los registros del usuario de la opción "Diario"
+     **********************************************************************************************/
     public void obtenDatosDiario(){
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
-                            if (response.equals("0")){
-                                diarioVacio = true;
-                                // meter un item que diga "no hay nada!"
-                                System.out.println("NO HAY REGISTROS DE DIARIO PARA ESTE USUARIO.");
+                            if (response.equals("0")){ // Respuesta 0 = El usuario no tiene registros en el diario
+                                diarioVacio = true; // luego el diario está vacío
+                                fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos el fragment correspondiente
+                                System.out.println("EL USUARIO NO TIENE REGISTROS DE DIARIO");
+                                System.out.println("DIARIO VACÍO = "+ diarioVacio);
                             } else {
                                 try {
                                     response = response.replace("][",","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
@@ -152,14 +173,12 @@ public class NavMenu extends AppCompatActivity
                                     // YA QUE LOS ARRAYS TIENEN FORMATO [{...}][{...}], ... CON LO QUE, SI OBTIENE ASÍ LOS RESULTADOS, SOLO VA A COGER EL PRIMERO
                                     // Y UN ARRAY DE OBJETOS TENDRÍA ESTE OTRO FORMATO [{...}, {...}, {...}] DONDE LOS CORCHETES DETERMINAN EL ARRAY, Y LAS LLAVES LOS OBJETOS.
                                     jsonArrayDiario = new JSONArray(response);
-                                    //System.out.println("Respuesta de servidor: " + response); // debug
-                                    //System.out.println("LONGITUD DEL ARRAY: "+ jsonArrayDominios.length()); // debug
-                                    fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit();
+                                    fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos el fragment correspondiente
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        } else { // si no hay preferencias, notificamos
+                        } else { // si no hay preferencias, es decir, no hay datos del usuario (cosa improbable), notificamos
                             Toast.makeText(NavMenu.this, "No se pudo obtener el nombre de usuario.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -184,6 +203,9 @@ public class NavMenu extends AppCompatActivity
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    /*************************************************************************************************************
+     * Método que cierra la sesión del usuario activo (actualiza isLogged a 0 y vuelva a la pantalla de login)   *
+     ************************************************************************************************************/
     public void cerrarSesion(){
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {

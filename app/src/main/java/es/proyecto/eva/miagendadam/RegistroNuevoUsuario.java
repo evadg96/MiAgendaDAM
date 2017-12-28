@@ -62,6 +62,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
      private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/inserta_nuevo_usuario.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/clave_gmail.php";
+    static boolean confirmado = false;
 
     public String getFecha() {
         Date date = new Date();
@@ -280,7 +281,6 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("codigo_de_confirmacion", sCodigoConfirmacion);
-        editor.putString("correo_electronico", correo);
         editor.commit();
 
     }

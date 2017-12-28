@@ -71,6 +71,7 @@
                     android:layout_weight="1"
                     android:text="@string/correo_soporte"
                     android:textStyle="bold"
+                    android:autoLink="email"
                     android:textSize="16dp"/>
             </LinearLayout>
 

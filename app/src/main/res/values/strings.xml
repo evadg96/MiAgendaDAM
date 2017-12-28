@@ -36,7 +36,7 @@
     <string name="text_dialog_confirm">No se ha confirmado el registro de este usuario. Por favor, introduce el código de confirmación que se te ha enviado.</string>
     <string name="btn_cancelar_confirm">Cancelar</string>
 
-    <!-- String activity ConfirmaRegistro -->
+    <!-- Strings activity ConfirmaRegistro -->
     <string name="hint_codigo_confirmacion">Código de confirmación</string>
     <string name="btn_confirmar">Confirmar registro</string>
     <string name="btn_reenviar_codigo">Reenviar código de confirmación</string>
@@ -56,7 +56,7 @@
         nombre de usuario. Si no lo recuerdas, puedes consultarlo en el correo de confirmación que se te envió al completar tu registro.</string>
     <string name="txt_dialog_recuperar_clave">Se ha enviado un correo con tu contraseña nueva a la dirección de correo electrónico del usuario introducido.</string>
 
-    <!-- String opciones menu nav draw -->
+    <!-- Strings opciones menu nav draw -->
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
     <string name="opc_festivos_no_lectivos">Festivos/No lectivos</string>
@@ -89,6 +89,7 @@
 
     <!-- Strings opciones menu toolbar -->
     <string name="menu_guardar">Guardar</string>
+    <string name="menu_info">Info</string>
     <string name="menu_nuevo">Nuevo</string>
     <string name="menu_editar">Editar</string>
     <string name="menu_contacto">Contacto</string>
@@ -96,12 +97,20 @@
 
     <string name="action_settings">Ajustes</string>
 
-    <!-- String pantalla NuevoRegistroDiario -->
+    <!-- Strings fragment Diario -->
+    <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
+
+    <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="fecha_registro">Fecha (dd/mm/aa)</string>
     <string name="horas_registro">Horas</string>
+    <string name="minutos_registro">Minutos</string>
     <string name="descripcion_registro">Descripción</string>
     <string name="valoracion_registro">Valoración del día:</string>
-
+        <!-- Strings diálogo salir sin guardar -->
+        <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
+        <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderán los datos del registro nuevo.</string>
+        <string name="respuesta_dialog_volver">Volver</string>
+        <string name="respuesta_dialog_no">No</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

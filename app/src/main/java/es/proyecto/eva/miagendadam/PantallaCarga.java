@@ -87,7 +87,7 @@ public class PantallaCarga extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_carga);
-        getSupportActionBar().hide(); // para ocultar la barra de titulo de la pantalla (la toolbar)
+        getSupportActionBar().hide(); // para ocultar la barra de titulo de la pantalla (toolbar/actionbar)
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, // para poner en pantalla completa la actividad, así no se verá la barra
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);        // de notificaciones con la hora etc. (luego vuelve a aparecer)
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -99,13 +99,11 @@ public class PantallaCarga extends AppCompatActivity {
         // (Habiendo declarado las variables CON EL MISMO NOMBRE arriba)
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", "");
-        correo_electronico = preferences.getString("correo_electronico", "");
+        correo_electronico = preferences.getString("correo_de_usuario", "");
         // ********************************************************************************************************************************************
         // Las mostramos en la consola de debug para controlar los datos que tenemos almacenados por el momento
         System.out.println("NOMBRE DE USUARIO ALMACENADO: " + nombre_de_usuario);
-        System.out.println("CÓDIGO DE CONFIRMACIÓN!: " + codigo_de_confirmacion);
         System.out.println("CORREO ELECTRÓNICO ALMACENADO!: " + correo_electronico);
-
         System.out.println("HORA ACTUAL: "+fecha_ultimo_login);
 
         if (!nombre_de_usuario.isEmpty()) { // si hay nombre de usuario almacenado...

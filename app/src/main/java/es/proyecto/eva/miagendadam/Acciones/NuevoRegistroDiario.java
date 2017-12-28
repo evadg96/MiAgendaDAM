@@ -1,5 +1,9 @@
 package es.proyecto.eva.miagendadam.Acciones;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,14 +16,21 @@ import android.widget.ImageButton;
 
 import es.proyecto.eva.miagendadam.R;
 
+/***************************************************************************************************
+ *  Pantalla que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)      *
+ *  y que sirve para crear un nuevo registro en el diario del usuario.                             *
+ *  Contiene los campos de fecha, horas, descripción y valoración.                                 *
+ **************************************************************************************************/
 public class NuevoRegistroDiario extends AppCompatActivity {
     ImageButton btnBueno, btnRegular, btnMalo;
     EditText fecha, horas, descripcion;
     private String valoracionDia = "";
+    private boolean guardado = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_registro_diario);
+        setTitle("Nuevo registro");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btnBueno = (ImageButton) findViewById(R.id.btn_bueno);
         btnRegular = (ImageButton) findViewById(R.id.btn_regular);
@@ -60,19 +71,46 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         return true; // .menu es el directorio, y .toolbar el archivo
     }
 
-    // Opciones del menú
+    /***********************************************************************************************
+     *     Opciones del menú de la barra de acciones
+     **********************************************************************************************/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
-            case R.id.menu_guardar:
-                Log.i("ActionBar", "Guardar!"); // en este caso solo hacemos un log
+            case R.id.menu_guardar: // Opción de guardar registro
+                Log.i("ActionBar", "Guardar!");
+                guardarRegistro(); // guardamos el registro en la base de datos
+                guardado = true;
                 return true;
-            case android.R.id.home:
-                onBackPressed();
+            case android.R.id.home: // Opción de volver hacia atrás
+                if (!guardado){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
+                    builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
+                    builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
+                            .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onBackPressed(); // volvemos atrás
+                                }
+                            })
+                            .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                    //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    Dialog dialog = builder.create();
+                    dialog.show();
+
+                } else if (guardado){
+                    onBackPressed();
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public void guardarRegistro(){
         System.out.println("Ejecutamos consulta de guardado de registro.");

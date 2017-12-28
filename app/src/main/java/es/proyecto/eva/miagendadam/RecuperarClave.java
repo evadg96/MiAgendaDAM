@@ -95,6 +95,7 @@ public class RecuperarClave extends AppCompatActivity {
         setContentView(R.layout.activity_recuperar_clave);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // para VER la flecha atrás en el actionbar
         setTitle("Recuperar datos");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btnEnviarClave = (Button) findViewById(R.id.btn_enviar_nueva_clave);
         btnEnviarUsuario = (Button) findViewById(R.id.btn_enviar_nombre_usuario);
         txtCorreo = (EditText) findViewById(R.id.txt_nombre_usuario);
