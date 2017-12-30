@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +59,14 @@ public class DiarioFragment extends Fragment {
     public static String valoracion_seleccionada;
     public boolean diarioVacio = false;
     private ArrayList<String> lista = new ArrayList<>();
+    private ArrayList<String> valoraciones = new ArrayList<>();
+    private String valoracion_actual = "";
     private ArrayAdapter<String> adaptador;
     private StringRequest request;
     public static JSONArray jsonArrayDiario;
-    private String  url_consulta = "http://192.168.0.12/MiAgenda/select_dias.php";
+
+//    private String  url_consulta = "http://192.168.0.12/MiAgenda/select_dias.php";
+    private String  url_consulta = "http://192.168.0.159/MiAgenda/select_dias.php";
 
     public DiarioFragment() {
         // Required empty public constructor
@@ -154,7 +159,9 @@ public class DiarioFragment extends Fragment {
                                     // Y UN ARRAY DE OBJETOS TENDRÍA ESTE OTRO FORMATO [{...}, {...}, {...}] DONDE LOS CORCHETES DETERMINAN EL ARRAY, Y LAS LLAVES LOS OBJETOS.
 
                                     jsonArrayDiario = new JSONArray(response); // guardamos los registros en el array
+                                    System.out.println("CARGANDO REGISTROS...");
                                     cargarRegistros(); // cargamos en pantalla los registros
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -188,7 +195,7 @@ public class DiarioFragment extends Fragment {
      * Método que carga los registros de diario del usuario activo obtenidos en un ListView
      ********************************************************************************************************/
     private void cargarRegistros() {
-        adaptador = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, lista);
+        System.out.println("LONGITUD DEL ARRAY = "+ jsonArrayDiario.length());
         for (int i = 0; i < jsonArrayDiario.length(); i++) {
             try {
                 idDia = jsonArrayDiario.getJSONObject(i).getString("idDia");
@@ -197,8 +204,25 @@ public class DiarioFragment extends Fragment {
                 minutos = jsonArrayDiario.getJSONObject(i).getString("minutos");
                 descripcion = jsonArrayDiario.getJSONObject(i).getString("descripcion");
                 valoracion = jsonArrayDiario.getJSONObject(i).getString("valoracion");
+                valoraciones.add(valoracion); // añadimos la valoración obtenida con cada ejecución del bucle
 
-//                if (valoracion.equals("Bueno")){
+                valoracion_actual = valoraciones.get(i);
+                System.out.println(valoracion_actual);
+
+                    adaptador = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, lista){
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent){
+                            // Get the current item from ListView
+                            View view = super.getView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                            // Establecemos el tamaño de texto de cada item
+                            tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,18);
+                            return view;
+                        }
+                    };
+//
+//
+//                  if (valoracion.equals("Bueno")){
 //                    listaResultado.setBackgroundColor(Color.GREEN);
 //                } else if (valoracion.equals("Regular")){
 //                    listaResultado.setBackgroundColor(Color.YELLOW);
@@ -215,8 +239,6 @@ public class DiarioFragment extends Fragment {
                 } else if (Integer.valueOf(minutos) < 1){
                     lista.add(fecha + "\nTiempo: " + horas + " horas");
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
