@@ -2,8 +2,10 @@ package es.proyecto.eva.miagendadam.Acciones;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +15,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import es.proyecto.eva.miagendadam.Fragments.DiarioFragment;
+import es.proyecto.eva.miagendadam.NavMenu;
+import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import es.proyecto.eva.miagendadam.R;
+import static es.proyecto.eva.miagendadam.Acciones.VerYEditarRegistroDiario.actualizaDiario;
 
 /***************************************************************************************************
  *  Pantalla que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)      *
@@ -23,9 +39,11 @@ import es.proyecto.eva.miagendadam.R;
  **************************************************************************************************/
 public class NuevoRegistroDiario extends AppCompatActivity {
     ImageButton btnBueno, btnRegular, btnMalo;
-    EditText fecha, horas, descripcion;
+    EditText txtFecha, txtHoras, txtMinutos, txtDescripcion;
+    private StringRequest request;
     private String valoracionDia = "";
-    private boolean guardado = false;
+    private String fecha, horas, minutos, descripcion, idUsuario = "";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_registro_diario.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +53,21 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         btnBueno = (ImageButton) findViewById(R.id.btn_bueno);
         btnRegular = (ImageButton) findViewById(R.id.btn_regular);
         btnMalo = (ImageButton) findViewById(R.id.btn_malo);
-        fecha = (EditText) findViewById(R.id.editText_fecha);
-        horas = (EditText) findViewById(R.id.editText_horas);
-        descripcion = (EditText) findViewById(R.id.editText_descripcion);
+        txtFecha = (EditText) findViewById(R.id.editText_fecha);
+        txtHoras = (EditText) findViewById(R.id.editText_horas);
+        txtMinutos = (EditText) findViewById(R.id.editText_minutos);
+        txtDescripcion = (EditText) findViewById(R.id.editText_descripcion);
+        SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario
+        // al que vamos a introducir el registro.
 
+        // Los iconos por defecto aparecen con semitransparencia, para ponerse opacos en su selección
+        // para saber cuál está marcado
         btnBueno.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                btnBueno.setAlpha(1f);
-                btnRegular.setAlpha(0.5f);
-                btnMalo.setAlpha(0.5f);
+                btnBueno.setAlpha(1f); // opaco
+                btnRegular.setAlpha(0.5f); // semitransparente
+                btnMalo.setAlpha(0.5f); // "
                 valoracionDia = "Bueno";
             }
         });
@@ -80,11 +104,17 @@ public class NuevoRegistroDiario extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
             case R.id.menu_guardar: // Opción de guardar registro
                 Log.i("ActionBar", "Guardar!");
-                guardarRegistro(); // guardamos el registro en la base de datos
-                guardado = true;
+                fecha = txtFecha.getText().toString();
+                horas = txtHoras.getText().toString();
+                minutos = txtMinutos.getText().toString();
+                descripcion = txtDescripcion.getText().toString();
+                if (fecha.isEmpty()|| horas.isEmpty()||minutos.isEmpty()||descripcion.isEmpty() || valoracionDia.isEmpty()){
+                    Toast.makeText(NuevoRegistroDiario.this, "Debes completar todos los datos.", Toast.LENGTH_SHORT).show();
+                } else {
+                    guardarRegistro(); // guardamos el registro en la base de datos
+                }
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
-                if (!guardado){
                     AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
                     builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
                     builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
@@ -102,19 +132,55 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     // Create the AlertDialog object and return it
                     Dialog dialog = builder.create();
                     dialog.show();
-
-                } else if (guardado){
-                    onBackPressed();
-                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    public void guardarRegistro(){
-        System.out.println("Ejecutamos consulta de guardado de registro.");
+    /***********************************************************************************************
+     * Método que comprueba si el usuario que intenta iniciar sesión está bloqueado (estado isLocked)
+     **********************************************************************************************/
+    private void guardarRegistro(){
+        request = new StringRequest(Request.Method.POST, url_consulta,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("1")){
+                            Toast.makeText(NuevoRegistroDiario.this, "Registro creado con éxito.", Toast.LENGTH_LONG).show();
+                            System.out.println("Nuevo registro creado!");
+                            actualizaDiario = true; // para indicarle a la actividad NavMenu que queremos que recargue el fragmento
+                            Intent intent = new Intent (NuevoRegistroDiario.this, NavMenu.class); // llamamos al  nav menu para refrescar el fragmento y
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(NuevoRegistroDiario.this, "Se ha producido un error. No se ha podido guardar el registro.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(NuevoRegistroDiario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("fecha", fecha);
+                parametros.put("descripcion", descripcion);
+                parametros.put("horas", horas);
+                parametros.put("minutos", minutos);
+                parametros.put("valoracion", valoracionDia);
+                parametros.put("idUsuario", idUsuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
     }
+
 
 
 }

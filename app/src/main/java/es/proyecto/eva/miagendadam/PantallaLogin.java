@@ -50,6 +50,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String url_consulta8 = "http://192.168.0.12/MiAgenda/update_intentos_login.php";
     private String url_consulta9 = "http://192.168.0.12/MiAgenda/update_fecha_bloqueo.php";
     private String url_consulta10 = "http://192.168.0.12/MiAgenda/consulta_recuperar_correo.php";
+    private String url_consulta11 = "http://192.168.0.12/MiAgenda/consulta_recuperar_id_usuario.php";
 //
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.158/MiAgenda/update_isLogged.php";
@@ -61,6 +62,7 @@ public class PantallaLogin extends AppCompatActivity {
 //    private String url_consulta8 = "http://192.168.0.158/MiAgenda/update_intentos_login.php";
 //    private String url_consulta9 = "http://192.168.0.158/MiAgenda/update_fecha_bloqueo.php";
 //    private String url_consulta10 = "http://192.168.0.158/MiAgenda/consulta_recuperar_correo.php";
+//    private String url_consulta11 = "http://192.168.0.158/MiAgenda/consulta_recuperar_id_usuario.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/
@@ -72,6 +74,7 @@ public class PantallaLogin extends AppCompatActivity {
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
     static String clave="";
     static String correo_electronico=""; // será el email que le corresponde al usuario, y se obtendrá por consulta
+    private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     private StringRequest request;
     public static String getFecha() {
         Date date = new Date();
@@ -514,7 +517,8 @@ public class PantallaLogin extends AppCompatActivity {
                         } else { // Sí existe el usuario, lo guardamos para utilizarlo como parámetro en las consultas
                             // posteriores
                             nombre_usuario = nUsuario;
-                            obtenerCorreo();
+                            obtenerCorreo(); // obtenemos el correo electrónico
+                            obtenerIDUsuario(); // y el identificador del usuario
                             System.out.println("EL USUARIO INTRODUCIDO EXISTE... PROCEDEMOS A COMPROBAR CONFIRMACIÓN Y BLOQUEO...");
                             // Comprobamos si el usuario está confirmado
                             // (desde este método empieza el flujo de comprobaciones)
@@ -580,6 +584,43 @@ public class PantallaLogin extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    /*******************************************************************************************************************
+     * Método que obtiene el ID que le corresponde al usuario que hace login una vez verificado que existe
+     ******************************************************************************************************************/
+    private void obtenerIDUsuario(){
+        request = new StringRequest(Request.Method.POST, url_consulta11,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
+                            idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
+                            System.out.println("ID DEL USUARIO "+ idUsuario);
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
     /*********************************************************************************************************************
      * Método que se ejecuta cuando se han verificado todos los datos necesarios para hacer un inicio de sesión correcto
      ********************************************************************************************************************/
@@ -590,21 +631,21 @@ public class PantallaLogin extends AppCompatActivity {
         // el resto de funcionalidades
         // reseteamos número de intentos de login restantes
         reseteaIntentos();
+        // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
+        ProgressDialog progressDialog = new ProgressDialog(PantallaLogin.this);
+        progressDialog.setTitle("Cargando");
+        progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
+        progressDialog.show();
+        System.out.println("LOGIN CORRECTO :)");
+        Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
+        startActivity(intent);
         // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga.
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
-                        ProgressDialog progressDialog = new ProgressDialog(PantallaLogin.this);
-                        progressDialog.setTitle("Cargando");
-                        progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
-                        progressDialog.show();
-                        System.out.println("LOGIN CORRECTO :)");
                         fecha_ultimo_login = getFecha();
                         System.out.println("FECHA ULTIMO LOGIN: " + fecha_ultimo_login);
-                        Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
-                        startActivity(intent);
                     }
                 },
 
@@ -637,6 +678,7 @@ public class PantallaLogin extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("nombre_de_usuario", nombre_usuario);
         editor.putString("correo_de_usuario", correo_electronico);
+        editor.putString("idUsuario", idUsuario);
         editor.commit();
     }
 

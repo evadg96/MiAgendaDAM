@@ -106,11 +106,14 @@
     <string name="minutos_registro">Minutos</string>
     <string name="descripcion_registro">Descripción</string>
     <string name="valoracion_registro">Valoración del día:</string>
-        <!-- Strings diálogo salir sin guardar -->
-        <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
-        <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderán los datos del registro nuevo.</string>
-        <string name="respuesta_dialog_volver">Volver</string>
-        <string name="respuesta_dialog_no">No</string>
+    <!-- Strings diálogo salir sin guardar -->
+    <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
+    <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderán los datos del registro nuevo.</string>
+    <string name="respuesta_dialog_volver">Volver</string>
+    <string name="respuesta_dialog_no">No</string>
+
+    <!-- String diálogo salir de editar sin guardar -->
+    <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

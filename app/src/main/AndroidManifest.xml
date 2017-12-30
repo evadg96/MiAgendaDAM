@@ -41,6 +41,7 @@
         <activity android:name=".RecuperarClave" />
         <activity android:name=".AcercaDe" />
         <activity android:name=".Acciones.NuevoRegistroDiario" />
+        <activity android:name=".Acciones.VerYEditarRegistroDiario"></activity>
     </application>
 
 </manifest>

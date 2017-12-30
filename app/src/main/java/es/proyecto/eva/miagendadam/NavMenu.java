@@ -30,6 +30,8 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.Fragments.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.HorasFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
+import static es.proyecto.eva.miagendadam.Acciones.VerYEditarRegistroDiario.actualizaDiario;
+
 
 /***************************************************************************************************
  *  Menú lateral desplegable con las opciones de la aplicación.                                    *
@@ -41,20 +43,16 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 public class NavMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TextView nombreUsuario, correoUsuario;
-    static String nombre_de_usuario;
+    public static String nombre_de_usuario;
     static String correo_electronico;
     private StringRequest request;
     private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
-    private String  url_consulta2 = "http://192.168.0.12/MiAgenda/select_dias.php";
 //    private String url_consulta = "http://192.168.0.158/MiAgenda/cerrar_sesion.php";
-//    private String  url_consulta2 = "http://192.168.0.158/MiAgenda/select_dias.php";
-    public static boolean diarioVacio = false;
     public static boolean horasVacio = false;
     public static boolean anotacionesVacio = false;
     public static boolean contenidoRecoVacio = false;
     public static boolean contenidoPersoVacio = false;
-    public static int vacio = 0;
-    public static JSONArray jsonArrayDiario;
+
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
 
@@ -64,7 +62,6 @@ public class NavMenu extends AppCompatActivity
         setContentView(R.layout.activity_nav_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("");
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         // ****************** ¡¡¡¡ UTILIZAR ESTE FRAGMENTO CADA VEZ QUE SE QUIERA REFERENCIAR AL NOMBRE DE USUARIO ALMACENADO POR LA APLICACIÓN !!!! **********************
@@ -94,8 +91,16 @@ public class NavMenu extends AppCompatActivity
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
         correoUsuario.setText(correo_electronico);
         navigationView.setNavigationItemSelectedListener(this);
-        obtenDatosDiario();
-        setTitle("Diario");
+        if (actualizaDiario){
+            System.out.println("Se ha actualizado algún registro. Refrescando fragmento...");
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // cargamos otra vez el fragmento para actualizar los registros
+            actualizaDiario = false; // lo devolvemos a su valor inicial
+            System.out.println("Fragmento refrescado.");
+        }  // hacer los mismo con todos los fragmentos
+        else {
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto en el diario
+            setTitle("Diario");
+        }
     }
 
     /***********************************************************************************************
@@ -123,7 +128,7 @@ public class NavMenu extends AppCompatActivity
         // OPCIONES DEL MENÚ LATERAL:
         if (id == R.id.nav_diario) {
             setTitle("Diario");
-            obtenDatosDiario();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit();
         } else if (id == R.id.nav_horas) {
             setTitle("Horas");
             fragmentManager.beginTransaction().replace(R.id.contenedor, new HorasFragment()).commit();
@@ -151,62 +156,12 @@ public class NavMenu extends AppCompatActivity
         return true;
     }
 
-    /***********************************************************************************************
-     * Método que obtiene los registros del usuario de la opción "Diario"
-     **********************************************************************************************/
-    public void obtenDatosDiario(){
-        request = new StringRequest(Request.Method.POST, url_consulta2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
-                            if (response.equals("0")){ // Respuesta 0 = El usuario no tiene registros en el diario
-                                diarioVacio = true; // luego el diario está vacío
-                                fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos el fragment correspondiente
-                                System.out.println("EL USUARIO NO TIENE REGISTROS DE DIARIO");
-                                System.out.println("DIARIO VACÍO = "+ diarioVacio);
-                            } else {
-                                try {
-                                    response = response.replace("][",","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
-                                    // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
-                                    // DENTRO DE UN ÚNICO ARRAY
-                                    // YA QUE LOS ARRAYS TIENEN FORMATO [{...}][{...}], ... CON LO QUE, SI OBTIENE ASÍ LOS RESULTADOS, SOLO VA A COGER EL PRIMERO
-                                    // Y UN ARRAY DE OBJETOS TENDRÍA ESTE OTRO FORMATO [{...}, {...}, {...}] DONDE LOS CORCHETES DETERMINAN EL ARRAY, Y LAS LLAVES LOS OBJETOS.
-                                    jsonArrayDiario = new JSONArray(response);
-                                    fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos el fragment correspondiente
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } else { // si no hay preferencias, es decir, no hay datos del usuario (cosa improbable), notificamos
-                            Toast.makeText(NavMenu.this, "No se pudo obtener el nombre de usuario.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(NavMenu.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nombre_de_usuario); // pasamos el nombre de usuario como parámetro de la consulta para obtener sus registros del diario
-                return parametros;
-            }
-
-        };
-        AppController.getInstance().addToRequestQueue(request);
-    }
-
     /*************************************************************************************************************
      * Método que cierra la sesión del usuario activo (actualiza isLogged a 0 y vuelva a la pantalla de login)   *
      ************************************************************************************************************/
     public void cerrarSesion(){
+        Intent intent = new Intent(NavMenu.this, PantallaLogin.class);
+        startActivity(intent);
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
@@ -214,9 +169,6 @@ public class NavMenu extends AppCompatActivity
                         // Al cerrar sesión estaremos actualizando el campo isLogged a 0 para que no se detecte como sesión iniciada en la pantalla
                         // de carga al volver a abrir la aplicación
                         System.out.println("SESIÓN DE USUARIO CERRADA.");
-                        Intent intent = new Intent(NavMenu.this, PantallaLogin.class);
-                        startActivity(intent);
-
                     }
                 },
 

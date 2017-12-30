@@ -288,7 +288,7 @@ public class PantallaCarga extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaCarga.this, "No se ha podido actualizar la fecha de inicio de sesión.", Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR ACTUALIZAFECHALOGIN()");
                     }
                 }) {
