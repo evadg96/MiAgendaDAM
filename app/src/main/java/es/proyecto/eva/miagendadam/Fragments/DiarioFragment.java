@@ -208,7 +208,13 @@ public class DiarioFragment extends Fragment {
                 // verde A629AE00
                 // rojo A2E70B0B
                 // amarillo CEFFBA19
-                lista.add(fecha + "\nHoras: " + horas + " y " + minutos + " minutos");
+
+                // Validamos si hay minutos. Si están a 0 los obviamos y solo mostramos las horas
+                if (Integer.valueOf(minutos) > 0){
+                    lista.add(fecha + "\nTiempo: " + horas + " horas y " + minutos + " minutos");
+                } else if (Integer.valueOf(minutos) < 1){
+                    lista.add(fecha + "\nTiempo: " + horas + " horas");
+                }
 
 
             } catch (JSONException e) {
