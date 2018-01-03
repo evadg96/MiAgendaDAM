@@ -60,9 +60,8 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
      private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_usuario.php";
      private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/inserta_nuevo_usuario.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/clave_gmail.php";
-    static boolean confirmado = false;
+//    private String url_consulta = "http://192.168.0.159/MiAgenda/inserta_nuevo_usuario.php";
+//    private String url_consulta2 = "http://192.168.0.159/MiAgenda/clave_gmail.php";
 
     public String getFecha() {
         Date date = new Date();

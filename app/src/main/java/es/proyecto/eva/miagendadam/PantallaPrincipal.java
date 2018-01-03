@@ -35,8 +35,8 @@ public class PantallaPrincipal extends AppCompatActivity {
     TextView texto;
     static String nombre_de_usuario;
     private StringRequest request;
-//    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
-    private String url_consulta = "http://192.168.0.158/MiAgenda/cerrar_sesion.php";
+    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
+//    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
     // ************************************ SERVIDOR REMOTO *************************************************************
    // private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_cerrar_sesion.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     @Override

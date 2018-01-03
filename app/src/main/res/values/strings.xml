@@ -106,6 +106,7 @@
     <string name="minutos_registro">Minutos</string>
     <string name="descripcion_registro">Descripción</string>
     <string name="valoracion_registro">Valoración del día:</string>
+    <string name="info_minutos">x</string>
     <!-- Strings diálogo salir sin guardar -->
     <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
     <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderán los datos del registro nuevo.</string>

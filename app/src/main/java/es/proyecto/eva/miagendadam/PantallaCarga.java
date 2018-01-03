@@ -54,10 +54,10 @@ public class PantallaCarga extends AppCompatActivity {
     private String url_consulta3 = "http://192.168.0.12/MiAgenda/update_fechaLogin.php";
     private String url_consulta4 = "http://192.168.0.12/MiAgenda/check_isLocked.php";
 //
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/check_isLogged.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/check_isConfirmed.php";
-//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/update_fechaLogin.php";
-//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/check_isLocked.php";
+//    private String url_consulta = "http://192.168.0.159/MiAgenda/check_isLogged.php";
+//    private String url_consulta2 = "http://192.168.0.159/MiAgenda/check_isConfirmed.php";
+//    private String url_consulta3 = "http://192.168.0.159/MiAgenda/update_fechaLogin.php";
+//    private String url_consulta4 = "http://192.168.0.159/MiAgenda/check_isLocked.php";
     /***********************************************************************************************
      *                            SERVIDOR REMOTO (no funciona desde día 01/12)
      **********************************************************************************************/

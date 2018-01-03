@@ -50,10 +50,10 @@ public class RecuperarClave extends AppCompatActivity {
     private String url_consulta2 = "http://192.168.0.12/MiAgenda/check_correo.php";
     private String url_consulta3 = "http://192.168.0.12/MiAgenda/consulta_recuperar_usuario.php";
     private String url_consulta4 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/consulta_recuperar_clave.php";
-//    private String url_consulta2 = "http://192.168.0.158/MiAgenda/check_correo.php";
-//    private String url_consulta3 = "http://192.168.0.158/MiAgenda/consulta_recuperar_usuario.php";
-//    private String url_consulta4 = "http://192.168.0.158/MiAgenda/clave_gmail.php";
+//    private String url_consulta = "http://192.168.0.159/MiAgenda/consulta_recuperar_clave.php";
+//    private String url_consulta2 = "http://192.168.0.159/MiAgenda/check_correo.php";
+//    private String url_consulta3 = "http://192.168.0.159/MiAgenda/consulta_recuperar_usuario.php";
+//    private String url_consulta4 = "http://192.168.0.159/MiAgenda/clave_gmail.php";
 
     // VARIABLES PARA GENERAR LA CLAVE NUEVA
     private static final String dCase = "abcdefghijklmnopqrstuvwxyz";

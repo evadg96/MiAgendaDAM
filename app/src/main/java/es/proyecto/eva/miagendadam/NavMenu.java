@@ -21,16 +21,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.Fragments.DiarioFragment;
-import es.proyecto.eva.miagendadam.Fragments.HorasFragment;
+import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
+import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
-import static es.proyecto.eva.miagendadam.Acciones.VerYEditarRegistroDiario.actualizaDiario;
+import static es.proyecto.eva.miagendadam.Fragments.Diario.VerYEditarRegistroDiario.actualizaDiario;
 
 
 /***************************************************************************************************
@@ -47,7 +44,7 @@ public class NavMenu extends AppCompatActivity
     static String correo_electronico;
     private StringRequest request;
     private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
-//    private String url_consulta = "http://192.168.0.158/MiAgenda/cerrar_sesion.php";
+//    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
     public static boolean horasVacio = false;
     public static boolean anotacionesVacio = false;
     public static boolean contenidoRecoVacio = false;
@@ -91,8 +88,10 @@ public class NavMenu extends AppCompatActivity
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
         correoUsuario.setText(correo_electronico);
         navigationView.setNavigationItemSelectedListener(this);
+        System.out.println("ESTADO ACTUALIZADIARIO = "+actualizaDiario);
         if (actualizaDiario){
             System.out.println("Se ha actualizado algún registro. Refrescando fragmento...");
+            setTitle("Diario");
             fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // cargamos otra vez el fragmento para actualizar los registros
             actualizaDiario = false; // lo devolvemos a su valor inicial
             System.out.println("Fragmento refrescado.");
