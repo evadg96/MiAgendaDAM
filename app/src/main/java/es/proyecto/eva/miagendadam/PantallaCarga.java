@@ -1,10 +1,15 @@
 package es.proyecto.eva.miagendadam;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.Fragments.Diario.NuevoRegistroDiario;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import static es.proyecto.eva.miagendadam.PantallaLogin.nombre_usuario;
 import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.correo;
@@ -105,14 +111,62 @@ public class PantallaCarga extends AppCompatActivity {
         System.out.println("NOMBRE DE USUARIO ALMACENADO: " + nombre_de_usuario);
         System.out.println("CORREO ELECTRÓNICO ALMACENADO!: " + correo_electronico);
         System.out.println("HORA ACTUAL: "+fecha_ultimo_login);
+        // Comprobamos conexión a internet del dispositivo
+        checkConexion();
+    }
 
-        if (!nombre_de_usuario.isEmpty()) { // si hay nombre de usuario almacenado...
-            // Comprobamos bloqueo:
-            System.out.println("HAY USUARIO. COMPROBAMOS BLOQUEO:");
-            check_isLocked();
-        } else { // si no, vamos a la pantalla de login
-            System.out.println("NO HAY USUARIO. VAMOS A PANTALLA LOGIN.");
-            abrePantallaLogin();
+    private void checkConexion(){
+        ConnectivityManager cm;
+        NetworkInfo ni;
+        cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ni = cm.getActiveNetworkInfo();
+        boolean conexionWifi = false;
+        boolean conexionDatos = false;
+
+        if (ni != null) {
+            ConnectivityManager connManager1 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mWifi = connManager1.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+            ConnectivityManager connManager2 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mMobile = connManager2.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if (mWifi.isConnected()) {
+                conexionWifi = true;
+                System.out.println("HAY CONEXIÓN WIFI");
+            }
+            if (mMobile.isConnected()) {
+                conexionDatos = true;
+                System.out.println("HAY CONEXIÓN DE DATOS");
+            }
+
+            if (conexionWifi == true || conexionDatos == true) {
+                System.out.println("HAY CONEXIÓN A INTERNET");
+               /// tenemos conexión a internet, seguimos con la siguiente comprobación:
+                if (!nombre_de_usuario.isEmpty()) { // Si hay nombre de usuario almacenado...
+                    // Comprobamos bloqueo:
+                    System.out.println("HAY USUARIO. COMPROBAMOS BLOQUEO:");
+                    check_isLocked();
+                } else { // si no lo hay, vamos a la pantalla de login
+                    System.out.println("NO HAY USUARIO. VAMOS A PANTALLA LOGIN.");
+                    abrePantallaLogin();
+                }
+            }
+        } else {
+            // No está conectado a internet, mostramos mensaje de alerta
+            System.out.println("NO HAY CONEXIÓN A INTERNET");
+            AlertDialog.Builder builder = new AlertDialog.Builder(PantallaCarga.this);
+            builder.setTitle(R.string.title_dialog_conexion); // titulo del diálogo
+            builder.setMessage(R.string.info_conexion)
+                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                           // forzamos cierre de la aplicación para que cada vez que se abra la app se
+                            // muestre el mensaje y el usuario se vea obligado a conectarse a internet
+                            // para usar la aplicación
+                            finish();
+                        }
+                    });
+            Dialog dialog = builder.create();
+            dialog.show();
         }
     }
 

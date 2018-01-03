@@ -2,6 +2,13 @@
     <string name="app_name">Mi agenda FP</string>
     <string name="title_activity_login">Inicio de sesión</string>
     <string name="version_num" translatable="false">1.0</string>
+    
+    <!-- Strings pantalla carga -->
+   <string name="title_dialog_conexion">Error de conexión</string>
+    <string name="info_conexion">¡Vaya, parece que no tienes conexión a internet! Mi Agenda FP necesita una conexión a
+    internet para poder funcionar correctamente.</string>
+    
+    
     <!-- Strings LOGIN -->
     <string name="hint_nombre_usuario">Nombre de usuario</string>
     <string name="hint_clave">Contraseña</string>
@@ -74,7 +81,7 @@
     <string name="opc_tutores">Tutores</string>
     <string name="nombre_usuario_menu">Nombre de usuario</string>
     <string name="correo_usuario_menu">Correo electrónico</string>
-
+    
     <!-- Strings acerca de pantalla login-->
     <string name="acerca_de">Esta aplicacion se ha realizado como proyecto final de la alumna Eva Díaz García para el ciclo formativo
     de grado superior Desarrollo de Aplicaciones Multiplataforma para el IES María Moliner.</string>
