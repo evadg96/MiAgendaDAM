@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mi agenda FP</string>
     <string name="title_activity_login">Inicio de sesión</string>
-    <string name="version_num">1.0</string>
+    <string name="version_num" translatable="false">1.0</string>
     <!-- Strings LOGIN -->
     <string name="hint_nombre_usuario">Nombre de usuario</string>
     <string name="hint_clave">Contraseña</string>
@@ -106,7 +106,9 @@
     <string name="minutos_registro">Minutos</string>
     <string name="descripcion_registro">Descripción</string>
     <string name="valoracion_registro">Valoración del día:</string>
-    <string name="info_minutos">x</string>
+    <string name="titulo_info_minutos">Minutos</string>
+    <string name="info_minutos">Si no has trabajado ninguna franja de minutos suelta, deberás poner un 0 en los minutos. Si no, deberás poner el número exacto de minutos para que se haga un conteo correcto.
+    Por ejemplo, si has trabajado cinco horas y media en el día, deberas poner un 30. Si has trabajado cinco horas justas, deberás poner 0.</string>
     <!-- Strings diálogo salir sin guardar -->
     <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
     <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderán los datos del registro nuevo.</string>

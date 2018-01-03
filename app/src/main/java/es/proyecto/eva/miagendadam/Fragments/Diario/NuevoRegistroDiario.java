@@ -90,8 +90,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         btnInfoMinutos.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
-                builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
-                builder.setMessage(R.string.contenido_dialog_ace)
+                builder.setTitle(R.string.titulo_info_minutos); // titulo del diálogo
+                builder.setMessage(R.string.info_minutos)
                         .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
