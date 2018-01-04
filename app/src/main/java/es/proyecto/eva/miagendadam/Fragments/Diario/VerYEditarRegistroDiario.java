@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,9 +40,11 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     EditText txtFechaSeleccionada, txtHorasSeleccionadas, txtMinutosSeleccionados, txtDescripcionSeleccionada;
     ImageButton btnValoracionSeleccionadaBueno, btnValoracionSeleccionadaRegular, btnValoracionSeleccionadaMalo;
     private StringRequest request;
-    private Menu menu;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/update_registro_diario.php";
+
+//    private String url_consulta = "http://192.168.0.12/MiAgenda/update_registro_diario.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/update_registro_diario.php";
+    private String url_consulta = "http://miagendafp.000webhostapp.com/update_registro_diario.php";
+
     // declaramos los nuevos datos del registro
     private String fechaNueva = "", horasNuevas = "", minutosNuevos = "", descripcionNueva = "", valoracionNueva = "";
     String idUsuario = "";
@@ -52,6 +53,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     // Este dato se pondrá en true cuando se haya editado un registro y se hayan guardado los cambios. Nos servirá para indicar
     // al sistema que es necesario que vuelva a cargar los datos porque ha habido cambios. Así, desde el fragmento, si se detecta
     // que esto está en true, se volverán a ejecutar los métodos de obtención y carga de datos.
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             menu.findItem(R.id.menu_actualizar).setVisible(true);
             menu.findItem(R.id.menu_editar).setVisible(false);
         }
-        return true; // .menu es el directorio, y .toolbar el archivo
+        return true; // .menu es el directorio, y .menu_editar
     }
 
     /***********************************************************************************************
@@ -107,29 +109,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 modoEditar(); // entramos en "modo edición", habilitamos campos para escribir en ellos
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
-                if (editando) { // Si se está editando (no se ha dado a guardar) y se pulsa Atrás, se pregunta si se está seguro
-                    AlertDialog.Builder builder = new AlertDialog.Builder(VerYEditarRegistroDiario.this);
-                    builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
-                    builder.setMessage(R.string.contenido_dialog_salir_editar_sin_guardar)
-                            .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    onBackPressed(); // volvemos atrás
-                                }
-                            })
-                            .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // User cancelled the dialog
-                                    //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
-                                }
-                            });
-                    // Create the AlertDialog object and return it
-                    Dialog dialog = builder.create();
-                    dialog.show();
-                } else { // Si no se está editando o ya se ha guardado, se vuelve atrás
-                    actualizaDiario = true; // para indicarle a la actividad NavMenu que queremos que recargue el fragmento
-                    Intent intent = new Intent (this, NavMenu.class); // llamamos al  nav menu para refrescar el fragmento y
-                    startActivity(intent);                                          // obtener los datos actualizados al volver
-                }
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -139,7 +119,8 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
      * Método que habilita la edición de campos para actualizar datos del registro seleccionado
      **********************************************************************************************/
     public void modoEditar() {
-        invalidateOptionsMenu();
+        invalidateOptionsMenu(); // para llamar de nuevo al onCreateOptionsMenu y ocultar el botón de editar
+        // y mostrar el de guardar
         editando = true;
         System.out.println("EDITANDO = " + editando);
         txtFechaSeleccionada.setFocusableInTouchMode(true);
@@ -202,7 +183,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             btnValoracionSeleccionadaRegular.setClickable(false);
             btnValoracionSeleccionadaMalo.setClickable(false);
 
-            // obtenemos los nuevos datos
+            // Obtenemos los nuevos datos:
 
             // consulta volley para guardar datos
             request = new StringRequest(Request.Method.POST, url_consulta,
@@ -221,14 +202,12 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(VerYEditarRegistroDiario.this, "Error al actualizar el registro.", Toast.LENGTH_SHORT).show();
 
                         }
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                     Map<String, String> parametros = new HashMap<>();
                     parametros.put("fecha", fechaNueva);
                     parametros.put("descripcion", descripcionNueva);
@@ -243,4 +222,37 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             AppController.getInstance().addToRequestQueue(request);
         }
     }
+
+
+
+    /**************************************************************************************************
+     * Método que decide se ejecuta cuando se quiera volver atrás, bien con el botón del dispositivo,
+     * bien con el botón virtual de la barra de acciones de la aplicación
+     *************************************************************************************************/
+    @Override
+    public void onBackPressed(){
+        if (editando) { // Si se está editando (no se ha dado a guardar) y se pulsa Atrás, se pregunta si se está seguro
+            AlertDialog.Builder builder = new AlertDialog.Builder(VerYEditarRegistroDiario.this);
+            builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
+            builder.setMessage(R.string.contenido_dialog_salir_editar_sin_guardar)
+                    .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();// cerramos la actividad actual
+                        }
+                    })
+                    .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            Dialog dialog = builder.create();
+            dialog.show();
+        } else { // Si no se está editando o ya se ha guardado, se vuelve atrás
+            finish(); // cerramos la actividad actual
+        }
+    }
+
+
 }

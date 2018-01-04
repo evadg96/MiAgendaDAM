@@ -35,22 +35,20 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class PantallaLogin extends AppCompatActivity {
-    private Button btnIniciarSesion;
-    private Button btnRegistroUsuario;
-    private Button btnRecuperarClave;
-    private EditText txtNombreUsuario;
-    private EditText txtClave;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/check_usuario_existe.php";
-    private String url_consulta2 = "http://192.168.0.12/MiAgenda/update_isLogged.php";
-    private String url_consulta3 = "http://192.168.0.12/MiAgenda/check_isLocked.php";
-    private String url_consulta4 = "http://192.168.0.12/MiAgenda/update_isLocked.php";
-    private String url_consulta5 = "http://192.168.0.12/MiAgenda/check_isConfirmed.php";
-    private String url_consulta6 = "http://192.168.0.12/MiAgenda/check_clave.php";
-    private String url_consulta7 = "http://192.168.0.12/MiAgenda/check_num_intentos_login.php";
-    private String url_consulta8 = "http://192.168.0.12/MiAgenda/update_intentos_login.php";
-    private String url_consulta9 = "http://192.168.0.12/MiAgenda/update_fecha_bloqueo.php";
-    private String url_consulta10 = "http://192.168.0.12/MiAgenda/consulta_recuperar_correo.php";
-    private String url_consulta11 = "http://192.168.0.12/MiAgenda/consulta_recuperar_id_usuario.php";
+    private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave;
+    private EditText txtNombreUsuario, txtClave;
+
+//    private String url_consulta = "http://192.168.0.12/MiAgenda/check_usuario_existe.php";
+//    private String url_consulta2 = "http://192.168.0.12/MiAgenda/update_isLogged.php";
+//    private String url_consulta3 = "http://192.168.0.12/MiAgenda/check_isLocked.php";
+//    private String url_consulta4 = "http://192.168.0.12/MiAgenda/update_isLocked.php";
+//    private String url_consulta5 = "http://192.168.0.12/MiAgenda/check_isConfirmed.php";
+//    private String url_consulta6 = "http://192.168.0.12/MiAgenda/check_clave.php";
+//    private String url_consulta7 = "http://192.168.0.12/MiAgenda/check_num_intentos_login.php";
+//    private String url_consulta8 = "http://192.168.0.12/MiAgenda/update_intentos_login.php";
+//    private String url_consulta9 = "http://192.168.0.12/MiAgenda/update_fecha_bloqueo.php";
+//    private String url_consulta10 = "http://192.168.0.12/MiAgenda/consulta_recuperar_correo.php";
+//    private String url_consulta11 = "http://192.168.0.12/MiAgenda/consulta_recuperar_id_usuario.php";
 //
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.159/MiAgenda/update_isLogged.php";
@@ -66,9 +64,17 @@ public class PantallaLogin extends AppCompatActivity {
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/
-   // private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_datos_usuario3.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
-    //private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_update_isLogged.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
-    //private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_isLocked.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+    private String url_consulta = "http://miagendafp.000webhostapp.com/check_usuario_existe.php";
+    private String url_consulta2 = "http://miagendafp.000webhostapp.com/update_isLogged.php";
+    private String url_consulta3 = "http://miagendafp.000webhostapp.com/check_isLocked.php";
+    private String url_consulta4 = "http://miagendafp.000webhostapp.com/update_isLocked.php";
+    private String url_consulta5 = "http://miagendafp.000webhostapp.com/check_isConfirmed.php";
+    private String url_consulta6 = "http://miagendafp.000webhostapp.com/check_clave.php";
+    private String url_consulta7 = "http://miagendafp.000webhostapp.com/check_num_intentos_login.php";
+    private String url_consulta8 = "http://miagendafp.000webhostapp.com/update_intentos_login.php";
+    private String url_consulta9 = "http://miagendafp.000webhostapp.com/update_fecha_bloqueo.php";
+    private String url_consulta10 = "http://miagendafp.000webhostapp.com/consulta_recuperar_correo.php";
+    private String url_consulta11 = "http://miagendafp.000webhostapp.com/consulta_recuperar_id_usuario.php";
 
     static String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
@@ -76,6 +82,7 @@ public class PantallaLogin extends AppCompatActivity {
     static String correo_electronico=""; // será el email que le corresponde al usuario, y se obtendrá por consulta
     private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     private StringRequest request;
+
     public static String getFecha() {
         Date date = new Date();
         String fecha = date.toString();
@@ -91,7 +98,7 @@ public class PantallaLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_login);
-        setTitle("Inicio de sesión");
+        setTitle(R.string.title_activity_login);
         btnIniciarSesion = (Button) findViewById(R.id.btn_iniciar_sesion);
         btnRegistroUsuario = (Button) findViewById(R.id.btn_registrarse);
         btnRecuperarClave = (Button) findViewById(R.id.btn_recuperar_clave);

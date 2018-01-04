@@ -50,17 +50,21 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     static String codigo_de_confirmacion;
     private Session session;
     private StringRequest request;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/check_correo.php";
-    private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
+
+//    private String url_consulta = "http://192.168.0.12/MiAgenda/check_correo.php";
+//    private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
+
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/check_correo.php";
 //    private String url_consulta2 = "http://192.168.0.159/MiAgenda/clave_gmail.php";
-    // ************************************** SERVIDOR REMOTO *****************************************
-    //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_check_correo.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
+
+    private String url_consulta = "http://miagendafp.000webhostapp.com/check_correo.php";
+    private String url_consulta2 = "http://miagendafp.000webhostapp.com/clave_gmail.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reenviar_codigo_confirmacion);
-        setTitle("Reenviar código confirmación");
+        setTitle(R.string.title_activity_reenvia_codigo);
         btnEnviar = (Button) findViewById(R.id.btn_enviar);
         txtCorreo = (EditText) findViewById(R.id.editText_correo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

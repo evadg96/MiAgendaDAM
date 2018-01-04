@@ -43,15 +43,12 @@ public class NavMenu extends AppCompatActivity
     public static String nombre_de_usuario;
     static String correo_electronico;
     private StringRequest request;
-    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
+
+//    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
+    private String url_consulta = "http://miagendafp.000webhostapp.com/cerrar_sesion.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
-    public static boolean horasVacio = false;
-    public static boolean anotacionesVacio = false;
-    public static boolean contenidoRecoVacio = false;
-    public static boolean contenidoPersoVacio = false;
 
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,17 +86,8 @@ public class NavMenu extends AppCompatActivity
         correoUsuario.setText(correo_electronico);
         navigationView.setNavigationItemSelectedListener(this);
         System.out.println("ESTADO ACTUALIZADIARIO = "+actualizaDiario);
-        if (actualizaDiario){
-            System.out.println("Se ha actualizado algún registro. Refrescando fragmento...");
-            setTitle("Diario");
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // cargamos otra vez el fragmento para actualizar los registros
-            actualizaDiario = false; // lo devolvemos a su valor inicial
-            System.out.println("Fragmento refrescado.");
-        }  // hacer los mismo con todos los fragmentos
-        else {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto en el diario
-            setTitle("Diario");
-        }
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto en el diario
+        setTitle(R.string.opc_diario);
     }
 
     /***********************************************************************************************
@@ -126,29 +114,29 @@ public class NavMenu extends AppCompatActivity
         int id = item.getItemId();
         // OPCIONES DEL MENÚ LATERAL:
         if (id == R.id.nav_diario) {
-            setTitle("Diario");
+            setTitle(R.string.opc_diario);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit();
         } else if (id == R.id.nav_horas) {
-            setTitle("Horas");
+            setTitle(R.string.opc_horas);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new HorasFragment()).commit();
         } else if (id == R.id.nav_c_reco) {
-            setTitle("Contenidos recomendados");
+            setTitle(R.string.opc_mat_reco);
         } else if (id == R.id.nav_c_perso) {
-            setTitle("Contenidos personalizados");
+            setTitle(R.string.opc_mat_perso);
         } else if (id == R.id.nav_festivos) {
-            setTitle("Festivos y no lectivos");
+            setTitle(R.string.opc_festivos_no_lectivos);
         } else if (id == R.id.nav_contacto) {
-            setTitle("Contacto");
+            setTitle(R.string.opc_contacto);
         } else if (id == R.id.nav_cerrar_sesion) {
             cerrarSesion();
         } else if (id == R.id.nav_anotaciones) {
-            setTitle("Anotaciones");
+            setTitle(R.string.opc_anotaciones);
         } else if (id == R.id.nav_tutores) {
-            setTitle("Tutores");
+            setTitle(R.string.opc_tutores);
         } else if (id == R.id.nav_anteproyecto) {
-            setTitle("Anteproyecto");
+            setTitle(R.string.opc_anteproyecto);
         } else if (id == R.id.nav_perfil) {
-            setTitle("Mi perfil");
+            setTitle(R.string.opc_perfil);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -190,6 +178,4 @@ public class NavMenu extends AppCompatActivity
         AppController.getInstance().addToRequestQueue(request);
 
     }
-
-
 }

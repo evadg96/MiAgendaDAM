@@ -31,23 +31,25 @@ import es.proyecto.eva.miagendadam.R;
 import static es.proyecto.eva.miagendadam.Fragments.Diario.VerYEditarRegistroDiario.actualizaDiario;
 
 /***************************************************************************************************
- *  Pantalla que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)      *
+ *  Clase que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)         *
  *  y que sirve para crear un nuevo registro en el diario del usuario.                             *
  *  Contiene los campos de fecha, horas, descripción y valoración.                                 *
  **************************************************************************************************/
 public class NuevoRegistroDiario extends AppCompatActivity {
-    ImageButton btnBueno, btnRegular, btnMalo, btnInfoMinutos;
-    EditText txtFecha, txtHoras, txtMinutos, txtDescripcion;
-    private StringRequest request;
-    private String valoracionDia = "";
-    private String fecha, horas, minutos, descripcion, idUsuario = "";
-    private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_registro_diario.php";
+    ImageButton btnBueno, btnRegular, btnMalo, btnInfoMinutos; // botones de imagen de la valoración del día
+    EditText txtFecha, txtHoras, txtMinutos, txtDescripcion; // campos de texto de información del día
+    private StringRequest request; // petición volley
+    private String fecha, horas, minutos, descripcion, idUsuario = "", valoracionDia = "";
+
+//    private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_registro_diario.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/inserta_nuevo_registro_diario.php";
+    private String url_consulta = "http://miagendafp.000webhostapp.com/inserta_nuevo_registro_diario.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_registro_diario);
-        setTitle("Nuevo registro");
+        setTitle(R.string.title_activity_nuevo_registro_diario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btnBueno = (ImageButton) findViewById(R.id.btn_bueno);
         btnRegular = (ImageButton) findViewById(R.id.btn_regular);
@@ -87,6 +89,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 valoracionDia = "Malo";
             }
         });
+
+        // Botón de información que aparece al lado del campo de minutos para saber qué se debe poner
+        // en caso de que no haya minutos, por si no se diera por hecho
         btnInfoMinutos.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
@@ -103,10 +108,10 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         });
     }
 
+    // Añade los iconos a la barra de acciones (en este caso, el de guardar)
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_nuevo, menu); // la R referencia a la ubicación del archivo
-        return true; // .menu es el directorio, y .toolbar el archivo
+        getMenuInflater().inflate(R.menu.menu_nuevo, menu);
+        return true; // .menu es el directorio, y .menu_nuevo el archivo
     }
 
     /***********************************************************************************************
@@ -117,7 +122,6 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case R.id.menu_guardar: // Opción de guardar registro
-                Log.i("ActionBar", "Guardar!");
                 fecha = txtFecha.getText().toString();
                 horas = txtHoras.getText().toString();
                 minutos = txtMinutos.getText().toString();
@@ -160,12 +164,10 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("1")){
+                        if (response.equals("1")){ // Registro guardado con éxito
                             Toast.makeText(NuevoRegistroDiario.this, "Registro creado con éxito.", Toast.LENGTH_LONG).show();
                             System.out.println("Nuevo registro creado!");
-                            actualizaDiario = true; // para indicarle a la actividad NavMenu que queremos que recargue el fragmento
-                            Intent intent = new Intent (NuevoRegistroDiario.this, NavMenu.class); // llamamos al  nav menu para refrescar el fragmento y
-                            startActivity(intent);
+                            onBackPressed();
                         } else {
                             Toast.makeText(NuevoRegistroDiario.this, "Se ha producido un error. No se ha podido guardar el registro.", Toast.LENGTH_LONG).show();
                         }
@@ -175,7 +177,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(NuevoRegistroDiario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NuevoRegistroDiario.this, "No se ha podido establecer la conexión con el servidor.", Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -194,7 +196,4 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         };
         AppController.getInstance().addToRequestQueue(request);
     }
-
-
-
 }

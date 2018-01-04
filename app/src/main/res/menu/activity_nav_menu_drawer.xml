@@ -58,7 +58,7 @@
         <menu>
             <item
                 android:id="@+id/nav_contacto"
-                android:icon="@android:drawable/ic_dialog_email"
+                android:icon="@drawable/ic_mail_outline_black_24dp"
                 android:title="@string/opc_contacto" />
             <item
                 android:id="@+id/nav_cerrar_sesion"

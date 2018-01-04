@@ -1,18 +1,14 @@
 package es.proyecto.eva.miagendadam.Fragments.Diario;
 
-import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.style.BackgroundColorSpan;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,16 +31,25 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 import static es.proyecto.eva.miagendadam.NavMenu.nombre_de_usuario;
 
+/***************************************************************************************************
+ * Fragmento de la opción Diario que se incluye en la actividad NavMenu. Se muestra por defecto
+ * al abrirse la aplicación tras haber iniciado sesión, o bien al seleccionar la opción manualmente
+ * en el listado de opciones del menú desplegable lateral de la aplicación.
+ * Obtiene los registros de diario del usuario activo y los muestra en un listado.
+ * Permite la creación y edición de los registros interactuando para ello con otras actividades
+ * (NuevoRegistroDiario, que se arranca al pulsar sobre el botón "+" de abajo, y VerYEditarRegistroDiario,
+ * que se arranca al pulsar sobre algún registro del listado).
+ * Por defecto el fragmento aparecerá por primera vez con un breve texto indicando que aún no existen
+ * registros. Este texto desaparecerá en el momento en el que se cree algún registro.
+ **************************************************************************************************/
 public class DiarioFragment extends Fragment {
     FloatingActionButton btnNuevo;
     ListView listaResultado;
     TextView txt;
-    // Datos obtenidos de la base de datos
-    public static String idDia;
+    // Datos obtenidos para mostrar en el listado
     public static String fecha;
     public static String horas;
     public static String minutos;
-    public static String descripcion;
     public static String valoracion;
 
     // Datos del item seleccionado que se van a mostrar al pulsar sobre un registro
@@ -54,19 +59,20 @@ public class DiarioFragment extends Fragment {
     public static String minutos_seleccionados;
     public static String descripcion_seleccionada;
     public static String valoracion_seleccionada;
-    public boolean diarioVacio = false;
-    private ArrayList<String> valoraciones = new ArrayList<>();
-    private String valoracion_actual = "";
-    private StringRequest request;
-    public static JSONArray jsonArrayDiario;
-    ArrayList <String> arrayFechas = new ArrayList<>();
-    ArrayList <String> arrayHoras = new ArrayList<>();
-    ArrayList <String> arrayMinutos = new ArrayList<>();
-    ArrayList <String> arrayValoraciones = new ArrayList<>();
-    AdaptadorListaDiario adaptador;
 
-    private String url_consulta = "http://192.168.0.12/MiAgenda/select_dias.php";
+    private StringRequest request; // petición volley
+    public static JSONArray jsonArrayDiario; // array JSON con los registros obtenidos de la base de datos
+    ArrayList <String> arrayFechas = new ArrayList<>(); // array en el que introduciremos las fechas obtenidas
+    ArrayList <String> arrayHoras = new ArrayList<>(); // array en el que introduciremos las horas obtenidas
+    ArrayList <String> arrayMinutos = new ArrayList<>(); // array en el que introduciremos los minutos obtenidos
+    ArrayList <String> arrayValoraciones = new ArrayList<>(); // array en el que introduciremos las valoraciones obtenidas
+    AdaptadorListaDiario adaptador; // objeto de la clase AdaptadorListaDiario que utilizaremos como adaptador personalizado para
+    // nuestra lista de registros
+
+//    private String url_consulta = "http://192.168.0.12/MiAgenda/select_dias.php";
 //    private String  url_consulta = "http://192.168.0.159/MiAgenda/select_dias.php";
+    private String url_consulta = "http://miagendafp.000webhostapp.com/select_dias.php";
+
 
     public DiarioFragment() {
         // Required empty public constructor
@@ -96,7 +102,7 @@ public class DiarioFragment extends Fragment {
             }
         });
 
-        // Al pulsar sobre algún item de la lista (sobre algún registro del diario):
+        // Al pulsar sobre algún item de la lista (sobre algún registro del diario) lo mostramos en detalle en otra actividad:
         listaResultado.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> customerAdapter, View footer, int selectedInt, long selectedLong) {
@@ -130,6 +136,35 @@ public class DiarioFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        System.out.println("ON ACTIVITY CREATED");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        System.out.println("ON ATTACH");
+    }
+
+    // Se ejecuta cuando el fragmento se pausa, al abrir otra actividad o fragmento
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("ON PAUSE");
+    }
+
+    // Se ejecuta al volver al fragmento cuando éste ya se había cargado alguna vez previamente
+    // Aquí obtendremos de nuevo los registros, por si volvemos de actualizar o crear alguno, para
+    // tener el listado actualizado con los últimos cambios hechos
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("ON RESUME");
+        obtenerRegistrosDiario();
+    }
+
     /***********************************************************************************************
      * Método que obtiene los registros del usuario de la opción "Diario"
      **********************************************************************************************/
@@ -142,9 +177,9 @@ public class DiarioFragment extends Fragment {
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene registros en el diario
                                 txt.setText(R.string.texto_diario_vacio);
                                 System.out.println("EL USUARIO NO TIENE REGISTROS DE DIARIO");
-                            } else {
+                            } else { // El usuario tiene registros
                                 try {
-                                    txt.setText("");
+                                    txt.setText(""); // ponemos el texto de que no hay registros en blanco por si acaso, y obtenemos datos
                                     response = response.replace("][", ","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
                                     // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
                                     // DENTRO DE UN ÚNICO ARRAY
@@ -166,8 +201,7 @@ public class DiarioFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(getActivity(), "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Se ha producido un error al intentar con el servidor.", Toast.LENGTH_LONG).show();
 
                     }
                 }) {
@@ -184,35 +218,37 @@ public class DiarioFragment extends Fragment {
     }
 
     /*********************************************************************************************************
-     * Método que carga los registros de diario del usuario activo obtenidos en un ListView
+     * Método que carga los registros de diario del usuario activo obtenidos en un ListView personalizado
      ********************************************************************************************************/
     private void cargarRegistros() {
         arrayFechas = new ArrayList<>();
         arrayHoras = new ArrayList<>();
         arrayMinutos = new ArrayList<>();
-        for (int i = 0; i < jsonArrayDiario.length(); i++){
+        arrayValoraciones = new ArrayList<>();
+        for (int i = 0; i < jsonArrayDiario.length(); i++){ // hasta que se hayan obtenido todos los registros:
             try {
-                fecha = jsonArrayDiario.getJSONObject(i).getString("fecha");
-                arrayFechas.add("Día " + fecha);
-                horas = jsonArrayDiario.getJSONObject(i).getString("horas");
-                arrayHoras.add(horas + " horas");
-                minutos = jsonArrayDiario.getJSONObject(i).getString("minutos");
+                fecha = jsonArrayDiario.getJSONObject(i).getString("fecha"); // obtenemos fecha
+                arrayFechas.add("Día " + fecha); // la añadimos al array de fechas
+                horas = jsonArrayDiario.getJSONObject(i).getString("horas"); // obtenemos horas
+                arrayHoras.add(horas + " horas"); // las añadimos al array de horas
+                minutos = jsonArrayDiario.getJSONObject(i).getString("minutos"); // obtenemos minutos
                 if (Integer.valueOf(minutos) > 0){ // si hay minutos se añaden
                     arrayMinutos.add(" y "+ minutos + " minutos");
-                } else if (Integer.valueOf(minutos) < 1){ // si no se deja en blanco
+                } else if (Integer.valueOf(minutos) < 1){ // si no se deja en blanco para no poner un 0
                     arrayMinutos.add("");
                 }
-                valoracion = jsonArrayDiario.getJSONObject(i).getString("valoracion");
-                arrayValoraciones.add(valoracion);
-            } catch (Exception e){
+                valoracion = jsonArrayDiario.getJSONObject(i).getString("valoracion"); // obtenemos valoración
+                arrayValoraciones.add(valoracion); // las añadimos al array de valoraciones
+            } catch (Exception e){ // Error al intentar obtener los datos
                 e.printStackTrace();
             }
         }
-        // recorremos el array para comprobar que los datos son correctos
+        // Recorremos un array para comprobar que los datos son correctos (para verlo en la consola de Android Studio)
         for (int x = 0; x < arrayFechas.size(); x++){
             System.out.println("FECHA "+ x + ": " +arrayFechas.get(x));
         }
+        // creamos adaptador personalizado a nuestra lista de registros
         adaptador = new AdaptadorListaDiario(getActivity(), arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones);
-        listaResultado.setAdapter(adaptador);
+        listaResultado.setAdapter(adaptador); // lo asociamos a la lista
     }
 }

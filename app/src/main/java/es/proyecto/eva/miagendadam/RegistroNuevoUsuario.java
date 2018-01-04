@@ -58,10 +58,14 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     EditText txtClave;
     EditText txtClave2;
 
-     private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_usuario.php";
-     private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
+//     private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_usuario.php";
+//     private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
+
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/inserta_nuevo_usuario.php";
 //    private String url_consulta2 = "http://192.168.0.159/MiAgenda/clave_gmail.php";
+
+    private String url_consulta = "http://miagendafp.000webhostapp.com/inserta_nuevo_usuario.php";
+    private String url_consulta2 = "http://miagendafp.000webhostapp.com/clave_gmail.php";
 
     public String getFecha() {
         Date date = new Date();
@@ -70,8 +74,6 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     }
     private String fecha_registro = getFecha();
 
-    // **************************************** SERVIDOR REMOTO ************************************************************
-    //private String url_consulta = "http://miagendafp.000webhostapp.com/consulta_inserta_nuevo_usuario.php?host=localhost&user=id3714609_miagendafp_admin&bd=id3714609_1_miagenda";
     public static String correo = "";
     private static int codigoConfirmacion;
     private static String sCodigoConfirmacion;
@@ -92,7 +94,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_nuevo_usuario);
-        setTitle("Registro");
+        setTitle(R.string.title_activity_registro_usuario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // para VER la flecha atrás en el actionbar
         btnRegistro = (Button) findViewById(R.id.btn_registrarse);
         txtNombre = (EditText) findViewById(R.id.editText_nombre);

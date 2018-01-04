@@ -1,22 +1,23 @@
 <resources>
     <string name="app_name">Mi agenda FP</string>
-    <string name="title_activity_login">Inicio de sesión</string>
     <string name="version_num" translatable="false">1.0</string>
-    
-    <!-- Strings pantalla carga -->
-   <string name="title_dialog_conexion">Error de conexión</string>
+
+ <!-- Strings PantallaCarga -->
+ <string name="title_dialog_conexion">Error de conexión</string>
     <string name="info_conexion">¡Vaya, parece que no tienes conexión a internet! Mi Agenda FP necesita una conexión a
     internet para poder funcionar correctamente.</string>
-    
-    
-    <!-- Strings LOGIN -->
+
+
+ <!-- Strings PantallaLogin -->
+    <string name="title_activity_login">Inicio de sesión</string>
     <string name="hint_nombre_usuario">Nombre de usuario</string>
     <string name="hint_clave">Contraseña</string>
     <string name="btn_iniciar_sesion">Iniciar sesión</string>
     <string name="btn_registrar_usuario">Registrarse</string>
     <string name="btn_recuperar_clave">He olvidado mis datos de usuario :(</string>
 
-    <!-- Strings registro -->
+    <!-- Strings pantalla RegistroNuevoUsuario -->
+    <string name="title_activity_registro_usuario">Registro</string>
     <string name="sNombre">Nombre</string>
     <string name="sApe_uno">Apellidos</string>
     <string name="sApe_dos">Segundo apellido</string>
@@ -31,7 +32,7 @@
     <string name="sClave">Contraseña (entre 8 y 20 caracteres)</string>
     <string name="sClave2">Repite la contraseña</string>
 
-    <!-- Strings diálogo Registro -->
+    <!-- diálogo registro -->
     <string name="btn_aceptar_dialog">Aceptar</string>
     <string name="title_dialog_registro_correcto">¡Registro (casi) completado!</string>
     <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa
@@ -44,11 +45,13 @@
     <string name="btn_cancelar_confirm">Cancelar</string>
 
     <!-- Strings activity ConfirmaRegistro -->
+    <string name="title_activity_confirma_registro">Confirmación de registro</string>
     <string name="hint_codigo_confirmacion">Código de confirmación</string>
     <string name="btn_confirmar">Confirmar registro</string>
     <string name="btn_reenviar_codigo">Reenviar código de confirmación</string>
 
     <!-- Strings activity ReenviarCodigoConfirmacion -->
+    <string name="title_activity_reenvia_codigo">Reenviar código de confirmación</string>
     <string name="hint_reenviar_correo">Correo electrónico</string>
     <string name="btn_enviar">Enviar código</string>
     <string name="title_activity_nav_menu">NavMenu</string>
@@ -57,6 +60,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- activity RecuperarClave -->
+    <string name="title_activity_recuperar_datos">Recuperación datos de usuario</string>
     <string name="btn_clave_nueva">Solicitar contraseña nueva</string>
     <string name="btn_recupera_usuario">Recordar nombre de usuario</string>
     <string name="txt_instrucciones_recuperar_clave">Para poder enviarte una contraseña nueva necesitamos que nos indiques tu
@@ -81,8 +85,9 @@
     <string name="opc_tutores">Tutores</string>
     <string name="nombre_usuario_menu">Nombre de usuario</string>
     <string name="correo_usuario_menu">Correo electrónico</string>
-    
-    <!-- Strings acerca de pantalla login-->
+
+ <!-- Strings acerca de pantalla login-->
+ <string name="title_activity_acerca_de">Acerca de</string>
     <string name="acerca_de">Esta aplicacion se ha realizado como proyecto final de la alumna Eva Díaz García para el ciclo formativo
     de grado superior Desarrollo de Aplicaciones Multiplataforma para el IES María Moliner.</string>
     <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo y, en menor medida, del proyecto final.
@@ -108,6 +113,7 @@
     <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
 
     <!-- Strings pantalla NuevoRegistroDiario -->
+ <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
     <string name="fecha_registro">Fecha (dd/mm/aa)</string>
     <string name="horas_registro">Horas</string>
     <string name="minutos_registro">Minutos</string>
