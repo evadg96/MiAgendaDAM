@@ -24,7 +24,6 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.NavMenu;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
@@ -36,6 +35,10 @@ import static es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment.descri
 import static es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment.valoracion_seleccionada;
 
 
+/***************************************************************************************************
+ * Clase que permite la visualización y actualización de datos de un registro seleccionado del
+ * listado de registros de diario del usuario activo
+ **************************************************************************************************/
 public class VerYEditarRegistroDiario extends AppCompatActivity {
     EditText txtFechaSeleccionada, txtHorasSeleccionadas, txtMinutosSeleccionados, txtDescripcionSeleccionada;
     ImageButton btnValoracionSeleccionadaBueno, btnValoracionSeleccionadaRegular, btnValoracionSeleccionadaMalo;
@@ -83,6 +86,11 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         }
     }
 
+    /***********************************************************************************************
+     * Crea el menú de opciones de la barra de acciones
+     * @param menu
+     * @return
+     **********************************************************************************************/
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_editar, menu); // la R referencia a la ubicación del archivo
@@ -90,7 +98,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             menu.findItem(R.id.menu_actualizar).setVisible(true);
             menu.findItem(R.id.menu_editar).setVisible(false);
         }
-        return true; // .menu es el directorio, y .menu_editar
+        return true; // .menu es el directorio, y .menu_editar la capa
     }
 
     /***********************************************************************************************
@@ -101,11 +109,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case R.id.menu_actualizar: // Opción de guardar el registro actualizado
-                Log.i("ActionBar", "Guardar!");
                 actualizarRegistro();
                 return true;
             case R.id.menu_editar: // Opción de editar el registro
-                Log.i("ActionBar", "Editar!");
                 modoEditar(); // entramos en "modo edición", habilitamos campos para escribir en ellos
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
@@ -191,18 +197,18 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             if (response.equals("1")) {
-                                Toast.makeText(VerYEditarRegistroDiario.this, "Registro actualizado con éxito.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(VerYEditarRegistroDiario.this, R.string.toast_cambios_guardados, Toast.LENGTH_LONG).show();
                                 System.out.println("Registro actualizado!");
                                 invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente
                             } else {
-                                Toast.makeText(VerYEditarRegistroDiario.this, "Se ha producido un error. No se ha podido actualizar el registro.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_actualizar_registro, Toast.LENGTH_LONG).show();
                             }
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(VerYEditarRegistroDiario.this, "Error al actualizar el registro.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                         }
                     }) {
@@ -222,7 +228,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             AppController.getInstance().addToRequestQueue(request);
         }
     }
-
 
 
     /**************************************************************************************************

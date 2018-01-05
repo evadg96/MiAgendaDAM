@@ -27,7 +27,6 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
-import static es.proyecto.eva.miagendadam.Fragments.Diario.VerYEditarRegistroDiario.actualizaDiario;
 
 
 /***************************************************************************************************
@@ -58,18 +57,8 @@ public class NavMenu extends AppCompatActivity
         setSupportActionBar(toolbar);
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        // ****************** ¡¡¡¡ UTILIZAR ESTE FRAGMENTO CADA VEZ QUE SE QUIERA REFERENCIAR AL NOMBRE DE USUARIO ALMACENADO POR LA APLICACIÓN !!!! **********************
         nombre_de_usuario = preferences.getString("nombre_de_usuario", ""); // habiendo declarado la variable CON EL MISMO NOMBRE arriba
-        // ****************************************************************************************************************************************************************
         correo_electronico = preferences.getString("correo_de_usuario", "");
-
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -85,24 +74,14 @@ public class NavMenu extends AppCompatActivity
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
         correoUsuario.setText(correo_electronico);
         navigationView.setNavigationItemSelectedListener(this);
-        System.out.println("ESTADO ACTUALIZADIARIO = "+actualizaDiario);
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto en el diario
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_diario);
     }
 
-    /***********************************************************************************************
-     *      Acciones a realizar al pulsar el botón Atrás                                           *
-     **********************************************************************************************/
+    // Al pulsar el botón de Atrás
     @Override
     public void onBackPressed() {
-        // COMENTO T0DO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
-        // PANTALLA, NO SE PUEDA VOLVER A LA PANTALLA DE LOGIN.
-       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-       // if (drawer.isDrawerOpen(GravityCompat.START)) {
-       //     drawer.closeDrawer(GravityCompat.START);
-       // } else {
-       //     super.onBackPressed();
-       // }
+        // Dejamos en blanco para que no se haga nada
     }
 
     /***********************************************************************************************
@@ -162,8 +141,7 @@ public class NavMenu extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(NavMenu.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NavMenu.this, "Se ha producido un error al conectar con el servidor.", Toast.LENGTH_LONG).show();
 
                     }
                 }) {

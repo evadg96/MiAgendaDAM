@@ -194,14 +194,14 @@ public class DiarioFragment extends Fragment {
                                 }
                             }
                         } else { // si no hay preferencias, es decir, no hay datos del usuario (cosa improbable), notificamos
-                            Toast.makeText(getActivity(), "No se pudo obtener el nombre de usuario.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.error_no_hay_usuario, Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "Se ha producido un error al intentar con el servidor.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
 
                     }
                 }) {

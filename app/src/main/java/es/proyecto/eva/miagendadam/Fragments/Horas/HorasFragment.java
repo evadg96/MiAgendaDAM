@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import es.proyecto.eva.miagendadam.R;
 
+/***************************************************************************************************
+ * Fragmento de la opción Horas que permite la visualización de las horas de prácticas que lleva
+ * trabajadas el usuario activo, así como de las horas restantes para finalizar el módulo.
+ **************************************************************************************************/
 public class HorasFragment extends Fragment {
     public HorasFragment() {
         // Required empty public constructor

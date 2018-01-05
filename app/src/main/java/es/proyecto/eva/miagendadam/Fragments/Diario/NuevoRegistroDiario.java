@@ -165,11 +165,11 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("1")){ // Registro guardado con éxito
-                            Toast.makeText(NuevoRegistroDiario.this, "Registro creado con éxito.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(NuevoRegistroDiario.this, R.string.toast_registro_creado, Toast.LENGTH_LONG).show();
                             System.out.println("Nuevo registro creado!");
                             onBackPressed();
                         } else {
-                            Toast.makeText(NuevoRegistroDiario.this, "Se ha producido un error. No se ha podido guardar el registro.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(NuevoRegistroDiario.this, R.string.error_registro, Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -177,7 +177,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(NuevoRegistroDiario.this, "No se ha podido establecer la conexión con el servidor.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {

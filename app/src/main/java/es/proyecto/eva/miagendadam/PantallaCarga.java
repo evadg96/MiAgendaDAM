@@ -68,9 +68,7 @@ public class PantallaCarga extends AppCompatActivity {
 //    private String url_consulta2 = "http://192.168.0.159/MiAgenda/check_isConfirmed.php";
 //    private String url_consulta3 = "http://192.168.0.159/MiAgenda/update_fechaLogin.php";
 //    private String url_consulta4 = "http://192.168.0.159/MiAgenda/check_isLocked.php";
-    /***********************************************************************************************
-     *                            SERVIDOR REMOTO (no funciona desde día 01/12)
-     **********************************************************************************************/
+
     private String url_consulta = "http://miagendafp.000webhostapp.com/check_isLogged.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/check_isConfirmed.php";
     private String url_consulta3 = "http://miagendafp.000webhostapp.com/update_fechaLogin.php";
@@ -203,7 +201,7 @@ public class PantallaCarga extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Se ejecuta cuando algo sale mal en la consulta
-                        Toast.makeText(PantallaCarga.this, "Error en la comprobación de bloqueo del usuario.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaCarga.this, "Se ha producido un error al conectar con el servidor.", Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -222,12 +220,17 @@ public class PantallaCarga extends AppCompatActivity {
     /*******************************************************************************************
      *  Método que comprueba si el usuario ha confirmado su registro (estado isConfirmed)
      ******************************************************************************************/
+
+    // En teoría esta comprobación no sería necesaria, porque la preferencia de nombre de usuario
+    // no se guarda hasta que no se haga un login correcto, y para hacer el login correcto se tiene
+    // que tener la cuenta confirmada. Por tanto esta comprobación nunca dará que no está confirmado,
+    // salvo que lo cambiase el administrador desde la base de datos y el usuario de la aplicación
+    // ya hubiese hecho inicios de sesión correctos previos
     public void check_isConfirmed(){
             request = new StringRequest(Request.Method.POST, url_consulta2,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                             try {
                                 if (response.equals("0")) { // si devuelve 0 significará que no ha confirmado su registro
                                     // así que le mandamos a la pantalla de confirmación de registro para que introduzca
@@ -255,7 +258,7 @@ public class PantallaCarga extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                            Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                             System.out.println("ERROR ONCREATE() HAS COMPROBADO SI LA IP ES CORRECTA?");
                         }
                     }) {
@@ -314,7 +317,7 @@ public class PantallaCarga extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                            Toast.makeText(PantallaCarga.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                             System.out.println("ERROR COMPRUEBALOGIN();");
                         }
                     }) {
@@ -348,7 +351,7 @@ public class PantallaCarga extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaCarga.this, "No se ha podido actualizar la fecha de inicio de sesión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR ACTUALIZAFECHALOGIN()");
                     }
                 }) {

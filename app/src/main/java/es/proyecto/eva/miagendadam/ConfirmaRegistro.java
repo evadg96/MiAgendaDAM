@@ -100,7 +100,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             if (response.equals("0")) { // NO EXISTE el usuario en la bd
-                                Toast.makeText(ConfirmaRegistro.this, "No hay ningún usuario registrado con ese correo.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
                             } else if(response.equals("1")){ // SÍ EXISTE, comprobamos código de confirmación:
                                 request = new StringRequest(Request.Method.POST, url_consulta,
                                         new Response.Listener<String>() {
@@ -112,11 +112,10 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                     if (codigo.equals(codigo_de_confirmacion)) { // EL CÓDIGO ES CORRECTO
                                                         // Creamos diálogo alerta de aviso que lleva a pantalla login
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmaRegistro.this);
-                                                        builder.setMessage("¡Usuario confirmado! Ya puedes iniciar sesión.")
-                                                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                                        builder.setMessage(R.string.dialog_confirmacion_correcta)
+                                                                .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
                                                                     public void onClick(DialogInterface dialog, int id) {
-                                                                        Intent intent = new Intent(ConfirmaRegistro.this, PantallaLogin.class);
-                                                                        startActivity(intent); // arrancamos la actividad PantallaLogin una vez se ha confirmado
+                                                                        finish(); // cerramos la actividad para volver a pantalla de inicio de sesión
                                                                     }
                                                                 })
                                                                 .setNegativeButton(R.string.btn_cancelar_confirm, new DialogInterface.OnClickListener() {
@@ -129,10 +128,10 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                         Dialog dialog = builder.create();
                                                         dialog.show(); // mostramos el diálofo
                                                     } else { // El código NO es correcto
-                                                        Toast.makeText(ConfirmaRegistro.this, "El código introducido no es correcto.", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
                                                     }
                                                 } else { // Si no hay codigo de confirmación en las preferencias, le decimos que ha expirado, para que solicite uno nuevo
-                                                    Toast.makeText(ConfirmaRegistro.this, "El código ha expirado o no hay ningún usuario que confirmar. Solicite uno nuevo.", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_expirado, Toast.LENGTH_LONG).show();
                                                 }
                                             }
                                         },
@@ -140,7 +139,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Toast.makeText(ConfirmaRegistro.this, "Error al confirmar el registro. Por favor, vuelva a intentarlo.", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(ConfirmaRegistro.this, R.string.error_confirmar_registro, Toast.LENGTH_LONG).show();
 
                                             }
                                         }) {
@@ -164,8 +163,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                            Toast.makeText(ConfirmaRegistro.this, "Se ha producido un error al comprobar el correo electrónico. Por favor, vuelva a intentarlo.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ConfirmaRegistro.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override
@@ -179,30 +177,26 @@ public class ConfirmaRegistro extends AppCompatActivity {
             };
             AppController.getInstance().addToRequestQueue(request);
         } else { // si el campo de nombre de usuario está vacío
-            Toast.makeText(ConfirmaRegistro.this, "Debes introducir tu correo electrónico.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ConfirmaRegistro.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Al pulsar el botón de atrás de la barra de acciones, se dirige a la pantalla login
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Al pulsar el icono de la flecha atrás de la barra de acciones
             case android.R.id.home:
                 // Para que no nos mande de vuelta al registro recién hecho, porque esta pantalla se abre
                 // por primera vez al terminar el registro de nuevo usuario
-                Intent intent = new Intent (ConfirmaRegistro.this, PantallaLogin.class);
-                startActivity(intent);
+               onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
 
     /***********************************************************************************************
-     * Método que "inhabilita" la vuelta atrás al pulsar la flecha de ir hacia atrás del dispositivo,
-     * para que no pueda volver al formulario de registro cuando le aparezca la pantalla de confirmación
-     * de registro por primera vez.
+     * Al pulsar hacia atrás se cierra la actividad
      **********************************************************************************************/
     public void onBackPressed(){
-        // dejamos en blanco, no hace nada
+        finish(); // cerramos la actividad al volver hacia atrás
     }
 }

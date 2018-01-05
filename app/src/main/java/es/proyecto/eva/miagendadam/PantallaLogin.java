@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +26,6 @@ import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 
-import java.sql.SQLOutput;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,8 +102,8 @@ public class PantallaLogin extends AppCompatActivity {
         btnRecuperarClave = (Button) findViewById(R.id.btn_recuperar_clave);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
-        // AL HACER CLICK EN LOS BOTONES...
 
+        // AL HACER CLICK EN LOS BOTONES...
         // Botón Registrarse, abre actividad de RegistroNuevoUsuario
         btnRegistroUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,11 +113,11 @@ public class PantallaLogin extends AppCompatActivity {
             }
         });
 
-        // Botón He olvidado mi contraseña, abre actividad de RecuperarClave
+        // Botón He olvidado mi contraseña, abre actividad de RecuperarDatosUsuario
         btnRecuperarClave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PantallaLogin.this, RecuperarClave.class);
+                Intent intent = new Intent(PantallaLogin.this, RecuperarDatosUsuario.class);
                 startActivity(intent);
             }
         });
@@ -134,12 +132,12 @@ public class PantallaLogin extends AppCompatActivity {
                 fecha_ultimo_login = getFecha();
                 System.out.println("HORA ACTUAL: "+ getFecha());
                 if (nUsuario.isEmpty()) { // validamos que el campo no se haya dejado en blanco
-                    Toast.makeText(PantallaLogin.this, "Debes introducir un nombre de usuario.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PantallaLogin.this, R.string.error_introducir_nombre_usuario, Toast.LENGTH_SHORT).show();
                 } else {
                     if (clave.isEmpty()) {
-                        Toast.makeText(PantallaLogin.this, "Debes introducir una clave.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_introducir_clave, Toast.LENGTH_SHORT).show();
                     } else {
-                        System.out.println("DATOS INTRODUCIDOS!!!!!!!!: " + nUsuario + " " + clave);
+                        System.out.println("DATOS INTRODUCIDOS: " + nUsuario + " " + clave);
                         compruebaDatos();
                     }
 
@@ -162,14 +160,13 @@ public class PantallaLogin extends AppCompatActivity {
                             // siempre los intentos a 0, así que siempre se ejecutará este método.
                             // Validamos para que no se cambie la fecha de bloqueo cada vez que se ejecute el método.
                             actualizaFechaBloqueo();
-                            System.out.println("NO ESTABA BLOQUEADO (RESPUESTA = "+response+")");
                             System.out.println(fecha_bloqueo);
                             System.out.println("BLOQUEO CORRECTO DESDE MÉTODO BLOQUEARUSUARIO :)");
-                            Toast toast = Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_bloqueo_realizado, Toast.LENGTH_LONG);
                             toast.show();
-                        } else {
+                        } else { // El usuario ya estaba bloqueado, no actualizamos fecha ni bloqueamos.
                             System.out.println("YA ESTABA BLOQUEADO. NO SE ACTUALIZA LA FECHA.");
-                            Toast toast = Toast.makeText(PantallaLogin.this, "Usuario bloqueado. Contacte con soporte.", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_usuario_bloqueado, Toast.LENGTH_LONG);
                             toast.show();
                         }
                     }
@@ -179,7 +176,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR BLOQUEARUSUARIO()");
                     }
                 }) {
@@ -214,7 +211,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR ACTUALIZAFECHABLOQUEO()");
                     }
                 }) {
@@ -244,9 +241,8 @@ public class PantallaLogin extends AppCompatActivity {
                                 System.out.println("SÍ ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :) )");
                                 loginCorrecto();
                             } else { // NO está confirmado, obligamos a confirmar
-                                System.out.println(" NOOOOO ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :( )");
+                                System.out.println(" NO ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :( )");
                                 // no hace falta comprobar isLogged, porque lógicamente es imposible que esté en 1 si no ha confirmado su registro
-                                System.out.println("USUARIO NO CONFIRMADO DESDE MÉTODO COMPRUEBADATOS");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(PantallaLogin.this);
                                 builder.setMessage(R.string.text_dialog_confirm)
                                         .setPositiveButton(R.string.btn_aceptar_confirm, new DialogInterface.OnClickListener() {
@@ -261,7 +257,7 @@ public class PantallaLogin extends AppCompatActivity {
                                                 // Al dar a cancelar la ventana simplemente se cierra.
                                             }
                                         });
-                                // Create the AlertDialog object and return it
+                                // Creamos el diálogo y lo mostramos
                                 Dialog dialog = builder.create();
                                 dialog.show();
                             }
@@ -274,7 +270,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR ONCREATE() HAS COMPROBADO SI LA IP ES CORRECTA?");
                     }
                 }) {
@@ -305,7 +301,7 @@ public class PantallaLogin extends AppCompatActivity {
                         } else {
                             // LE PROHIBIMOS ACCEDER
                             System.out.println("SÍ ESTÁ BLOQUEADO DESDE CHECKISLOCKED :(");
-                            Toast.makeText(PantallaLogin.this, "El usuario está bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaLogin.this, R.string.aviso_usuario_bloqueado, Toast.LENGTH_SHORT).show();
                             System.out.println("USUARIO BLOQUEADO.");
                         }
                     }
@@ -315,7 +311,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -360,7 +356,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR BLOQUEARUSUARIO()");
                     }
                 }) {
@@ -389,18 +385,18 @@ public class PantallaLogin extends AppCompatActivity {
                             int intentos_restantes = Integer.valueOf(response);
                             System.out.println("RESPUESTA: "+ response);
                             if (intentos_restantes > 0) { //  mientras quede algún intento, se siguen restando
-                                Toast.makeText(PantallaLogin.this, "La clave introducida no es correcta. Intentos restantes: " + intentos_restantes, Toast.LENGTH_LONG).show();
+                                Toast.makeText(PantallaLogin.this, R.string.aviso_clave_incorrecta + intentos_restantes, Toast.LENGTH_LONG).show();
                                 intentos_restantes--; // restamos un intento
                                 intentos_login = String.valueOf(intentos_restantes);
                                 actualizaIntentos();
                                 System.out.println("INTENTOS RESTANTES: "+intentos_restantes);
                                 System.out.println("INTENTOS LOGIN: "+intentos_login);
                                 if (intentos_restantes == 1) {
-                                    Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo te quedan "+ (intentos_restantes+1)+ " intentos restantes. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_pocos_intentos_restantes + (intentos_restantes+1)+ R.string.aviso_pocos_intentos_restantes_2, Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     toast.show();
                                 }
-                            } else { // cuando estén en 0, se bloquea
+                            } else { // Cuando los intentos se agoten, es decir, estén en 0, se bloquea al usuario
                                 bloquearUsuario();
                             }
                         } catch (Exception e) {
@@ -413,7 +409,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR RESTAINTENTOS()");
                     }
                 }) {
@@ -445,7 +441,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR ACTUALIZAINTENTOS()");
                     }
                 }) {
@@ -480,7 +476,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         System.out.println("ERROR ACTUALIZAINTENTOS()");
                     }
                 }) {
@@ -516,7 +512,7 @@ public class PantallaLogin extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("2")) { // ERROR: usuario no existe
                             try {
-                                Toast.makeText(PantallaLogin.this, "No existe ningún usuario con ese nombre.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PantallaLogin.this, R.string.error_usuario_no_existe, Toast.LENGTH_SHORT).show();
                                 System.out.println("RESPUESTA 2: USUARIO NO EXISTE");
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -539,7 +535,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -576,7 +572,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -613,7 +609,7 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -640,13 +636,14 @@ public class PantallaLogin extends AppCompatActivity {
         reseteaIntentos();
         // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
         ProgressDialog progressDialog = new ProgressDialog(PantallaLogin.this);
-        progressDialog.setTitle("Cargando");
-        progressDialog.setMessage("Comprobando datos. Por favor, espere un momento.");
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Comprobando datos. Por favor, espera un momento.");
         progressDialog.show();
         System.out.println("LOGIN CORRECTO :)");
+        // Cargamos la pantalla principal de la aplicación
         Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
         startActivity(intent);
-        // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga.
+        // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga en la próxima apertura de la app.
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
                     @Override
@@ -659,8 +656,7 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -702,7 +698,7 @@ public class PantallaLogin extends AppCompatActivity {
     }
 
     /***********************************************************************************************
-     * Programamos acciones con las pulsaciones de las opciones del menú
+     * Iconos de acciones del menú de la barra de acciones
      * @param item
      * @return
      **********************************************************************************************/
@@ -710,7 +706,6 @@ public class PantallaLogin extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_acerca_de:
-                Log.i("ActionBar", "Acerca de!");
                 Intent intent = new Intent (PantallaLogin.this, AcercaDe.class);
                 startActivity(intent);
                 return true;
@@ -720,11 +715,12 @@ public class PantallaLogin extends AppCompatActivity {
     }
 
 
-    // NO BORRAR!!
+    /***********************************************************************************************
+     * Al pulsar atrás no hacemos nada
+     **********************************************************************************************/
     @Override
     public void onBackPressed() {
-        // DEJO EN BLANCO PARA QUE, AL HACER CLICK EN EL BOTÓN DE ATRÁS DESDE ESTA
-        // PANTALLA, NO SE PUEDA VOLVER A LA PANTALLA PRINCIPAL HABIENDO CERRADO YA SESIÓN.
+        // dejamos en blanco para que no se haga nada
 
     }
 }

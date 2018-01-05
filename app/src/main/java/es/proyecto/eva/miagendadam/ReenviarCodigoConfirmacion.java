@@ -83,21 +83,19 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                                     if (response.equals("0")) { // no existe el correo en la bd
-                                        Toast.makeText(ReenviarCodigoConfirmacion.this, "No hay ningún usuario registrado con ese correo.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
                                     } else {
                                         if (response.equals("1")) { // existe el correo, así que le enviamos el código
                                             enviarCorreoConfirmacion();
                                             // Creamos alerta de confirmación  para decir que se ha creado correctamente
                                             // y mandamos a la pantalla de confirmación de usuario
                                             AlertDialog.Builder builder = new AlertDialog.Builder(ReenviarCodigoConfirmacion.this);
-                                            builder.setTitle("Código enviado"); // titulo del diálogo
-                                            builder.setMessage("Se ha enviado un código nuevo de confirmación. Revisa tu bandeja de entrada.")
+                                            builder.setTitle(R.string.dialog_codigo_reenviado); // titulo del diálogo
+                                            builder.setMessage(R.string.dialog_mensaje_codigo_reenviado)
                                                     .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            Intent intent = new Intent(ReenviarCodigoConfirmacion.this, ConfirmaRegistro.class);
-                                                            startActivity(intent);
+                                                            finish(); // cerramos la actividad para volver a la de confirmación
                                                         }
                                                     });
                                             // Create the AlertDialog object and return it
@@ -111,7 +109,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    Toast.makeText(ReenviarCodigoConfirmacion.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                                 }
                             }) {
@@ -127,16 +125,18 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                     AppController.getInstance().addToRequestQueue(request);
 
                 } else {
-                    Toast.makeText(ReenviarCodigoConfirmacion.this, "Introduce tu correo electrónico.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+    /***********************************************************************************************
+     * Método que genera un nuevo código de confirmación para enviar al usuario
+     **********************************************************************************************/
     public void generaCodigoConfirmacion(){
         // generamos un código aleatorio de 6 dígitos
         codigo = (int) (Math.random() * 999999) + 1;
-        System.out.println("CÓDIGO CONFIRMACIÓN INT!!!: "+codigo);
         nuevoCodigo = Integer.toString(codigo); // pasamos el código a String para poder guardarlo como preferencia
         System.out.println("CÓDIGO CONFIRMACIÓN STRING!!!: "+nuevoCodigo);
         guardarPreferencias(); // guardamos el dato
@@ -194,6 +194,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    // Clase con el contenido del correo electrónico
     class RetreiveFeedTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -227,7 +228,12 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
             System.out.println("CORREO ENVIADO CORRECTAMENTE");
         }
     }
-    // PARA DAR FUNCIONALIDAD AL BOTÓN DE ATRÁS
+
+    /***********************************************************************************************
+     * Al pulsar el botón de atrás se vuelve un paso atrás en la aplicación
+     * @param item
+     * @return
+     **********************************************************************************************/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

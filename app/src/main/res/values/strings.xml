@@ -49,17 +49,20 @@
     <string name="hint_codigo_confirmacion">Código de confirmación</string>
     <string name="btn_confirmar">Confirmar registro</string>
     <string name="btn_reenviar_codigo">Reenviar código de confirmación</string>
+   <string name="dialog_confirmacion_correcta">¡Usuario confirmado! Ya puedes iniciar sesión.</string>
 
     <!-- Strings activity ReenviarCodigoConfirmacion -->
     <string name="title_activity_reenvia_codigo">Reenviar código de confirmación</string>
     <string name="hint_reenviar_correo">Correo electrónico</string>
     <string name="btn_enviar">Enviar código</string>
     <string name="title_activity_nav_menu">NavMenu</string>
+   <string name="dialog_codigo_reenviado">Código enviado</string>
+   <string name="dialog_mensaje_codigo_reenviado">Se ha enviado un nuevo código de confirmación. Revisa tu bandeja de entrada.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- activity RecuperarClave -->
+    <!-- activRecuperarDatosUsuariolave -->
     <string name="title_activity_recuperar_datos">Recuperación datos de usuario</string>
     <string name="btn_clave_nueva">Solicitar contraseña nueva</string>
     <string name="btn_recupera_usuario">Recordar nombre de usuario</string>
@@ -98,6 +101,8 @@
     <string name="version">Versión:</string>
     <string name="contacto">Soporte:</string>
     <string name="correo_soporte">soportemiagendafp@gmail.com</string>
+   <string name="dialog_cargando">Cargando</string>
+   <string name="dialog_comprueba_datos">Comprobando datos. Por favor, espera un momento.</string>
 
     <!-- Strings opciones menu toolbar -->
     <string name="menu_guardar">Guardar</string>
@@ -131,6 +136,29 @@
     <!-- String diálogo salir de editar sin guardar -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
 
+   <!-- String mensajes de acciones CORRECTAS -->
+   <string name="toast_registro_creado">Registro creado correctamente.</string>
+   <string name="toast_cambios_guardados">Cambios guardados.</string>
+
+   <!-- Strings ERRORES/AVISOS -->
+   <string name="error_servidor">Se ha producido un error al intentar conectar con el servidor.</string>
+   <string name="error_no_hay_usuario">No se ha podido obtener el nombre de usuario.</string>
+   <string name="error_registro">Se ha producido un error. No se ha podido crear el registro.</string>
+   <string name="error_actualizar_registro">No se ha podido actualizar el registro.</string>
+   <string name="error_introducir_correo">Debes introducir tu correo electrónico.</string>
+   <string name="error_confirmar_registro">Se ha producido un error al confirmar el registro. Por favor, vuelve
+   a intentarlo.</string>
+   <string name="error_codigo_expirado">El código ha expirado o no hay ningún usuario que confirmar.</string>
+   <string name="error_codigo_incorrecto">El código introducido no es correcto.</string>
+   <string name="error_introducir_nombre_usuario">Debes introducir tu nombre de usuario.</string>
+   <string name="error_introducir_clave">Debes introducir tu contraseña.</string>
+   <string name="aviso_bloqueo_realizado">Se ha bloqueado al usuario. Contacta con soporte.</string>
+   <string name="aviso_usuario_bloqueado">Usuario bloqueado. No puedes iniciar sesión con esta cuenta. Contacta con soporte.</string>
+   <string name="aviso_clave_incorrecta">La clave introducida no es correcta. Intentos de inicio restantes: </string>
+   <string name="aviso_pocos_intentos_restantes">AVISO: Solo te quedan </string>
+   <string name="aviso_pocos_intentos_restantes_2"> intentos restantes. Si los agotas se bloqueará tu cuenta de usuario.</string>
+   <string name="error_usuario_no_existe">No existe ningún usuario con ese nombre.</string>
+   <string name="error_correo_no_existe">No existe ningún usuario asociado a ese correo electrónico.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -38,7 +38,7 @@
             android:name=".NavMenu"
             android:label="@string/title_activity_nav_menu"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RecuperarClave" />
+        <activity android:name=".RecuperarDatosUsuario" />
         <activity android:name=".AcercaDe" />
         <activity android:name=".Fragments.Diario.NuevoRegistroDiario" />
         <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario"></activity>
