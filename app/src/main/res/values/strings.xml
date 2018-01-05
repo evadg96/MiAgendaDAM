@@ -159,6 +159,15 @@
    <string name="aviso_pocos_intentos_restantes_2"> intentos restantes. Si los agotas se bloqueará tu cuenta de usuario.</string>
    <string name="error_usuario_no_existe">No existe ningún usuario con ese nombre.</string>
    <string name="error_correo_no_existe">No existe ningún usuario asociado a ese correo electrónico.</string>
+    <string name="error_campos_vacios">Debes rellenar todos los campos.</string>
+    <string name="error_horas_practicas">No se pueden cursar más de 700 horas de prácticas.</string>
+    <string name="error_correo_no_valido">El correo introducido no es un correo válido.</string>
+    <string name="error_longitud_usuario">Debes introducir un nombre de usuario que tenga entre 6 y 20 caracteres.</string>
+    <string name="error_longitud_clave">Debes introducir una contraseña que tenga entre 8 y 20 caracteres.</string>
+    <string name="error_formato_usuario_clave">No se pueden introducir espacios, tildes ni caracteres que no sean letras, números ó ! = - _ @</string>
+    <string name="error_claves_no_coinciden">Las claves introducidas no coinciden.</string>
+    <string name="error_correo_ya_existe">Ya hay un usuario registrado con el correo introducido.</string>
+    <string name="error_usuario_ya_existe">Ya hay un usuario registrado con ese nombre. Prueba con otro.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

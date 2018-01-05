@@ -104,7 +104,7 @@ public class NavMenu extends AppCompatActivity
             setTitle(R.string.opc_mat_perso);
         } else if (id == R.id.nav_festivos) {
             setTitle(R.string.opc_festivos_no_lectivos);
-        } else if (id == R.id.nav_contacto) {
+        } else if (id == R.id.nav_ayuda) {
             setTitle(R.string.opc_contacto);
         } else if (id == R.id.nav_cerrar_sesion) {
             cerrarSesion();

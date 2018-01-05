@@ -134,28 +134,28 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         if (nombre.isEmpty() || apellidos.isEmpty() || provincia.isEmpty() || localidad.isEmpty() || centro_estudios.isEmpty() ||
                 ciclo_formativo.isEmpty() || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
-            Toast.makeText(RegistroNuevoUsuario.this, "Debes rellenar todos los campos.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
         } else {
             if (Integer.valueOf(horas_fct) > 700) {
-                Toast.makeText(RegistroNuevoUsuario.this, "No se pueden cursar más de 700 horas de prácticas.", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_horas_practicas, Toast.LENGTH_LONG).show();
             } else {
                 Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
                 Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
                 if (!matcher.matches()) { // si el correo no cumple con el formato del patrón, salta el mensaje de error
-                    Toast.makeText(RegistroNuevoUsuario.this, "El correo electrónico introducido no es válido.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
                 } else {
                     if (n_Usuario.length() < 6) {
-                        Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir un nombre de usuario que contenga entre 6 y 20 caracteres.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_usuario, Toast.LENGTH_LONG).show();
                     } else {
                         if (clave.length() < 8) {
-                            Toast.makeText(RegistroNuevoUsuario.this, "Debes introducir una clave que contenga entre 8 y 20 caracteres.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
                         } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE:
                             if (!clave.matches(pattern_formato) || !n_Usuario.matches(pattern_formato)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
-                                Toast.makeText(RegistroNuevoUsuario.this, "No se pueden introducir espacios, tildes ni caracteres que no sean letras, números ó ! = - _ @" +
+                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_usuario_clave +
                                         " : % ~ # &", Toast.LENGTH_LONG).show();
                             } else {
                                 if (!clave.equals(clave2)) {
-                                    Toast.makeText(RegistroNuevoUsuario.this, "Las claves introducidas no coinciden", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegistroNuevoUsuario.this, R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
                                     System.out.println("CLAVES!!!" + clave + clave2);
                                     txtClave.setText(""); // Borramos los campos de clave
                                     txtClave2.setText("");
@@ -173,7 +173,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                     if (response.equals("1")) {
                                                         try {
 
-                                                            Toast.makeText(RegistroNuevoUsuario.this, "Ya hay un usuario registrado con ese email.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
                                                             System.out.println("ERROR: Correo ya registrado.");
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
@@ -181,7 +181,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                     } else {
                                                         if (response.equals("2")) {
                                                             try {
-                                                                Toast.makeText(RegistroNuevoUsuario.this, "Ya existe un usuario con ese nombre.", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
                                                                 System.out.println("ERROR: Usuario ya existe.");
                                                             } catch (Exception e) {
                                                                 e.printStackTrace();
@@ -189,14 +189,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                         } else {
                                                             if (response.equals("0")) { // datos y registro correcto
                                                                 try {
-                                                                    // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
-                                                                    /**
-                                                                     ProgressDialog progressDialog = new ProgressDialog(RegistroNuevoUsuario.this);
-                                                                     progressDialog.setTitle("Carga");
-                                                                     progressDialog.setMessage("Creando usuario. Por favor, espere un momento.");
-                                                                     progressDialog.show();*/
                                                                     System.out.println("USUARIO CREADO CORRECTAMENTE :)");
-
                                                                     enviarCorreoConfirmacion();
                                                                     // Creamos alerta de confirmación  para decir que se ha creado correctamente
                                                                     // y mandamos a la pantalla de confirmación de usuario
@@ -233,7 +226,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
                                                     // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                                    Toast.makeText(RegistroNuevoUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
 
                                                 }
                                             }) {
@@ -268,10 +261,12 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         }
     }
 
+    /***********************************************************************************************
+     * Método que genera el código de confirmación de registro que se le envía al usuario
+     **********************************************************************************************/
     public void generaCodigoConfirmacion() {
         // generamos un código aleatorio de 6 dígitos
         codigoConfirmacion = (int) (Math.random() * 999999) + 1;
-        System.out.println("CÓDIGO CONFIRMACIÓN INT!!!: " + codigoConfirmacion);
         sCodigoConfirmacion = Integer.toString(codigoConfirmacion); // pasamos el código a String para poder guardarlo como preferencia
         System.out.println("CÓDIGO CONFIRMACIÓN STRING!!!: " + sCodigoConfirmacion);
         guardarPreferencias(); // guardamos el dato
@@ -286,9 +281,11 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
     }
 
+    /***********************************************************************************************
+     * Método que envía el correo con los datos correspondientes
+     **********************************************************************************************/
     public void enviarCorreoConfirmacion() {
-        // enviamos correo de confirmación al usuario
-        generaCodigoConfirmacion();
+        generaCodigoConfirmacion(); // generamos el código de confirmación que se le envía al usuario
         StringRequest request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
                     @Override
@@ -321,12 +318,13 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(RegistroNuevoUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    // Clase con el contenido del correo electrónico que se enviará
     class RetreiveFeedTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -363,8 +361,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         }
     }
 
-
-    // PARA DAR FUNCIONALIDAD AL BOTÓN DE ATRÁS
+    // Al pulsar hacia atrás volvemos un paso atrás en la aplicación
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
