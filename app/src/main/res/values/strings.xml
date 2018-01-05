@@ -111,6 +111,7 @@
     <string name="menu_editar">Editar</string>
     <string name="menu_contacto">Contacto</string>
     <string name="menu_acerca_de">Acerca de...</string>
+    <string name="menu_borrar">Borrar</string>
 
     <string name="action_settings">Ajustes</string>
 
@@ -133,8 +134,13 @@
     <string name="respuesta_dialog_volver">Volver</string>
     <string name="respuesta_dialog_no">No</string>
 
-    <!-- String diálogo salir de editar sin guardar -->
+    <!-- Strings VerYEditarRegistroDiario -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
+    <string name="dialog_borrar_registro">Eliminar registro</string>
+    <string name="dialog_texto_borrar_registro">¿Estás seguro de que quieres eliminar el registro actual? Esta acción no se podrá deshacer.</string>
+    <string name="dialog_opcion_borrar">Eliminar</string>
+    <string name="toast_registro_eliminado">Registro eliminado.</string>
+
 
    <!-- String mensajes de acciones CORRECTAS -->
    <string name="toast_registro_creado">Registro creado correctamente.</string>
