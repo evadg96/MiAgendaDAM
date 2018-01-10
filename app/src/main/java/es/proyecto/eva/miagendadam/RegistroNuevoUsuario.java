@@ -13,8 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,19 +48,8 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 public class RegistroNuevoUsuario extends AppCompatActivity {
 
     Button btnRegistro;
-    EditText txtNombre;
-    EditText txtApellidos;
-    //EditText txtApellidoDos;
-    EditText txtProvincia;
-    EditText txtLocalidad;
-    EditText txtCentroEstudios;
-    EditText txtHorasFct;
-    EditText txtCiclo;
-    EditText txtCentroPracticas;
-    EditText txtCorreo;
-    EditText txtNombreUsuario;
-    EditText txtClave;
-    EditText txtClave2;
+    Spinner spinnerProvincia, spinnerFamiliasCiclo, spinnerCiclo;
+    EditText txtNombre, txtApellidos, txtCentroEstudios, txtHorasFct, txtCentroPracticas, txtCorreo, txtNombreUsuario, txtClave, txtClave2;
 
 //     private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_usuario.php";
 //     private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
@@ -81,7 +74,110 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     private static String n_Usuario = "";
     private static String clave = "";
     private static String horas_fct = "";
+    private String provincia = "";
+    private String familiaCiclo = "";
+    private String ciclo_formativo = "";
     private Session session;
+    // Array de provincias
+    private String[] provincias = {"Selecciona una provincia", "A Coruña", "Álava", "Albacete","Alicante","Almería","Asturias","Ávila","Badajoz","Islas Baleares",
+            "Barcelona","Burgos","Cáceres","Cádiz","Cantabria","Castellón","Ciudad Real","Córdoba","Cuenca","Girona","Granada",
+            "Guadalajara","Guipúzcoa","Huelva","Huesca","Jaén","La Rioja","Las Palmas","León","Lleida","Lugo","Madrid","Málaga",
+            "Murcia","Navarra","Orense","Palencia","Pontevedra","Salamanca","Segovia","Sevilla","Soria","Tarragona","Santa Cruz de Tenerife",
+            "Teruel","Toledo","Valencia","Valladolid","Vizcaya","Zamora","Zaragoza"};
+
+    // Array de familias de ciclos formativos
+    private String[] familias = {"Selecciona una familia de ciclos formativos", "Actividades físicas y deportivas", "Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías",
+            "Comercio y marketing", "Edificación y obra civil", "Electricidad y electrónica", "Energía y agua", "Fabricación mecánica", "Hostelería y turismo",
+            "Imagen personal", "Imagen y sonido", "Industrias alimentarias", "Industrias extractivas", "Informática y comunicaciones", "Instalación y mantenimiento",
+            "Madera, mueble y corcho", "Marítimo-pesquera", "Química", "Sanidad", "Seguridad y medio ambiente", "Servicios socioculturales y a la comunidad",
+            "Textil, confección y piel", "Transporte y mantenimiento de vehículos", "Vidrio y cerámica"};
+
+    // Array de ciclos formativos
+    private String[] ciclos = {"Selecciona un ciclo formativo",
+            "------------ Actividades físicas y deportivas ------------",
+            "Actividades ecuestres", "Acondicionamiento físico", "Enseñanza y animación sociodeportiva",
+            "---------------- Administración y gestión ----------------",
+            "Informática de oficina (básico)", "Servicios administrativos (básico)", "Gestión administrativa", "Administración y finanzas", "Asistencia a la dirección",
+            "----------------------------- Agraria ---------------------------------",
+            "Actividades agropecuarias (básico)", "Agro-jardinería y composiciones florales (básico)",
+            "Aprovechamientos forestales (básico)", "Actividades ecuestres", "Aprovechamiento y conservación del medio natural", "Jardinería y floristería",
+            "Producción agroecológica", "Producción agropecuaria", "Ganadería y asistencia en sanidad animal", "Gestión florestal y del medio natural", "Paisajismo y medio rural",
+            "------------------------ Artes gráficas ------------------------",
+            "Artes gráficas (básico)", "Impresión gráfica", "Postimpresión y acabados gráficos", "Preimpresión digital", "Diseño y edición de publicaciones impresas y multimedia",
+            "Diseño y gestión de la producción gráfica",
+            "---------------------- Artes y artesanías ----------------------",
+            "Artista fallero y construcción de escenografías",
+            "------------------ Comercio y marketing ------------------",
+            "Servicios comerciales (básico)", "Actividades comerciales", "Comercio internacional", "Gestión de ventas y espacios comerciales", "Marketing y publicidad", "Transporte y logística",
+            "------------------ Edificación y obra civil ------------------",
+            "Reforma y mantenimiento de edificios (básico)", "Construcción", "Obras de interior, decoración y rehabilitación", "Organización y control de obras y construcción",
+            "Proyectos de edificación", "Proyectos de obra civil",
+            "----------------- Electricidad y electrónica -----------------",
+            "Electricidad y electrónica (básico)", "Fabricación de elementos metálicos (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Instalaciones eléctricas y automáticas", "Instalaciones de telecomunicaciones",
+            "Automatización y robótica industrial", "Electromedicina clínica", "Mantenimiento electrónico", "Sistemas electrotécnicos y automatizados",
+            "Sistemas de telecomunicaciones e informáticos",
+            "----------------------- Energía y agua ------------------------",
+            "Redes y estaciones de tratamiento de aguas", "Centrales eléctricas",
+            "Eficiencia enegrética y energía solar térmica", "Energías renovables", "Gestión del agua",
+            "----------------- Fabricación y mecánica -----------------",
+            "Fabricación de elementos metálicos (básico)",
+            "Fabricación y montaje (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Conformado por moldeo e metales y polímeros",
+            "Mecanizado", "Soldadura y calderería", "Construcciones metálicas", "Diseño en fabricación mecánica", "Programación de la producción en fabricación mecánica",
+            "Programación de la producción en moldeo de metales y polímeros",
+            "------------------ Hostelería y turismo --------------------",
+            "Actividades de panadería y pastelería (básico)", "Alojamiento y lavandería (básico)",
+            "Cocina y restauración (básico)", "Cocina y gastronomía", "Servicios en restauración", "Agencias de viajes y gestión de eventos",
+            "Dirección de cocina", "Dirección de servicios de restauración", "Gestión de alojamientos turísticos", "Guía, información y asistencias turísticas",
+            "---------------------- Imagen personal ------------------------",
+            "Peluquería y estética (básico)", "Estética y belleza", "Peliquería y cosmética capilar", "Asesoría de imagen personal y corporativa",
+            "Caracterización y maquillaje profesional", "Estilismo y dirección de peluquería", "Estética integral y bienestar",
+            "----------------------- Imagen y sonido -----------------------",
+            "Video disc-jockey y sonido", "Animaciones 3D, juegos y entornos interactivos", "Iluminación, captación y tratamiento de imagen", "Producción de audiovisuales y espectáculos",
+            "Realización de audiovisuales y espectáculos", "Sonido para audiovisuales y espectáculos",
+            "----------------- Industrias alimentarias ----------------",
+            "Actividades de panadería y pastelería (básico)", "Industrias alimentarias (básico)", "Aceites de oliva y vinos", "Elaboración de productos alimenticios", "Panadería, repostería y confitería",
+            "Procesos y calidad en la industria alimentaria", "Vitivinicultura",
+            "------------------- Industrias extractivas -------------------",
+            "Excavaciones y sondeos", "Piedra natural",
+            "------------ Informática y comunicaciones ------------",
+            "Informática de oficina (básico)",
+            "Informática y comunicaciones (básico)", "Sistemas microinformáticos y redes", "Administración de sistemas informáticos en red",
+            "Desarrollo de aplicaciones multiplataforma", "Desarrollo de aplicaciones web",
+            "--------------- Instalación y mantenimiento --------------",
+            "Fabricación y montaje (básico)", "Mantenimiento de viviendas (básico)",
+            "Instalaciones frigorísficas y de climatización", "Instalaciones de producción de calor", "Mantenimiento electromecánico",
+            "Desarrollo de proyectos de instalaciones térmicas y de fluidos", "Mantenimiento de instalaciones térmicas y de fluidos", "Mecatrónica industrial",
+            "----------------- Madera, mueble y corcho ----------------",
+            "Carpintería y mueble (básico)", "Carpintería y mueble (medio)", "Instalación y amueblamiento", "Diseño y amueblamiento",
+            "------------------- Marítimo-pesquera --------------------",
+            "Actividades marítimo-pesqueras (básico)",
+            "Mantenimiento de embarcaciones deportivas y de recreo (básico)", "Cultivos acuícolas", "Mantenimiento y control de la maquinaria de buques y embarcaciones",
+            "Navegación y pesca de litoral", "Operaciones subacuáticas e hiperbáricas", "Acuicultura", "Organización del mantenimiento de maquinaria de buques y embarcaciones",
+            "Transporte marítimo y pesca de altura",
+            "----------------------------- Química ------------------------------",
+            "Operaciones de laboratorio", "Planta química", "Fabricación  de productos farmacéuticos, biotecnológicos y afines",
+            "Laboratorio de análisis y control de calidad", "Química industrial",
+            "---------------------------- Sanidad -----------------------------",
+            "Emergencias sanitarias", "Farmacia y parafarmacia", "Anatomía patológica y citodiagnóstico",
+            "Audiología protésica", "Documentación y administración sanitarias", "Higiene bucodental", "Imagen para el diagnóstico y medicina nuclear",
+            "Laboratorio clínico y biomédico", "Ortoprótesis y productos de apoyo", "Prótesis dentales", "Radioterapia y dosimetría",
+            "-------------- Seguridad y medio ambiente --------------",
+            "Emergencias y protección civil",
+            "Coordinación de emergencias y protección civil", "Educación y control ambiental",
+            "----------------- Servicios socioculturales ----------------",
+            "Actividades domésticas y limpieza de edificios (básico)",
+            "Atención a personas en situación de dependencia", "Animación sociocultural y turística", "Educación infantil", "Integración social", "Mediación comunicativa",
+            "Promoción de igualdad de género",
+            "----------------- Textil, confección y piel ----------------",
+            "Arreglo y reparación de artículos textiles y de piel (básico)", "Tapicería y cortinaje (básico)", "Calzado y complementos de moda", "Confección y moda", "Fabricación y ennoblecimiento de productos textiles", "Diseño técnico en textil y piel",
+            "Diseño y producción de calzado y complementos", "Patronaje y moda", "Vestuario a medida y de espectáculos",
+            "---- Transporte y mantenimiento de vehículos ----",
+            "Mantenimiento de embarcaciones deportivas y de recreo (básico)", "Mantenimiento de vehículos (básico)", "Carrocería", "Conducción de vehículos de transporte por carretera", "Electromecánica de maquinaria", "Electromecánica de vehículos automóviles",
+            "Mantenimiento de material rodante ferroviario", "Automoción",
+            "--------------------- Vidrio y cerámica ------------------------",
+            "Vidriería y alfarería (básico)", "Fabricación de productos cerámicos",
+            "Desarrollo y fabricación de productos cerámicos"};
+
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"; // declaramos patrón para validar el formato del correo electrónico introducido
     // por el usuario
@@ -99,17 +195,64 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         btnRegistro = (Button) findViewById(R.id.btn_registrarse);
         txtNombre = (EditText) findViewById(R.id.editText_nombre);
         txtApellidos = (EditText) findViewById(R.id.editText_ape_uno);
-        //txtApellidoDos = (EditText) findViewById(R.id.editText_ape_dos);
-        txtProvincia = (EditText) findViewById(R.id.editText_provincia);
-        txtLocalidad = (EditText) findViewById(R.id.editText_localidad);
+        spinnerProvincia = (Spinner) findViewById(R.id.spinner_provincia);
+        // asociamos el array de provincias al spinner
+        spinnerProvincia.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, provincias));
+        spinnerFamiliasCiclo= (Spinner) findViewById(R.id.spinner_familias_ciclo);
+        // asociamos el array de familias de ciclos al spinner
+        spinnerFamiliasCiclo.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, familias));
+        spinnerCiclo = (Spinner) findViewById(R.id.spinner_ciclo);
+        spinnerCiclo.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ciclos));
         txtCentroEstudios = (EditText) findViewById(R.id.editText_centro_estudios);
-        txtCiclo = (EditText) findViewById(R.id.editText_ciclo);
         txtHorasFct = (EditText) findViewById(R.id.editText_horas_fct);
         txtCentroPracticas = (EditText) findViewById(R.id.editText_centro_practicas);
         txtCorreo = (EditText) findViewById(R.id.editText_correo);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
         txtClave2 = (EditText) findViewById(R.id.editText_confirma_clave);
+
+        // controlamos la selección del spinner y lo añadimos al String provincia
+        spinnerProvincia.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        provincia = provincias[(position)];
+                        System.out.println("PROVINCIA SELECCIONADA: "+ provincia);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
+        // lo mismo con el spinner de familias de ciclo
+        spinnerFamiliasCiclo.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        familiaCiclo = familias[(position)];
+                        System.out.println("FAMILIA SELECCIONADA: "+ familiaCiclo);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
+        // lo mismo con el spinner de familias de ciclo
+        spinnerCiclo.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        ciclo_formativo = ciclos[(position)];
+                        System.out.println("CICLO SELECCIONADO: "+ ciclo_formativo);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
     }
 
     // Al hacer click en el botón de registro...
@@ -117,11 +260,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         // Parámetros que vamos a pasar a la consulta
         nombre = txtNombre.getText().toString();
         final String apellidos = txtApellidos.getText().toString();
-        //final String apellido_dos = txtApellidoDos.getText().toString();
-        final String provincia = txtProvincia.getText().toString();
-        final String localidad = txtLocalidad.getText().toString();
         final String centro_estudios = txtCentroEstudios.getText().toString();
-        final String ciclo_formativo = txtCiclo.getText().toString();
         horas_fct = txtHorasFct.getText().toString();
         final String centro_practicas = txtCentroPracticas.getText().toString();
         correo = txtCorreo.getText().toString();
@@ -132,8 +271,8 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         System.out.println("FECHA REGISTRO: " + fecha_registro);
 
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
-        if (nombre.isEmpty() || apellidos.isEmpty() || provincia.isEmpty() || localidad.isEmpty() || centro_estudios.isEmpty() ||
-                ciclo_formativo.isEmpty() || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
+        if (nombre.isEmpty() || apellidos.isEmpty() || provincia.equals("Selecciona una provincia") || centro_estudios.isEmpty() || familiaCiclo.equals("Selecciona una familia de ciclos formativos") ||
+                ciclo_formativo.equals("Selecciona un ciclo formativo") || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
             Toast.makeText(RegistroNuevoUsuario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
         } else {
             if (Integer.valueOf(horas_fct) > 700) {
@@ -160,7 +299,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                     txtClave.setText(""); // Borramos los campos de clave
                                     txtClave2.setText("");
                                 } else {
-                                    System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellidos + "\n" + provincia + "\n" + localidad + "\n"
+                                    System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellidos + "\n" + provincia + "\n"
                                             + centro_estudios + "\n" + ciclo_formativo + "\n" + horas_fct + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
                                     // INICIAMOS CONEXIÓN CON VOLLEY
                                     System.out.println("INICIAMOS CONEXIÓN");
@@ -168,7 +307,6 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                             new Response.Listener<String>() {
                                                 @Override
                                                 public void onResponse(String response) {
-                                                    //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                                                     System.out.println("CONEXIÓN INICIADA!");
                                                     if (response.equals("1")) {
                                                         try {
@@ -238,8 +376,8 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                             parametros.put("apellidos", apellidos);
                                             // parametros.put("apellido_dos", apellido_dos);
                                             parametros.put("provincia", provincia);
-                                            parametros.put("localidad", localidad);
                                             parametros.put("centro_estudios", centro_estudios);
+                                            parametros.put("familia_ciclo", familiaCiclo);
                                             parametros.put("ciclo_formativo", ciclo_formativo);
                                             parametros.put("horas_fct", horas_fct);
                                             parametros.put("centro_practicas", centro_practicas);

@@ -45,10 +45,10 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     private StringRequest request;
 
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/update_registro_diario.php";
- //   private String url_consulta2 = "http://192.168.0.12/MiAgenda/delete_registro_usuario.php";
+ //   private String url_consulta2 = "http://192.168.0.12/MiAgenda/delete_registro_diario.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/update_registro_diario.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/update_registro_diario.php";
-    private String url_consulta2 = "http://miagendafp.000webhostapp.com/delete_registro_usuario.php";
+    private String url_consulta2 = "http://miagendafp.000webhostapp.com/delete_registro_diario.php";
     // declaramos los nuevos datos del registro
     private String fechaNueva = "", horasNuevas = "", minutosNuevos = "", descripcionNueva = "", valoracionNueva = "";
     String idUsuario = "";
@@ -64,6 +64,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_y_editar_registro_diario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("");
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario
         txtFechaSeleccionada = (EditText) findViewById(R.id.editText_fecha_seleccionada);
@@ -180,6 +181,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                                 new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
+                                        System.out.println("ID DEL DÍA A BORRAR: "+ id_dia_seleccionado);
                                         Toast.makeText(VerYEditarRegistroDiario.this, R.string.toast_registro_eliminado, Toast.LENGTH_LONG).show();
                                         finish(); // cerramos la actividad para volver al fragmento con el listado de registros
                                         System.out.println("Registro borrado!");

@@ -25,8 +25,8 @@ import es.proyecto.eva.miagendadam.R;
  **************************************************************************************************/
 public class AdaptadorListaDiario extends BaseAdapter {
     private Context context;
-    private ArrayList<String> arrayFechas;
-    private ArrayList<String> arrayHoras;
+    private ArrayList <String> arrayFechas;
+    private ArrayList <String> arrayHoras;
     private ArrayList <String> arrayMinutos;
     private ArrayList <String> arrayValoraciones;
 

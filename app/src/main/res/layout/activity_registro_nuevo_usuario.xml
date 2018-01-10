@@ -61,25 +61,35 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/editText_provincia"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="@string/sProvincia"
-                            android:inputType="textPersonName"
-                            android:maxLength="50" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/sProvincia" />
+
+                            <Spinner
+                                android:id="@+id/spinner_provincia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
 
                         <EditText
-                            android:id="@+id/editText_localidad"
-                            android:layout_width="match_parent"
+                            android:id="@+id/editText_horas_fct"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:hint="@string/sLocalidad"
-                            android:inputType="textPersonName"
-                            android:maxLength="50" />
+                            android:hint="@string/sHorasFct"
+                            android:inputType="number"
+                            android:maxLength="3" />
 
                     </LinearLayout>
 
@@ -93,32 +103,32 @@
                         android:inputType="textPersonName"
                         android:maxLength="50" />
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/textView_familia_ciclo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:text="@string/sFamiliaCiclo" />
 
-                        <EditText
-                            android:id="@+id/editText_ciclo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="@string/sCiclo"
-                            android:inputType="textPersonName"
-                            android:maxLength="100" />
+                    <Spinner
+                        android:id="@+id/spinner_familias_ciclo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left" />
 
-                        <EditText
-                            android:id="@+id/editText_horas_fct"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="@string/sHorasFct"
-                            android:inputType="number"
-                            android:maxLength="3" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView_ciclo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sCiclo" />
+
+                    <Spinner
+                        android:id="@+id/spinner_ciclo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <EditText
                         android:id="@+id/editText_centro_practicas"
