@@ -75,7 +75,7 @@ public class PantallaPrincipal extends AppCompatActivity {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<correo_de_usuario, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_de_usuario);
                 return parametros;

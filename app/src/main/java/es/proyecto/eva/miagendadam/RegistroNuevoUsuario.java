@@ -399,6 +399,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         }
     }
 
+
     /***********************************************************************************************
      * Método que genera el código de confirmación de registro que se le envía al usuario
      **********************************************************************************************/

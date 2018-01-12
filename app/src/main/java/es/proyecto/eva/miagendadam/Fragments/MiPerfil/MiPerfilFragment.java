@@ -120,45 +120,47 @@ public class MiPerfilFragment extends Fragment {
     /***********************************************************************************************
      * Método que actualiza la contraseña del usuario
      **********************************************************************************************/
-    public void actualizarClave(){
-        // Preguntamos al usuario antes de hacer nada si está seguro de efectuar los cambios
-        // mediante un cuadro de diálogo
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.title_dialog_actualizar_clave_mi_perfil); // titulo del diálogo
-        builder.setMessage(R.string.txt_dialog_actualizar_clave_mi_perfil)
-                // Si pulsa el botón de cambiar, se procede con la actualización
-                .setPositiveButton(R.string.btn_cambiar, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        claveNueva = txtClave.getText().toString();
-                        repiteClave = txtRepiteClave.getText().toString();
-                        // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
-                        if (claveNueva.isEmpty() || repiteClave.isEmpty()){
-                            Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
-                        } else { // Los campos no están vacíos. Continuamos validando...
+    public void actualizarClave() {
+        // Validamos primero:
+        claveNueva = txtClave.getText().toString();
+        repiteClave = txtRepiteClave.getText().toString();
+        // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
+        if (claveNueva.isEmpty() || repiteClave.isEmpty()) {
+            Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+        } else { // Los campos no están vacíos. Continuamos validando...
 
-                            // Si la clave introducida es menor a 8 caracteres, no permitimos continuar
-                            // (no validamos la longitud máxima porque ya hemos definido el campo para que solo acepte
-                            // hasta 20 caracteres)
-                            if (claveNueva.length() < 8) {
-                                Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
-                            } else { // La longitud de clave es correcta. Continuamos validando...
+            // Si la clave introducida es menor a 8 caracteres, no permitimos continuar
+            // (no validamos la longitud máxima porque ya hemos definido el campo para que solo acepte
+            // hasta 20 caracteres)
+            if (claveNueva.length() < 8) {
+                Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
+            } else { // La longitud de clave es correcta. Continuamos validando...
 
-                                // Si los caracteres no son los aceptados por el patrón, no permitimos continuar
-                                if (!claveNueva.matches(pattern_formato)) {
-                                    Toast.makeText(getActivity(), R.string.error_formato_usuario_clave +
-                                            " : % ~ # &", Toast.LENGTH_LONG).show();
-                                } else { // La clave tiene un formato correcto. Continuamos validando...
-                                    // Si la clave no repite con la repetida no permitimos continuar
-                                    if (!claveNueva.equals(repiteClave)) {
-                                        Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
-                                        System.out.println("CLAVES!!!" + claveNueva + repiteClave);
-                                        txtClave.setText(""); // Borramos los campos de clave
-                                        txtRepiteClave.setText("");
-                                    } else { // Las dos claves introducidas coindicen. Terminamos las validaciones.
+                // Si los caracteres no son los aceptados por el patrón, no permitimos continuar
+                if (!claveNueva.matches(pattern_formato)) {
+                    //TODO: Quitar este mensaje de error de string y ponerlo directamente aquí, porque no saca el mensaje
+                    Toast.makeText(getActivity(), R.string.error_formato_usuario_clave +
+                            " : % ~ # &", Toast.LENGTH_LONG).show();
+                } else { // La clave tiene un formato correcto. Continuamos validando...
+                    // Si la clave no repite con la repetida no permitimos continuar
+                    if (!claveNueva.equals(repiteClave)) {
+                        Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
+                        System.out.println("CLAVES!!!" + claveNueva + repiteClave);
+                        txtClave.setText(""); // Borramos los campos de clave
+                        txtRepiteClave.setText("");
+                    } else { // Las dos claves introducidas coindicen. Terminamos las validaciones.
 
+                        // Preguntamos al usuario antes de hacer nada si está seguro de efectuar los cambios
+                        // mediante un cuadro de diálogo
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle(R.string.title_dialog_actualizar_clave_mi_perfil); // titulo del diálogo
+                        builder.setMessage(R.string.txt_dialog_actualizar_clave_mi_perfil)
+                                // Si pulsa el botón de cambiar, se procede con la actualización
+                                .setPositiveButton(R.string.btn_cambiar, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
                                         // Todas las validaciones se han pasado correctamente, ejecutamos la consulta
                                         // para actualizar la clave
-                                        request = new StringRequest(Request.Method.POST, url_consulta,
+                                        request = new StringRequest(Request.Method.POST, url_consulta2,
                                                 new Response.Listener<String>() {
                                                     @Override
                                                     public void onResponse(String response) {
@@ -166,6 +168,7 @@ public class MiPerfilFragment extends Fragment {
                                                         try {
                                                             System.out.println("CLAVE NUEVA DEL USUARIO: " + claveNueva);
                                                             Log.d("MiPerfilFragment", "Clave actualizada correctamente.");
+                                                            // todo: Mostrar algún mensaje de "Contraseña actualizada con éxito"
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
@@ -191,20 +194,20 @@ public class MiPerfilFragment extends Fragment {
                                         };
                                         AppController.getInstance().addToRequestQueue(request);
                                     }
-                                }
-                            }
-                        }
+                                    // Si pulsa el botón cancelar, no se hace nada
+                                })
+                                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                        //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                                    }
+                                });
+                        // Creamos diálogo y lo mostramos
+                        Dialog dialog = builder.create();
+                        dialog.show();
                     }
-                // Si pulsa el botón cancelar, no se hace nada
-                })
-                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
-                    }
-                });
-        // Creamos diálogo y lo mostramos
-        Dialog dialog = builder.create();
-        dialog.show();
+                }
+            }
+        }
     }
 }

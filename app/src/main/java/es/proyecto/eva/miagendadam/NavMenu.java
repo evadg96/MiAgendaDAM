@@ -43,10 +43,10 @@ public class NavMenu extends AppCompatActivity
     TextView nombreUsuario, correoUsuario, familiaCiclo;
     public static String nombre_de_usuario;
     public static String correo_de_usuario;
-    public static String familia_ciclo;
+    private String familia_ciclo;
     private StringRequest request;
 
-//    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
+    //    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/cerrar_sesion.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
 
@@ -62,7 +62,7 @@ public class NavMenu extends AppCompatActivity
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         correo_de_usuario = preferences.getString("correo_de_usuario", "");
-        familia_ciclo = preferences.getString("familiaCiclo", "");
+        familia_ciclo = preferences.getString("familia_ciclo", "");
         Log.d("NavMenu", "Nombre de usuario: "+nombre_de_usuario);
         Log.d("NavMenu", "Correo electrónico: "+correo_de_usuario);
         Log.d("NavMenu", "Familia ciclo: "+familia_ciclo);

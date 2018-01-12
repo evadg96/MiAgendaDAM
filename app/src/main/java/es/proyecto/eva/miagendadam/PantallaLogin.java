@@ -74,11 +74,11 @@ public class PantallaLogin extends AppCompatActivity {
     private String url_consulta11 = "http://miagendafp.000webhostapp.com/consulta_recuperar_id_usuario.php";
 
     static String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
+    static String clave = "";
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
-    static String clave="";
-    private String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
+    static String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
+    static String familiaCiclo = "";
     private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
-    private String familiaCiclo = ""; // la familia del ciclo del usuario para después recomendarle contenidos en base
     // a su familia
     private StringRequest request;
 
@@ -241,7 +241,7 @@ public class PantallaLogin extends AppCompatActivity {
                             if (response.equals("1")) { // SÍ está confirmado, hacemos login
                                 System.out.println("SÍ ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :) )");
                                 System.out.println("Obtenemos datos del usuario");
-                                obtenerDatosUsuario(); // obtenemos los datos del usuario para guardarlos
+                                // obtenemos los datos del usuario para guardarlos
                                 System.out.println("Guardamos preferencias");
                                 guardarPreferencias(); // guardamos los datos del usuario en las preferencias, para usarlo en clases futuras para
                                 System.out.println("Hacemos login");
@@ -525,6 +525,9 @@ public class PantallaLogin extends AppCompatActivity {
                             }
                         } else { // Sí existe el usuario
                             nombre_usuario = nUsuario;
+                            // ******* NO MOVER PORQUE SI NO NO SE OBTIENEN CORRECTAMENTE ********** //
+                                obtenerDatosUsuario();
+                            //**********************************************************************//
                             System.out.println("EL USUARIO INTRODUCIDO EXISTE... PROCEDEMOS A COMPROBAR CONFIRMACIÓN Y BLOQUEO...");
                             comprobarClave(); // comprobamos si la clave es correcta para hacer el login
                         }
@@ -550,6 +553,7 @@ public class PantallaLogin extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+
     /***********************************************************************************************************************
      * Método que obtiene los datos del usuario que ha hecho inicio de sesión (id del usuario, familia del ciclo y correo
      **********************************************************************************************************************/
@@ -561,6 +565,7 @@ public class PantallaLogin extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
                             idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
+                            // TODO: OBTENER EL DATO DE FAMILIA DEL CICLO CON TILDES Y CARACTERES ESPECIALES
                             familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
                             Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
@@ -644,10 +649,8 @@ public class PantallaLogin extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("nombre_de_usuario", nombre_usuario);
         editor.putString("correo_de_usuario", correo_de_usuario);
-        System.out.println("CORREO GUARDADO EN PREFERENCIAS");
+        editor.putString("familia_ciclo", familiaCiclo);
         editor.putString("idUsuario", idUsuario);
-        editor.putString("familiaCiclo", familiaCiclo);
-        System.out.println("FAMILIA DE CICLO GUARDADO EN PREFERENCIAS");
         editor.commit();
     }
 
