@@ -67,6 +67,8 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         setTitle("");
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario
+        // Mostramos el dato obtenido para verificar que es correcto
+        Log.d("VerYEditarRegistroDiario", "idUsuario obtenido: " + idUsuario);
         txtFechaSeleccionada = (EditText) findViewById(R.id.editText_fecha_seleccionada);
         txtHorasSeleccionadas = (EditText) findViewById(R.id.editText_horas_seleccionadas);
         txtMinutosSeleccionados = (EditText) findViewById(R.id.editText_minutos_seleccionados);
