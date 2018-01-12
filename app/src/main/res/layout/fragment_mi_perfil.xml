@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     tools:context="es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +24,7 @@
                 android:textColor="@android:color/darker_gray" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/txt_nombre_mi_perfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -40,7 +38,7 @@
                 android:text="@string/mi_perfil_apellidos" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/txt_apellidos_mi_perfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -53,29 +51,169 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/capa_provincia"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/mi_perfil_localidad" />
+                        android:text="@string/mi_perfil_provincia" />
 
-                    <EditText
-                        android:id="@+id/editText3"
-                        android:layout_width="match_parent"
+                    <Spinner
+                        android:id="@+id/spinner_provincias_mi_perfil"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="Name" />
+                        android:layout_weight="1" />
+
                 </LinearLayout>
 
+                <EditText
+                    android:id="@+id/txt_horas_fct_mi_perfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Horas FCT" />
+
+
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mi_perfil_centro_estudios" />
+
+            <EditText
+                android:id="@+id/txt_centro_estudios_mi_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:text="Centro de estudios " />
+
+            <TextView
+                android:id="@+id/textView_familia_ciclo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mi_perfil_familia_ciclo" />
+
+            <Spinner
+                android:id="@+id/spinner_familias_ciclo_mi_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left" />
+
+            <TextView
+                android:id="@+id/textView_ciclo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mi_perfil_ciclo" />
+
+            <Spinner
+                android:id="@+id/spinner_ciclo_mi_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mi_perfil_centro_practicas" />
+
+            <EditText
+                android:id="@+id/txt_centro_practicas_mi_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:text="Centro de prácticas" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mi_perfil_correo" />
+
+            <TextView
+                android:id="@+id/tv_correo_mi_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Correo"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mi_perfil_nombre_usuario" />
+
+            <TextView
+                android:id="@+id/tv_nombre_usuario_mi_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Nombre de usuario "
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_clave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/mi_perfil_cambiar_clave" />
+
+            <EditText
+                android:id="@+id/txt_clave_mi_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/sClave"
+                android:inputType="textPassword"
+                android:maxLength="20" />
+
+            <EditText
+                android:id="@+id/txt_repite_clave_mi_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/sClave2"
+                android:inputType="textPassword"
+                android:maxLength="20" />
+
+            <Button
+                android:id="@+id/btn_cambiar_clave"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/mi_perfil_btn_actualizar_clave"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>

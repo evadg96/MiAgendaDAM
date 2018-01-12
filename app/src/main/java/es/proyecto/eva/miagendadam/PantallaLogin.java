@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,7 +76,7 @@ public class PantallaLogin extends AppCompatActivity {
     static String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
     static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
     static String clave="";
-    private String correo_electronico= ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
+    private String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
     private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     private String familiaCiclo = ""; // la familia del ciclo del usuario para después recomendarle contenidos en base
     // a su familia
@@ -239,6 +240,11 @@ public class PantallaLogin extends AppCompatActivity {
                         try {
                             if (response.equals("1")) { // SÍ está confirmado, hacemos login
                                 System.out.println("SÍ ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :) )");
+                                System.out.println("Obtenemos datos del usuario");
+                                obtenerDatosUsuario(); // obtenemos los datos del usuario para guardarlos
+                                System.out.println("Guardamos preferencias");
+                                guardarPreferencias(); // guardamos los datos del usuario en las preferencias, para usarlo en clases futuras para
+                                System.out.println("Hacemos login");
                                 loginCorrecto();
                             } else { // NO está confirmado, obligamos a confirmar
                                 System.out.println(" NO ESTÁ CONFIRMADO (DESDE MÉTODO CHECK_ISCONFIRMED :( )");
@@ -556,10 +562,10 @@ public class PantallaLogin extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
                             idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
                             familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
-                            correo_electronico = jsonArray.getJSONObject(0).getString("correo");
-                            System.out.println("ID DEL USUARIO "+ idUsuario);
-                            System.out.println("FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
-                            System.out.println("CORREO ELECTRÓNICO "+ correo_electronico);
+                            correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
+                            Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
+                            Log.d("PantallaLogin","FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
+                            Log.d("PantallaLogin","CORREO ELECTRÓNICO "+ correo_de_usuario);
                         } catch (Exception e){
                             e.printStackTrace();
                         }
@@ -589,8 +595,6 @@ public class PantallaLogin extends AppCompatActivity {
      * Método que se ejecuta cuando se han verificado todos los datos necesarios para hacer un inicio de sesión correcto
      ********************************************************************************************************************/
     private void loginCorrecto(){
-        obtenerDatosUsuario(); // obtenemos los datos del usuario para guardarlos
-        guardarPreferencias(); // guardamos los datos del usuario en las preferencias, para usarlo en clases futuras para
         // el resto de funcionalidades
         reseteaIntentos(); // reseteamos número de intentos de login restantes
         // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
@@ -639,9 +643,11 @@ public class PantallaLogin extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("nombre_de_usuario", nombre_usuario);
-        editor.putString("correo_de_usuario", correo_electronico);
+        editor.putString("correo_de_usuario", correo_de_usuario);
+        System.out.println("CORREO GUARDADO EN PREFERENCIAS");
         editor.putString("idUsuario", idUsuario);
         editor.putString("familiaCiclo", familiaCiclo);
+        System.out.println("FAMILIA DE CICLO GUARDADO EN PREFERENCIAS");
         editor.commit();
     }
 

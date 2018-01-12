@@ -11,10 +11,8 @@ import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,10 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.Fragments.Diario.NuevoRegistroDiario;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
-import static es.proyecto.eva.miagendadam.PantallaLogin.nombre_usuario;
-import static es.proyecto.eva.miagendadam.RegistroNuevoUsuario.correo;
 
 /********************************************************************************************************************
  * Pantalla inicial (splash) --> Primera pantalla de la app, donde se realizan comprobaciones y se obtienen datos
@@ -90,7 +85,7 @@ public class PantallaCarga extends AppCompatActivity {
     // ****************************************  VALORES GUARDADOS EN PREFERENCIAS ****************************************************
     static String nombre_de_usuario = ""; // nombre del usuario que ha hecho login. En la primera ejecución de la app estará en blanco
     static String codigo_de_confirmacion; // código de confirmación de registro que se le ha enviado al usuario
-    static String correo_electronico; // correo electrónico que se obtiene del usuario que ha hecho login
+    static String correo_de_usuario; // correo electrónico que se obtiene del usuario que ha hecho login
     // ********************************************************************************************************************************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +101,11 @@ public class PantallaCarga extends AppCompatActivity {
         // Obtenemos los datos de las preferencias
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", "");
-        correo_electronico = preferences.getString("correo_de_usuario", "");
+        correo_de_usuario = preferences.getString("correo_de_usuario", "");
         // ********************************************************************************************************************************************
         // Las mostramos en la consola de debug para controlar los datos que tenemos almacenados por el momento
         System.out.println("NOMBRE DE USUARIO ALMACENADO: " + nombre_de_usuario);
-        System.out.println("CORREO ELECTRÓNICO ALMACENADO!: " + correo_electronico);
+        System.out.println("CORREO ELECTRÓNICO ALMACENADO!: " + correo_de_usuario);
         System.out.println("HORA ACTUAL: "+fecha_ultimo_login);
         // Comprobamos conexión a internet del dispositivo
         checkConexion();

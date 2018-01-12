@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
+import es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 
@@ -38,9 +40,10 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class NavMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    TextView nombreUsuario, correoUsuario;
+    TextView nombreUsuario, correoUsuario, familiaCiclo;
     public static String nombre_de_usuario;
-    static String correo_electronico;
+    public static String correo_de_usuario;
+    public static String familia_ciclo;
     private StringRequest request;
 
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
@@ -57,9 +60,12 @@ public class NavMenu extends AppCompatActivity
         setSupportActionBar(toolbar);
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        nombre_de_usuario = preferences.getString("nombre_de_usuario", ""); // habiendo declarado la variable CON EL MISMO NOMBRE arriba
-        correo_electronico = preferences.getString("correo_de_usuario", "");
-
+        nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
+        correo_de_usuario = preferences.getString("correo_de_usuario", "");
+        familia_ciclo = preferences.getString("familiaCiclo", "");
+        Log.d("NavMenu", "Nombre de usuario: "+nombre_de_usuario);
+        Log.d("NavMenu", "Correo electrónico: "+correo_de_usuario);
+        Log.d("NavMenu", "Familia ciclo: "+familia_ciclo);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -72,7 +78,9 @@ public class NavMenu extends AppCompatActivity
         nombreUsuario = (TextView) headerView.findViewById(R.id.nombre_usuario_nav);
         nombreUsuario.setText(nombre_de_usuario);
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
-        correoUsuario.setText(correo_electronico);
+        correoUsuario.setText(correo_de_usuario);
+        familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
+        familiaCiclo.setText(familia_ciclo);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_diario);
@@ -117,6 +125,7 @@ public class NavMenu extends AppCompatActivity
             setTitle(R.string.opc_anteproyecto);
         } else if (id == R.id.nav_perfil) {
             setTitle(R.string.opc_perfil);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new MiPerfilFragment()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -98,7 +99,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recuperar_clave);
+        setContentView(R.layout.activity_recuperar_datos_usuario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // para VER la flecha atrás en el actionbar
         setTitle(R.string.title_activity_recuperar_datos);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -217,7 +218,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Log.d("RecuperarDatosUsuario", "Error al enviar el correo");
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
@@ -257,7 +259,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("CORREO ENVIADO CORRECTAMENTE");
+            Log.d("RecuperarDatosUsuario", "Correo de recuperación de clave enviado correctamente.");
         }
     }
 
@@ -295,7 +297,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("CORREO ENVIADO CORRECTAMENTE");
+            Log.d("RecuperarDatosUsuario", "Correo de recuperación de nombre de usuario enviado correctamente.");
         }
     }
 
@@ -316,8 +318,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                             // Creamos alerta de confirmación  para decir que se ha creado correctamente
                             // y mandamos a la pantalla de confirmación de usuario
                             AlertDialog.Builder builder = new AlertDialog.Builder(RecuperarDatosUsuario.this);
-                            builder.setTitle("Nombre de usuario enviado"); // titulo del diálogo
-                            builder.setMessage("Se ha enviado el nombre de usuario del correo indicado. Revisa tu bandeja de entrada.")
+                            builder.setTitle(R.string.title_dialog_recuperar_usuario); // titulo del diálogo
+                            builder.setMessage(R.string.txt_dialog_recuperar_usuario)
                                     .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             Intent intent = new Intent(RecuperarDatosUsuario.this, PantallaLogin.class);
@@ -336,8 +338,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Log.d("RecuperarDatosUsuario", "Error al recuperar el nombre de usuario");
                     }
                 }) {
             @Override
@@ -367,8 +369,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                         // Creamos alerta de confirmación  para decir que se ha creado correctamente
                         // y mandamos a la pantalla de confirmación de usuario
                         AlertDialog.Builder builder = new AlertDialog.Builder(RecuperarDatosUsuario.this);
-                        builder.setTitle("Contraseña enviada"); // titulo del diálogo
-                        builder.setMessage("Se ha enviado una contraseña nueva. Revisa tu bandeja de entrada.")
+                        builder.setTitle(R.string.title_dialog_recuperar_clave); // titulo del diálogo
+                        builder.setMessage(R.string.txt_dialog_recuperar_clave)
                                 .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         Intent intent = new Intent(RecuperarDatosUsuario.this, PantallaLogin.class);
@@ -387,8 +389,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Log.d("RecuperarDatosUsuario", "Error al actualizar la clave de usuario");
                     }
                 }) {
             @Override

@@ -76,7 +76,7 @@
 
                             <Spinner
                                 android:id="@+id/spinner_provincia"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
                         </LinearLayout>
@@ -112,7 +112,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_familias_ciclo"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="left" />
@@ -126,7 +126,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_ciclo"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
 

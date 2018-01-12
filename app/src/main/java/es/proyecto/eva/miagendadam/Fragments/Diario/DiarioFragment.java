@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
+// TODO: ¿Intentar obtenerlo mediante SharedPreferences?
 import static es.proyecto.eva.miagendadam.NavMenu.nombre_de_usuario;
 
 /***************************************************************************************************
@@ -166,7 +168,7 @@ public class DiarioFragment extends Fragment {
     }
 
     /***********************************************************************************************
-     * Método que obtiene los registros del usuario de la opción "Diario"
+     * Método que obtiene automáticamente los registros del usuario de la opción "Diario"
      **********************************************************************************************/
     public void obtenerRegistrosDiario() {
         request = new StringRequest(Request.Method.POST, url_consulta,
@@ -195,6 +197,7 @@ public class DiarioFragment extends Fragment {
                             }
                         } else { // si no hay preferencias, es decir, no hay datos del usuario (cosa improbable), notificamos
                             Toast.makeText(getActivity(), R.string.error_no_hay_usuario, Toast.LENGTH_SHORT).show();
+                            Log.d("DiarioFragment", "No hay nombre de usuario para obtener los registros de diario correspondientes.");
                         }
                     }
                 },
