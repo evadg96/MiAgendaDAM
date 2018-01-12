@@ -92,7 +92,14 @@ public class PantallaLogin extends AppCompatActivity {
     // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
     private String intentos_login = "";
 
-
+/**********************************************************************************
+* TODO:
+* - Añadir info en Acerca de de que trabaja con ciclos amparados en la LOE
+* - Cambiar horas máximas del ciclo a 400 si nos amparamos SOLO en la LOE?
+* (consultar esto último con el tutor)
+* - Subir al repo web la clase Acerca de, que creo que no está
+**********************************************************************************/
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
