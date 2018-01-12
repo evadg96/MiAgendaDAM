@@ -33,6 +33,23 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 // TODO: ¿Intentar obtenerlo mediante SharedPreferences?
 import static es.proyecto.eva.miagendadam.NavMenu.nombre_de_usuario;
 
+/**
+* TODO: Añadir visualización de estadísticas de los registros con una opción en un icono del action bar
+* Para ello crear consultas con uso de funciones como COUNT, SUM, AVG..
+* Algunas estadísticas que se pretenden implementar:
+* - Visualización de número total de registros existentes
+* - Visualización de media de horas trabajadas en total
+* - Día que más horas se ha trabajado
+* -  "   " menos "    "  "   "
+* - ... ?
+* Añadir también búsqueda a través de filtrado:
+* - Filtrado por búsqueda de día exacto
+* - Filtrado por franja de horas
+* - Filtrado por horas exactas
+* - Filtrado por valoración
+* - ... ?
+*/
+
 /***************************************************************************************************
  * Fragmento de la opción Diario que se incluye en la actividad NavMenu. Se muestra por defecto
  * al abrirse la aplicación tras haber iniciado sesión, o bien al seleccionar la opción manualmente
