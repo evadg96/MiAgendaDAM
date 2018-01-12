@@ -91,6 +91,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 pass += intChar.charAt(spot);
             }
         }
+        Log.i("RecuperarDatosUsuario", "Clave nueva generada");
         return pass;
     }
     // metemos la clave generada en otro string
@@ -111,6 +112,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 enviarClave = true;
+                Log.i("RecuperarDatosUsuario", "Enviar clave nueva");
                 check_correo();
             }
         });
@@ -119,6 +121,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 enviarUsuario = true;
+                Log.i("RecuperarDatosUsuario", "Enviar nombre de usuario");
                 check_correo();
             }
         });
@@ -129,14 +132,15 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
      * Método que comprueba si existe algún usuario con el correo introducido
      **********************************************************************************************/
     public void check_correo(){
+        Log.d("RecuperarDatosUsuario", "Comprobamos el correo introducido");
         correo = txtCorreo.getText().toString();
         if (!correo.isEmpty()){ // si se ha introducido un dato en el campo de correo...
             request = new StringRequest(Request.Method.POST, url_consulta2,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                             if (response.equals("0")) { // no existe el usuario en la bd
+                                Log.i("RecuperarDatosUsuario", "No hay ningún usuario con ese correo");
                                 Toast.makeText(RecuperarDatosUsuario.this, "No hay ningún usuario registrado con ese correo.", Toast.LENGTH_SHORT).show();
                             } else if(response.equals("1")){
                                 // Comprobamos qué botón había pulsado el usuario:
@@ -153,8 +157,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                            Log.e("RecuperarDatosUsuario", "Error al conectar con el servidor para comprobar el correo introducido");
                         }
                     }) {
                 @Override
@@ -167,7 +171,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
 
             };
             AppController.getInstance().addToRequestQueue(request);
-        } else { // si el campo de nombre de usuario está vacío
+        } else { // si el campo de correo electrónico está vacío
             Toast.makeText(RecuperarDatosUsuario.this, "Debes introducir tu correo electrónico.", Toast.LENGTH_SHORT).show();
         }
 
@@ -198,28 +202,28 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
 
                             if (enviarClave){
                                 // Añadimos los datos del correo junto con la nueva clave
+                                Log.i("RecuperarDatosUsuario", "Enviamos correo con nueva clave");
                                 RecuperarDatosUsuario.RetreiveFeedTask task = new RetreiveFeedTask();
                                 task.execute();
                                 enviarClave = false;
                             } else if (enviarUsuario){
                                 // Establecemos el contenido del correo con los datos del usuario
+                                Log.i("RecuperarDatosUsuario", "Enviamos correo con nombre de usuario");
                                 RecuperarDatosUsuario.RetreiveFeedTask2 task2 = new RetreiveFeedTask2();
                                 task2.execute();
                                 enviarUsuario = false;
                             }
-
                         }catch (Exception e){
                             e.printStackTrace();
+                            Log.e("RecuperarDatosUsuario", "Error al enviar el correo electrónico");
                         }
                     }
-
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.d("RecuperarDatosUsuario", "Error al enviar el correo");
+                        Log.e("RecuperarDatosUsuario", "Error al obtener la clave del correo de noreply...");
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
@@ -259,7 +263,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String result) {
-            Log.d("RecuperarDatosUsuario", "Correo de recuperación de clave enviado correctamente.");
+            Log.d("RecuperarDatosUsuario", "Correo de recuperación de clave enviado");
         }
     }
 
@@ -297,7 +301,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("RecuperarDatosUsuario", "Correo de recuperación de nombre de usuario enviado correctamente.");
+            Log.d("RecuperarDatosUsuario", "Correo de recuperación de nombre de usuario enviado");
         }
     }
 
@@ -305,6 +309,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
      *  Método que recupera el usuario asociado con el correo indicado por el usuario
      **********************************************************************************************/
     public void recuperaUsuario(){
+        Lod.g("RecuperarDatosUsuario", "Recuperamos el nombre de usuario asociado al correo");
         request = new StringRequest(Request.Method.POST, url_consulta3,
                 new Response.Listener<String>() {
                     @Override
@@ -313,7 +318,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
                             nUsuario = jsonArray.getJSONObject(0).getString("nUsuario");
-                            System.out.println("NOMBRE DE USUARIO OBTENIDO DEL CORREO INTRODUCIDO: "+ nUsuario);
+                            Log.d("RecuperarDatosUsuario", "Nombre de usuario obtenido: " + nUsuario);
                             enviaCorreo();
                             // Creamos alerta de confirmación  para decir que se ha creado correctamente
                             // y mandamos a la pantalla de confirmación de usuario
@@ -331,15 +336,15 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                             dialog.show();
                         } catch (Exception e){
                             e.printStackTrace();
+                            Log.e("RecuperarDatosUsuario", "Error al obtener el nombre de usuario");
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.d("RecuperarDatosUsuario", "Error al recuperar el nombre de usuario");
+                        Log.d("RecuperarDatosUsuario", "Error al conectar con el servidor para obtener el nombre de usuario");
                     }
                 }) {
             @Override
@@ -349,7 +354,6 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 parametros.put("correo", correo);
                 return parametros;
             }
-
         };
         AppController.getInstance().addToRequestQueue(request);
     }
@@ -358,28 +362,28 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
      * Método que genera y envía la clave nueva que se le enviará al usuario
      **********************************************************************************************/
     public void actualizaClave(){
+        Log.i("RecuperarDatosUsuario", "Generamos la clave nueva");
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                         try {
-                            System.out.println("CLAVE NUEVA DEL USUARIO: "+ claveNueva);
-                        enviaCorreo();
-                        // Creamos alerta de confirmación  para decir que se ha creado correctamente
-                        // y mandamos a la pantalla de confirmación de usuario
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RecuperarDatosUsuario.this);
-                        builder.setTitle(R.string.title_dialog_recuperar_clave); // titulo del diálogo
-                        builder.setMessage(R.string.txt_dialog_recuperar_clave)
-                                .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Intent intent = new Intent(RecuperarDatosUsuario.this, PantallaLogin.class);
-                                        startActivity(intent);
-                                    }
-                                });
-                        // Create the AlertDialog object and return it
-                        Dialog dialog = builder.create();
-                        dialog.show();
+                            Log.d("RecuperarDatosUsuario", "Clave generada: " + claveNueva);
+                            enviaCorreo();
+                            // Creamos alerta de confirmación  para decir que se ha creado correctamente
+                            // y mandamos a la pantalla de confirmación de usuario
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RecuperarDatosUsuario.this);
+                            builder.setTitle(R.string.title_dialog_recuperar_clave); // titulo del diálogo
+                            builder.setMessage(R.string.txt_dialog_recuperar_clave)
+                                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Intent intent = new Intent(RecuperarDatosUsuario.this, PantallaLogin.class);
+                                            startActivity(intent);
+                                        }
+                                    });
+                            // Create the AlertDialog object and return it
+                            Dialog dialog = builder.create();
+                            dialog.show();
                         } catch (Exception e){
                             e.printStackTrace();
                         }
@@ -388,9 +392,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.d("RecuperarDatosUsuario", "Error al actualizar la clave de usuario");
+                        Log.d("RecuperarDatosUsuario", "Error al conectar con el servidor para actualizar la clave de usuario");
                     }
                 }) {
             @Override
@@ -401,18 +404,16 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 parametros.put("clave", claveNueva);
                 return parametros;
             }
-
         };
         AppController.getInstance().addToRequestQueue(request);
-
     }
 
-    // PARA DAR FUNCIONALIDAD AL BOTÓN DE ATRÁS
+    // Acciones a realizar por acción seleccionada del menú del action bar: 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
+                Log.i("RecuperarDatosUsuario", "Action Atrás");
                 Intent intent = new Intent (RecuperarDatosUsuario.this, PantallaLogin.class);
                 startActivity(intent);
         }
