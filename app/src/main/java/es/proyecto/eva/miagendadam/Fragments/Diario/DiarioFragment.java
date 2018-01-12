@@ -83,13 +83,10 @@ public class DiarioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("ON CREATE FRAGMENT");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        System.out.println("ON CREATE VIEW FRAGMENT");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diario, container, false);
         listaResultado = (ListView) view.findViewById(R.id.lista);
         txt = (TextView) view.findViewById(R.id.txt_vacio);
@@ -99,6 +96,7 @@ public class DiarioFragment extends Fragment {
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("DiarioFragment", "Nuevo registro de diario");
                 Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
                 startActivity(intent);
             }
@@ -122,6 +120,7 @@ public class DiarioFragment extends Fragment {
 
                     // después de obtener los datos abrimos la nueva actividad que nos permitirá visualizarlos
                     // y editarlos en sus correspondientes campos
+                    Log.d("DiarioFragment", "Vista detalle de un registro");
                     Intent intent = new Intent(getActivity(), VerYEditarRegistroDiario.class);
                     startActivity(intent);
 
@@ -131,6 +130,7 @@ public class DiarioFragment extends Fragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.e("DiarioFragment", "Error al obtener los datos del registro a visualizar en detalle");
                 }
             }
         });
@@ -141,20 +141,18 @@ public class DiarioFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        System.out.println("ON ACTIVITY CREATED");
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        System.out.println("ON ATTACH");
     }
 
     // Se ejecuta cuando el fragmento se pausa, al abrir otra actividad o fragmento
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println("ON PAUSE");
+        Log.d("DiarioFragment", "Fragmento pausado");
     }
 
     // Se ejecuta al volver al fragmento cuando éste ya se había cargado alguna vez previamente
@@ -163,7 +161,7 @@ public class DiarioFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("ON RESUME");
+        Log.d("DiarioFragment", "Fragment reanudado");
         obtenerRegistrosDiario();
     }
 
@@ -178,7 +176,7 @@ public class DiarioFragment extends Fragment {
                         if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene registros en el diario
                                 txt.setText(R.string.texto_diario_vacio);
-                                System.out.println("EL USUARIO NO TIENE REGISTROS DE DIARIO");
+                                Log.i("DiarioFragment", "El usuario no tiene registros creados");
                             } else { // El usuario tiene registros
                                 try {
                                     txt.setText(""); // ponemos el texto de que no hay registros en blanco por si acaso, y obtenemos datos
@@ -188,16 +186,17 @@ public class DiarioFragment extends Fragment {
                                     // YA QUE LOS ARRAYS TIENEN FORMATO [{...}][{...}], ... CON LO QUE, SI OBTIENE ASÍ LOS RESULTADOS, SOLO VA A COGER EL PRIMERO
                                     // Y UN ARRAY DE OBJETOS TENDRÍA ESTE OTRO FORMATO [{...}, {...}, {...}] DONDE LOS CORCHETES DETERMINAN EL ARRAY, Y LAS LLAVES LOS OBJETOS.
                                     jsonArrayDiario = new JSONArray(response); // guardamos los registros en el array
-                                    System.out.println("CARGANDO REGISTROS...");
+                                    Log.i("DiarioFragment", "Registros obtenidos");
                                     cargarRegistros(); // cargamos en pantalla los registros
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.e("DiarioFragment", "Error al obtener los registros del usuario");
                                 }
                             }
                         } else { // si no hay preferencias, es decir, no hay datos del usuario (cosa improbable), notificamos
                             Toast.makeText(getActivity(), R.string.error_no_hay_usuario, Toast.LENGTH_SHORT).show();
-                            Log.d("DiarioFragment", "No hay nombre de usuario para obtener los registros de diario correspondientes.");
+                            Log.w("DiarioFragment", "No hay nombre de usuario para obtener los registros de diario correspondientes.");
                         }
                     }
                 },
@@ -205,7 +204,7 @@ public class DiarioFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
-
+                        Log.e("DiarioFragment", "Error al realizar la conexión con el servidor al obtener registros del usuario");
                     }
                 }) {
             @Override
@@ -244,6 +243,7 @@ public class DiarioFragment extends Fragment {
                 arrayValoraciones.add(valoracion); // las añadimos al array de valoraciones
             } catch (Exception e){ // Error al intentar obtener los datos
                 e.printStackTrace();
+                Log.e("DiarioFragment", "Error al cargar los registros de usuario");
             }
         }
         // Recorremos un array para comprobar que los datos son correctos (para verlo en la consola de Android Studio)
