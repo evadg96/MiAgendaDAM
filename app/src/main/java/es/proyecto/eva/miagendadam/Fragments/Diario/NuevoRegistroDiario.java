@@ -60,11 +60,12 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         txtMinutos = (EditText) findViewById(R.id.editText_minutos);
         txtDescripcion = (EditText) findViewById(R.id.editText_descripcion);
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario
-        // al que vamos a introducir el registro.
+        idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
+        // Mostramos el dato obtenido de las preferencias para verificar que es correcto
+        Log.d("NuevoRegistroDiario", "idUsuario almacenado: " + idUsuario);
 
-        // Los iconos por defecto aparecen con semitransparencia, para ponerse opacos en su selección
-        // para saber cuál está marcado
+        // Ponemos los iconos por defecto con semitransparencia, para ponerse opacos en su selección
+        // para poder saber cuál está marcado en todo momento
         btnBueno.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 btnBueno.setAlpha(1f); // opaco
