@@ -78,6 +78,7 @@ public class MiPerfilFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_actualizar_perfil: // Opción de guardar los datos de usuario actualizados
+                Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
                 actualizarDatosUsuario();
                 return true;
         }
@@ -103,6 +104,7 @@ public class MiPerfilFragment extends Fragment {
         btnActualizaClave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Lod.i("MiPerfilFragment", "Actualizar clave de usuario");
                 actualizarClave();
             }
         });
@@ -126,26 +128,30 @@ public class MiPerfilFragment extends Fragment {
         repiteClave = txtRepiteClave.getText().toString();
         // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
         if (claveNueva.isEmpty() || repiteClave.isEmpty()) {
+            Log.d("MiPerfilFragment", "Campos de clave vacíos");
             Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
         } else { // Los campos no están vacíos. Continuamos validando...
-
+            
             // Si la clave introducida es menor a 8 caracteres, no permitimos continuar
             // (no validamos la longitud máxima porque ya hemos definido el campo para que solo acepte
             // hasta 20 caracteres)
             if (claveNueva.length() < 8) {
+                Log.d("MiPerfilFragment", "Longitud de clave inferior a la permitida");
                 Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
             } else { // La longitud de clave es correcta. Continuamos validando...
 
                 // Si los caracteres no son los aceptados por el patrón, no permitimos continuar
                 if (!claveNueva.matches(pattern_formato)) {
                     //TODO: Quitar este mensaje de error de string y ponerlo directamente aquí, porque no saca el mensaje
+                    Log.d("MiPerfilFragment", "Formato de clave no válido");
                     Toast.makeText(getActivity(), R.string.error_formato_usuario_clave +
                             " : % ~ # &", Toast.LENGTH_LONG).show();
                 } else { // La clave tiene un formato correcto. Continuamos validando...
                     // Si la clave no repite con la repetida no permitimos continuar
                     if (!claveNueva.equals(repiteClave)) {
+                        Log.d("MiPerfilFragment", "Las claves no coinciden");
                         Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
-                        System.out.println("CLAVES!!!" + claveNueva + repiteClave);
+                        System.out.println("CLAVES: " + claveNueva + repiteClave);
                         txtClave.setText(""); // Borramos los campos de clave
                         txtRepiteClave.setText("");
                     } else { // Las dos claves introducidas coindicen. Terminamos las validaciones.
@@ -157,6 +163,7 @@ public class MiPerfilFragment extends Fragment {
                         builder.setMessage(R.string.txt_dialog_actualizar_clave_mi_perfil)
                                 // Si pulsa el botón de cambiar, se procede con la actualización
                                 .setPositiveButton(R.string.btn_cambiar, new DialogInterface.OnClickListener() {
+                                    Log.i("MiPerfilFragment", "Confirmar cambio de clave");
                                     public void onClick(DialogInterface dialog, int id) {
                                         // Todas las validaciones se han pasado correctamente, ejecutamos la consulta
                                         // para actualizar la clave
@@ -171,6 +178,7 @@ public class MiPerfilFragment extends Fragment {
                                                             // todo: Mostrar algún mensaje de "Contraseña actualizada con éxito"
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
+                                                            Log.a("MiPerfilFragment", "Error al actualizar la clave");
                                                         }
                                                     }
                                                 },
@@ -179,7 +187,7 @@ public class MiPerfilFragment extends Fragment {
                                                     public void onErrorResponse(VolleyError error) {
                                                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                                                         Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                                        Log.d("MiPerfilFragment", "Error al actualizar la clave de usuario.");
+                                                        Log.d("MiPerfilFragment", "Error al conectar con el servidor para actualizar la clave de usuario");
                                                     }
                                                 }) {
                                             @Override
@@ -200,6 +208,7 @@ public class MiPerfilFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // User cancelled the dialog
                                         //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                                        Log.i("MiPerfilFragment", "Cancelar cambio de clave");
                                     }
                                 });
                         // Creamos diálogo y lo mostramos
