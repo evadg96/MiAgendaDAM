@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,10 +71,11 @@ public class ConfirmaRegistro extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", ""); // obtenemos preferencia del código
         // comprobamos si el correo existe en la base de datos
-        System.out.println("CÓDIGO DE CONFIRMACIÓN ACTUAL: " + codigo_de_confirmacion);
+        Log.i("ConfirmaRegistro", "Código de confirmación actual: " + codigo_de_confirmacion);
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("ConfirmaRegistro", "Confirmar registro");
                 check_correo();
             }
         });
@@ -82,6 +84,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
         btnReenviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("ConfirmaRegistro", "Reenviar código de confirmación");
                 Intent intent = new Intent(ConfirmaRegistro.this, ReenviarCodigoConfirmacion.class);
                 startActivity(intent);
             }
@@ -93,6 +96,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
      * en la base de datos
      **********************************************************************************************/
     public void check_correo(){
+        Log.i("ConfirmaRegistro", "Comprobamos existencia de correo introducido");
         correo_electronico = txtCorreo.getText().toString();
         if (!correo_electronico.isEmpty()){ // si se ha introducido un dato en el campo de correo...
             request = new StringRequest(Request.Method.POST, url_consulta2,
@@ -100,8 +104,10 @@ public class ConfirmaRegistro extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             if (response.equals("0")) { // NO EXISTE el usuario en la bd
+                                Log.i("ConfirmaRegistro", "No existe ningún usuario con ese correo");
                                 Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
                             } else if(response.equals("1")){ // SÍ EXISTE, comprobamos código de confirmación:
+                                Log.i("ConfirmaRegistro", "Comprobamos código de confirmación");
                                 request = new StringRequest(Request.Method.POST, url_consulta,
                                         new Response.Listener<String>() {
                                             @Override
@@ -110,6 +116,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                 String codigo = txtCodigo.getText().toString();
                                                 if (!codigo_de_confirmacion.isEmpty()) { // aseguramos que tengamos el dato del código almacenado
                                                     if (codigo.equals(codigo_de_confirmacion)) { // EL CÓDIGO ES CORRECTO
+                                                        Log.d("ConfirmaRegistro", "Código correcto");
                                                         // Creamos diálogo alerta de aviso que lleva a pantalla login
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmaRegistro.this);
                                                         builder.setMessage(R.string.dialog_confirmacion_correcta)
@@ -129,9 +136,11 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                         dialog.show(); // mostramos el diálofo
                                                     } else { // El código NO es correcto
                                                         Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
+                                                        Log.d("ConfirmaRegistro", "Código incorrecto");
                                                     }
                                                 } else { // Si no hay codigo de confirmación en las preferencias, le decimos que ha expirado, para que solicite uno nuevo
                                                     Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_expirado, Toast.LENGTH_LONG).show();
+                                                    Log.d("ConfirmaRegistro", "No hay ningún código almacenado");
                                                 }
                                             }
                                         },
@@ -140,7 +149,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
                                                 Toast.makeText(ConfirmaRegistro.this, R.string.error_confirmar_registro, Toast.LENGTH_LONG).show();
-
+                                                Log.e("ConfirmaRegistro", "Error al conectar con el servidor para confirmar el registro del usuario");
                                             }
                                         }) {
                                     // Enviamos los datos necesarios al script php para que pueda realizar la consulta
@@ -164,6 +173,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(ConfirmaRegistro.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                            Log.e("ConfirmaRegistro", "Error al conectar con el servidor para comprobar el correo del usuario");
                         }
                     }) {
                 @Override
@@ -178,6 +188,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
             AppController.getInstance().addToRequestQueue(request);
         } else { // si el campo de nombre de usuario está vacío
             Toast.makeText(ConfirmaRegistro.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+            Log.a("ConfirmaRegistro", "No hay nombre de usuario almacenado");
         }
     }
 
@@ -186,6 +197,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
         switch (item.getItemId()) {
             // Al pulsar el icono de la flecha atrás de la barra de acciones
             case android.R.id.home:
+                Log.i("ConfirmaRegistro", "Action Atrás");
                 // Para que no nos mande de vuelta al registro recién hecho, porque esta pantalla se abre
                 // por primera vez al terminar el registro de nuevo usuario
                onBackPressed();
