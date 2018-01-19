@@ -28,8 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Nombre" />
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -42,8 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Apellido Apellido" />
+                android:inputType="textPersonName" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,8 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Horas FCT" />
+                    android:inputType="textPersonName" />
 
 
 
@@ -98,8 +95,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:maxLength="50"
-                android:text="Centro de estudios " />
+                android:maxLength="50" />
 
             <TextView
                 android:id="@+id/textView_familia_ciclo"
@@ -141,8 +137,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:maxLength="50"
-                android:text="Centro de prácticas" />
+                android:maxLength="50" />
 
             <TextView
                 android:id="@+id/textView15"

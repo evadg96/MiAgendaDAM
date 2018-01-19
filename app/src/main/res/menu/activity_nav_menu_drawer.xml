@@ -57,13 +57,13 @@
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_ayuda"
-                android:icon="@drawable/ic_help_black_24dp"
-                android:title="@string/title_activity_acerca_de" />
-            <item
                 android:id="@+id/nav_cerrar_sesion"
                 android:icon="@drawable/cerrar_sesion"
                 android:title="@string/opc_cerrar_sesion" />
+            <item
+                android:id="@+id/nav_ayuda"
+                android:icon="@drawable/ic_help_black_24dp"
+                android:title="@string/title_activity_acerca_de" />
         </menu>
     </item>
 

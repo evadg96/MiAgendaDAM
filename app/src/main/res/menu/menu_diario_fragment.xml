@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_busqueda_registros"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/menu_buqueda_registros"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_estadisticas"
+        android:icon="@drawable/ic_assessment_white_24dp"
+        android:title="@string/menu_estadisticas_registros_diario"
+        app:showAsAction="ifRoom" />
+</menu>

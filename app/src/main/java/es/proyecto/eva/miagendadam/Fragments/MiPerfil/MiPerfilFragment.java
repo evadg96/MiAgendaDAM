@@ -28,6 +28,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +52,14 @@ public class MiPerfilFragment extends Fragment {
     private StringRequest request;
     private String url_consulta = "http://miagendafp.000webhostapp.com/update_datos_perfil_usuario.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/update_clave_perfil_usuario.php";
-    private String claveNueva = "", repiteClave = "", horas_fct = "";
+    private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_recuperar_datos_perfil_usuario.php";
+    private String claveNueva = "", repiteClave = "";
+    private JSONArray jsonArray;
+    // Datos del usuario que se mostrarán en pantalla:
+    private String nombre_del_usuario = "", apellidos_del_usuario = "", provincia_del_usuario = "",
+    centro_estudios_usuario = "", familia_ciclo_usuario = "", ciclo_formativo_usuario = "", centro_practicas_usuario = "",
+            correo_usuario = "", nombre_user_usuario = "";
+    private String  horas_fct_usuario = "";
     // Patrón para controlar el formato de la contraseña nueva
     private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
@@ -64,7 +74,7 @@ public class MiPerfilFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true); // para visualizar el menú en el action bar
     }
 
     // Creamos el menú en el action bar
@@ -78,7 +88,7 @@ public class MiPerfilFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_actualizar_perfil: // Opción de guardar los datos de usuario actualizados
-                Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
+                //Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
                 actualizarDatosUsuario();
                 return true;
         }
@@ -88,6 +98,12 @@ public class MiPerfilFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mi_perfil, container, false);
+        // Obtenemos preferencias:
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        nombre_user_usuario = preferences.getString("nombre_de_usuario", "");
+        correo_usuario = preferences.getString("correo_de_usuario", "");
+        //Log.d("MiPerfilFragment", "Nombre de usuario obtenido: " + nombre_user_usuario);
+        //Log.d("MiPerfilFragment", "Correo de usuario obtenido: " + correo_usuario);
         txtNombre = (EditText) view.findViewById(R.id.txt_nombre_mi_perfil);
         txtApellidos = (EditText) view.findViewById(R.id.txt_apellidos_mi_perfil);
         txtHorasFCT = (EditText) view.findViewById(R.id.txt_horas_fct_mi_perfil);
@@ -98,25 +114,85 @@ public class MiPerfilFragment extends Fragment {
         spinnerProvincia = (Spinner) view.findViewById(R.id.spinner_provincias_mi_perfil);
         spinnerFamiliaCiclo = (Spinner) view.findViewById(R.id.spinner_familias_ciclo_mi_perfil);
         spinnerCiclo = (Spinner) view.findViewById(R.id.spinner_ciclo_mi_perfil);
+        tvNombreUsuario = (TextView) view.findViewById(R.id.tv_nombre_usuario_mi_perfil);
+        tvCorreo = (TextView) view.findViewById(R.id.tv_correo_mi_perfil);
         btnActualizaClave = (Button) view.findViewById(R.id.btn_cambiar_clave);
-
+        // Obtenemos los datos del usuario para mostrarlos después
+        obtenerDatosUsuario();
         // Al pulsar el botón de actualizar clave...
         btnActualizaClave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Lod.i("MiPerfilFragment", "Actualizar clave de usuario");
+                //Log.i("MiPerfilFragment", "Actualizar clave de usuario");
                 actualizarClave();
             }
         });
-
         return view;
+    }
+
+    /***********************************************************************************************
+     * Método que obtiene los datos del usuario para mostrarlos
+     **********************************************************************************************/
+    public void obtenerDatosUsuario(){
+        request = new StringRequest(Request.Method.POST, url_consulta3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //Log.d("MiPerfilFragment", "Obtenemos datos del usuario");
+                            jsonArray = new JSONArray(response); // guardamos los registros en el array
+                            nombre_del_usuario = jsonArray.getJSONObject(0).getString("nombre");
+                            apellidos_del_usuario = jsonArray.getJSONObject(0).getString("apellidos");
+                            provincia_del_usuario = jsonArray.getJSONObject(0).getString("provincia");
+                            horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
+                            centro_estudios_usuario = jsonArray.getJSONObject(0).getString("centro_estudios");
+                            familia_ciclo_usuario = jsonArray.getJSONObject(0).getString("familia_ciclo");
+                            ciclo_formativo_usuario = jsonArray.getJSONObject(0).getString("ciclo_formativo");
+                            centro_practicas_usuario = jsonArray.getJSONObject(0).getString("centro_practicas");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            //Log.e("MiPerfilFragment", "Error al obtener datos del usuario");
+                        }
+                        rellenarCampos(); // rellenamos los campos con los datos obtenidos
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        //Log.d("MiPerfilFragment", "Error al conectar con el servidor para obtener datos del usuario");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_user_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    /***********************************************************************************************
+     * Método que rellena los campos con los datos del usuario obtenidos
+     **********************************************************************************************/
+    public void rellenarCampos(){
+        txtNombre.setText(nombre_del_usuario);
+        txtApellidos.setText(apellidos_del_usuario);
+        txtCentroEstudios.setText(centro_estudios_usuario);
+        txtCentroPracticas.setText(centro_practicas_usuario);
+        txtHorasFCT.setText(horas_fct_usuario);
+        tvNombreUsuario.setText(nombre_user_usuario);
+        tvCorreo.setText(correo_usuario);
     }
 
     /***********************************************************************************************
      * Método que actualiza los datos del usuario desde el perfil
      **********************************************************************************************/
     public void actualizarDatosUsuario(){
-        // TODO: Implementar método de actualización de datos del usuario desde el fragment mi perfil
+        // Validamos campos:
+
     }
 
     /***********************************************************************************************
@@ -128,7 +204,7 @@ public class MiPerfilFragment extends Fragment {
         repiteClave = txtRepiteClave.getText().toString();
         // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
         if (claveNueva.isEmpty() || repiteClave.isEmpty()) {
-            Log.d("MiPerfilFragment", "Campos de clave vacíos");
+            //Log.d("MiPerfilFragment", "Campos de clave vacíos");
             Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
         } else { // Los campos no están vacíos. Continuamos validando...
             
@@ -136,20 +212,20 @@ public class MiPerfilFragment extends Fragment {
             // (no validamos la longitud máxima porque ya hemos definido el campo para que solo acepte
             // hasta 20 caracteres)
             if (claveNueva.length() < 8) {
-                Log.d("MiPerfilFragment", "Longitud de clave inferior a la permitida");
+                //Log.d("MiPerfilFragment", "Longitud de clave inferior a la permitida");
                 Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
             } else { // La longitud de clave es correcta. Continuamos validando...
 
                 // Si los caracteres no son los aceptados por el patrón, no permitimos continuar
                 if (!claveNueva.matches(pattern_formato)) {
                     //TODO: Quitar este mensaje de error de string y ponerlo directamente aquí, porque no saca el mensaje
-                    Log.d("MiPerfilFragment", "Formato de clave no válido");
+                    //Log.d("MiPerfilFragment", "Formato de clave no válido");
                     Toast.makeText(getActivity(), R.string.error_formato_usuario_clave +
                             " : % ~ # &", Toast.LENGTH_LONG).show();
                 } else { // La clave tiene un formato correcto. Continuamos validando...
                     // Si la clave no repite con la repetida no permitimos continuar
                     if (!claveNueva.equals(repiteClave)) {
-                        Log.d("MiPerfilFragment", "Las claves no coinciden");
+                        //Log.d("MiPerfilFragment", "Las claves no coinciden");
                         Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
                         System.out.println("CLAVES: " + claveNueva + repiteClave);
                         txtClave.setText(""); // Borramos los campos de clave
@@ -163,10 +239,11 @@ public class MiPerfilFragment extends Fragment {
                         builder.setMessage(R.string.txt_dialog_actualizar_clave_mi_perfil)
                                 // Si pulsa el botón de cambiar, se procede con la actualización
                                 .setPositiveButton(R.string.btn_cambiar, new DialogInterface.OnClickListener() {
-                                    Log.i("MiPerfilFragment", "Confirmar cambio de clave");
+
                                     public void onClick(DialogInterface dialog, int id) {
                                         // Todas las validaciones se han pasado correctamente, ejecutamos la consulta
                                         // para actualizar la clave
+                                        //Log.i("MiPerfilFragment", "Confirmar cambio de clave");
                                         request = new StringRequest(Request.Method.POST, url_consulta2,
                                                 new Response.Listener<String>() {
                                                     @Override
@@ -174,11 +251,11 @@ public class MiPerfilFragment extends Fragment {
                                                         //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                                                         try {
                                                             System.out.println("CLAVE NUEVA DEL USUARIO: " + claveNueva);
-                                                            Log.d("MiPerfilFragment", "Clave actualizada correctamente.");
+                                                            //Log.d("MiPerfilFragment", "Clave actualizada correctamente.");
                                                             // todo: Mostrar algún mensaje de "Contraseña actualizada con éxito"
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
-                                                            Log.a("MiPerfilFragment", "Error al actualizar la clave");
+                                                            //Log.e("MiPerfilFragment", "Error al actualizar la clave");
                                                         }
                                                     }
                                                 },
@@ -187,7 +264,7 @@ public class MiPerfilFragment extends Fragment {
                                                     public void onErrorResponse(VolleyError error) {
                                                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                                                         Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                                        Log.d("MiPerfilFragment", "Error al conectar con el servidor para actualizar la clave de usuario");
+                                                        //Log.d("MiPerfilFragment", "Error al conectar con el servidor para actualizar la clave de usuario");
                                                     }
                                                 }) {
                                             @Override
@@ -208,7 +285,7 @@ public class MiPerfilFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // User cancelled the dialog
                                         //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
-                                        Log.i("MiPerfilFragment", "Cancelar cambio de clave");
+                                        //Log.i("MiPerfilFragment", "Cancelar cambio de clave");
                                     }
                                 });
                         // Creamos diálogo y lo mostramos

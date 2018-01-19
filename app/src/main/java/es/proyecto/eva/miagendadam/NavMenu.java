@@ -63,9 +63,9 @@ public class NavMenu extends AppCompatActivity
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         correo_de_usuario = preferences.getString("correo_de_usuario", "");
         familia_ciclo = preferences.getString("familia_ciclo", "");
-        Log.d("NavMenu", "Nombre de usuario: "+ nombre_de_usuario);
-        Log.d("NavMenu", "Correo electrónico: "+ correo_de_usuario);
-        Log.d("NavMenu", "Familia ciclo: "+ familia_ciclo);
+       // Log.d("NavMenu", "Nombre de usuario: "+ nombre_de_usuario);
+        //Log.d("NavMenu", "Correo electrónico: "+ correo_de_usuario);
+        //Log.d("NavMenu", "Familia ciclo: "+ familia_ciclo);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -101,40 +101,40 @@ public class NavMenu extends AppCompatActivity
         int id = item.getItemId();
         // OPCIONES DEL MENÚ LATERAL:
         if (id == R.id.nav_diario) {
-            Log.i("NavMenu", "Opción menú: Diario");
+           // Log.i("NavMenu", "Opción menú: Diario");
             setTitle(R.string.opc_diario);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit();
         } else if (id == R.id.nav_horas) {
-            Log.i("NavMenu", "Opción menú: Horas");
+           // Log.i("NavMenu", "Opción menú: Horas");
             setTitle(R.string.opc_horas);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new HorasFragment()).commit();
         } else if (id == R.id.nav_c_reco) {
-            Log.i("NavMenu", "Opción menú: Contenido recomendado");
+          //  Log.i("NavMenu", "Opción menú: Contenido recomendado");
             setTitle(R.string.opc_mat_reco);
         } else if (id == R.id.nav_c_perso) {
-            Log.i("NavMenu", "Opción menú: Contenido personalizado");
+           // Log.i("NavMenu", "Opción menú: Contenido personalizado");
             setTitle(R.string.opc_mat_perso);
         } else if (id == R.id.nav_festivos) {
-            Log.i("NavMenu", "Opción menú: Festivos/No lectivos");
+           // Log.i("NavMenu", "Opción menú: Festivos/No lectivos");
             setTitle(R.string.opc_festivos_no_lectivos);
         } else if (id == R.id.nav_ayuda) {
-            Log.i("NavMenu", "Opción menú: Acerca de");
+           // Log.i("NavMenu", "Opción menú: Acerca de");
             Intent intent = new Intent (this, AcercaDe.class);
             startActivity(intent);
         } else if (id == R.id.nav_cerrar_sesion) {
-            Log.i("NavMenu", "Opción menú: Cerrar sesión");
+           // Log.i("NavMenu", "Opción menú: Cerrar sesión");
             cerrarSesion();
         } else if (id == R.id.nav_anotaciones) {
-            Log.i("NavMenu", "Opción menú: Anotaciones");
+           // Log.i("NavMenu", "Opción menú: Anotaciones");
             setTitle(R.string.opc_anotaciones);
         } else if (id == R.id.nav_tutores) {
-            Log.i("NavMenu", "Opción menú: Tutores");
+           // Log.i("NavMenu", "Opción menú: Tutores");
             setTitle(R.string.opc_tutores);
         } else if (id == R.id.nav_anteproyecto) {
-            Log.i("NavMenu", "Opción menú: Anteproyecto");
+          //  Log.i("NavMenu", "Opción menú: Anteproyecto");
             setTitle(R.string.opc_anteproyecto);
         } else if (id == R.id.nav_perfil) {
-            Log.i("NavMenu", "Opción menú: Mi perfil");
+          //  Log.i("NavMenu", "Opción menú: Mi perfil");
             setTitle(R.string.opc_perfil);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new MiPerfilFragment()).commit();
         }
@@ -155,14 +155,14 @@ public class NavMenu extends AppCompatActivity
                     public void onResponse(String response) {
                         // Al cerrar sesión estaremos actualizando el campo isLogged a 0 para que no se detecte como sesión iniciada en la pantalla
                         // de carga al volver a abrir la aplicación
-                        Log.d("NavMenu", "Sesión de usuario cerrada");
+                      //  Log.d("NavMenu", "Sesión de usuario cerrada");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
-                        Log.e("NavMenu", "Error al conectar con el servidor para cerrar la sesión del usuario");
+                      //  Log.e("NavMenu", "Error al conectar con el servidor para cerrar la sesión del usuario");
                     }
                 }) {
             @Override

@@ -119,6 +119,9 @@
 
     <!-- Strings fragment Diario -->
     <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
+    <string name="menu_estadisticas_registros_diario">Estadísticas</string>
+    <string name="menu_buqueda_registros">Buscar registros</string>
+
 
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>

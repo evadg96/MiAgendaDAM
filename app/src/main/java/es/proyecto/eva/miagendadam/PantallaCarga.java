@@ -105,9 +105,9 @@ public class PantallaCarga extends AppCompatActivity {
         correo_de_usuario = preferences.getString("correo_de_usuario", "");
         // ********************************************************************************************************************************************
         // Las mostramos en la consola de debug para controlar los datos que tenemos almacenados por el momento
-        Log.d("PantallaCarga", "Nombre de usuario almacenado: " + nombre_de_usuario);
-        Log.d("PantallaCarga", "Correo electrónico almacenado: " + correo_de_usuario);
-        Log.d("PantallaCarga", "Hora actual: "+fecha_ultimo_login);
+        //Log.d("PantallaCarga", "Nombre de usuario almacenado: " + nombre_de_usuario);
+        //Log.d("PantallaCarga", "Correo electrónico almacenado: " + correo_de_usuario);
+        //Log.d("PantallaCarga", "Hora actual: "+fecha_ultimo_login);
         // Comprobamos conexión a internet del dispositivo
         checkConexion();
     }
@@ -116,7 +116,7 @@ public class PantallaCarga extends AppCompatActivity {
      * Método que comprueba si el dispositivo tiene conexión a internet
      **********************************************************************************************/
     private void checkConexion(){
-        Log.d("PantallaCarga", "Comprobando conexión a internet en el dispositivo");
+        //Log.d("PantallaCarga", "Comprobando conexión a internet en el dispositivo:");
         ConnectivityManager cm;
         NetworkInfo ni;
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -133,27 +133,27 @@ public class PantallaCarga extends AppCompatActivity {
 
             if (mWifi.isConnected()) {
                 conexionWifi = true;
-                Log.d("PantallaCarga", "Hay conexión WiFi");
+                //Log.d("PantallaCarga", "Hay conexión WiFi");
             }
             if (mMobile.isConnected()) {
                 conexionDatos = true;
-                Log.d("PantallaCarga", "Hay conexión de datos móviles");
+                //Log.d("PantallaCarga", "Hay conexión de datos móviles");
             }
 
             if (conexionWifi == true || conexionDatos == true) {
                /// tenemos conexión a internet, seguimos con la siguiente comprobación:
                 if (!nombre_de_usuario.isEmpty()) { // Si hay nombre de usuario almacenado...
                     // Comprobamos bloqueo:
-                    Log.d("PantallaCarga", "Hay conexión. Comprobamos bloqueo de usuario");
+                    //Log.d("PantallaCarga", "Hay conexión. Comprobamos bloqueo de usuario:");
                     check_isLocked();
                 } else { // si no lo hay, vamos a la pantalla de login
-                    Log.a("PantallaCarga", "No hay usuario almacenado");
+                    //Log.e("PantallaCarga", "No hay usuario almacenado");
                     abrePantallaLogin();
                 }
             }
         } else {
             // No está conectado a internet, mostramos mensaje de alerta
-            Log.i("PantallaCarga", "No hay conexión a internet");
+            //Log.i("PantallaCarga", "No hay conexión a internet");
             AlertDialog.Builder builder = new AlertDialog.Builder(PantallaCarga.this);
             builder.setTitle(R.string.title_dialog_conexion); // titulo del diálogo
             builder.setMessage(R.string.info_conexion)
@@ -162,7 +162,7 @@ public class PantallaCarga extends AppCompatActivity {
                            // forzamos cierre de la aplicación para que cada vez que se abra la app se
                             // muestre el mensaje y el usuario se vea obligado a conectarse a internet
                             // para usar la aplicación
-                            Log.d("PantallaCarga", "Aplicación cerrada");
+                            //Log.d("PantallaCarga", "Aplicación cerrada");
                             finish();
                         }
                     });
@@ -175,19 +175,19 @@ public class PantallaCarga extends AppCompatActivity {
      * Método que comprueba si el usuario que intenta iniciar sesión está bloqueado (estado isLocked)
      **********************************************************************************************/
     private void check_isLocked(){
-        Log.d("PantallaCarga", "Comprobando bloqueo de usuario");
+        //Log.d("PantallaCarga", "Comprobando bloqueo de usuario:");
         request = new StringRequest(Request.Method.POST, url_consulta4,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("0")) { // Usuario NO BLOQUEADO
-                            Log.i("PantallaCarga", "No está bloqueado");
+                            //Log.i("PantallaCarga", "No está bloqueado");
                             // si no está bloqueado, comprobamos si está confirmado:
                             check_isConfirmed();
                         } else { // Usuario BLOQUEADO
                             // Impedimos el acceso y mandamos a la pantalla de inicio de sesión, aunque no podrá iniciar sesión
                             // al estar bloqueado
-                            Log.i("PantallaCarga", "Está bloqueado");
+                            //Log.i("PantallaCarga", "Está bloqueado");
                             Toast.makeText(PantallaCarga.this, "El usuario está bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
                             abrePantallaLogin();
                         }
@@ -199,7 +199,7 @@ public class PantallaCarga extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // Se ejecuta cuando algo sale mal en la consulta
                         Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el bloqueo del usuario");
+                        //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el bloqueo del usuario");
                     }
                 }) {
             @Override
@@ -224,7 +224,7 @@ public class PantallaCarga extends AppCompatActivity {
     // salvo que lo cambiase el administrador desde la base de datos y el usuario de la aplicación
     // ya hubiese hecho inicios de sesión correctos previos
     public void check_isConfirmed(){
-        Log.i("PantallaCarga", "Comprobando confirmación de registro");
+        //Log.i("PantallaCarga", "Comprobando confirmación de registro:");
             request = new StringRequest(Request.Method.POST, url_consulta2,
                     new Response.Listener<String>() {
                         @Override
@@ -234,7 +234,7 @@ public class PantallaCarga extends AppCompatActivity {
                                     // así que le mandamos a la pantalla de confirmación de registro para que introduzca
                                     // el código que se le ha enviado al correo que introdujo en el formulario de registro
                                     // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
-                                    Log.i("PantallaCarga", "Usuario no confirmado");
+                                    //Log.i("PantallaCarga", "Usuario no confirmado");
                                     new Handler().postDelayed(new Runnable() {
                                         public void run() {
                                             // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
@@ -245,12 +245,12 @@ public class PantallaCarga extends AppCompatActivity {
                                     }, DURACION_SPLASH);
                                 } else { // si no devuelve un 0, asumimos que el usuario sí está confirmado, y pasamos a comprobar si está logeado
                                     // porque solo puede devolver un 1 o un 0. Si no es 0, tiene que ser 1.
-                                    Log.i("PantallaCarga", "Usuario confirmado");
+                                    //Log.i("PantallaCarga", "Usuario confirmado");
                                     check_isLogged();
                                 }
 
                             } catch (Exception e) {
-                                Log.e("PantallaCarga", "Error al realizar la consulta de comprobación de confirmación");
+                                //Log.e("PantallaCarga", "Error al realizar la consulta de comprobación de confirmación");
                                 e.printStackTrace();
                             }
                         }
@@ -260,7 +260,7 @@ public class PantallaCarga extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                            Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar la confirmación del usuario");
+                            //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar la confirmación del usuario");
                         }
                     }) {
                 @Override
@@ -278,7 +278,7 @@ public class PantallaCarga extends AppCompatActivity {
      *  Método que comprueba si el usuario ya ha iniciado sesión (estado isLogged)
      ***************************************************************************************/
     public void check_isLogged(){
-        Log.d("PantallaCarga", "Comprobando login");
+        //Log.d("PantallaCarga", "Comprobando login:");
             // INICIAMOS CONEXIÓN CON VOLLEY
             request = new StringRequest(Request.Method.POST, url_consulta,
                     new Response.Listener<String>() {
@@ -287,7 +287,7 @@ public class PantallaCarga extends AppCompatActivity {
                             try {
                                 if (response.equals("1")) { // si devuelve 1, significará que sí se había logeado
                                     // así que le mandaremos a la pantalla principal, sin hacer el login de nuevo
-                                    Log.d("PantallaCarga", "Sesión activa. Iniciamos sesión automáticamente");
+                                    //Log.d("PantallaCarga", "Sesión activa. Iniciamos sesión automáticamente");
                                     // Almacenamos primero el dato de la fecha como dato de última sesión iniciada:
                                     actualizaFechaLogin(); // solo se actualiza (en esta clase) si isLogged está a 1, que es
                                     // cuando se hace inicio de sesión automático
@@ -303,13 +303,13 @@ public class PantallaCarga extends AppCompatActivity {
                                 } else {
                                     if (response.equals("0")){ // si devuelve 0 significará que no se ha logeado (o ha cerrado sesión)
                                         // así que le mandamos a la pantalla de login para que introduzca sus datos de usuario
-                                        Log.d("PantallaCarga", "Sesión no activa. Solicitamos credenciales de usuario");
+                                        //Log.d("PantallaCarga", "Sesión no activa. Solicitamos credenciales de usuario");
                                         abrePantallaLogin();
                                     }
                                 }
                             } catch (Exception e){
                                 e.printStackTrace();
-                                Log.e("PantallaCarga", "Error al realizar la consulta de comprobación de login");
+                                //Log.e("PantallaCarga", "Error al realizar la consulta de comprobación de login");
                             }
                         }
                     },
@@ -318,7 +318,7 @@ public class PantallaCarga extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                             Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                            Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el login del usuario");
+                            //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el login del usuario");
                         }
                     }) {
                 @Override
@@ -337,14 +337,14 @@ public class PantallaCarga extends AppCompatActivity {
      * Método que actualiza el registro con la fecha de último inicio de sesión del usuario
      **********************************************************************************************/
     public void actualizaFechaLogin(){
-        Log.d("PantallaCarga", "Actualizamos fecha de último inicio de sesión");
+        //Log.d("PantallaCarga", "Actualizamos fecha de último inicio de sesión");
         request = new StringRequest(Request.Method.POST, url_consulta3,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         fecha_ultimo_login = getFecha();
-                        Log.i("PantallaCarga", "Fecha obtenida: "+ fecha_ultimo_login);
-                        Log.i("PantallaCarga", "Fecha actualizada");
+                        //Log.i("PantallaCarga", "Fecha obtenida: "+ fecha_ultimo_login);
+                        //Log.i("PantallaCarga", "Fecha actualizada");
                     }
                 },
 
@@ -353,7 +353,7 @@ public class PantallaCarga extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.e("PantallaCarga", "Error al conectar con el servidor para actualizar la fecha de último inicio de sesión");
+                        //Log.e("PantallaCarga", "Error al conectar con el servidor para actualizar la fecha de último inicio de sesión");
                     }
                 }) {
             @Override
@@ -372,8 +372,8 @@ public class PantallaCarga extends AppCompatActivity {
      * Método que abre la pantalla de inicio de sesión        *
      *********************************************************/
     public void abrePantallaLogin(){
-        Log.d("PantallaCarga", "No hay datos del usuario o no hay sesión activa");
-        Log.i("PantallaCarga", "Abrimos pantalla de inicio de sesión");
+        //Log.d("PantallaCarga", "No hay datos del usuario o no hay sesión activa");
+        //Log.i("PantallaCarga", "Abrimos pantalla de inicio de sesión");
         // Para dejar la actividad visible durante 3 segundos
         // Después se pasa a la otra pantalla
         new Handler().postDelayed(new Runnable() {

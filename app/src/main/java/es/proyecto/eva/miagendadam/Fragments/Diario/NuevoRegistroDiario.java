@@ -62,7 +62,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
         // Mostramos el dato obtenido de las preferencias para verificar que es correcto
-        Log.d("NuevoRegistroDiario", "idUsuario almacenado: " + idUsuario);
+        //Log.d("NuevoRegistroDiario", "idUsuario almacenado: " + idUsuario);
 
         // Ponemos los iconos por defecto con semitransparencia, para ponerse opacos en su selección
         // para poder saber cuál está marcado en todo momento
@@ -72,7 +72,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 btnRegular.setAlpha(0.5f); // semitransparente
                 btnMalo.setAlpha(0.5f); // "
                 valoracionDia = "Bueno";
-                Log.i("NuevoRegistroDiario", "Valoración Bueno");
+               // Log.i("NuevoRegistroDiario", "Valoración Bueno");
             }
         });
         btnRegular.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +81,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 btnBueno.setAlpha(0.5f);
                 btnMalo.setAlpha(0.5f);
                 valoracionDia = "Regular";
-                Log.i("NuevoRegistroDiario", "Valoración Regular");
+               // Log.i("NuevoRegistroDiario", "Valoración Regular");
             }
         });
         btnMalo.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +90,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 btnBueno.setAlpha(0.5f);
                 btnRegular.setAlpha(0.5f);
                 valoracionDia = "Malo";
-                Log.i("NuevoRegistroDiario", "Valoración Malo");
+               // Log.i("NuevoRegistroDiario", "Valoración Malo");
             }
         });
 
@@ -98,7 +98,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         // en caso de que no haya minutos, por si no se diera por hecho
         btnInfoMinutos.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Log.i("NuevoRegistroDiario", "Info del campo minutos");
+               // Log.i("NuevoRegistroDiario", "Info del campo minutos");
                 AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
                 builder.setTitle(R.string.titulo_info_minutos); // titulo del diálogo
                 builder.setMessage(R.string.info_minutos)
@@ -127,7 +127,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case R.id.menu_guardar: // Opción de guardar registro
-                Log.i("NuevoRegistroDiario", "Action Guardar registro");
+               // Log.i("NuevoRegistroDiario", "Action Guardar registro");
                 fecha = txtFecha.getText().toString();
                 horas = txtHoras.getText().toString();
                 minutos = txtMinutos.getText().toString();
@@ -139,7 +139,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 }
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
-                Log.i("NuevoRegistroDiario", "Action Atrás");
+               // Log.i("NuevoRegistroDiario", "Action Atrás");
                 AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
                 builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
                 builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
@@ -173,11 +173,11 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("1")){ // Registro guardado con éxito
                             Toast.makeText(NuevoRegistroDiario.this, R.string.toast_registro_creado, Toast.LENGTH_LONG).show();
-                            Log.d("NuevoRegistroDiario", "Registro creado");
+                          //  Log.d("NuevoRegistroDiario", "Registro creado");
                             onBackPressed();
                         } else {
                             Toast.makeText(NuevoRegistroDiario.this, R.string.error_registro, Toast.LENGTH_LONG).show();
-                            Log.e("NuevoRegistroDiario", "ERROR: No se ha obtenido la respuesta esperada en el script de consulta al guardar el registro");
+                           // Log.e("NuevoRegistroDiario", "ERROR: No se ha obtenido la respuesta esperada en el script de consulta al guardar el registro");
                         }
                     }
                 },
@@ -186,7 +186,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
+                       // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                     }
                 }) {
             @Override

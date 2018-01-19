@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Log;
+
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -218,7 +219,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent,
                                                android.view.View v, int position, long id) {
                         provincia = provincias[(position)];
-                        Log.d("RegistroNuevoUsuario", "Provincia seleccionada: "+ provincia);
+                       // Log.d("RegistroNuevoUsuario", "Provincia seleccionada: "+ provincia);
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -232,7 +233,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent,
                                                android.view.View v, int position, long id) {
                         familiaCiclo = familias[(position)];
-                        Log.d("RegistroNuevoUsuario", "Familia de ciclo seleccionada: "+ familiaCiclo);
+                      //  Log.d("RegistroNuevoUsuario", "Familia de ciclo seleccionada: "+ familiaCiclo);
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -246,7 +247,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent,
                                                android.view.View v, int position, long id) {
                         ciclo_formativo = ciclos[(position)];
-                        Log.d("RegistroNuevoUsuario", "Ciclo formativo seleccionado: "+ ciclo_formativo);
+                       // Log.d("RegistroNuevoUsuario", "Ciclo formativo seleccionado: "+ ciclo_formativo);
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -275,34 +276,34 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         if (nombre.isEmpty() || apellidos.isEmpty() || provincia.equals("Selecciona una provincia") || centro_estudios.isEmpty() || familiaCiclo.equals("Selecciona una familia de ciclos formativos") ||
                 ciclo_formativo.equals("Selecciona un ciclo formativo") || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
             Toast.makeText(RegistroNuevoUsuario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
-            Log.i("RegistroNuevoUsuario", "Campos vacíos");
+           // Log.i("RegistroNuevoUsuario", "Campos vacíos");
         } else {
             if (Integer.valueOf(horas_fct) > 700) {
                 Toast.makeText(RegistroNuevoUsuario.this, R.string.error_horas_practicas, Toast.LENGTH_LONG).show();
-                Log.i("RegistroNuevoUsuario", "Horas FCT por encima de lo permitido");
+               // Log.i("RegistroNuevoUsuario", "Horas FCT por encima de lo permitido");
             } else {
                 Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
                 Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
                 if (!matcher.matches()) { // si el correo no cumple con el formato del patrón, salta el mensaje de error
                     Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
-                    Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
+                  //  Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
                 } else {
                     if (n_Usuario.length() < 6) {
                         Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_usuario, Toast.LENGTH_LONG).show();
-                        Log.i("RegistroNuevoUsuario", "Longitud de nombre de usuario inferior a la necesaria");
+                       // Log.i("RegistroNuevoUsuario", "Longitud de nombre de usuario inferior a la necesaria");
                     } else {
                         if (clave.length() < 8) {
                             Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
-                            Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
+                         //   Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
                         } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE:
                             if (!clave.matches(pattern_formato) || !n_Usuario.matches(pattern_formato)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
                                 Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_usuario_clave +
                                         " : % ~ # &", Toast.LENGTH_LONG).show();
-                                Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
+                             //   Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
                             } else {
                                 if (!clave.equals(clave2)) {
                                     Toast.makeText(RegistroNuevoUsuario.this, R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
-                                    Log.i("RegistroNuevoUsuario", "Las claves no coinciden");
+                                 //   Log.i("RegistroNuevoUsuario", "Las claves no coinciden");
                                     txtClave.setText(""); // Borramos los campos de clave
                                     txtClave2.setText("");
                                 } else {
@@ -313,28 +314,25 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                             new Response.Listener<String>() {
                                                 @Override
                                                 public void onResponse(String response) {
-                                                    System.out.println("CONEXIÓN INICIADA!");
                                                     if (response.equals("1")) {
                                                         try {
-                                                            Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese correo");
+                                                          //  Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese correo");
                                                             Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
-                                                            System.out.println("ERROR: Correo ya registrado.");
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
                                                     } else {
                                                         if (response.equals("2")) {
                                                             try {
-                                                                Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese nombre");
+                                                             //   Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese nombre");
                                                                 Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
-                                                                System.out.println("ERROR: Usuario ya existe.");
                                                             } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
                                                         } else {
                                                             if (response.equals("0")) { // datos y registro correcto
                                                                 try {
-                                                                    Log.d("RegistroNuevoUsuario", "Usuario creado correctamente");
+                                                                  //  Log.d("RegistroNuevoUsuario", "Usuario creado correctamente");
                                                                     enviarCorreoConfirmacion();
                                                                     // Creamos alerta de confirmación  para decir que se ha creado correctamente
                                                                     // y mandamos a la pantalla de confirmación de usuario
@@ -359,7 +357,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
                                                                 } catch (Exception e) {
                                                                     e.printStackTrace();
-                                                                    Log.e("RegistroNuevoUsuario", "Error al intentar enviar el correo con el código de confirmación");
+                                                                  //  Log.e("RegistroNuevoUsuario", "Error al intentar enviar el correo con el código de confirmación");
                                                                 }
                                                             }
                                                         }
@@ -370,7 +368,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
                                                     Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                                    Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para crear el nuevo usuario");
+                                                   // Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para crear el nuevo usuario");
                                                 }
                                             }) {
                                         @Override
@@ -411,7 +409,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         // generamos un código aleatorio de 6 dígitos
         codigoConfirmacion = (int) (Math.random() * 999999) + 1;
         sCodigoConfirmacion = Integer.toString(codigoConfirmacion); // pasamos el código a String para poder guardarlo como preferencia
-        Log.d("RegistroNuevoUsuario", "Código de confirmación generado");
+        //Log.d("RegistroNuevoUsuario", "Código de confirmación generado");
         guardarPreferencias(); // guardamos el dato
     }
 
@@ -421,14 +419,14 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("codigo_de_confirmacion", sCodigoConfirmacion);
         editor.commit();
-        Log.d("RegistroNuevoUsuario", "Preferencias guardadas (código de confirmación)");
+        //Log.d("RegistroNuevoUsuario", "Preferencias guardadas (código de confirmación)");
     }
 
     /***********************************************************************************************
      * Método que envía el correo con los datos correspondientes
      **********************************************************************************************/
     public void enviarCorreoConfirmacion() {
-        Log.d("RegistroNuevoUsuario", "Enviamos el correo de confirmación");
+        //Log.d("RegistroNuevoUsuario", "Enviamos el correo de confirmación");
         generaCodigoConfirmacion(); // generamos el código de confirmación que se le envía al usuario
         StringRequest request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -454,7 +452,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.e("RegistroNuevoUsuario", "Error al intentar enviar el correo");
+                            //Log.e("RegistroNuevoUsuario", "Error al intentar enviar el correo");
                         }
                     }
                 },
@@ -462,7 +460,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para obtener la clave del correo noreply...");
+                        //Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para obtener la clave del correo noreply...");
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
@@ -501,7 +499,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("RegistroNuevoUsuario", "Correo enviado");
+            //Log.d("RegistroNuevoUsuario", "Correo enviado");
         }
     }
 
@@ -510,7 +508,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.i("RegistroNuevoUsuario", "Action Atrás");
+                //Log.i("RegistroNuevoUsuario", "Action Atrás");
                 onBackPressed();
                 return true;
         }

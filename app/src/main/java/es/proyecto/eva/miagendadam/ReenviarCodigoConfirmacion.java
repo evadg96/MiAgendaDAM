@@ -24,7 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Log;
+import android.util.Log;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -72,12 +72,13 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", ""); // obtenemos preferencia del código
-        Log.d("ReenviarCodigoConfirmacion", "Código actual: " + codigo_de_confirmacion );
+        //Log.d("ReenviarCodigoConf", "Código actual: " + codigo_de_confirmacion );
         // Botón reenviar código
         btnEnviar.setOnClickListener(new View.OnClickListener() {
-            Log.d("ReenviarCodigoConfirmacion", "Reenviar código de confirmación");
+
             @Override
             public void onClick(View v) {
+                //Log.d("ReenviarCodigoConf", "Reenviar código de confirmación");
                 correo = txtCorreo.getText().toString();
                 if (!correo.isEmpty()){
                     request = new StringRequest(Request.Method.POST, url_consulta,
@@ -86,7 +87,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     if (response.equals("0")) { // no existe el correo en la bd
                                         Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
-                                        Log.d("ReenviarCodigoConfirmacion", "No existe ningún usuario con ese correo");
+                                        //Log.d("ReenviarCodigoConfirmacion", "No existe ningún usuario con ese correo");
                                     } else {
                                         if (response.equals("1")) { // existe el correo, así que le enviamos el código
                                             enviarCorreoConfirmacion();
@@ -111,7 +112,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Log.e("ReenviarCodigoConfirmacion", "Error al conectar con el servidor para comprobar el correo electrónico introducido");
+                                    //Log.e("ReenviarCodigoConfirmacion", "Error al conectar con el servidor para comprobar el correo electrónico introducido");
                                 }
                             }) {
                         @Override
@@ -139,7 +140,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
         // generamos un código aleatorio de 6 dígitos
         codigo = (int) (Math.random() * 999999) + 1;
         nuevoCodigo = Integer.toString(codigo); // pasamos el código a String para poder guardarlo como preferencia
-        Log.d("ReenviarCodigoConfirmacion", "Código nuevo generado");
+        //Log.d("ReenviarCodigoConf", "Código nuevo generado");
         guardarPreferencias(); // guardamos el dato
     }
 
@@ -149,7 +150,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("codigo_de_confirmacion", nuevoCodigo );
         editor.commit();
-        Log.d("ReenviarCodigoConfirmacion", "Preferencias guardadas. Código almacenado actualizado");
+        //Log.d("ReenviarCodigoConf", "Preferencias guardadas. Código almacenado actualizado");
     }
 
     /***********************************************************************************************
@@ -181,7 +182,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
 
                         }catch (Exception e){
                             e.printStackTrace();
-                            Log.e("ReenviarCodigoConfirmacion", "Error al enviar el correo");
+                            //Log.e("ReenviarCodigoConf", "Error al enviar el correo");
                         }
                     }
 
@@ -190,7 +191,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Log.e("ReenviarCodigoConfirmacion", "Error al conectar con el servidor para obtener la clave del correo noreply...");
+                        //Log.e("ReenviarCodigoConf", "Error al conectar con el servidor para obtener la clave del correo noreply...");
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
@@ -227,7 +228,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("ReenviarCodigoConfirmacion", "Correo enviado");
+            //Log.d("ReenviarCodigoConf", "Correo enviado");
         }
     }
 
@@ -240,7 +241,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.i("ReenviarCodigoConfirmacion", "Action Atrás");
+                //Log.i("ReenviarCodigoConf", "Action Atrás");
                 onBackPressed();
         }
         return super.onOptionsItemSelected(item);
