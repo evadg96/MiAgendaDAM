@@ -34,7 +34,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical">
 
@@ -55,27 +55,38 @@
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/lbl_version"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/relativeLayout5"
-            android:layout_toRightOf="@+id/relativeLayout5"
-            android:gravity="bottom|right"
-            android:text="@string/version_num"
-            android:textColor="@android:color/background_light"
-            tools:layout_editor_absoluteX="174dp"
-            tools:layout_editor_absoluteY="241dp" />
+            android:gravity="bottom">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="110dp"
+                android:layout_height="75dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/company_logo_apps3" />
+
+            <TextView
+                android:id="@+id/lbl_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:layout_weight="1"
+                android:text="@string/version_num"
+                android:textColor="@android:color/background_light"
+                tools:layout_editor_absoluteX="174dp"
+                tools:layout_editor_absoluteY="241dp" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>
