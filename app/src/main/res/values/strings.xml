@@ -93,8 +93,12 @@
 
     <!-- Strings acerca de pantalla login-->
     <string name="title_activity_acerca_de">Acerca de</string>
-    <string name="acerca_de">Esta aplicacion se ha realizado como proyecto final de la alumna Eva Díaz García para el ciclo formativo
-    de grado superior Desarrollo de Aplicaciones Multiplataforma para el IES María Moliner.</string>
+    <string name="acerca_de">Mi Agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
+        de España para proporcionar el listado de ciclos formativos y sus familias de origen, así como para establecer el cómputo
+        máximo de horas permitidas a cursar en el módulo de prácticas en centros de trabajo. Según lo establecido bajo
+        esta ley, la cifra máxima de horas a deber cursar en dicho módulo es de 400, en los casos de Grado medio y Grado superior.
+        Si tu ciclo formativo no está regulado bajo esta ley, contacta con el soporte de la app a través del correo
+        que a continuación se indica.</string>
     <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo y, en menor medida, del proyecto final.
     Permite el seguimiento diario de la jornada de prácticas mediante la creación de registros con fecha, horas, descripción y valoración; cálculo automático de horas
     cursadas y restantes en función de las introducidas en los registros diarios, visualización de días no lectivos y festivos, creación de anotaciones simples personales, recomendación y
