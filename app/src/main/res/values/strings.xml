@@ -93,12 +93,16 @@
 
     <!-- Strings acerca de pantalla login-->
     <string name="title_activity_acerca_de">Acerca de</string>
-    <string name="acerca_de">Mi Agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
+    <string name="acerca_de">Mi agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
         de España para proporcionar el listado de ciclos formativos y sus familias de origen, así como para establecer el cómputo
         máximo de horas permitidas a cursar en el módulo de prácticas en centros de trabajo. Según lo establecido bajo
         esta ley, la cifra máxima de horas a deber cursar en dicho módulo es de 400, en los casos de Grado medio y Grado superior.
         Si tu ciclo formativo no está regulado bajo esta ley, contacta con el soporte de la app a través del correo
-        que a continuación se indica.</string>
+        que a continuación se indicará.
+        La app está abierta a ideas nuevas y cambios siempre que sea para mejorar, ya sea a la propia aplicación o a la experiencia de uso de ella. Si 
+        tienes alguna idea para mejorar su aspecto, hacer que muestre información más detallada sobre algo, o cualquier otra mejora, puedes sugerirlo a través del 
+        correo electrónico de soporte. Tu solicitud recibirá respuesta lo más pronto posible. ¡Gracias!
+        </string>
     <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo y, en menor medida, del proyecto final.
     Permite el seguimiento diario de la jornada de prácticas mediante la creación de registros con fecha, horas, descripción y valoración; cálculo automático de horas
     cursadas y restantes en función de las introducidas en los registros diarios, visualización de días no lectivos y festivos, creación de anotaciones simples personales, recomendación y
@@ -107,6 +111,8 @@
     <string name="version">Versión:</string>
     <string name="contacto">Soporte:</string>
     <string name="correo_soporte">soportemiagendafp@gmail.com</string>
+    
+    <!-- String diálogo tras login en PantallaLogin --> 
     <string name="dialog_cargando">Cargando</string>
     <string name="dialog_comprueba_datos">Comprobando datos. Por favor, espera un momento.</string>
 
