@@ -7,7 +7,26 @@
     <color name="azul_barra_notificaciones">#2f867f</color>
     <color name="gris_claro">#dadada</color>
     <color name="transparente">#00ffffff</color>
-    <color name="verde">#cc76ce04</color>
-    <color name="rojo">#c7de0000</color>
-    <color name="amarillo">#cedfbe02</color>
+
+    <color name="lima">#cddc39</color>
+    <color name="verde">#8bc34a</color>
+    <color name="verde_oscuro">#4caf50</color>
+    <color name="azul">#03a9f4</color>
+    <color name="cyan">#00bcd4</color>
+    <color name="turquesa">#00acc1</color>
+    <color name="aqua">#009688</color>
+    <color name="azul_oscuro">#1a43b4</color>
+    <color name="morado_claro">#9c27b0</color>
+    <color name="morado">#673ab7</color>
+    <color name="amarillo">#ffeb3b</color>
+    <color name="naranja_suave">#ffc107</color>
+    <color name="naranja">#ff9800</color>
+    <color name="naranja_fuerte">#ff7322</color>
+    <color name="rosa">#e91e8a</color>
+    <color name="rojo">#f44336</color>
+    <color name="granate">#b71c1c</color>
+    <color name="marron">#795548</color>
+    <color name="blue_gray">#607d8b</color>
+    <color name="gray">#9e9e9e</color>
+    <color name="transparent">#00000000</color>
 </resources>

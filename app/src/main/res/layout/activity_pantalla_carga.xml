@@ -68,7 +68,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/company_logo_apps3" />
+                app:srcCompat="@drawable/company_logo_apps2" />
 
             <TextView
                 android:id="@+id/lbl_version"

@@ -12,13 +12,13 @@
     <application
         android:name=".VolleyController.AppController"
         android:allowBackup="true"
-        android:versionCode="3"
-        android:versionName="1.0"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:versionCode="3"
+        android:versionName="1.0">
         <activity android:name=".PantallaCarga">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,8 @@
         <activity android:name=".RecuperarDatosUsuario" />
         <activity android:name=".AcercaDe" />
         <activity android:name=".Fragments.Diario.NuevoRegistroDiario" />
-        <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario"></activity>
+        <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario" />
+        <activity android:name=".Fragments.Diario.EstadisticasDiario"></activity>
     </application>
 
 </manifest>

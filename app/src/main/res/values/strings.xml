@@ -63,7 +63,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- activRecuperarDatosUsuario -->
+    <!-- Strings RecuperarDatosUsuario -->
     <string name="title_activity_recuperar_datos">Recuperación datos de usuario</string>
     <string name="btn_clave_nueva">Solicitar contraseña nueva</string>
     <string name="btn_recupera_usuario">Recordar nombre de usuario</string>
@@ -72,6 +72,7 @@
 
     <string name="title_dialog_recuperar_usuario">Nombre de usuario enviado</string>
     <string name="txt_dialog_recuperar_usuario">Se ha enviado el nombre de usuario a la dirección de correo electrónico de usuario introducidad. Revisa tu bandeja de entrada.</string>
+
     <!-- Strings opciones menu nav draw -->
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
@@ -93,7 +94,7 @@
 
     <!-- Strings acerca de pantalla login-->
     <string name="title_activity_acerca_de">Acerca de</string>
-    <string name="acerca_de">Mi Agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
+    <string name="acerca_de">Mi agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
         de España para proporcionar el listado de ciclos formativos y sus familias de origen, así como para establecer el cómputo
         máximo de horas permitidas a cursar en el módulo de prácticas en centros de trabajo. Según lo establecido bajo
         esta ley, la cifra máxima de horas a deber cursar en dicho módulo es de 400, en los casos de Grado medio y Grado superior.

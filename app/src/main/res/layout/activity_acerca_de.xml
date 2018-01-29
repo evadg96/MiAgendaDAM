@@ -94,7 +94,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/company_logo_apps_dark" />
+                app:srcCompat="@drawable/company_logo" />
         </RelativeLayout>
 
     </LinearLayout>
