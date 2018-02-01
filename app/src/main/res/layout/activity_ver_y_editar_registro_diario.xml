@@ -48,7 +48,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:focusableInTouchMode="false"
-                        android:hint="@string/horas_registro"
+                        android:hint="@string/hora_inicio"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -64,7 +64,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:focusableInTouchMode="false"
-                        android:hint="@string/minutos_registro"
+                        android:hint="@string/hora_fin"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 

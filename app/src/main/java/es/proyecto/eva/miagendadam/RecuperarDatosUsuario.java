@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -325,7 +324,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                             AlertDialog.Builder builder = new AlertDialog.Builder(RecuperarDatosUsuario.this);
                             builder.setTitle(R.string.title_dialog_recuperar_usuario); // titulo del diálogo
                             builder.setMessage(R.string.txt_dialog_recuperar_usuario)
-                                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             Intent intent = new Intent(RecuperarDatosUsuario.this, PantallaLogin.class);
                                             startActivity(intent);
@@ -375,7 +374,7 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                             AlertDialog.Builder builder = new AlertDialog.Builder(RecuperarDatosUsuario.this);
                             builder.setTitle(R.string.title_dialog_recuperar_clave); // titulo del diálogo
                             builder.setMessage(R.string.txt_dialog_recuperar_clave)
-                                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             Intent intent = new Intent(RecuperarDatosUsuario.this, PantallaLogin.class);
                                             startActivity(intent);

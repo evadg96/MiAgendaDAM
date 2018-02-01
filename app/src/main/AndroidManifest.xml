@@ -34,12 +34,14 @@
         <activity
             android:name=".NavMenu"
             android:label="@string/title_activity_nav_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".RecuperarDatosUsuario" />
         <activity android:name=".AcercaDe" />
         <activity android:name=".Fragments.Diario.NuevoRegistroDiario" />
         <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario" />
-        <activity android:name=".Fragments.Diario.EstadisticasDiario"></activity>
+        <activity android:name=".Fragments.Diario.EstadisticasDiario"/>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package es.proyecto.eva.miagendadam.Fragments.Diario;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -69,13 +70,22 @@ public class DiarioFragment extends Fragment {
     ListView listaResultado;
     TextView txt;
     // Datos obtenidos para mostrar en el listado
-    public static String fecha;
-    public static String horas;
-    public static String minutos;
-    public static String valoracion;
+    private String dia;
+    private String mes;
+    private String anyo;
+    private String fecha; // guardará día, mes y año del día obtenido
+    private String horas;
+    private String minutos;
+    private String valoracion;
 
     // Datos del item seleccionado que se van a mostrar al pulsar sobre un registro
     public static String id_dia_seleccionado;
+    // no hace falta que sean strings estáticos porque los vamos a utilizar para componer la fecha,
+    // que será lo que necesitaremos en la clase VerYEditarRegistroDiario para que el usuario lo vea
+    // y esa sí que tendrá que ser estática para poder acceder a ella desde la otra clase
+    private String dia_seleccionado;
+    private String mes_seleccionado;
+    private String anyo_seleccionado;
     public static String fecha_seleccionada;
     public static String horas_seleccionadas;
     public static String minutos_seleccionados;
@@ -153,7 +163,10 @@ public class DiarioFragment extends Fragment {
                 try {
                     // obtenemos los datos del elemento seleccionado
                     id_dia_seleccionado = jsonArrayDiario.getJSONObject(id).getString("idDia");
-                    fecha_seleccionada = jsonArrayDiario.getJSONObject(id).getString("fecha");
+                    dia_seleccionado = jsonArrayDiario.getJSONObject(id).getString("dia");
+                    mes_seleccionado = jsonArrayDiario.getJSONObject(id).getString("mes");
+                    anyo_seleccionado = jsonArrayDiario.getJSONObject(id).getString("anyo");
+                    fecha_seleccionada = dia_seleccionado + "/" + mes_seleccionado + "/" + anyo_seleccionado;
                     horas_seleccionadas = jsonArrayDiario.getJSONObject(id).getString("horas");
                     minutos_seleccionados = jsonArrayDiario.getJSONObject(id).getString("minutos");
                     descripcion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("descripcion");
@@ -269,7 +282,10 @@ public class DiarioFragment extends Fragment {
         arrayValoraciones = new ArrayList<>();
         for (int i = 0; i < jsonArrayDiario.length(); i++){ // hasta que se hayan obtenido todos los registros:
             try {
-                fecha = jsonArrayDiario.getJSONObject(i).getString("fecha"); // obtenemos fecha
+                dia = jsonArrayDiario.getJSONObject(i).getString("dia"); // obtenemos dia
+                mes = jsonArrayDiario.getJSONObject(i).getString("mes"); // obtenemos mes
+                anyo = jsonArrayDiario.getJSONObject(i).getString("anyo"); // obtenemos año
+                fecha = dia + "/" + mes + "/" + anyo;
                 arrayFechas.add("Día " + fecha); // la añadimos al array de fechas
                 horas = jsonArrayDiario.getJSONObject(i).getString("horas"); // obtenemos horas
                 arrayHoras.add(horas + " horas"); // las añadimos al array de horas

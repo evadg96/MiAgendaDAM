@@ -3,6 +3,7 @@ package es.proyecto.eva.miagendadam;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
+import es.proyecto.eva.miagendadam.Fragments.Inicio.InicioFragment;
 import es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
@@ -82,9 +84,10 @@ public class NavMenu extends AppCompatActivity
         familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
         familiaCiclo.setText(familia_ciclo);
         navigationView.setNavigationItemSelectedListener(this);
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit(); // abrimos por defecto el fragmento Diario
-        setTitle(R.string.opc_diario);
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit(); // abrimos por defecto el fragmento Diario
+        setTitle(R.string.opc_inicio);
     }
+
 
     // Al pulsar el botón de Atrás
     @Override
@@ -100,7 +103,11 @@ public class NavMenu extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         // OPCIONES DEL MENÚ LATERAL:
-        if (id == R.id.nav_diario) {
+        if (id == R.id.nav_inicio) {
+            // Log.i("NavMenu", "Opción menú: Inicio");
+            setTitle(R.string.opc_inicio);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit();
+        } else if (id == R.id.nav_diario) {
            // Log.i("NavMenu", "Opción menú: Diario");
             setTitle(R.string.opc_diario);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new DiarioFragment()).commit();

@@ -106,6 +106,8 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         return true; // .menu es el directorio, y .menu_editar la capa
     }
 
+
+
     /***********************************************************************************************
      *     Opciones del menú de la barra de acciones
      **********************************************************************************************/

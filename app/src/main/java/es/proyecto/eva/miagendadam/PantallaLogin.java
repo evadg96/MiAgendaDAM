@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -263,7 +262,7 @@ public class PantallaLogin extends AppCompatActivity {
                                                 startActivity(intent);
                                             }
                                         })
-                                        .setNegativeButton(R.string.btn_cancelar_confirm, new DialogInterface.OnClickListener() {
+                                        .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 // Al dar a cancelar la ventana simplemente se cierra.
                                             }

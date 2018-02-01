@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -157,7 +156,7 @@ public class PantallaCarga extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(PantallaCarga.this);
             builder.setTitle(R.string.title_dialog_conexion); // titulo del diálogo
             builder.setMessage(R.string.info_conexion)
-                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                            // forzamos cierre de la aplicación para que cada vez que se abra la app se
                             // muestre el mensaje y el usuario se vea obligado a conectarse a internet

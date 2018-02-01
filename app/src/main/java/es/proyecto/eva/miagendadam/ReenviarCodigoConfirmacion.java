@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +23,6 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import android.util.Log;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -96,7 +94,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                                             AlertDialog.Builder builder = new AlertDialog.Builder(ReenviarCodigoConfirmacion.this);
                                             builder.setTitle(R.string.dialog_codigo_reenviado); // titulo del diálogo
                                             builder.setMessage(R.string.dialog_mensaje_codigo_reenviado)
-                                                    .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
                                                             finish(); // cerramos la actividad para volver a la de confirmación
                                                         }

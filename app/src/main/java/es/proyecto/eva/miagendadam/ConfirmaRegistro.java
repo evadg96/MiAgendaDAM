@@ -2,7 +2,6 @@ package es.proyecto.eva.miagendadam;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +19,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,12 +118,12 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                         // Creamos diálogo alerta de aviso que lleva a pantalla login
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmaRegistro.this);
                                                         builder.setMessage(R.string.dialog_confirmacion_correcta)
-                                                                .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                                                .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                                                                     public void onClick(DialogInterface dialog, int id) {
                                                                         finish(); // cerramos la actividad para volver a pantalla de inicio de sesión
                                                                     }
                                                                 })
-                                                                .setNegativeButton(R.string.btn_cancelar_confirm, new DialogInterface.OnClickListener() {
+                                                                .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
                                                                     public void onClick(DialogInterface dialog, int id) {
                                                                         // Se cancela el diálogo, dejamos
                                                                         // en blanco para que no se haga nada,

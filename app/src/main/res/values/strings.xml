@@ -34,7 +34,6 @@
     <string name="sFamiliaCiclo">Familia del ciclo formativo</string>
 
     <!-- diálogo registro -->
-    <string name="btn_aceptar_dialog">Aceptar</string>
     <string name="title_dialog_registro_correcto">¡Registro (casi) completado!</string>
     <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa
         tu bandeja de entrada.
@@ -43,7 +42,9 @@
     <!-- Strings diálogo al pulsar botón de registro en PantallaLogin -->
     <string name="btn_aceptar_confirm">Confirmar registro</string>
     <string name="text_dialog_confirm">No se ha confirmado el registro de este usuario. Por favor, introduce el código de confirmación que se te ha enviado.</string>
-    <string name="btn_cancelar_confirm">Cancelar</string>
+
+    <string name="btn_aceptar">Aceptar</string>
+    <string name="btn_cancelar">Cancelar</string>
 
     <!-- Strings activity ConfirmaRegistro -->
     <string name="title_activity_confirma_registro">Confirmación de registro</string>
@@ -74,6 +75,7 @@
     <string name="txt_dialog_recuperar_usuario">Se ha enviado el nombre de usuario a la dirección de correo electrónico de usuario introducidad. Revisa tu bandeja de entrada.</string>
 
     <!-- Strings opciones menu nav draw -->
+    <string name="opc_inicio">Inicio</string>
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
     <string name="opc_festivos_no_lectivos">Festivos/No lectivos</string>
@@ -99,7 +101,7 @@
         máximo de horas permitidas a cursar en el módulo de prácticas en centros de trabajo. Según lo establecido bajo
         esta ley, la cifra máxima de horas a deber cursar en dicho módulo es de 400, en los casos de Grado medio y Grado superior.
         Si tu ciclo formativo no está regulado bajo esta ley, contacta con el soporte de la app a través del correo
-        que a continuación se indicará.
+        indicado.
         La app está abierta a ideas nuevas y cambios siempre que sea para mejorar, ya sea a la propia aplicación o a la experiencia de uso de ella. Si 
         tienes alguna idea para mejorar su aspecto, hacer que muestre información más detallada sobre algo, o cualquier otra mejora, puedes sugerirlo a través del 
         correo electrónico de soporte. Tu solicitud recibirá respuesta lo más pronto posible. ¡Gracias!
@@ -112,8 +114,8 @@
     <string name="version">Versión:</string>
     <string name="contacto">Soporte:</string>
     <string name="correo_soporte">soportemiagendafp@gmail.com</string>
-    
-    <!-- String diálogo tras login en PantallaLogin --> 
+
+    <!-- String diálogo tras login en PantallaLogin -->
     <string name="dialog_cargando">Cargando</string>
     <string name="dialog_comprueba_datos">Comprobando datos. Por favor, espera un momento.</string>
 
@@ -136,19 +138,34 @@
 
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
-    <string name="fecha_registro">Fecha (dd/mm/aa)</string>
-    <string name="horas_registro">Horas</string>
-    <string name="minutos_registro">Minutos</string>
-    <string name="descripcion_registro">Descripción</string>
+    <string name="dia_practicas">Día de prácticas</string>
+    <string name="fecha_registro">Seleccionar fecha</string>
+    <string name="jornada_laboral">Jornada de prácticas</string>
+    <string name="hora_inicio">Hora inicio</string>
+    <string name="hora_fin">Hora fin</string>
+    <string name="jornada_partida_title">Si tu jornada no es continua, marca la siguiente opción:</string>
+    <string name="jornada_partida">Jornada partida</string>
+    <string name="reunion_fct_title">Si has tenido una reunión con tu tutor de módulo de prácticas, marca la siguiente opción:</string>
+    <string name="reunion_fct">Reunión FCT</string>
+    <string name="reunion_fct_info">Al marcar esta opción se sumarán ¿X? horas a las de la jornada del día que se va a crear</string>
+    <string name="turno_1">Turno 1</string>
+    <string name="turno_2">Turno 2</string>
+    <string name="descripcion_registro">Descripción del día</string>
     <string name="valoracion_registro">Valoración del día:</string>
     <string name="titulo_info_minutos">Minutos</string>
-    <string name="info_minutos">Si no has trabajado ninguna franja de minutos suelta, deberás poner un 0 en los minutos. Si no, deberás poner el número exacto de minutos para que se haga un conteo correcto.
-    Por ejemplo, si has trabajado cinco horas y media en el día, deberas poner un 30. Si has trabajado cinco horas justas, deberás poner 0.</string>
     <!-- Strings diálogo salir sin guardar -->
     <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
     <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderá el registro nuevo.</string>
     <string name="respuesta_dialog_volver">Volver</string>
     <string name="respuesta_dialog_no">No</string>
+
+    <string name="ver_horas">Ver horas de la jornada</string>
+
+    <string name="error_datos_jornada_1">Debes introducir las horas del turno</string>
+    <string name="error_datos_jornada_2">Debes introducir las horas de los turnos</string>
+    <string name="error_datos_jornada_3">Las horas de inicio y fin de turno introducidas no son válidas</string>
+    <string name="error_datos_jornada_4">La jornada introducida no es válida</string>
+    <string name="error_datos_jornada_5">La jornada de trabajo no puede superar las 8 horas. Si se trata de una excepción contacta con soporte</string>
 
     <!-- Strings VerYEditarRegistroDiario -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
@@ -176,6 +193,7 @@
     <string name="mi_perfil_clave">Contraseña</string>
     <string name="btn_actualizar_perfil">Actualizar perfil</string>
 
+    <string name="error_introduce_clave">Introduce una contraseña</string>
     <string name="title_dialog_actualizar_clave_mi_perfil">Cambiar contraseña</string>
     <string name="txt_dialog_actualizar_clave_mi_perfil">¿Estás seguro de que deseas cambiar tu contraseña de usuario?
         Esta acción no se podrá deshacer. Recuerda que si olvidas tu contraseña puedes recuperarla desde la pantalla de inicio
@@ -184,7 +202,9 @@
     <string name="btn_cambiar">Cambiar</string>
 
 
-    <string name="txt_instrucciones_recuperar_clave"> Texto </string>
+    <string name="txt_instrucciones_recuperar_clave"> Introduce el correo electrónico con el que estés registrado para recuperar tus datos
+    de usuario. Por motivos de seguridad no podemos recuperar tu clave, pero puedes solicitar una nueva que podrás cambiar después en
+    tu perfil de usuario.</string>
 
     <!-- Strings ERRORES/AVISOS -->
     <string name="error_servidor">Se ha producido un error al intentar conectar con el servidor.</string>
@@ -214,5 +234,8 @@
     <string name="error_claves_no_coinciden">Las claves introducidas no coinciden.</string>
     <string name="error_correo_ya_existe">Ya hay un usuario registrado con el correo introducido.</string>
     <string name="error_usuario_ya_existe">Ya hay un usuario registrado con ese nombre. Prueba con otro.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

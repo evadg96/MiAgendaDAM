@@ -205,7 +205,7 @@ public class MiPerfilFragment extends Fragment {
         // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
         if (claveNueva.isEmpty() || repiteClave.isEmpty()) {
             //Log.d("MiPerfilFragment", "Campos de clave vacíos");
-            Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error_introduce_clave, Toast.LENGTH_SHORT).show();
         } else { // Los campos no están vacíos. Continuamos validando...
             
             // Si la clave introducida es menor a 8 caracteres, no permitimos continuar

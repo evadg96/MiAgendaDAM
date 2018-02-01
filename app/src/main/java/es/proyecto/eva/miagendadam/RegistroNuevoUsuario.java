@@ -2,16 +2,13 @@ package es.proyecto.eva.miagendadam;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -339,7 +335,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegistroNuevoUsuario.this);
                                                                     builder.setTitle(R.string.title_dialog_registro_correcto); // titulo del diálogo
                                                                     builder.setMessage(R.string.text_dialog_registro_correcto)
-                                                                            .setPositiveButton(R.string.btn_aceptar_dialog, new DialogInterface.OnClickListener() {
+                                                                            .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                                                                                 public void onClick(DialogInterface dialog, int id) {
                                                                                     // mandamos a la pantalla de confirmación de registro
                                                                                     Intent intent = new Intent(RegistroNuevoUsuario.this, ConfirmaRegistro.class);
