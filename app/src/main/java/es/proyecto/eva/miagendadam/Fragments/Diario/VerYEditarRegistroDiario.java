@@ -221,7 +221,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         dialog.show();
     }
 
-
+// TODO: actualizar la clase e interfaz correspondiente para que sea acorde con el nuevo aspecto y nueva dinámica de creación de registros de diario
     /***********************************************************************************************
      * Método que deshabilita la edición de campos para solo poder visualizarlos, y guarda los
      *  nuevos datos introducidos actualizando los datos del registro

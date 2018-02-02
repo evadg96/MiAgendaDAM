@@ -260,7 +260,7 @@
                     android:background="@color/transparente"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    app:srcCompat="@drawable/ic_mood_black_24dp" />
+                    app:srcCompat="@drawable/ic_mood_green_24dp" />
 
                 <ImageButton
                     android:id="@+id/btn_regular"
@@ -271,7 +271,7 @@
                     android:background="@color/transparente"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    app:srcCompat="@drawable/ic_sentiment_neutral_black_24dp" />
+                    app:srcCompat="@drawable/ic_sentiment_neutral_yellow_24dp" />
 
                 <ImageButton
                     android:id="@+id/btn_malo"
@@ -282,7 +282,7 @@
                     android:background="@color/transparente"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_black_24dp" />
+                    app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_red_24dp" />
 
             </LinearLayout>
 

@@ -78,9 +78,8 @@
     <string name="opc_inicio">Inicio</string>
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
-    <string name="opc_festivos_no_lectivos">Festivos/No lectivos</string>
+    <string name="opc_festivos_no_lectivos">Días libres</string>
     <string name="opc_proyecto">Proyecto</string>
-    <string name="opc_anteproyecto">Anteproyecto</string>
     <string name="opc_ideas_proyecto">Ideas</string>
     <string name="opc_guia_proyecto">Guía de proyecto</string>
     <string name="opc_guia_anteproyecto">Guía de anteproyecto</string>
@@ -179,6 +178,8 @@
     <string name="toast_cambios_guardados">Cambios guardados.</string>
 
     <!-- Strings fragment Mi perfil -->
+    <string name="mi_perfil_saludo_inicial">¡Hola </string>
+    <string name="datos_personales">Datos personales</string>
     <string name="mi_perfil_nombre">Nombre</string>
     <string name="mi_perfil_apellidos">Apellidos</string>
     <string name="mi_perfil_correo">Correo electrónico</string>

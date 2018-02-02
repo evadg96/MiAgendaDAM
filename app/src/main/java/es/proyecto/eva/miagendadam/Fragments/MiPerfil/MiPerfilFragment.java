@@ -47,7 +47,7 @@ public class MiPerfilFragment extends Fragment {
 
     EditText txtNombre, txtApellidos, txtHorasFCT, txtCentroEstudios, txtCentroPracticas, txtClave, txtRepiteClave;
     Spinner spinnerProvincia, spinnerFamiliaCiclo, spinnerCiclo;
-    TextView tvNombreUsuario, tvCorreo;
+    TextView tvNombreSaludo, tvNombreUsuario, tvCorreo;
     Button btnActualizaClave;
     private StringRequest request;
     private String url_consulta = "http://miagendafp.000webhostapp.com/update_datos_perfil_usuario.php";
@@ -114,6 +114,7 @@ public class MiPerfilFragment extends Fragment {
         spinnerProvincia = (Spinner) view.findViewById(R.id.spinner_provincias_mi_perfil);
         spinnerFamiliaCiclo = (Spinner) view.findViewById(R.id.spinner_familias_ciclo_mi_perfil);
         spinnerCiclo = (Spinner) view.findViewById(R.id.spinner_ciclo_mi_perfil);
+        tvNombreSaludo = (TextView) view.findViewById(R.id.nombre_saludo_mi_perfil);
         tvNombreUsuario = (TextView) view.findViewById(R.id.tv_nombre_usuario_mi_perfil);
         tvCorreo = (TextView) view.findViewById(R.id.tv_correo_mi_perfil);
         btnActualizaClave = (Button) view.findViewById(R.id.btn_cambiar_clave);
@@ -178,6 +179,7 @@ public class MiPerfilFragment extends Fragment {
      * Método que rellena los campos con los datos del usuario obtenidos
      **********************************************************************************************/
     public void rellenarCampos(){
+        tvNombreSaludo.setText(" " + nombre_del_usuario);
         txtNombre.setText(nombre_del_usuario);
         txtApellidos.setText(apellidos_del_usuario);
         txtCentroEstudios.setText(centro_estudios_usuario);
@@ -191,6 +193,7 @@ public class MiPerfilFragment extends Fragment {
      * Método que actualiza los datos del usuario desde el perfil
      **********************************************************************************************/
     public void actualizarDatosUsuario(){
+        // TODO: Implementar método de actualización de datos de usuario
         // Validamos campos:
 
     }

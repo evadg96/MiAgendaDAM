@@ -219,6 +219,9 @@ public class DiarioFragment extends Fragment {
         obtenerRegistrosDiario();
     }
 
+    // TODO: implementar borrado de todos los registros del diario. Ya está hecho el script php, falta implementarlo aquí
+
+
     /***********************************************************************************************
      * Método que obtiene automáticamente los registros del usuario de la opción "Diario"
      **********************************************************************************************/
@@ -240,7 +243,7 @@ public class DiarioFragment extends Fragment {
                                     // YA QUE LOS ARRAYS TIENEN FORMATO [{...}][{...}], ... CON LO QUE, SI OBTIENE ASÍ LOS RESULTADOS, SOLO VA A COGER EL PRIMERO
                                     // Y UN ARRAY DE OBJETOS TENDRÍA ESTE OTRO FORMATO [{...}, {...}, {...}] DONDE LOS CORCHETES DETERMINAN EL ARRAY, Y LAS LLAVES LOS OBJETOS.
                                     jsonArrayDiario = new JSONArray(response); // guardamos los registros en el array
-                                   Log.i("DiarioFragment", "Registros obtenidos");
+                                   Log.i("DiarioFragment", "Registros obtenidos:");
                                     cargarRegistros(); // cargamos en pantalla los registros
                                 } catch (JSONException e) {
                                     e.printStackTrace();
