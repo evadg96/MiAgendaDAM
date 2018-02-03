@@ -136,12 +136,16 @@
     <string name="menu_estadisticas_registros_diario">Estadísticas</string>
     <string name="menu_buqueda_registros">Buscar registros</string>
     <string name="menu_borrar_todo">Borrar todos los registros</string>
+    <string name="menu_ordenar_registros">Ordenar registros...</string>
+    <string name="selector_orden_registros_mas_recientes">Más recientes primero</string>
+    <string name="selector_orden_registros_menos_recientes">Menos recientes primero</string>
     <string name="alert_borrar_todo_title">Borrar todo</string>
     <string name="alert_borrar_todo">¿Estás seguro de que deseas borrar todos los registros de tu diario? Esta acción
     no se podrá deshacer.</string>
     <string name="alert_borrar_todo_btn_borrar">Borrar</string>
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
     <string name="no_hay_registros">No hay registros que borrar.</string>
+
 
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
@@ -160,6 +164,7 @@
     <string name="descripcion_registro">Descripción del día</string>
     <string name="valoracion_registro">Valoración del día:</string>
     <string name="titulo_info_minutos">Minutos</string>
+    <string name="alert_ya_existe_fecha">Ya existe un registro en el diario con esa fecha.</string>
     <!-- Strings diálogo salir sin guardar -->
     <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
     <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderá el registro nuevo.</string>
@@ -174,6 +179,7 @@
     <string name="error_datos_jornada_3">Las horas de inicio y fin de turno introducidas no son válidas</string>
     <string name="error_datos_jornada_4">La jornada introducida no es válida</string>
     <string name="error_datos_jornada_5">La jornada de trabajo no puede superar las 8 horas</string>
+    <string name="error_datos_jornada_6">La hora de inicio del segundo turno no puede ser menor o igual que la de fin del primer turno</string>
 
     <!-- Strings VerYEditarRegistroDiario -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>

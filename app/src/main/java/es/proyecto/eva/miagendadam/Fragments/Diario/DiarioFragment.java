@@ -39,7 +39,7 @@ import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /**
- * TODO: Añadir posibilidad de ordenar por fecha, más reciente o más antiguo
+ * TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
 * TODO: Añadir visualización de estadísticas de los registros con una opción en un icono del action bar
 * Para ello crear consultas con uso de funciones como COUNT, SUM, AVG..
 * Algunas estadísticas que se pretenden implementar:
@@ -88,6 +88,11 @@ public class DiarioFragment extends Fragment {
     private String dia_seleccionado;
     private String mes_seleccionado;
     private String anyo_seleccionado;
+    public static String jornada_partida_seleccionada;
+    public static String hora_inicio_1_seleccionada;
+    public static String hora_fin_1_seleccionada;
+    public static String hora_inicio_2_seleccionada;
+    public static String hora_fin_2_seleccionada;
     public static String fecha_seleccionada;
     public static String horas_seleccionadas;
     public static String minutos_seleccionados;
@@ -109,6 +114,9 @@ public class DiarioFragment extends Fragment {
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/delete_all_registros.php";
     private String nombre_de_usuario = "";
     private boolean hayRegistros;
+    private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
+    // en preferencias para saberlo)
+    private boolean menosRecientesPrimero = false; // para saber que queremos que se vean primero los menos recientes
 
     // Creamos el menú en el action bar
     @Override
@@ -120,6 +128,12 @@ public class DiarioFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+           /** TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
+            * case R.id.menu_ordenar_registros: // Opción de guardar los datos de usuario actualizados
+                Log.i("DiarioFragment", "Action Ordenar registros");
+                seleccionaOrdenRegistros();
+                return true;
+            **/
             case R.id.menu_busqueda_registros: // Opción de guardar los datos de usuario actualizados
                Log.i("DiarioFragment", "Action Búsqueda de registros");
                 return true;
@@ -155,7 +169,13 @@ public class DiarioFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
+    /***********************************************************************************************
+     * Método que ordena los registros del diario  por más o menos recientes
+    **********************************************************************************************
+     public void seleccionaOrdenRegistros(){
+        TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
+    }
+    */
     public DiarioFragment() {
         // Required empty public constructor
     }
@@ -199,12 +219,16 @@ public class DiarioFragment extends Fragment {
                     dia_seleccionado = jsonArrayDiario.getJSONObject(id).getString("dia");
                     mes_seleccionado = jsonArrayDiario.getJSONObject(id).getString("mes");
                     anyo_seleccionado = jsonArrayDiario.getJSONObject(id).getString("anyo");
+                    jornada_partida_seleccionada = jsonArrayDiario.getJSONObject(id).getString("jornada_partida");
+                    hora_inicio_1_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_inicio_1");
+                    hora_fin_1_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_fin_1");
+                    hora_inicio_2_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_inicio_2");
+                    hora_fin_2_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_fin_2");
                     fecha_seleccionada = dia_seleccionado + "/" + mes_seleccionado + "/" + anyo_seleccionado;
                     horas_seleccionadas = jsonArrayDiario.getJSONObject(id).getString("horas");
                     minutos_seleccionados = jsonArrayDiario.getJSONObject(id).getString("minutos");
                     descripcion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("descripcion");
                     valoracion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("valoracion");
-                    // TODO: Implementar obtención de tipo de jornada y horas de inicio y fin de jornada(s)
                     // después de obtener los datos abrimos la nueva actividad que nos permitirá visualizarlos
                     // y editarlos en sus correspondientes campos
                    Log.d("DiarioFragment", "Vista detalle de un registro");
@@ -251,8 +275,6 @@ public class DiarioFragment extends Fragment {
         Log.d("DiarioFragment", "Fragment reanudado");
         obtenerRegistrosDiario();
     }
-
-    // TODO: implementar borrado de todos los registros del diario. Ya está hecho el script php, falta implementarlo aquí
 
     /**************************************************************************************************
      * Método que elimina TODOS los registros del diario del usuario, solicitando confirmación previa
@@ -391,6 +413,7 @@ public class DiarioFragment extends Fragment {
         for (int x = 0; x < arrayFechas.size(); x++){
             System.out.println("FECHA "+ x + ": " +arrayFechas.get(x));
         }
+
         // creamos adaptador personalizado a nuestra lista de registros
         adaptador = new AdaptadorListaDiario(getActivity(), arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones);
         listaResultado.setAdapter(adaptador); // lo asociamos a la lista

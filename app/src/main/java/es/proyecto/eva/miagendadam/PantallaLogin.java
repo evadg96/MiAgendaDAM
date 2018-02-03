@@ -400,7 +400,6 @@ public class PantallaLogin extends AppCompatActivity {
                                 System.out.println("INTENTOS RESTANTES: "+intentos_restantes);
                                 System.out.println("INTENTOS LOGIN: "+intentos_login);
                                 if (intentos_restantes == 1) {
-                                    // TODO: Arreglar mensajes que se muestran al detectar clave incorrecta. Salen cosas raras
                                     //Log.d("PantallaLogin", "Quedan pocos intentos restantes");
                                     Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo quedan " + (intentos_restantes+1)+ "intentos de inicio de sesión. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -566,7 +565,7 @@ public class PantallaLogin extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
                             idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
-                            // TODO: OBTENER EL DATO DE FAMILIA DEL CICLO CON TILDES Y CARACTERES ESPECIALES
+                            // TODO: OBTENER TODOS LOS DATOS QUE SEAN NECESARIOS CON SUS CORRESPONDIENTES TILDES.
                             familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
                             //Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
