@@ -207,6 +207,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
      * Al pulsar hacia atrás se cierra la actividad
      **********************************************************************************************/
     public void onBackPressed(){
-        finish(); // cerramos la actividad al volver hacia atrás
+        Intent intent = new Intent(ConfirmaRegistro.this, PantallaLogin.class);
+        startActivity(intent);
     }
 }

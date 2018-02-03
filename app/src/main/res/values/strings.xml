@@ -54,6 +54,8 @@
     <string name="dialog_confirmacion_correcta">¡Usuario confirmado! Ya puedes iniciar sesión.</string>
 
     <!-- Strings activity ReenviarCodigoConfirmacion -->
+    <string name="info_reenvio_codigo">Introduce el correo electrónico con el que estés registrado y se te enviará
+    a esa dirección un código nuevo para que puedas confirmar tu registro de usuario.</string>
     <string name="title_activity_reenvia_codigo">Reenviar código de confirmación</string>
     <string name="hint_reenviar_correo">Correo electrónico</string>
     <string name="btn_enviar">Enviar código</string>
@@ -133,7 +135,12 @@
     <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
     <string name="menu_estadisticas_registros_diario">Estadísticas</string>
     <string name="menu_buqueda_registros">Buscar registros</string>
-
+    <string name="menu_borrar_todo">Borrar todos los registros</string>
+    <string name="alert_borrar_todo_title">Borrar todo</string>
+    <string name="alert_borrar_todo">¿Estás seguro de que deseas borrar todos los registros de tu diario? Esta acción
+    no se podrá deshacer.</string>
+    <string name="alert_borrar_todo_btn_borrar">Borrar</string>
+    <string name="registros_borrados">Registros del diario borrados correctamente</string>
 
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
@@ -157,6 +164,7 @@
     <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderá el registro nuevo.</string>
     <string name="respuesta_dialog_volver">Volver</string>
     <string name="respuesta_dialog_no">No</string>
+
 
     <string name="ver_horas">Ver horas de la jornada</string>
 
@@ -231,7 +239,7 @@
     <string name="error_correo_no_valido">El correo introducido no es un correo válido.</string>
     <string name="error_longitud_usuario">Debes introducir un nombre de usuario que tenga entre 6 y 20 caracteres.</string>
     <string name="error_longitud_clave">Debes introducir una contraseña que tenga entre 8 y 20 caracteres.</string>
-    <string name="error_formato_clave">No se pueden introducir espacios, tildes ni caracteres que no sean letras, números ó ! = - _ @ : % ~ #</string>
+    <string name="error_formato_clave">No se pueden introducir espacios, tildes ni caracteres que no sean letras (salvo la ñ), números o los símbolos ! = - _ @ : % ~ #</string>
     <string name="error_claves_no_coinciden">Las claves introducidas no coinciden.</string>
     <string name="error_correo_ya_existe">Ya hay un usuario registrado con el correo introducido.</string>
     <string name="error_usuario_ya_existe">Ya hay un usuario registrado con ese nombre. Prueba con otro.</string>

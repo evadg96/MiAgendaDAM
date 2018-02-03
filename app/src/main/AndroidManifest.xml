@@ -28,7 +28,9 @@
         </activity>
         <activity android:name=".PantallaPrincipal" />
         <activity android:name=".PantallaLogin" />
-        <activity android:name=".RegistroNuevoUsuario" />
+        <activity android:name=".RegistroNuevoUsuario"
+
+            />
         <activity android:name=".ConfirmaRegistro" />
         <activity android:name=".ReenviarCodigoConfirmacion" />
         <activity
@@ -39,9 +41,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".RecuperarDatosUsuario" />
         <activity android:name=".AcercaDe" />
-        <activity android:name=".Fragments.Diario.NuevoRegistroDiario" />
-        <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario" />
-        <activity android:name=".Fragments.Diario.EstadisticasDiario"/>
+        <activity android:name=".Fragments.Diario.NuevoRegistroDiario"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".Fragments.Diario.EstadisticasDiario"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <meta-data
             android:name="preloaded_fonts"

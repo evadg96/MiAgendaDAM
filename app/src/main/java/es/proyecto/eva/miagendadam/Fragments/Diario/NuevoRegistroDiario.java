@@ -40,6 +40,8 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import es.proyecto.eva.miagendadam.R;
 
+// TODO validar que la hora de entrada del segundo turno sea mayor que la de salida del primero
+
 /***************************************************************************************************
  *  Clase que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)         *
  *  y que sirve para crear un nuevo registro en el diario del usuario.                             *

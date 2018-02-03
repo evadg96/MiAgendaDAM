@@ -37,6 +37,8 @@ import static es.proyecto.eva.miagendadam.NavMenu.centro_estudios_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.centro_practicas_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.horas_fct_usuario;
 
+// TODO añadir botón de Editar perfil. Que no sea editable nada más abrirlo
+
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.

@@ -10,4 +10,11 @@
         android:icon="@drawable/ic_assessment_white_24dp"
         android:title="@string/menu_estadisticas_registros_diario"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_borrar_todo"
+        android:title="@string/menu_borrar_todo"
+        app:showAsAction="never" />
+
+
 </menu>

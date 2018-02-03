@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_diario"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment">
@@ -15,8 +16,10 @@
             android:id="@+id/txt_vacio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_thin"
+            android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -46,11 +49,10 @@
             style="@style/Widget.Design.FloatingActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
             android:clickable="true"
             android:src="@drawable/ic_add_white_24dp"
-            app:backgroundTint="@color/azul_fondo" />
+            app:backgroundTint="@color/azul_fondo"
+            app:elevation="0dp" />
     </LinearLayout>
 
 </FrameLayout>

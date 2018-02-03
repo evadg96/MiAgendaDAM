@@ -119,7 +119,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
             "Eficiencia enegrética y energía solar térmica", "Energías renovables", "Gestión del agua",
             "----------------- Fabricación y mecánica -----------------",
             "Fabricación de elementos metálicos (básico)",
-            "Fabricación y montaje (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Conformado por moldeo e metales y polímeros",
+            "Fabricación y montaje (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Conformado por moldeo de metales y polímeros",
             "Mecanizado", "Soldadura y calderería", "Construcciones metálicas", "Diseño en fabricación mecánica", "Programación de la producción en fabricación mecánica",
             "Programación de la producción en moldeo de metales y polímeros",
             "------------------ Hostelería y turismo --------------------",

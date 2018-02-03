@@ -18,7 +18,7 @@
         <item
             android:id="@+id/nav_diario"
             android:checkable="false"
-            android:icon="@drawable/ic_assignment_black_24dp"
+            android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/opc_diario" />
         <item
             android:id="@+id/nav_horas"

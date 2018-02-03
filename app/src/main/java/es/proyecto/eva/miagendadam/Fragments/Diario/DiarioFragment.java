@@ -1,11 +1,14 @@
 package es.proyecto.eva.miagendadam.Fragments.Diario;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,8 +105,10 @@ public class DiarioFragment extends Fragment {
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/select_dias.php";
 //    private String  url_consulta = "http://192.168.0.159/MiAgenda/select_dias.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/select_dias.php";
-
+    private String url_consulta2 = "http://miagendafp.000webhostapp.com/delete_all_registros.php";
     private String nombre_de_usuario = "";
+    private boolean hayRegistros;
+
     // Creamos el menú en el action bar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -119,6 +124,26 @@ public class DiarioFragment extends Fragment {
                 return true;
             case R.id.menu_estadisticas: // Opción de guardar los datos de usuario actualizados
                Log.i("DiarioFragment", "Action Estadísticas de registros");
+                return true;
+            case R.id.menu_borrar_todo: // Opción de guardar los datos de usuario actualizados
+                Log.i("DiarioFragment", "Action Borrar todo");
+                // Preguntamos antes de proceder con el borrado de datos
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.alert_borrar_todo_title); // titulo del diálogo
+                builder.setMessage(R.string.alert_borrar_todo)
+                        .setPositiveButton(R.string.alert_borrar_todo_btn_borrar, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                               borrarRegistros();
+                            }
+                        })
+                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int id) {
+                    // dejamos en blanco, no se hace nada, solo cierra el diálogo
+                 }
+                 });
+
+                Dialog dialog = builder.create();
+                dialog.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -223,6 +248,44 @@ public class DiarioFragment extends Fragment {
 
     // TODO: implementar borrado de todos los registros del diario. Ya está hecho el script php, falta implementarlo aquí
 
+    /**************************************************************************************************
+     * Método que elimina TODOS los registros del diario del usuario, solicitando confirmación previa
+     *************************************************************************************************/
+    public void borrarRegistros(){
+        request = new StringRequest(Request.Method.POST, url_consulta2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // notificamos del borrado
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.registros_borrados, Snackbar.LENGTH_LONG).show();
+                        // que no hay registros y no aparezcan los que había creados en pantalla
+                        listaResultado.setAdapter(null); // vaciamos la lista para no ver los registros
+                        // ponemos el texto de que no hay registros
+                        txt.setText(R.string.texto_diario_vacio);
+                        hayRegistros = false;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        Log.e("DiarioFragment", "Error al realizar la conexión con el servidor al borrar todos los registros del usuario");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_de_usuario); // pasamos el nombre de usuario como parámetro de la consulta para obtener sus registros del diario
+                return parametros;
+            }
+
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+
 
     /***********************************************************************************************
      * Método que obtiene automáticamente los registros del usuario de la opción "Diario"
@@ -235,9 +298,11 @@ public class DiarioFragment extends Fragment {
                         if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene registros en el diario
                                 txt.setText(R.string.texto_diario_vacio);
+                                hayRegistros = false;
                               //  Log.i("DiarioFragment", "El usuario no tiene registros creados");
                             } else { // El usuario tiene registros
                                 try {
+                                    hayRegistros = true;
                                     txt.setText(""); // ponemos el texto de que no hay registros en blanco por si acaso, y obtenemos datos
                                     response = response.replace("][", ","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
                                     // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
