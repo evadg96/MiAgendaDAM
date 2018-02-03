@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +43,8 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import es.proyecto.eva.miagendadam.R;
 
 // TODO validar que la hora de entrada del segundo turno sea mayor que la de salida del primero
+// TODO: validar que el día a crear no existe ya en la base de datos
+
 
 /***************************************************************************************************
  *  Clase que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)         *
@@ -264,7 +268,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         if (hayDosJornadas) { // hay dos jornadas
             System.out.println("HAY DOS JORNADAS");
             if (horaInicio2 == 0 || horaFin2 == 0 || horaInicio1 == 0 || horaFin1 == 0) { // hay dos jornadas, y alguno de los campos está en blanco
-                Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_2, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_2, Toast.LENGTH_SHORT).show();
+                Snackbar.make(this.findViewById(android.R.id.content),
+                        R.string.error_datos_jornada_2, Snackbar.LENGTH_SHORT).show();
             } else { // hay dos jornadas y no hay datos en blanco en ninguna jornada, así que procedemos a hacer los cálculos y validaciones
                 // primero hacemos todos los cálculos de horas y minutos correspondientes
                 System.out.println("Hay dos jornadas y los datos están completos. Calculando horas...");
@@ -273,12 +279,18 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 // Validamos previamente que no salen jornadas excesivas o negativas
 
                 if (horaInicio1 > horaFin1 || horaInicio2 > horaFin2) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
-                    Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(this.findViewById(android.R.id.content),
+                            R.string.error_datos_jornada_3, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
-                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
-                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
                     } else {
                         // creamos los String para poner las horas y los minutos en el textView de horas
                         sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
@@ -303,10 +315,14 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 calcularHoras();
                 // validamos previamente que no salen jornadas excesivas o negativas
                 if (horaInicio1 > horaFin1) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
-                    Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(this.findViewById(android.R.id.content),
+                            R.string.error_datos_jornada_3, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
-                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
                     } else {
@@ -324,7 +340,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     }
                 }
             } else { // los campos de la jornada base están en blanco
-                Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_1, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_1, Toast.LENGTH_SHORT).show();
+                Snackbar.make(this.findViewById(android.R.id.content),
+                        R.string.error_datos_jornada_1, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -392,9 +410,28 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         // botón Aceptar del diálogo del timepicker que recoge los datos seleccionados y los pone en el campo de texto correspondiente
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // obtenemos los datos seleccionados
-                tpHoras = timePicker.getCurrentHour();
-                tpMinutos = timePicker.getCurrentMinute();
+                // Obtenemos los datos por el usuario en el timepicker
+                // pero antes validamos el api del dispositivo (la versión android)
+                // para poder usar unas funciones u otras
+
+                // VERSIONES CON ANDROID 6.0 EN ADELANTE
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                   // Hacemos esto porque a partir del api 23 (android Marshmallow) las funciones
+                    // para obtener las horas y minutos del timepicker son estas, y las de
+                    // getCurrentHour y getCurrentMinute quedaron deprecated, así que podría
+                    // traer problemas de compatibilidad en un futuro, ya que solo se mantienen
+                    // para dispositivos antiguos que no tengan las versiones más recientes
+                    tpHoras = timePicker.getHour();
+                    tpMinutos = timePicker.getMinute();
+                    Log.d("NuevoRegistroDiario", "6.0+");
+                //  VERSIONES INFERIORES A ANDROID 6.0
+                } else{
+                    // Estas dos funciones quedaron depreciadas en la versión 6.0, pero las incluimos
+                    // en caso de que sea un dispositivo antiguo el que esté ejecutando la aplicación
+                    tpHoras = timePicker.getCurrentHour();
+                    tpMinutos = timePicker.getCurrentMinute();
+                    Log.d("NuevoRegistroDiario", "6.0-");
+                }
                 // pasamos el tiempo obtenido a texto
                 String sHoras = String.valueOf(tpHoras);
                 String sMinutos = String.valueOf(tpMinutos);
@@ -413,26 +450,26 @@ public class NuevoRegistroDiario extends AppCompatActivity {
 
                 // Validamos desde donde se abre para saber donde guardar los datos obtenidos
                 if (esHoraInicio1){
-                    horaInicio1 = timePicker.getCurrentHour();
-                    minutoInicio1 = timePicker.getCurrentMinute();
+                    horaInicio1 = tpHoras;
+                    minutoInicio1 = tpMinutos;
                     tiempo = sHoras + ":" + sMinutos; // concatenamos con dos puntos en medio para dar aspecto de reloj
                     sHoraInicio1 = tiempo;
                     txtHoraInicio1.setText(tiempo); // lo ponemos en el campo de texto correspondiente
                 } else if (esHoraInicio2){
-                    horaInicio2 = timePicker.getCurrentHour();
-                    minutoInicio2 = timePicker.getCurrentMinute();
+                    horaInicio2 = tpHoras;
+                    minutoInicio2 = tpMinutos;
                     tiempo = sHoras + ":" + sMinutos;
                     sHoraInicio2 = tiempo;
                     txtHoraInicio2.setText(tiempo);
                 } else if (esHoraFin1){
-                    horaFin1 = timePicker.getCurrentHour();
-                    minutoFin1 = timePicker.getCurrentMinute();
+                    horaFin1 = tpHoras;
+                    minutoFin1 = tpMinutos;
                     tiempo = sHoras + ":" + sMinutos;
                     sHoraFin1 = tiempo;
                     txtHoraFin1.setText(tiempo);
                 } else if (esHoraFin2){
-                    horaFin2 = timePicker.getCurrentHour();
-                    minutoFin2 = timePicker.getCurrentMinute();
+                    horaFin2 = tpHoras;
+                    minutoFin2 = tpMinutos;
                     tiempo = sHoras + ":" + sMinutos;
                     sHoraFin2 = tiempo;
                     txtHoraFin2.setText(tiempo);
@@ -546,28 +583,34 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
                // Log.i("NuevoRegistroDiario", "Action Atrás");
-                AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
-                builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
-                builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
-                        .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                onBackPressed(); // volvemos atrás
-                            }
-                        })
-                        .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                                //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
-                            }
-                        });
-                // Create the AlertDialog object and return it
-                Dialog dialog = builder.create();
-                dialog.show();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+    // En caso de pulsar hacia atrás, bien desde la flecha del dispositivo, bien desde la de la app,
+    // preguntamos si está seguro, y si es que sí, cerramos la actividad
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
+        builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
+        builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
+                .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish(); // volvemos atrás
+                    }
+                })
+                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                    }
+                });
+        // Create the AlertDialog object and return it
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
 
     /***********************************************************************************************
      * Método que comprueba si el usuario que intenta iniciar sesión está bloqueado (estado isLocked)

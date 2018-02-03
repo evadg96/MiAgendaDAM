@@ -39,6 +39,7 @@ import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /**
+ * TODO: Añadir posibilidad de ordenar por fecha, más reciente o más antiguo
 * TODO: Añadir visualización de estadísticas de los registros con una opción en un icono del action bar
 * Para ello crear consultas con uso de funciones como COUNT, SUM, AVG..
 * Algunas estadísticas que se pretenden implementar:
@@ -128,22 +129,27 @@ public class DiarioFragment extends Fragment {
             case R.id.menu_borrar_todo: // Opción de guardar los datos de usuario actualizados
                 Log.i("DiarioFragment", "Action Borrar todo");
                 // Preguntamos antes de proceder con el borrado de datos
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.alert_borrar_todo_title); // titulo del diálogo
-                builder.setMessage(R.string.alert_borrar_todo)
-                        .setPositiveButton(R.string.alert_borrar_todo_btn_borrar, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                               borrarRegistros();
-                            }
-                        })
-                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
-                 public void onClick(DialogInterface dialog, int id) {
-                    // dejamos en blanco, no se hace nada, solo cierra el diálogo
-                 }
-                 });
+                if (!hayRegistros){
+                    Snackbar.make(getActivity().findViewById(android.R.id.content),
+                            R.string.no_hay_registros, Snackbar.LENGTH_SHORT).show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.alert_borrar_todo_title); // titulo del diálogo
+                    builder.setMessage(R.string.alert_borrar_todo)
+                            .setPositiveButton(R.string.alert_borrar_todo_btn_borrar, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    borrarRegistros();
+                                }
+                            })
+                            .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // dejamos en blanco, no se hace nada, solo cierra el diálogo
+                                }
+                            });
 
-                Dialog dialog = builder.create();
-                dialog.show();
+                    Dialog dialog = builder.create();
+                    dialog.show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -236,13 +242,13 @@ public class DiarioFragment extends Fragment {
        Log.d("DiarioFragment", "Fragmento pausado");
     }
 
-    // Se ejecuta al volver al fragmento cuando éste ya se había cargado alguna vez previamente
+    // Se ejecuta al abrir y al volver al fragmento cuando éste ya se había cargado alguna vez previamente
     // Aquí obtendremos de nuevo los registros, por si volvemos de actualizar o crear alguno, para
     // tener el listado actualizado con los últimos cambios hechos
     @Override
     public void onResume() {
         super.onResume();
-      //  Log.d("DiarioFragment", "Fragment reanudado");
+        Log.d("DiarioFragment", "Fragment reanudado");
         obtenerRegistrosDiario();
     }
 
@@ -269,7 +275,9 @@ public class DiarioFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         Log.e("DiarioFragment", "Error al realizar la conexión con el servidor al borrar todos los registros del usuario");
                     }
                 }) {
@@ -299,6 +307,9 @@ public class DiarioFragment extends Fragment {
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene registros en el diario
                                 txt.setText(R.string.texto_diario_vacio);
                                 hayRegistros = false;
+                                if (!hayRegistros) {
+                                    System.out.println("NO HAY REGISTROS");
+                                }
                               //  Log.i("DiarioFragment", "El usuario no tiene registros creados");
                             } else { // El usuario tiene registros
                                 try {
@@ -318,7 +329,9 @@ public class DiarioFragment extends Fragment {
                                 }
                             }
                         } else { // si no hay preferencias, es decir, no hay datos del usuario (cosa improbable), notificamos
-                            Toast.makeText(getActivity(), R.string.error_no_hay_usuario, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), R.string.error_no_hay_usuario, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                    R.string.error_no_hay_usuario, Snackbar.LENGTH_SHORT).show();
                             Log.w("DiarioFragment", "No hay nombre de usuario para obtener los registros de diario correspondientes.");
                         }
                     }
@@ -326,7 +339,9 @@ public class DiarioFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                         Log.e("DiarioFragment", "Error al realizar la conexión con el servidor al obtener registros del usuario");
                     }
                 }) {

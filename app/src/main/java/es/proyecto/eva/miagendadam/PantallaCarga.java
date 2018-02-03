@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,6 +78,12 @@ public class PantallaCarga extends AppCompatActivity {
         String fecha = date.toString();
         return fecha;
     }
+
+    private String getAndroidVersion(){
+        String version = Build.VERSION.RELEASE;
+        return version;
+    }
+
     private String fecha_ultimo_login = getFecha(); // aquí lo obtenemos así porque el usuario no interacciona de ninguna manera con la interfaz, se carga t0do
     // automático y no hay tiempos de espera para que el usuario interaccione, con lo que la fecha se va a obtener bien
     // Por ejemplo, en PantallaLogin se podría dar el caso de que el usuario se quede en la pantalla 5 minutos porque está poniendo mal la contraseña.
@@ -96,6 +103,7 @@ public class PantallaCarga extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);        // de notificaciones con la hora etc. (luego vuelve a aparecer)
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.getIndeterminateDrawable().setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN); // coloreamos el progressbar circular
+        System.out.println("VERSIÓN ANDROID DEL DISPOSITIVO: " + getAndroidVersion());
         // Referenciamos al SharedPreferences que hemos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         // Obtenemos los datos de las preferencias

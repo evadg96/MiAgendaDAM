@@ -141,6 +141,7 @@
     no se podrá deshacer.</string>
     <string name="alert_borrar_todo_btn_borrar">Borrar</string>
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
+    <string name="no_hay_registros">No hay registros que borrar.</string>
 
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
@@ -172,7 +173,7 @@
     <string name="error_datos_jornada_2">Debes introducir las horas de los turnos</string>
     <string name="error_datos_jornada_3">Las horas de inicio y fin de turno introducidas no son válidas</string>
     <string name="error_datos_jornada_4">La jornada introducida no es válida</string>
-    <string name="error_datos_jornada_5">La jornada de trabajo no puede superar las 8 horas. Si se trata de una excepción contacta con soporte</string>
+    <string name="error_datos_jornada_5">La jornada de trabajo no puede superar las 8 horas</string>
 
     <!-- Strings VerYEditarRegistroDiario -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
