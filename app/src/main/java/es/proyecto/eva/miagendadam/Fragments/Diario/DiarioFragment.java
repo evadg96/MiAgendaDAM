@@ -171,7 +171,7 @@ public class DiarioFragment extends Fragment {
                     minutos_seleccionados = jsonArrayDiario.getJSONObject(id).getString("minutos");
                     descripcion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("descripcion");
                     valoracion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("valoracion");
-
+                    // TODO: Implementar obtención de tipo de jornada y horas de inicio y fin de jornada(s)
                     // después de obtener los datos abrimos la nueva actividad que nos permitirá visualizarlos
                     // y editarlos en sus correspondientes campos
                    Log.d("DiarioFragment", "Vista detalle de un registro");

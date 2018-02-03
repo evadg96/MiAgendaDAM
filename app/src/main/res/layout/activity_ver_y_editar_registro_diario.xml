@@ -23,8 +23,10 @@
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_thin"
                 android:text="@string/dia_practicas"
-                android:textColor="@color/azul_barra_notificaciones" />
+                android:textColor="@color/azul_barra_notificaciones"
+                android:textStyle="bold" />
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/editText_fecha_seleccionada"
@@ -40,8 +42,10 @@
                 android:id="@+id/tv_jornada"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_thin"
                 android:text="@string/jornada_laboral"
-                android:textColor="@color/azul_barra_notificaciones" />
+                android:textColor="@color/azul_barra_notificaciones"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,8 +115,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto_thin"
                 android:text="@string/valoracion_registro"
-                android:textSize="18sp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"

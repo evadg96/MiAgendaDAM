@@ -36,20 +36,23 @@
 
         <Button
             android:id="@+id/btn_confirmar"
-            style="?android:textAppearanceSmall"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_thin"
             android:text="@string/btn_confirmar"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_reenviar_codigo"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_thin"
             android:text="@string/btn_reenviar_codigo"
             android:textAllCaps="false"
             android:textColor="@color/azul_barra_notificaciones"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

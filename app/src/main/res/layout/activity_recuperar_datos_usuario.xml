@@ -19,30 +19,43 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/txt_nombre_usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/sCorreo" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/txt_nombre_usuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sCorreo" />
 
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_enviar_nueva_clave"
-            style="?android:textAppearanceSmall"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_clave_nueva"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_enviar_nombre_usuario"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_recupera_usuario"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btn_enviar_nueva_clave"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_thin"
+                    android:text="@string/btn_clave_nueva"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_enviar_nombre_usuario"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_thin"
+                    android:text="@string/btn_recupera_usuario"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+        </LinearLayout>
 
 </LinearLayout>

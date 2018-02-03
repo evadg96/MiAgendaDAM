@@ -137,9 +137,8 @@ public class NavMenu extends AppCompatActivity
         } else if (id == R.id.nav_tutores) {
            // Log.i("NavMenu", "Opción menú: Tutores");
             setTitle(R.string.opc_tutores);
-        } else if (id == R.id.nav_anteproyecto) {
+        } else if (id == R.id.nav_proyecto) {
           //  Log.i("NavMenu", "Opción menú: Anteproyecto");
-            setTitle(R.string.opc_anteproyecto);
         } else if (id == R.id.nav_perfil) {
           //  Log.i("NavMenu", "Opción menú: Mi perfil");
             setTitle(R.string.opc_perfil);

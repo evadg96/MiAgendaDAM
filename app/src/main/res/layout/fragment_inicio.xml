@@ -10,7 +10,7 @@
 
         <LinearLayout
             android:id="@+id/content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -18,35 +18,41 @@
 
             <LinearLayout
                 android:id="@+id/dia_actual"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dia_semana"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
                     android:gravity="center"
-                    android:text="dia semana"
+                    android:text="Lunes"
+                    android:textAlignment="center"
                     android:textColor="@color/azul_fondo"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_dia_actual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/comfortaa"
                     android:gravity="center"
-                    android:text="dia"
+                    android:text="22"
+                    android:textAlignment="center"
                     android:textColor="@color/azul_barra_notificaciones"
                     android:textSize="60sp" />
 
                 <TextView
                     android:id="@+id/txt_mes_anyo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
                     android:gravity="center"
-                    android:text="mes y año"
+                    android:text="de enero de 2018"
+                    android:textAlignment="center"
                     android:textColor="@color/azul_barra_notificaciones"
                     android:textSize="24sp" />
 

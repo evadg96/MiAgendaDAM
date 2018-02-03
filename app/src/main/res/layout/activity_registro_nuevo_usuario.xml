@@ -186,8 +186,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/roboto_thin"
                         android:onClick="registro"
-                        android:text="@string/btn_registrar_usuario" />
+                        android:text="@string/btn_registrar_usuario"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
             </android.support.design.widget.TextInputLayout>

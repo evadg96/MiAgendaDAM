@@ -66,6 +66,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
     int tpHoras, tpMinutos;
     // Creamos variables para almacenar las distintas horas introducidas
     int horaInicio1 = 0, minutoInicio1 = 0, horaInicio2 = 0, minutoInicio2 = 0, horaFin1 = 0, minutoFin1 = 0, horaFin2 = 0, minutoFin2 = 0; //quizá no hagan falta las del turno 2, pero las ponemos por si acaso
+    // creamos las horas de la jornada también en strings para guardarlas en la base de datos como texto
+    String sHoraInicio1 = "", sHoraFin1 = "", sHoraInicio2 = "" , sHoraFin2 = "";
     // Creamos variables de horas y minutos para los turnos que serán el resultado de las restas de horas y minutos de arriba
     int horasTurno1, minutosTurno1, horasTurno2, minutosTurno2;
     // Creamos horas y minutos que serán el producto de sumar las horas resultantes (horasTurno1 + horasTurno2) (minutosTurno1 + minutorTurno2)
@@ -74,6 +76,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
 
     // Creamos booleanos para validar desde donde se ha abierto el timepicker y guardar las cifras como correspondan
     boolean esHoraInicio1 = false, esHoraInicio2 = false, esHoraFin1 = false, esHoraFin2 = false, hayDosJornadas = false; // por defecto en false
+    // Creamos la siguiente variable para determinar en la base de datos si es jornada partida o no
+    String jornada_partida = "0"; // por defecto en 0, que sería que no es partida
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +172,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     turno2.setVisibility(View.VISIBLE);
                     bloqueTurno2.setVisibility(View.VISIBLE);
                     hayDosJornadas = true;
+                    jornada_partida = "1"; // cambiamos a 1 para guardarlo en la base de datos
                 } else { // si se desactiva
                     System.out.println("TURNO PARTIDO OFF");
                     // Desactivamos la visualización de campos
@@ -175,6 +180,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     turno2.setVisibility(View.GONE);
                     bloqueTurno2.setVisibility(View.GONE);
                     hayDosJornadas = false;
+                    jornada_partida = "0"; // cambiamos a 0 para guardarlo en la base de datos
                 }
 
             }
@@ -263,6 +269,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 calcularHoras();
                 System.out.println("Tiempo calculado correctamente. Validando datos...");
                 // Validamos previamente que no salen jornadas excesivas o negativas
+
                 if (horaInicio1 > horaFin1 || horaInicio2 > horaFin2) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
                     Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
@@ -407,21 +414,25 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     horaInicio1 = timePicker.getCurrentHour();
                     minutoInicio1 = timePicker.getCurrentMinute();
                     tiempo = sHoras + ":" + sMinutos; // concatenamos con dos puntos en medio para dar aspecto de reloj
+                    sHoraInicio1 = tiempo;
                     txtHoraInicio1.setText(tiempo); // lo ponemos en el campo de texto correspondiente
                 } else if (esHoraInicio2){
                     horaInicio2 = timePicker.getCurrentHour();
                     minutoInicio2 = timePicker.getCurrentMinute();
                     tiempo = sHoras + ":" + sMinutos;
+                    sHoraInicio2 = tiempo;
                     txtHoraInicio2.setText(tiempo);
                 } else if (esHoraFin1){
                     horaFin1 = timePicker.getCurrentHour();
                     minutoFin1 = timePicker.getCurrentMinute();
                     tiempo = sHoras + ":" + sMinutos;
+                    sHoraFin1 = tiempo;
                     txtHoraFin1.setText(tiempo);
                 } else if (esHoraFin2){
                     horaFin2 = timePicker.getCurrentHour();
                     minutoFin2 = timePicker.getCurrentMinute();
                     tiempo = sHoras + ":" + sMinutos;
+                    sHoraFin2 = tiempo;
                     txtHoraFin2.setText(tiempo);
                 }
                 // ponemos de nuevo en false todos los booleanos cuando ya hayamos hecho las operaciones
@@ -589,6 +600,11 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 parametros.put("dia", sDia);
                 parametros.put("mes", sMes);
                 parametros.put("anyo", sAnyo);
+                parametros.put("jornada_partida", jornada_partida);
+                parametros.put("hora_inicio_1", sHoraInicio1);
+                parametros.put("hora_fin_1", sHoraFin1);
+                parametros.put("hora_inicio_2", sHoraInicio2);
+                parametros.put("hora_fin_2", sHoraFin2);
                 parametros.put("descripcion", descripcion);
                 parametros.put("horas",sHorasResultado);
                 parametros.put("minutos", sMinutosResultado);

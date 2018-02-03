@@ -36,32 +36,31 @@
             android:id="@+id/nav_tutores"
             android:icon="@drawable/ic_supervisor_account_black_24dp"
             android:title="@string/opc_tutores" />
+        <item android:title="">
+            <menu>
+                <item
+                    android:id="@+id/nav_c_reco"
+                    android:icon="@drawable/ic_import_contacts_black_24dp"
+                    android:title="@string/opc_mat_reco" />
+                <item
+                    android:id="@+id/nav_c_perso"
+                    android:icon="@drawable/ic_book_black_24dp"
+                    android:title="@string/opc_mat_perso" />
+                <item
+                    android:id="@+id/nav_proyecto"
+                    android:icon="@drawable/ic_school_black_24dp"
+                    android:title="@string/opc_proyecto" />
+                <item
+                    android:id="@+id/nav_cerrar_sesion"
+                    android:icon="@drawable/ic_exit_to_app_black_24dp"
+                    android:title="@string/opc_cerrar_sesion" />
+                <item
+                    android:id="@+id/nav_ayuda"
+                    android:icon="@drawable/ic_help_black_24dp"
+                    android:title="@string/title_activity_acerca_de" />
+            </menu>
+        </item>
 
     </group>
-
-    <item android:title="">
-        <menu>
-            <item
-                android:id="@+id/nav_c_reco"
-                android:icon="@drawable/ic_import_contacts_black_24dp"
-                android:title="@string/opc_mat_reco" />
-            <item
-                android:id="@+id/nav_c_perso"
-                android:icon="@drawable/ic_book_black_24dp"
-                android:title="@string/opc_mat_perso" />
-            <item
-                android:id="@+id/nav_anteproyecto"
-                android:icon="@drawable/ic_school_black_24dp"
-                android:title="@string/opc_proyecto" />
-            <item
-                android:id="@+id/nav_cerrar_sesion"
-                android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="@string/opc_cerrar_sesion" />
-            <item
-                android:id="@+id/nav_ayuda"
-                android:icon="@drawable/ic_help_black_24dp"
-                android:title="@string/title_activity_acerca_de" />
-        </menu>
-    </item>
 
 </menu>
