@@ -182,7 +182,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|0|1|2|3|4|5|6|7|8|9" // números
-            + "|!|=|-|_|@|:|%|~|#|&)+";
+            + "|!|=|-|_|@|:|%|~|#)+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,8 +293,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                          //   Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
                         } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE:
                             if (!clave.matches(pattern_formato) || !n_Usuario.matches(pattern_formato)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
-                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_usuario_clave +
-                                        " : % ~ # &", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_clave, Toast.LENGTH_LONG).show();
                              //   Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
                             } else {
                                 if (!clave.equals(clave2)) {

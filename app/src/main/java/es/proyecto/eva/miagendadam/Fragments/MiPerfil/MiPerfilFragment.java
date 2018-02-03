@@ -4,12 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,17 +25,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-// TODO: ¿Intentar obtenerlo mediante SharedPreferences?
-import static es.proyecto.eva.miagendadam.NavMenu.nombre_de_usuario;
+import static es.proyecto.eva.miagendadam.NavMenu.nombre_del_estudiante;
+import static es.proyecto.eva.miagendadam.NavMenu.apellidos_del_usuario;
+import static es.proyecto.eva.miagendadam.NavMenu.centro_estudios_usuario;
+import static es.proyecto.eva.miagendadam.NavMenu.centro_practicas_usuario;
+import static es.proyecto.eva.miagendadam.NavMenu.horas_fct_usuario;
+
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.
@@ -52,19 +50,15 @@ public class MiPerfilFragment extends Fragment {
     private StringRequest request;
     private String url_consulta = "http://miagendafp.000webhostapp.com/update_datos_perfil_usuario.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/update_clave_perfil_usuario.php";
-    private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_recuperar_datos_perfil_usuario.php";
+
+    private String correo_usuario = "", nombre_de_usuario = "";
+
     private String claveNueva = "", repiteClave = "";
-    private JSONArray jsonArray;
-    // Datos del usuario que se mostrarán en pantalla:
-    private String nombre_del_usuario = "", apellidos_del_usuario = "", provincia_del_usuario = "",
-    centro_estudios_usuario = "", familia_ciclo_usuario = "", ciclo_formativo_usuario = "", centro_practicas_usuario = "",
-            correo_usuario = "", nombre_user_usuario = "";
-    private String  horas_fct_usuario = "";
     // Patrón para controlar el formato de la contraseña nueva
     private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|0|1|2|3|4|5|6|7|8|9" // números
-            + "|!|=|-|_|@|:|%|~|#|&)+";
+            + "|!|=|-|_|@|:|%|~|#)+";
 
     public MiPerfilFragment() {
         // Required empty public constructor
@@ -100,9 +94,9 @@ public class MiPerfilFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mi_perfil, container, false);
         // Obtenemos preferencias:
         SharedPreferences preferences = this.getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        nombre_user_usuario = preferences.getString("nombre_de_usuario", "");
+        nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         correo_usuario = preferences.getString("correo_de_usuario", "");
-        //Log.d("MiPerfilFragment", "Nombre de usuario obtenido: " + nombre_user_usuario);
+        //Log.d("MiPerfilFragment", "Nombre de usuario obtenido: " + nombre_de_usuario);
         //Log.d("MiPerfilFragment", "Correo de usuario obtenido: " + correo_usuario);
         txtNombre = (EditText) view.findViewById(R.id.txt_nombre_mi_perfil);
         txtApellidos = (EditText) view.findViewById(R.id.txt_apellidos_mi_perfil);
@@ -118,8 +112,8 @@ public class MiPerfilFragment extends Fragment {
         tvNombreUsuario = (TextView) view.findViewById(R.id.tv_nombre_usuario_mi_perfil);
         tvCorreo = (TextView) view.findViewById(R.id.tv_correo_mi_perfil);
         btnActualizaClave = (Button) view.findViewById(R.id.btn_cambiar_clave);
-        // Obtenemos los datos del usuario para mostrarlos después
-        obtenerDatosUsuario();
+        // colocamos los datos obtenidos en NavMenu en los campos correspondientes
+        rellenarCampos();
         // Al pulsar el botón de actualizar clave...
         btnActualizaClave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,60 +126,16 @@ public class MiPerfilFragment extends Fragment {
     }
 
     /***********************************************************************************************
-     * Método que obtiene los datos del usuario para mostrarlos
-     **********************************************************************************************/
-    public void obtenerDatosUsuario(){
-        request = new StringRequest(Request.Method.POST, url_consulta3,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            //Log.d("MiPerfilFragment", "Obtenemos datos del usuario");
-                            jsonArray = new JSONArray(response); // guardamos los registros en el array
-                            nombre_del_usuario = jsonArray.getJSONObject(0).getString("nombre");
-                            apellidos_del_usuario = jsonArray.getJSONObject(0).getString("apellidos");
-                            provincia_del_usuario = jsonArray.getJSONObject(0).getString("provincia");
-                            horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
-                            centro_estudios_usuario = jsonArray.getJSONObject(0).getString("centro_estudios");
-                            familia_ciclo_usuario = jsonArray.getJSONObject(0).getString("familia_ciclo");
-                            ciclo_formativo_usuario = jsonArray.getJSONObject(0).getString("ciclo_formativo");
-                            centro_practicas_usuario = jsonArray.getJSONObject(0).getString("centro_practicas");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            //Log.e("MiPerfilFragment", "Error al obtener datos del usuario");
-                        }
-                        rellenarCampos(); // rellenamos los campos con los datos obtenidos
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.d("MiPerfilFragment", "Error al conectar con el servidor para obtener datos del usuario");
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nombre_user_usuario);
-                return parametros;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(request);
-    }
-
-    /***********************************************************************************************
      * Método que rellena los campos con los datos del usuario obtenidos
      **********************************************************************************************/
     public void rellenarCampos(){
-        tvNombreSaludo.setText(" " + nombre_del_usuario);
-        txtNombre.setText(nombre_del_usuario);
+        tvNombreSaludo.setText(" " + nombre_del_estudiante);
+        txtNombre.setText(nombre_del_estudiante);
         txtApellidos.setText(apellidos_del_usuario);
         txtCentroEstudios.setText(centro_estudios_usuario);
         txtCentroPracticas.setText(centro_practicas_usuario);
         txtHorasFCT.setText(horas_fct_usuario);
-        tvNombreUsuario.setText(nombre_user_usuario);
+        tvNombreUsuario.setText(nombre_de_usuario);
         tvCorreo.setText(correo_usuario);
     }
 
@@ -223,8 +173,7 @@ public class MiPerfilFragment extends Fragment {
                 if (!claveNueva.matches(pattern_formato)) {
                     //TODO: Quitar este mensaje de error de string y ponerlo directamente aquí, porque no saca el mensaje
                     //Log.d("MiPerfilFragment", "Formato de clave no válido");
-                    Toast.makeText(getActivity(), R.string.error_formato_usuario_clave +
-                            " : % ~ # &", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.error_formato_clave, Toast.LENGTH_LONG).show();
                 } else { // La clave tiene un formato correcto. Continuamos validando...
                     // Si la clave no repite con la repetida no permitimos continuar
                     if (!claveNueva.equals(repiteClave)) {

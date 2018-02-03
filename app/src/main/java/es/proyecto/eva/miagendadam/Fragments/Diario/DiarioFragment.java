@@ -2,6 +2,7 @@ package es.proyecto.eva.miagendadam.Fragments.Diario;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -33,9 +34,6 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
-
-// TODO: ¿Intentar obtenerlo mediante SharedPreferences?
-import static es.proyecto.eva.miagendadam.NavMenu.nombre_de_usuario;
 
 /**
 * TODO: Añadir visualización de estadísticas de los registros con una opción en un icono del action bar
@@ -105,6 +103,7 @@ public class DiarioFragment extends Fragment {
 //    private String  url_consulta = "http://192.168.0.159/MiAgenda/select_dias.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/select_dias.php";
 
+    private String nombre_de_usuario = "";
     // Creamos el menú en el action bar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -141,6 +140,9 @@ public class DiarioFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_diario, container, false);
         listaResultado = (ListView) view.findViewById(R.id.lista);
         txt = (TextView) view.findViewById(R.id.txt_vacio);
+        // Obtenemos de las preferencias el nombre del usuario
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         Log.d("DiarioFragment", "onCreateView");
         // Al pulsar en el botón de nuevo (+) procedemos a crear un nuevo registro
         btnNuevo = (FloatingActionButton) view.findViewById(R.id.btn_nuevo_registro);

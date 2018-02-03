@@ -43,12 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="casual"
+            android:fontFamily="@font/pacifico"
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@android:color/background_light"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="33sp" />
 
         <ProgressBar
             android:id="@+id/progressBar"

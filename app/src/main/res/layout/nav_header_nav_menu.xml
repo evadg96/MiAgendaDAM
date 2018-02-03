@@ -23,7 +23,6 @@
         android:id="@+id/nombre_usuario_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_thin"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Nombre de usuario"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -34,17 +33,13 @@
         android:id="@+id/correo_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_thin"
-        android:text="Correo electrónico"
-        android:textStyle="bold" />
+        android:text="Correo electrónico" />
 
     <TextView
         android:id="@+id/familia_ciclo_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_thin"
-        android:text="Familia ciclo"
-        android:textStyle="bold" />
+        android:text="Familia ciclo" />
 
     <!-- TODO: Poner una pequeña imagen representativa de la familia del ciclo al lado de su nombre?-->
 
