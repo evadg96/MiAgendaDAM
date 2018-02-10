@@ -7,14 +7,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,12 +35,26 @@ import org.json.JSONArray;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
-
+import static es.proyecto.eva.miagendadam.PantallaCarga.estaBloqueado;
 public class PantallaLogin extends AppCompatActivity {
-    private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave;
+    private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave, btnDesbloquearCuenta;
     private EditText txtNombreUsuario, txtClave;
+    private LinearLayout desbloquearCuenta; // perteneciente al apartado de desbloqueo del usuario
+    // es la capa que contiene el campo de texto para introducir el código que se le envió al usuario
+    // al correo, y con el que desbloqueará la cuenta. Por defecto es invisible, pero se visualiza cuando
+    // se ha enviado el código correctamente al usuario tras comprobar que este existe en la base de datos.
 
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/check_usuario_existe.php";
 //    private String url_consulta2 = "http://192.168.0.12/MiAgenda/update_isLogged.php";
@@ -71,30 +92,36 @@ public class PantallaLogin extends AppCompatActivity {
     private String url_consulta8 = "http://miagendafp.000webhostapp.com/update_intentos_login.php";
     private String url_consulta9 = "http://miagendafp.000webhostapp.com/update_fecha_bloqueo.php";
     private String url_consulta11 = "http://miagendafp.000webhostapp.com/consulta_recuperar_id_usuario.php";
+    private String url_consulta12 = "http://miagendafp.000webhostapp.com/clave_gmail.php";
 
-    static String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
-    static String clave = "";
-    static String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué se válido, hay que comprobarlo)
-    static String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
-    static String familiaCiclo = "";
+    private String nombre_usuario = ""; // para guardar el nUsuario cuando confirmamos que es válido
+    private String clave = "";
+    private String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué ser válido, hay que comprobarlo)
+    private String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
+    private String familiaCiclo = "";
     private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     // a su familia
     private StringRequest request;
 
-    public static String getFecha() {
+    public String getFecha() {
         Date date = new Date();
         String fecha = date.toString();
         return fecha;
     }
+
     private String fecha_ultimo_login = "";
     private String fecha_bloqueo = "";
     // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
     private String intentos_login = "";
+    private Session session;
+    private String motivo_bloqueo = "";
+    private String valor_isLocked = "";
+    private int codigo_desbloqueo = 0;
+    private String sCodigoDesbloqueo = "";
 
 /**********************************************************************************
 * TODO:
 * - Añadir info en Acerca de de que trabaja con ciclos amparados en la LOE
-* - Cambiar horas máximas del ciclo a 400 si nos amparamos SOLO en la LOE?
 * (consultar esto último con el tutor)
 * - Subir al repo web la clase Acerca de, que creo que no está
 **********************************************************************************/
@@ -107,10 +134,16 @@ public class PantallaLogin extends AppCompatActivity {
         btnIniciarSesion = (Button) findViewById(R.id.btn_iniciar_sesion);
         btnRegistroUsuario = (Button) findViewById(R.id.btn_registrarse);
         btnRecuperarClave = (Button) findViewById(R.id.btn_recuperar_clave);
+        btnDesbloquearCuenta = (Button) findViewById(R.id.btn_desbloquear_cuenta);
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
+        desbloquearCuenta = (LinearLayout) findViewById(R.id.opc_recuperar_cuenta);
+        // Si se detecta desde la pantalla de carga que está bloqueado el usuario en preferencias,
+        // mostramos el campo directamente
+        if (estaBloqueado){
+           desbloquearCuenta.setVisibility(View.VISIBLE);
+        }
 
-        // AL HACER CLICK EN LOS BOTONES...
         // Botón Registrarse, abre actividad de RegistroNuevoUsuario
         btnRegistroUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,99 +167,91 @@ public class PantallaLogin extends AppCompatActivity {
         // Botón Iniciar sesión
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-               // Log.i("PantallaLogin", "Iniciar sesión");
+               Log.i("PantallaLogin", "Iniciar sesión");
                 nUsuario = txtNombreUsuario.getText().toString();
                 clave = txtClave.getText().toString();
                 // Actualizamos la hora cada vez que se pulse el botón
                 fecha_bloqueo = getFecha();
                 fecha_ultimo_login = getFecha();
-               // Log.i("PantallaLogin", "Fecha obtenida actual: "+ getFecha());
+               Log.i("PantallaLogin", "Fecha obtenida actual: "+ getFecha());
                 if (nUsuario.isEmpty()) { // validamos que el campo no se haya dejado en blanco
+                   // Snackbar.make(findViewById(android.R.id.content),
+                     //       R.string.error_introducir_nombre_usuario, Snackbar.LENGTH_SHORT).show();
                     Toast.makeText(PantallaLogin.this, R.string.error_introducir_nombre_usuario, Toast.LENGTH_SHORT).show();
                 } else {
                     if (clave.isEmpty()) {
+                      //  Snackbar.make(findViewById(android.R.id.content),
+                        //        R.string.error_introducir_clave, Snackbar.LENGTH_SHORT).show();
                         Toast.makeText(PantallaLogin.this, R.string.error_introducir_clave, Toast.LENGTH_SHORT).show();
                     } else {
                         System.out.println("DATOS INTRODUCIDOS: " + nUsuario + " " + clave);
-                        compruebaDatos();
+                        compruebaUsuario();
                     }
                 }
+            }
+        });
+
+        // Botón de desbloqueo de cuenta de usuario. Solo aparece si se detecta al usuario bloqueado
+        btnDesbloquearCuenta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Log.i("PantallaLogin", "Registrar nuevo usuario");
+                desbloquearUsuario();
             }
         });
     }
 
     /***********************************************************************************************
-     *   Método que bloquea a un usuario cuando ha hecho demasiados intentos de inicio de sesión
-     **********************************************************************************************/
-    public void bloquearUsuario() {
-        //Log.d("PantallaLogin", "Bloqueamos usuario por exceso de intentos de inicio de sesión");
-        request = new StringRequest(Request.Method.POST, url_consulta4,
+     * Método que inicia el flujo de comprobación de datos:
+     * 1. Comprueba si el usuario introducido existe. Si existe, continúa con las comprobaciones (2),
+     * si no, muestra alerta de que no existe.
+     * 2. Comprueba  si el usuario está confirmado. Si lo está, pasa a 3. Si no, se manda a pantalla de
+     * confirmación.
+     * 3. Comprueba si el usuario está bloqueado. Si es así, le muestra un mensaje informándole. Si
+     * no, pasa a comprobar la clave del usuario (4).
+     * 4. Comprueba la contraseña del usuario. Si es correcta se hace login y se guarda en preferenias
+     * el nombre del usuario para posteriores usos. Si no es correcta se van restando intentos hasta
+     * que los intentos se agoten por completo. Entonces se bloqueará al usuario enviándole un correo
+     * de aviso.
+     ***********************************************************************************************/
+    private void compruebaUsuario(){
+        request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("0")) { // el dato que se obtiene como respuesta es el valor de isLocked. Si está a 0, es que no está bloqueado, así que se bloquea
-                            // Esta validación se hace porque este método se ejecuta cada vez que se detecte que los intentos de login están a 0, y si se le ha bloqueado tendrá
-                            // siempre los intentos a 0, así que siempre se ejecutará este método.
-                            // Validamos para que no se cambie la fecha de bloqueo cada vez que se ejecute el método.
-                            actualizaFechaBloqueo();
-                           // Log.i("PantallaLogin", "Bloqueo correcto");
-                            Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_bloqueo_realizado, Toast.LENGTH_LONG);
-                            toast.show();
-                        } else { // El usuario ya estaba bloqueado, no actualizamos fecha ni bloqueamos.
-                          //  Log.i("PantallaLogin", "El usuario ya está bloqueado");
-                            Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_usuario_bloqueado, Toast.LENGTH_LONG);
-                            toast.show();
+                        if (response.equals("2")) { // ERROR: usuario no existe
+                            try {
+                                //  Toast.makeText(PantallaLogin.this, R.string.error_usuario_no_existe, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_usuario_no_existe, Snackbar.LENGTH_LONG).show();
+                                //Log.i("PantallaLogin", "El usuario introducido no existe");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                //Log.e("PantallaLogin", "Error al comprobar el usuario");
+                            }
+                        } else { // Sí existe el usuario
+                            nombre_usuario = nUsuario;
+                            // ******* NO MOVER PORQUE SI NO NO SE OBTIENEN CORRECTAMENTE ********** //
+                            obtenerDatosUsuario();
+                            //**********************************************************************//
+                            check_isConfirmed();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                       // Log.e("PantallaLogin", "Error al conectar con el servidor para bloquear al usuario");
+                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        //Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar el usuario");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nombre_usuario);
-                return parametros;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(request);
-    }
-
-
-
-
-    /*******************************************************************************************************
-     * Método que actualiza el campo de fecha en la que se ha bloqueado al usuario y se introduce en la bd
-     ******************************************************************************************************/
-    public void actualizaFechaBloqueo(){
-       // Log.i("PantallaLogin", "Guardamos fecha de bloqueo del usuario");
-        request = new StringRequest(Request.Method.POST, url_consulta9,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        fecha_bloqueo = getFecha();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                       // Log.e("PantallaLogin", "Error al conectar con el servidor para guardar la fecha de bloqueo");
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nombre_usuario);
-                parametros.put("fecha_bloqueo", fecha_bloqueo);
+                parametros.put("nUsuario", nUsuario);
                 return parametros;
             }
         };
@@ -237,27 +262,26 @@ public class PantallaLogin extends AppCompatActivity {
      *  Método que comprueba si el usuario introducido está confirmado o no
      **********************************************************************************************/
     public void check_isConfirmed(){
-       // Log.i("PantallaLogin", "Comprobamos confirmación de registro del usuario");
+        Log.i("PantallaLogin", "Comprobamos confirmación de registro del usuario");
         request = new StringRequest(Request.Method.POST, url_consulta5,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                         try {
-                            if (response.equals("1")) { // SÍ está confirmado, hacemos login
-                               // Log.i("PantallaLogin", "Usuario confirmado");
+                            if (response.equals("1")) { // SÍ está confirmado, comprobamos bloqueo
+                                Log.i("PantallaLogin", "Usuario confirmado");
                                 // obtenemos los datos del usuario para guardarlos
-                                guardarPreferencias(); // guardamos los datos del usuario en las preferencias, para usarlo en clases futuras para
-                                loginCorrecto(); // hacemos login
+                                check_isLocked();
                             } else { // NO está confirmado, obligamos a confirmar
-                               // Log.i("PantallaLogin", "Usuario no confirmado");
+                                Log.i("PantallaLogin", "Usuario no confirmado");
                                 // no hace falta comprobar isLogged, porque lógicamente es imposible que esté en 1 si no ha confirmado su registro
                                 AlertDialog.Builder builder = new AlertDialog.Builder(PantallaLogin.this);
                                 builder.setMessage(R.string.text_dialog_confirm)
                                         .setPositiveButton(R.string.btn_aceptar_confirm, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 // Al dar a confirmar se manda a la pantalla de confirmación de registro
-                                               // Log.i("PantallaLogin", "Redirigimos a pantalla de confirmación de registro");
+                                                Log.i("PantallaLogin", "Redirigimos a pantalla de confirmación de registro");
                                                 Intent intent = new Intent(PantallaLogin.this, ConfirmaRegistro.class);
                                                 startActivity(intent);
                                             }
@@ -280,8 +304,10 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                       // Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar la confirmación del usuario");
+                          Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar la confirmación del usuario");
                     }
                 }) {
             @Override
@@ -299,18 +325,23 @@ public class PantallaLogin extends AppCompatActivity {
      * Método que comprueba si el usuario que intenta iniciar sesión está bloqueado o no
      **********************************************************************************************/
     private void check_isLocked(){
-      //  Log.i("PantallaLogin", "Comprobamos bloqueo del usuario");
+        //  Log.i("PantallaLogin", "Comprobamos bloqueo del usuario");
         request = new StringRequest(Request.Method.POST, url_consulta3,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("0")) { // usuario NO BLOQUEADO
-                          //  Log.i("PantallaLogin", "El usuario no está bloqueado");
-                            check_isConfirmed(); // comprobamos si está confirmado
+                            //  Log.i("PantallaLogin", "El usuario no está bloqueado");
+                            comprobarClave(); // comprobamos si la clave es correcta para hacer el login
                         } else {
+                            // AL DETECTAR QUE ESTÁ BLOQUEADO, MOSTRAMOS DIRECTAMENTE EL CAMPO DE DESBLOQUEO
+                            desbloquearCuenta.setVisibility(View.VISIBLE);
                             // LE PROHIBIMOS ACCEDER
-                          //  Log.i("PantallaLogin", "El usuario está bloqueado");
-                            Toast.makeText(PantallaLogin.this, R.string.aviso_usuario_bloqueado, Toast.LENGTH_SHORT).show();
+                            //  Log.i("PantallaLogin", "El usuario está bloqueado");
+                              Toast.makeText(PantallaLogin.this, R.string.aviso_usuario_bloqueado, Toast.LENGTH_SHORT).show();
+
+                            //Snackbar.make(findViewById(android.R.id.content),
+                              //      R.string.aviso_usuario_bloqueado, Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 },
@@ -318,7 +349,9 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(findViewById(android.R.id.content),
+                          //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar el bloqueo del usuario");
                     }
                 }) {
@@ -354,7 +387,8 @@ public class PantallaLogin extends AppCompatActivity {
                         } else { // Usuario y contraseña correctos
                             if (response.equals("4")) { // Respuesta "4" = login correcto.
                                 //Log.i("PantallaLogin", "Contraseña correcta");
-                                check_isLocked(); // comprobamos si está bloqueado
+                                guardarPreferencias(); // guardamos los datos del usuario en las preferencias, para usarlo en clases futuras para
+                                loginCorrecto(); // hacemos login
                             }
                         }
                     }
@@ -362,7 +396,9 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                           Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                      //  Snackbar.make(findViewById(android.R.id.content),
+                        //        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar la clave del usuario");
                     }
                 }) {
@@ -401,12 +437,12 @@ public class PantallaLogin extends AppCompatActivity {
                                 System.out.println("INTENTOS LOGIN: "+intentos_login);
                                 if (intentos_restantes == 1) {
                                     //Log.d("PantallaLogin", "Quedan pocos intentos restantes");
-                                    Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo quedan " + (intentos_restantes+1)+ "intentos de inicio de sesión. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(PantallaLogin.this, "Atención, solo quedan " + (intentos_restantes+1)+ " intentos de inicio de sesión. Si los agotas se bloqueará tu cuenta.", Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     toast.show();
                                 }
                             } else { // Cuando los intentos se agoten, es decir, estén en 0, se bloquea al usuario
-                                //Log.i("PantallaLogin", "Intentos de inicio agotados. Bloqueamos usuario");
+                                Log.i("PantallaLogin", "Intentos de inicio agotados. Bloqueamos usuario");
                                 bloquearUsuario();
                             }
                         } catch (Exception e) {
@@ -418,7 +454,9 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.e("PantallaLogin", "Error al conectar con el servidor para restar intentos de inicio de sesión");
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para restar intentos de inicio de sesión");
                     }
                 }) {
             @Override
@@ -432,25 +470,26 @@ public class PantallaLogin extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
-
     /***********************************************************************************************
      * Método que actualiza el número de intentos de login restantes del usuario
      **********************************************************************************************/
     public void actualizaIntentos(){
-        //Log.i("PantallaLogin", "Actualizamos el número de intentos de inicio de sesión del usuario");
+        Log.i("PantallaLogin", "Actualizamos el número de intentos de inicio de sesión del usuario");
         request = new StringRequest(Request.Method.POST, url_consulta8,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Se actualiza el número de intentos
-                        //Log.d("PantallaLogin", "Intentos actualizados");
+                        Log.d("PantallaLogin", "Intentos actualizados");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.e("PantallaLogin", "Error al conectar con el servidor para actualizar el número de intentos de login");
+                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para actualizar el número de intentos de login");
                     }
                 }) {
             @Override
@@ -470,21 +509,23 @@ public class PantallaLogin extends AppCompatActivity {
      * cuando el usuario inicia sesión correctamente
      **********************************************************************************************/
     public void reseteaIntentos(){
-        //Log.i("PantallaLogin", "Reseteamos el número de intentos de inicio de sesión");
+        Log.i("PantallaLogin", "Reseteamos el número de intentos de inicio de sesión");
         intentos_login = "5";
         request = new StringRequest(Request.Method.POST, url_consulta8,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Se resetea el número de intentos
-                        //Log.i("PantallaLogin", "Intentos reseteados a 5");
+                        Log.i("PantallaLogin", "Intentos reseteados a 5");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.e("PantallaLogin", "Error al conectar con el servidor para resetear los intentos de login");
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para resetear los intentos de login");
                     }
                 }) {
             @Override
@@ -498,66 +539,206 @@ public class PantallaLogin extends AppCompatActivity {
         };
         AppController.getInstance().addToRequestQueue(request);
     }
+
     /***********************************************************************************************
-     * Método que inicia el flujo de comprobación de datos:
-     * 1. Comprueba si el usuario introducido existe. Si existe, continúa con las comprobaciones (2),
-     * si no, muestra alerta de que no existe.
-     * 2. Comprueba  la clave introducida. Si es correcta pasa a la siguiente comprobación, si está bloqueado (3).
-     * Si no es correcta, resta intentos de inicio, llegando a bloquear al usuario si agota los intentos.
-     * permite obviar el mensaje o ir a la pantalla de confirmación.
-     * 3. Comprueba si el usuario está bloqueado. Si es así, le muestra un mensaje informándole. Si
-     * no, pasa a comprobar la confirmación del usuario (4).
-     * 4. Comprueba si el usuario ya confirmó su registro (hace consulta que devuelve 1 o 0, siendo 1
-     * que sí y 0 que no). Si está confirmado, pasará a login correcto, abriendo la pantalla principal
-     * de la aplicación. (3). Si no está confirmado, le muestra un cuadro de diálogo de alerta que le
-     * permite obviar el mensaje o ir a la pantalla de confirmación.
-     ***********************************************************************************************/
-    private void compruebaDatos(){
-        request = new StringRequest(Request.Method.POST, url_consulta,
+     *   Método que bloquea a un usuario cuando ha hecho demasiados intentos de inicio de sesión
+     **********************************************************************************************/
+    public void bloquearUsuario() {
+        Log.d("PantallaLogin", "Bloqueamos usuario por exceso de intentos de inicio de sesión");
+        motivo_bloqueo = "Demasiados intentos de inicio de sesión";
+        valor_isLocked = "1";
+        intentos_login = "0";
+        request = new StringRequest(Request.Method.POST, url_consulta4,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("2")) { // ERROR: usuario no existe
-                            try {
-                                Toast.makeText(PantallaLogin.this, R.string.error_usuario_no_existe, Toast.LENGTH_SHORT).show();
-                                //Log.i("PantallaLogin", "El usuario introducido no existe");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                //Log.e("PantallaLogin", "Error al comprobar el usuario");
-                            }
-                        } else { // Sí existe el usuario
-                            nombre_usuario = nUsuario;
-                            // ******* NO MOVER PORQUE SI NO NO SE OBTIENEN CORRECTAMENTE ********** //
-                                obtenerDatosUsuario();
-                            //**********************************************************************//
-                            comprobarClave(); // comprobamos si la clave es correcta para hacer el login
+                        System.out.println("ESTÁ BLOQUEADO? = " + response);
+                        if (response.equals("0")) { // el dato que se obtiene como respuesta es el valor de isLocked. Si está a 0, es que no está bloqueado, así que se bloquea
+                            // Esta validación se hace porque este método se ejecuta cada vez que se detecte que los intentos de login están a 0, y si se le ha bloqueado tendrá
+                            // siempre los intentos a 0, así que siempre se ejecutará este método.
+                            // Validamos para que no se cambie la fecha de bloqueo cada vez que se ejecute el método ni se envíe varias veces el correo de aviso.
+                            actualizaFechaBloqueo();
+                            enviarCorreoAvisoBloqueo();
+                            desbloquearCuenta.setVisibility(View.VISIBLE);
+                           Log.i("PantallaLogin", "Bloqueo correcto");
+                            //Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_bloqueo_realizado, Toast.LENGTH_LONG);
+                            //toast.show();
+
+                            // En lugar de un Toast, ponemos un diálogo para alargar un poco la espera, ya que si se pulsa muy seguido el botón de
+                            // iniciar sesión cuando se acaba de bloquear al usuario no sé por qué no se coge bien que isLocked es igual a 1, y se volvería
+                            // a ejecutar t0do esto.
+                            AlertDialog.Builder builder = new AlertDialog.Builder(PantallaLogin.this);
+                            builder.setMessage(R.string.aviso_bloqueo_realizado)
+                                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // al pulsar aceptar, no se hace nada, se cierra el diálogo
+                                        }
+                                    });
+                            // Creamos el diálogo y lo mostramos
+                            Dialog dialog = builder.create();
+                            dialog.show();
+                            //Snackbar.make(findViewById(android.R.id.content),
+                                //    R.string.aviso_bloqueo_realizado, Snackbar.LENGTH_LONG).show();
+                        } else { // El usuario ya estaba bloqueado, no actualizamos fecha ni bloqueamos.
+                          //  Log.i("PantallaLogin", "El usuario ya está bloqueado");
+                            Toast toast = Toast.makeText(PantallaLogin.this, R.string.aviso_usuario_bloqueado, Toast.LENGTH_LONG);
+                            toast.show();
+                          //  Snackbar.make(findViewById(android.R.id.content),
+                            //        R.string.aviso_usuario_bloqueado, Snackbar.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar el usuario");
+                      //  Snackbar.make(findViewById(android.R.id.content),
+                        //        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para bloquear al usuario");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nUsuario);
+                parametros.put("nUsuario", nombre_usuario);
+                parametros.put("valor_isLocked", valor_isLocked);
+                parametros.put("motivo_bloqueo", motivo_bloqueo);
+                parametros.put("intentos_login", intentos_login);
                 return parametros;
             }
         };
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    /*******************************************************************************************************
+     * Método que actualiza el campo de fecha en la que se ha bloqueado al usuario y se introduce en la bd
+     ******************************************************************************************************/
+    public void actualizaFechaBloqueo(){
+       Log.i("PantallaLogin", "Guardamos fecha de bloqueo del usuario");
+        request = new StringRequest(Request.Method.POST, url_consulta9,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        fecha_bloqueo = getFecha();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                      //  Snackbar.make(findViewById(android.R.id.content),
+                        //        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                       Log.e("PantallaLogin", "Error al conectar con el servidor para guardar la fecha de bloqueo");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_usuario);
+                parametros.put("fecha_bloqueo", fecha_bloqueo);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    /***********************************************************************************************
+     * Método que le envía un correo de aviso al usuario recién bloqueado por superar el número de
+     * intentos de inicio de sesión indicándole el motivo del bloqueo y cómo recuperar su cuenta.
+     **********************************************************************************************/
+    public void enviarCorreoAvisoBloqueo(){
+        request = new StringRequest(Request.Method.POST, url_consulta12,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            final String clave_gmail = response;
+                            Properties props = new Properties();
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.smtp.socketFactory.port", "465");
+                            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.port", "465");
+
+                            session = Session.getDefaultInstance(props, new Authenticator() {
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication("noreply.miagendafp@gmail.com", clave_gmail);
+                                }
+                            });
+
+                            RetreiveFeedTask task = new RetreiveFeedTask();
+                            task.execute();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("ReenviarCodigoConf", "Error al enviar el correo");
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                      //  Snackbar.make(findViewById(android.R.id.content),
+                        //        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("ReenviarCodigoConf", "Error al conectar con el servidor para obtener la clave del correo noreply...");
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    // Clase con el contenido del correo electrónico
+    class RetreiveFeedTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try{
+
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo_de_usuario));
+                message.setSubject("No-reply: Bloqueo de cuenta");
+                message.setContent("<p style=\"text-align:justify\"> ¡Hola <b>"+ nombre_usuario+"</b>!</p> <p style=\"text-align:justify\"> Hemos detectado que has superado el número máximo de intentos de inicio de sesión permitido en <b>Mi agenda FP</b> " +
+                        "al haber introducido mal tu contraseña más de cinco veces, así que hemos procedido a bloquear tu cuenta por motivos de seguridad.\n</p>" +
+                        "<p style=\"text-align:justify\">Queremos recordarte que si has olvidado tu contraseña puedes recuperarla a través de la opción <b>He olvidado mis datos de usuario</b>, que encontrarás en la pantalla de inicio de sesión.</p>"+
+                        "<p style=\"text-align:justify\">Podrás recuperar tu cuenta accediendo a la aplicación y pulsando sobre la opción <b>Desbloquear mi cuenta</b> que aparecerá en la pantalla de inicio de sesión.</p> " +
+                        "<p style=\"text-align:justify\">Esta opción aparece automáticamente cuando se detecta que el usuario que está intentando iniciar sesión está bloqueado. Si no la ves, intenta iniciar sesión con tu cuenta bloqueada y deberá aparecerte abajo.</p> " +
+                        "<p style=\"text-align:justify\">Al pulsar sobre ella aparecerá un cuadro de diálogo. Deberás pulsar sobre el botón <b>Enviar código de desbloqueo</b>. Se te enviará a continuación un correo electrónico con un <b>código de desbloqueo</b>, que después deberás introducir" +
+                        " en el campo de <b>Código de desbloqueo</b>. Cuando lo hayas escrito, pulsa sobre <b>Validar código</b>. Si el código es correcto, desbloquearás tu cuenta al instante.</p> " +
+                        "<p style=\"text-align:justify\">Sentimos lo ocurrido y esperamos que vuelvas lo antes posible.</p>" +
+                        "<p style=\"text-align:justify\">Atentamente, Mi agenda FP.</p> "+
+                        "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
+                        "<p style=\"margin-left: 10px; margin-right: 11px\">" +
+                        "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
+                        "<br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        "<br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n", "text/html; charset=utf-8");
+                Transport.send(message);
+            } catch(MessagingException e) {
+                e.printStackTrace();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d("ReenviarCodigoConf", "Correo enviado");
+        }
+    }
+
 
     /***********************************************************************************************************************
-     * Método que obtiene los datos del usuario que ha hecho inicio de sesión (id del usuario, familia del ciclo y correo
+     * Método que obtiene los datos del usuario que ha hecho inicio de sesión (id del usuario, familia del ciclo y correo)
      **********************************************************************************************************************/
     private void obtenerDatosUsuario(){
-        //Log.d("PantallaLogin", "Obtenemos datos del usuario para guardarlos");
+        Log.d("PantallaLogin", "Obtenemos datos del usuario para guardarlos");
         request = new StringRequest(Request.Method.POST, url_consulta11,
                 new Response.Listener<String>() {
                     @Override
@@ -568,12 +749,12 @@ public class PantallaLogin extends AppCompatActivity {
                             // TODO: OBTENER TODOS LOS DATOS QUE SEAN NECESARIOS CON SUS CORRESPONDIENTES TILDES.
                             familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
-                            //Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
-                            //Log.d("PantallaLogin","FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
-                            //Log.d("PantallaLogin","CORREO ELECTRÓNICO "+ correo_de_usuario);
+                            Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
+                            Log.d("PantallaLogin","FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
+                            Log.d("PantallaLogin","CORREO ELECTRÓNICO "+ correo_de_usuario);
                         } catch (Exception e){
                             e.printStackTrace();
-                            //Log.e("PantallaLogin", "Error al obtener datos del usuario");
+                            Log.e("PantallaLogin", "Error al obtener datos del usuario");
                         }
                     }
                 },
@@ -581,7 +762,9 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.e("PantallaLogin", "Error al conectar con el servidor para obtener los datos de usuario");
+                       // Snackbar.make(findViewById(android.R.id.content),
+                            //    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para obtener los datos de usuario");
                     }
                 }) {
             @Override
@@ -599,7 +782,7 @@ public class PantallaLogin extends AppCompatActivity {
      * Método que se ejecuta cuando se han verificado todos los datos necesarios para hacer un inicio de sesión correcto
      ********************************************************************************************************************/
     private void loginCorrecto(){
-        //Log.i("PantallaLogin", "Login correcto");
+        Log.i("PantallaLogin", "Login correcto");
         reseteaIntentos(); // reseteamos número de intentos de login restantes
         // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
         ProgressDialog progressDialog = new ProgressDialog(PantallaLogin.this);
@@ -615,7 +798,7 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Log.i("PantallaLogin", "Actualizamos valor de isLogged");
+                        Log.i("PantallaLogin", "Actualizamos valor de isLogged");
                         fecha_ultimo_login = getFecha();
                     }
                 },
@@ -623,7 +806,9 @@ public class PantallaLogin extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        //Log.e("PantallaLogin", "Error al conectar con el servidor para actualizar valor del login y fecha de inicio de sesión");
+                     //   Snackbar.make(findViewById(android.R.id.content),
+                       //         R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("PantallaLogin", "Error al conectar con el servidor para actualizar valor del login y fecha de inicio de sesión");
                     }
                 }) {
             @Override
@@ -650,13 +835,11 @@ public class PantallaLogin extends AppCompatActivity {
         editor.putString("familia_ciclo", familiaCiclo);
         editor.putString("idUsuario", idUsuario);
         editor.commit();
-        //Log.d("PantallaLogin", "Preferencias guardadas");
+        Log.d("PantallaLogin", "Preferencias guardadas");
     }
 
     /***********************************************************************************************
-     * Asociamos el menú de toolbar_login a esta actividad
-     * @param menu
-     * @return
+     * Menú de la barra de acciones
      **********************************************************************************************/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -666,9 +849,7 @@ public class PantallaLogin extends AppCompatActivity {
     }
 
     /***********************************************************************************************
-     * Iconos de acciones del menú de la barra de acciones
-     * @param item
-     * @return
+     * Iconos del menú de la barra de acciones
      **********************************************************************************************/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -682,12 +863,232 @@ public class PantallaLogin extends AppCompatActivity {
         }
     }
 
-
     /***********************************************************************************************
-     * Al pulsar atrás no hacemos nada
+     * Método que se ejecuta al pulsar Atrás
      **********************************************************************************************/
     @Override
     public void onBackPressed() {
         // dejamos en blanco para que no se haga nada
+    }
+
+    /***********************************************************************************************
+     * Método que valida la clave introducida por el usuario para desbloquear su cuenta
+     **********************************************************************************************/
+    public void desbloquearUsuario(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final Button btnEnviarCodigoRC, btnValidarCodigoRC, btnCancelarRecuperaCuenta;
+
+        final EditText txtCodigo;
+        final AlertDialog dialog = alert.create();
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.recuperar_cuenta_usuario, (ViewGroup) findViewById(R.id.recuperar_cuenta_usuario));
+        btnEnviarCodigoRC = (Button) view.findViewById(R.id.btn_enviar_codigo);
+        btnValidarCodigoRC = (Button) view.findViewById(R.id.btn_validar_codigo);
+        btnCancelarRecuperaCuenta = (Button) view.findViewById(R.id.btn_recuperar_cuenta_cancelar);
+        txtCodigo = (EditText) view.findViewById(R.id.txt_codigo_rc);
+        dialog.setView(view);
+        dialog.show();
+
+        // enviamos el código al correo obtenido de los datos del usuario que ha intentado iniciar sesión
+        btnEnviarCodigoRC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // Primero validamos si hay correo en preferencias para enviarle el correo directamente
+                // a ese usuario, o si no se le manda al usuario obtenido del intento de inicio de sesión
+                // Lo haremos solo si esta variable está en true, porque significará que se ha comprobado
+                // que el usuario está bloqueado desde la pantalla carga, lo cual quiere decir que se ha
+                // hecho a través de las preferencias, lo que nos indica que tiene que haber un correo
+                // guardado en ellas
+                txtCodigo.setVisibility(View.VISIBLE); // hacemos visible el campo de validación de código
+                btnValidarCodigoRC.setVisibility(View.VISIBLE); // y el botón de validar código
+                if (estaBloqueado) {
+                    SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+                    correo_de_usuario = preferences.getString("correo_de_usuario", "");
+                }
+                generaCodigoDesbloqueo(); // generamos el código de desbloqueo
+                enviarCodigoDesbloqueo(); // lo enviamos al usuario
+                Toast.makeText(PantallaLogin.this, R.string.dialog_desbloqueo, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // validamos el código introducido y si es igual al generado, desbloqueamos al usuario
+        btnValidarCodigoRC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                final String codigo = txtCodigo.getText().toString();
+                SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+                String codigo_de_desbloqueo = preferences.getString("codigo_de_desbloqueo", "");
+
+                // si hay código de desbloqueo en las preferencias, seguimos
+                if (!codigo_de_desbloqueo.isEmpty()) {
+                    if (codigo.isEmpty()) { // si el campo de código a validar está vacío, no seguimos
+                        //Snackbar.make(findViewById(android.R.id.content),
+                          //      R.string.error_introducir_codigo, Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaLogin.this, R.string.error_introducir_codigo, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (codigo.equals(codigo_de_desbloqueo)) { // si el campo coincide con el codigo obtenido de las preferencias, desbloqueamos finalmente al usuario
+                            motivo_bloqueo = "";
+                            valor_isLocked = "0";
+                            intentos_login = "5";
+                            request = new StringRequest(Request.Method.POST, url_consulta4,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Log.i("PantallaLogin", "Desbloqueamos usuario");
+                                            estaBloqueado = false;
+                                          //  Snackbar.make(findViewById(android.R.id.content),
+                                            //        R.string.usuario_desbloqueado, Snackbar.LENGTH_SHORT).show();
+                                            Toast.makeText(PantallaLogin.this, R.string.usuario_desbloqueado, Toast.LENGTH_SHORT).show();
+                                            dialog.cancel(); // cerramos el diálogo de validación
+                                            txtCodigo.setVisibility(View.GONE); // hacemos invisibles de nuevo los campos una vez que ya hemos desbloqueado al usuario
+                                            btnValidarCodigoRC.setVisibility(View.GONE);
+                                            // quitamos también la visibilidad del campo de desbloqueo
+                                            desbloquearCuenta.setVisibility(View.GONE);
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                             Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                            //Snackbar.make(findViewById(android.R.id.content),
+                                              //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                            Log.e("PantallaLogin", "Error al conectar con el servidor para actualizar valor del login y fecha de inicio de sesión");
+                                        }
+                                    }) {
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                                    Map<String, String> parametros = new HashMap<>();
+                                    parametros.put("nUsuario", nombre_usuario);
+                                    parametros.put("valor_isLocked", valor_isLocked);
+                                    parametros.put("motivo_bloqueo", motivo_bloqueo);
+                                    parametros.put("intentos_login", intentos_login);
+                                    return parametros;
+                                }
+                            };
+                            AppController.getInstance().addToRequestQueue(request);
+                        } else {
+                            //Snackbar.make(findViewById(android.R.id.content),
+                              //      R.string.error_codigo_incorrecto, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaLogin.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    //Snackbar.make(findViewById(android.R.id.content),
+                      //      R.string.error_codigo_desbloqueo_expirado, Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(PantallaLogin.this, R.string.error_codigo_desbloqueo_expirado, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+        btnCancelarRecuperaCuenta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // cierra el diálogo
+                dialog.cancel();
+            }
+        });
+    }
+
+    /***********************************************************************************************
+     * Método que genera el código de desbloqueo que se le enviará al usuario
+     **********************************************************************************************/
+    public void generaCodigoDesbloqueo() {
+        // generamos un código aleatorio de 6 dígitos
+        codigo_desbloqueo = (int) (Math.random() * 999999) + 1;
+        sCodigoDesbloqueo = Integer.toString(codigo_desbloqueo); // pasamos el código a String para poder guardarlo como preferencia
+        //Log.d("RegistroNuevoUsuario", "Código de confirmación generado");
+        guardarCodigoDesbloqueo(); // guardamos el dato
+    }
+
+    /***********************************************************************************************
+     * Método que guarda el código de desbloqueo en preferencias para compararlo después
+     **********************************************************************************************/
+    public void guardarCodigoDesbloqueo() {
+        SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("codigo_de_desbloqueo", sCodigoDesbloqueo);
+        editor.commit();
+    }
+
+    /***********************************************************************************************
+     * Método que le envía un correo de aviso al usuario recién bloqueado por superar el número de
+     * intentos de inicio de sesión indicándole el motivo del bloqueo y cómo recuperar su cuenta.
+     **********************************************************************************************/
+    public void enviarCodigoDesbloqueo(){
+        request = new StringRequest(Request.Method.POST, url_consulta12,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            final String clave_gmail = response;
+                            Properties props = new Properties();
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.smtp.socketFactory.port", "465");
+                            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.port", "465");
+
+                            session = Session.getDefaultInstance(props, new Authenticator() {
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication("noreply.miagendafp@gmail.com", clave_gmail);
+                                }
+                            });
+
+                            RetreiveFeedTask2 task = new RetreiveFeedTask2();
+                            task.execute();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("ReenviarCodigoConf", "Error al enviar el correo");
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(findViewById(android.R.id.content),
+                           //     R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Log.e("ReenviarCodigoConf", "Error al conectar con el servidor para obtener la clave del correo noreply...");
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    // Clase con el contenido del correo electrónico
+    class RetreiveFeedTask2 extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try{
+
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo_de_usuario));
+                message.setSubject("No-reply: Código de desbloqueo de cuenta Mi agenda FP");
+                message.setContent("<p style=\"text-align:justify\"> ¡Hola <b>"+ nombre_usuario+"</b>!</p> <p style=\"text-align:justify\"> El código para desbloquear tu cuenta de <b>Mi agenda FP</b> es: <b>" + sCodigoDesbloqueo + "</b></p>"+
+                        "<p style=\"text-align:justify\">Introduce este código pulsando la opción <b>Desbloquear mi cuenta</b> que encontrarás en la pantalla de inicio de sesión de <b>Mi agenda FP </b>.</p> " +
+                        "<p style=\"text-align:justify\">Esta opción aparece automáticamente cuando se detecta que el usuario que está intentando iniciar sesión está bloqueado. Si no la ves, intenta iniciar sesión con tu cuenta bloqueada y deberá aparecerte abajo.</p> " +
+                        "<p style=\"text-align:justify\">Al pulsar sobre ella aparecerá un cuadro de diálogo. Deberás introducir el código" +
+                        " en el campo de <b>Código de desbloqueo</b> y pulsar sobre <b>Validar código</b>. Si el código es correcto, desbloquearás tu cuenta al instante.</p> " +
+                        "<p style=\"text-align:justify\">Atentamente, Mi agenda FP.</p> "+
+                        "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
+                        "<p style=\"margin-left: 10px; margin-right: 11px\">" +
+                        "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
+                        "<br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        "<br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n", "text/html; charset=utf-8");
+                Transport.send(message);
+            } catch(MessagingException e) {
+                e.printStackTrace();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d("ReenviarCodigoConf", "Correo enviado");
+        }
     }
 }

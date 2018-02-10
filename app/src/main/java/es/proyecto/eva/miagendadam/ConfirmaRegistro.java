@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -103,7 +104,9 @@ public class ConfirmaRegistro extends AppCompatActivity {
                         public void onResponse(String response) {
                             if (response.equals("0")) { // NO EXISTE el usuario en la bd
                                 //Log.i("ConfirmaRegistro", "No existe ningún usuario con ese correo");
-                                Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
                             } else if(response.equals("1")){ // SÍ EXISTE, comprobamos código de confirmación:
                                 //Log.i("ConfirmaRegistro", "Comprobamos código de confirmación");
                                 request = new StringRequest(Request.Method.POST, url_consulta,
@@ -133,11 +136,15 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                         Dialog dialog = builder.create();
                                                         dialog.show(); // mostramos el diálofo
                                                     } else { // El código NO es correcto
-                                                        Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
+                                                       // Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
+                                                        Snackbar.make(findViewById(android.R.id.content),
+                                                                R.string.error_codigo_incorrecto, Snackbar.LENGTH_SHORT).show();
                                                         //Log.d("ConfirmaRegistro", "Código incorrecto");
                                                     }
                                                 } else { // Si no hay codigo de confirmación en las preferencias, le decimos que ha expirado, para que solicite uno nuevo
-                                                    Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_expirado, Toast.LENGTH_LONG).show();
+                                                   // Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_expirado, Toast.LENGTH_LONG).show();
+                                                    Snackbar.make(findViewById(android.R.id.content),
+                                                            R.string.error_codigo_expirado, Snackbar.LENGTH_LONG).show();
                                                     //Log.d("ConfirmaRegistro", "No hay ningún código almacenado");
                                                 }
                                             }
@@ -146,7 +153,9 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                         new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Toast.makeText(ConfirmaRegistro.this, R.string.error_confirmar_registro, Toast.LENGTH_LONG).show();
+                                               // Toast.makeText(ConfirmaRegistro.this, R.string.error_confirmar_registro, Toast.LENGTH_LONG).show();
+                                                Snackbar.make(findViewById(android.R.id.content),
+                                                        R.string.error_confirmar_registro, Snackbar.LENGTH_LONG).show();
                                                 //Log.e("ConfirmaRegistro", "Error al conectar con el servidor para confirmar el registro del usuario");
                                             }
                                         }) {
@@ -170,7 +179,9 @@ public class ConfirmaRegistro extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(ConfirmaRegistro.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                           // Toast.makeText(ConfirmaRegistro.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("ConfirmaRegistro", "Error al conectar con el servidor para comprobar el correo del usuario");
                         }
                     }) {
@@ -185,7 +196,9 @@ public class ConfirmaRegistro extends AppCompatActivity {
             };
             AppController.getInstance().addToRequestQueue(request);
         } else { // si el campo de nombre de usuario está vacío
-            Toast.makeText(ConfirmaRegistro.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(ConfirmaRegistro.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(android.R.id.content),
+                    R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
             //Log.e("ConfirmaRegistro", "No hay nombre de usuario almacenado");
         }
     }
@@ -207,7 +220,6 @@ public class ConfirmaRegistro extends AppCompatActivity {
      * Al pulsar hacia atrás se cierra la actividad
      **********************************************************************************************/
     public void onBackPressed(){
-        Intent intent = new Intent(ConfirmaRegistro.this, PantallaLogin.class);
-        startActivity(intent);
+        finish(); // TODO: PENDIENTE DE DEPURACIÓN JUNTO CON REGISTRONUEVOUSUARIO
     }
 }

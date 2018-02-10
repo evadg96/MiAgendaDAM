@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -271,34 +272,48 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         if (nombre.isEmpty() || apellidos.isEmpty() || provincia.equals("Selecciona una provincia") || centro_estudios.isEmpty() || familiaCiclo.equals("Selecciona una familia de ciclos formativos") ||
                 ciclo_formativo.equals("Selecciona un ciclo formativo") || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
-            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
            // Log.i("RegistroNuevoUsuario", "Campos vacíos");
+            Snackbar.make(findViewById(android.R.id.content),
+                    R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
         } else {
-            if (Integer.valueOf(horas_fct) > 700) {
-                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_horas_practicas, Toast.LENGTH_LONG).show();
-               // Log.i("RegistroNuevoUsuario", "Horas FCT por encima de lo permitido");
+            if (Integer.valueOf(horas_fct) > 500) {
+              //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_horas_practicas, Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content),
+                        R.string.error_horas_practicas, Snackbar.LENGTH_LONG).show();
+                // Log.i("RegistroNuevoUsuario", "Horas FCT por encima de lo permitido");
             } else {
                 Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
                 Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
                 if (!matcher.matches()) { // si el correo no cumple con el formato del patrón, salta el mensaje de error
-                    Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
-                  //  Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
+                   // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content),
+                            R.string.error_correo_no_valido, Snackbar.LENGTH_SHORT).show();
+                    //  Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
                 } else {
                     if (n_Usuario.length() < 6) {
-                        Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_usuario, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_usuario, Toast.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_longitud_usuario, Snackbar.LENGTH_LONG).show();
                        // Log.i("RegistroNuevoUsuario", "Longitud de nombre de usuario inferior a la necesaria");
                     } else {
                         if (clave.length() < 8) {
-                            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
-                         //   Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
+                          //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    R.string.error_longitud_clave, Snackbar.LENGTH_LONG).show();
+                            //   Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
                         } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE:
                             if (!clave.matches(pattern_formato) || !n_Usuario.matches(pattern_formato)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
-                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_clave, Toast.LENGTH_LONG).show();
-                             //   Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
+                             //   Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_clave, Toast.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_formato_clave, Snackbar.LENGTH_LONG).show();
+                                //   Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
                             } else {
                                 if (!clave.equals(clave2)) {
-                                    Toast.makeText(RegistroNuevoUsuario.this, R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
-                                 //   Log.i("RegistroNuevoUsuario", "Las claves no coinciden");
+                                  //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(findViewById(android.R.id.content),
+                                            R.string.error_claves_no_coinciden, Snackbar.LENGTH_SHORT).show();
+                                    //   Log.i("RegistroNuevoUsuario", "Las claves no coinciden");
                                     txtClave.setText(""); // Borramos los campos de clave
                                     txtClave2.setText("");
                                 } else {
@@ -312,7 +327,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                     if (response.equals("1")) {
                                                         try {
                                                           //  Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese correo");
-                                                            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
+                                                           // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
+                                                            Snackbar.make(findViewById(android.R.id.content),
+                                                                    R.string.error_correo_ya_existe, Snackbar.LENGTH_SHORT).show();
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
@@ -320,7 +337,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                         if (response.equals("2")) {
                                                             try {
                                                              //   Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese nombre");
-                                                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
+                                                                //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
+                                                                Snackbar.make(findViewById(android.R.id.content),
+                                                                        R.string.error_usuario_ya_existe, Snackbar.LENGTH_LONG).show();
                                                             } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
@@ -337,8 +356,12 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                             .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
                                                                                 public void onClick(DialogInterface dialog, int id) {
                                                                                     // mandamos a la pantalla de confirmación de registro
+                                                                                    // La idea es que al abrir la pantalla de confirmación esta se cierre,
+                                                                                    // para que al cerrar la pantalla de confirmación al pulsar atrás y destruir
+                                                                                    // la actividad no se pueda volver a esta pantalla
                                                                                     Intent intent = new Intent(RegistroNuevoUsuario.this, ConfirmaRegistro.class);
                                                                                     startActivity(intent);
+                                                                                    finish(); // <-- TODO: PENDIENTE DE DEPURACIÓN
                                                                                 }
                                                                             });
                                                                     /**.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -362,7 +385,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                             new Response.ErrorListener() {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
-                                                    Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                                    //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                                    Snackbar.make(findViewById(android.R.id.content),
+                                                            R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                                                    // Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para crear el nuevo usuario");
                                                 }
                                             }) {
@@ -454,7 +479,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para obtener la clave del correo noreply...");
                     }
                 });
@@ -474,15 +501,17 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Confirmación de registro");
                 message.setContent("<p style=\"text-align:justify\">¡Hola " + nombre + "! Ya estás un paso más cerca de finalizar tu registro como usuario de <b>Mi agenda FP</b>, tan solo nos queda confirmar" +
-                        "    tu cuenta introduciendo el código de confirmación que se indica aquí abajo.</p>" +
-                        "       <p style=\"text-align:justify\"> Código de confirmación: <b>" + codigoConfirmacion + "</b></p> " +
-                        "        <p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p>" +
+                        "tu cuenta introduciendo el código de confirmación que se indica aquí abajo.</p>" +
+                        "<p style=\"text-align:justify\">Código de confirmación: <b>" + codigoConfirmacion + "</b></p> " +
+                        "<p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p>" +
+                        "<p style=\"text-align:justify\">S" +
+                        "<br/>Atentamente, <b>Mi agenda FP</b>." +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
                         "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
-                        "    <br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        "        <br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        "        <br/>Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
+                        "<br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
+                        "<br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n"
+                        , "text/html; charset=utf-8");
                 Transport.send(message);
             } catch (MessagingException e) {
                 e.printStackTrace();

@@ -42,9 +42,7 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import es.proyecto.eva.miagendadam.R;
 
-// TODO validar que la hora de entrada del segundo turno sea mayor que la de salida del primero
-// TODO: REVISAR VALIDACIONES
-// TODO: CAMBIAR TIPOGRAFÍA CAMPOS DE HORAS DE TURNO 2
+// TODO: IMPLEMENTAR CAMPO DE HORAS DE REUNIÓN FCT
 /***************************************************************************************************
  *  Clase que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)         *
  *  y que sirve para crear un nuevo registro en el diario del usuario.                             *
@@ -329,7 +327,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     Snackbar.make(this.findViewById(android.R.id.content),
                             R.string.error_datos_jornada_3, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
-                    if (horaInicio2 <= horaFin1){ // la hora de inicio del segundo turno es menor o igual que la de fin del primer turno. No puede ser
+                    if (horaInicio2 <= horaFin1 ){// || horaInicio2 == horaFin1 && minutoInicio2 <= minutoFin1){ <--- Comento porque no sé si será posible en algún convenio hacer un descanso entre turno y turno inferior a una hora, que sería el único supuesto en el que coincidirían las horas de fin e inicio
+                        // la hora de inicio del segundo turno es menor o igual que la de fin del primer turno. No puede ser.
                         Snackbar.make(this.findViewById(android.R.id.content),
                                 R.string.error_datos_jornada_6, Snackbar.LENGTH_LONG).show();
                     } else {
@@ -357,6 +356,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                                     txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");
                                 }
                             }
+
                         }
                     }
                 }
@@ -680,9 +680,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("1")){ // Registro guardado con éxito
-                            //Toast.makeText(NuevoRegistroDiario.this, R.string.toast_registro_creado, Toast.LENGTH_LONG).show();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    R.string.toast_registro_creado, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(NuevoRegistroDiario.this, R.string.toast_registro_creado, Toast.LENGTH_LONG).show();
                           //  Log.d("NuevoRegistroDiario", "Registro creado");
                             finish(); // cerramos la actividad tras crear un nuevo registro
                         } else {

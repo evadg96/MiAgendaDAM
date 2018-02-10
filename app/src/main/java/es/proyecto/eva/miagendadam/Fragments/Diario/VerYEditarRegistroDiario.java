@@ -5,9 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,11 +53,22 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     private String fechaNueva = "", horasNuevas = "", minutosNuevos = "", descripcionNueva = "", valoracionNueva = "";
     String idUsuario = "";
     boolean editando = false;
-    public static boolean actualizaDiario = false; // la usamos para lo siguiente:
-    // Este dato se pondrá en true cuando se haya editado un registro y se hayan guardado los cambios. Nos servirá para indicar
-    // al sistema que es necesario que vuelva a cargar los datos porque ha habido cambios. Así, desde el fragmento, si se detecta
-    // que esto está en true, se volverán a ejecutar los métodos de obtención y carga de datos.
-
+    /***********************************************************************************************
+     * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
+     * caracteres especiales
+     * @param dato
+     * @return
+     **********************************************************************************************/
+    private String codificaString(String dato){
+        String datoCodificado = "";
+        try {
+            byte[] arrByteNombre = dato.getBytes("ISO-8859-1");
+            datoCodificado = new String(arrByteNombre);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return datoCodificado;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +89,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         btnValoracionSeleccionadaMalo = (ImageButton) findViewById(R.id.btn_malo_seleccionado);
         // Fijamos los datos que queremos que se muestren
         txtFechaSeleccionada.setText(fecha_seleccionada);
-        txtDescripcionSeleccionada.setText(descripcion_seleccionada);
+        // Codificamos los datos de la descripción para visualizar sus tildes y otros caracteres
+        String descripcionCodificada = codificaString(descripcion_seleccionada);
+        txtDescripcionSeleccionada.setText(descripcionCodificada);
         txtHorasSeleccionadas.setText(horas_seleccionadas);
         txtMinutosSeleccionados.setText(minutos_seleccionados);
         if (valoracion_seleccionada.equals("Bueno")) {
@@ -97,7 +110,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
      **********************************************************************************************/
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_editar, menu); // la R referencia a la ubicación del archivo
+        getMenuInflater().inflate(R.menu.menu_registro_diario, menu); // la R referencia a la ubicación del archivo
         if (editando) { // si estamos en modo edición, habilitamos el icono de guardado y ocultamos el de editar
             //Log.d("VerYEditarRegistroD", "Modo edición: ocultamos icono editar y mostramos el de guardar");
             menu.findItem(R.id.menu_actualizar).setVisible(true);
@@ -105,8 +118,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         }
         return true; // .menu es el directorio, y .menu_editar la capa
     }
-
-
 
     /***********************************************************************************************
      *     Opciones del menú de la barra de acciones
@@ -198,7 +209,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                       // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                                         //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para borrar el registro seleccionado");
                                     }
                                 }) {
@@ -236,7 +249,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
 
         // validamos que no queden campos en blanco
         if (fechaNueva.isEmpty() || horasNuevas.isEmpty() || minutosNuevos.isEmpty() || descripcionNueva.isEmpty() || valoracionNueva.isEmpty()) {
-            Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+            Snackbar.make(this.findViewById(android.R.id.content),
+                    R.string.error_campos_vacios, Snackbar.LENGTH_LONG).show();
             System.out.println("DATOS: " + fechaNueva + " " + horasNuevas + " " + minutosNuevos + " " + descripcionNueva + " " + valoracionNueva);
         } else {
             editando = false; // deshabilitamos la edición
@@ -255,11 +270,15 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             if (response.equals("1")) {
-                                Toast.makeText(VerYEditarRegistroDiario.this, R.string.toast_cambios_guardados, Toast.LENGTH_LONG).show();
+                                //Toast.makeText(VerYEditarRegistroDiario.this, R.string.toast_cambios_guardados, Toast.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.toast_cambios_guardados, Snackbar.LENGTH_LONG).show();
                                 //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
                                 invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente
                             } else {
-                                Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_actualizar_registro, Toast.LENGTH_LONG).show();
+                               // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_actualizar_registro, Toast.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_actualizar_registro, Snackbar.LENGTH_LONG).show();
                                 //Log.e("VerYEditarRegistroDiario", "Error: No se ha obtenido la respuesta esperada del script para actualizar el registro");
                             }
                         }
@@ -267,7 +286,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para actualizar el registro");
                         }
                     }) {
@@ -317,6 +338,4 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             finish(); // cerramos la actividad actual
         }
     }
-
-
 }

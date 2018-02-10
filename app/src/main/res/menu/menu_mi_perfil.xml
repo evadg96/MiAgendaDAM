@@ -1,8 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_refrescar_datos"
+        android:icon="@drawable/ic_cached_white_24dp"
+        android:title="@string/opc_refrescar_datos"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_editar_datos_perfil"
+        android:icon="@drawable/ic_create_black_24dp"
+        android:title="@string/menu_editar"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_cancelar_edicion_perfil"
+        android:title="@string/btn_cancelar"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
     <item
         android:id="@+id/menu_actualizar_perfil"
         android:icon="@drawable/ic_done_white_24dp"
-        android:title="@string/btn_actualizar_perfil"
+        android:title="@string/opc_actualizar_perfil"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 </menu>

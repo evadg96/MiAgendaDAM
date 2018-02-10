@@ -4,7 +4,7 @@
 
     <!-- Strings PantallaCarga -->
     <string name="title_dialog_conexion">Error de conexión</string>
-    <string name="info_conexion">¡Vaya, parece que no tienes conexión a internet! Mi Agenda FP necesita una conexión a
+    <string name="info_conexion">¡Vaya, parece que no tienes conexión a internet! Mi agenda FP necesita una conexión a
     internet para poder funcionar correctamente.</string>
 
 
@@ -15,6 +15,16 @@
     <string name="btn_iniciar_sesion">Iniciar sesión</string>
     <string name="btn_registrar_usuario">Registrarse</string>
     <string name="btn_recuperar_clave">He olvidado mis datos de usuario :(</string>
+    <string name="btn_desbloquear_cuenta">Desbloquear mi cuenta</string>
+    <string name="dialog_desbloqueo_title">Código enviado</string>
+    <string name="dialog_desbloqueo">Se ha enviado un código de desbloqueo al correo obtenido del usuario. Por favor,
+    revisa tu bandeja de entrada e introduce el código para desbloquear tu cuenta.</string>
+    <string name="text_introducir_codigo">Código de desbloqueo</string>
+    <string name="validar_codigo">Validar código</string>
+    <string name="enviar_codigo_desbloqueo">Enviar código de desbloqueo</string>
+    <string name="error_introducir_codigo">Debes introducir el código que se te ha enviado al correo.</string>
+    <string name="usuario_desbloqueado">Usuario desbloqueado. Ya puedes iniciar sesión :)</string>
+    <string name="error_codigo_desbloqueo_expirado">El código ha expirado. Solicita otro nuevo.</string>
 
     <!-- Strings pantalla RegistroNuevoUsuario -->
     <string name="title_activity_registro_usuario">Registro</string>
@@ -207,7 +217,10 @@
     <string name="mi_perfil_btn_actualizar_clave">Actualizar contraseña</string>
     <string name="mi_perfil_cambiar_clave">Cambiar contraseña</string>
     <string name="mi_perfil_clave">Contraseña</string>
-    <string name="btn_actualizar_perfil">Actualizar perfil</string>
+    <string name="opc_actualizar_perfil">Actualizar perfil</string>
+    <string name="opc_refrescar_datos">Refrescar datos</string>
+    <string name="perfil_actualizado">Datos actualizados correctamente.</string>
+    <string name="datos_refrescados">Datos refrescados.</string>
 
     <string name="error_introduce_clave">Introduce una contraseña</string>
     <string name="title_dialog_actualizar_clave_mi_perfil">Cambiar contraseña</string>
@@ -227,22 +240,22 @@
     <string name="error_no_hay_usuario">No se ha podido obtener el nombre de usuario.</string>
     <string name="error_registro">Se ha producido un error. No se ha podido crear el registro.</string>
     <string name="error_actualizar_registro">No se ha podido actualizar el registro.</string>
-    <string name="error_introducir_correo">Debes introducir tu correo electrónico.</string>
+    <string name="error_introducir_correo">Debes introducir algún correo electrónico.</string>
     <string name="error_confirmar_registro">Se ha producido un error al confirmar el registro. Por favor, vuelve
    a intentarlo.</string>
     <string name="error_codigo_expirado">El código ha expirado o no hay ningún usuario que confirmar.</string>
     <string name="error_codigo_incorrecto">El código introducido no es correcto.</string>
     <string name="error_introducir_nombre_usuario">Debes introducir tu nombre de usuario.</string>
     <string name="error_introducir_clave">Debes introducir tu contraseña.</string>
-    <string name="aviso_bloqueo_realizado">Se ha bloqueado al usuario. Contacta con soporte.</string>
-    <string name="aviso_usuario_bloqueado">Usuario bloqueado. No puedes iniciar sesión con esta cuenta. Contacta con soporte.</string>
+    <string name="aviso_bloqueo_realizado">Se ha bloqueado al usuario. Pulse sobre el botón "Desbloquear cuenta" para recuperar su cuenta de usuario.</string>
+    <string name="aviso_usuario_bloqueado">Usuario bloqueado. No puedes iniciar sesión con esta cuenta.</string>
     <string name="aviso_clave_incorrecta">La clave introducida no es correcta. Intentos de inicio restantes: </string>
     <string name="aviso_pocos_intentos_restantes">AVISO: Solo te quedan </string>
     <string name="aviso_pocos_intentos_restantes_2"> intentos restantes. Si los agotas se bloqueará tu cuenta de usuario.</string>
     <string name="error_usuario_no_existe">No existe ningún usuario con ese nombre.</string>
-    <string name="error_correo_no_existe">No existe ningún usuario asociado a ese correo electrónico.</string>
+    <string name="error_correo_no_existe">No existe ningún usuario registrado con ese correo electrónico.</string>
     <string name="error_campos_vacios">Debes rellenar todos los campos.</string>
-    <string name="error_horas_practicas">No se pueden cursar más de 700 horas de prácticas.</string>
+    <string name="error_horas_practicas">No se pueden cursar tantas horas en el módulo FCT.</string>
     <string name="error_correo_no_valido">El correo introducido no es un correo válido.</string>
     <string name="error_longitud_usuario">Debes introducir un nombre de usuario que tenga entre 6 y 20 caracteres.</string>
     <string name="error_longitud_clave">Debes introducir una contraseña que tenga entre 8 y 20 caracteres.</string>

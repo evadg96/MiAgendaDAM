@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -84,7 +85,9 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     if (response.equals("0")) { // no existe el correo en la bd
-                                        Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                      //  Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
                                         //Log.d("ReenviarCodigoConfirmacion", "No existe ningún usuario con ese correo");
                                     } else {
                                         if (response.equals("1")) { // existe el correo, así que le enviamos el código
@@ -109,7 +112,9 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                  //  Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(findViewById(android.R.id.content),
+                                            R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                                     //Log.e("ReenviarCodigoConfirmacion", "Error al conectar con el servidor para comprobar el correo electrónico introducido");
                                 }
                             }) {
@@ -125,7 +130,9 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                     AppController.getInstance().addToRequestQueue(request);
 
                 } else {
-                    Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content),
+                            R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -188,7 +195,9 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("ReenviarCodigoConf", "Error al conectar con el servidor para obtener la clave del correo noreply...");
                     }
                 });
@@ -213,8 +222,8 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                         "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         "Este mensaje se ha generado automáticamente. Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
                         "<br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        "<br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        "<br/>Atentamente, el equipo de <b>Mi agenda FP</b>.", "text/html; charset=utf-8");
+                        "<br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n"
+                        , "text/html; charset=utf-8");
                 Transport.send(message);
             } catch(MessagingException e) {
                 e.printStackTrace();

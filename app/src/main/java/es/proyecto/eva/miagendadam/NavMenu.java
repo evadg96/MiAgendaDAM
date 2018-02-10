@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -62,6 +63,22 @@ public class NavMenu extends AppCompatActivity
     private JSONArray jsonArray;
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
+    /***********************************************************************************************
+     * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
+     * caracteres especiales
+     * @param dato
+     * @return
+     **********************************************************************************************/
+    private String codificaString(String dato){
+        String datoCodificado = "";
+        try {
+            byte[] arrByteNombre = dato.getBytes("ISO-8859-1");
+            datoCodificado = new String(arrByteNombre);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return datoCodificado;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +111,8 @@ public class NavMenu extends AppCompatActivity
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
         correoUsuario.setText(correo_de_usuario);
         familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
-        familiaCiclo.setText(familia_ciclo);
+        String familiaCicloCodificado = codificaString(familia_ciclo);
+        familiaCiclo.setText(familiaCicloCodificado);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_inicio);
@@ -189,7 +207,9 @@ public class NavMenu extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.d("MiPerfilFragment", "Error al conectar con el servidor para obtener datos del usuario");
                     }
                 }) {
@@ -222,7 +242,9 @@ public class NavMenu extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                       //  Log.e("NavMenu", "Error al conectar con el servidor para cerrar la sesión del usuario");
                     }
                 }) {

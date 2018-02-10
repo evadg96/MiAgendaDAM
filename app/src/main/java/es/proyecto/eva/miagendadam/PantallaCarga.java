@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -69,7 +70,7 @@ public class PantallaCarga extends AppCompatActivity {
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/check_isConfirmed.php";
     private String url_consulta3 = "http://miagendafp.000webhostapp.com/update_fechaLogin.php";
     private String url_consulta4 = "http://miagendafp.000webhostapp.com/check_isLocked.php";
-
+    public static boolean estaBloqueado = false;
     private StringRequest request; // petición de consulta
 
     // Obtención de fecha y hora
@@ -195,8 +196,9 @@ public class PantallaCarga extends AppCompatActivity {
                             // Impedimos el acceso y mandamos a la pantalla de inicio de sesión, aunque no podrá iniciar sesión
                             // al estar bloqueado
                             //Log.i("PantallaCarga", "Está bloqueado");
+                            estaBloqueado = true;
                             Toast.makeText(PantallaCarga.this, "El usuario está bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
-                            abrePantallaLogin();
+                            abrePantallaLogin(); // en la pantalla de login está el botón de acerca de donde se puede ver el correo de contacto
                         }
                     }
 
@@ -205,7 +207,9 @@ public class PantallaCarga extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Se ejecuta cuando algo sale mal en la consulta
-                        Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el bloqueo del usuario");
                     }
                 }) {
@@ -266,7 +270,9 @@ public class PantallaCarga extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                            Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar la confirmación del usuario");
                         }
                     }) {
@@ -324,7 +330,9 @@ public class PantallaCarga extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                            Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el login del usuario");
                         }
                     }) {
@@ -359,7 +367,9 @@ public class PantallaCarga extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaCarga", "Error al conectar con el servidor para actualizar la fecha de último inicio de sesión");
                     }
                 }) {

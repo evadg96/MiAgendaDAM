@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -140,7 +141,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                         public void onResponse(String response) {
                             if (response.equals("0")) { // no existe el usuario en la bd
                                 //Log.i("RecuperarDatosUsuario", "No hay ningún usuario con ese correo");
-                                Toast.makeText(RecuperarDatosUsuario.this, "No hay ningún usuario registrado con ese correo.", Toast.LENGTH_SHORT).show();
+                            //   Toast.makeText(RecuperarDatosUsuario.this, "No hay ningún usuario registrado con ese correo.", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
                             } else if(response.equals("1")){
                                 // Comprobamos qué botón había pulsado el usuario:
                                 if (enviarClave){ // Si es el de solicitar una clave nueva...
@@ -156,7 +159,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("RecuperarDatosUsuario", "Error al conectar con el servidor para comprobar el correo introducido");
                         }
                     }) {
@@ -171,7 +176,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
             };
             AppController.getInstance().addToRequestQueue(request);
         } else { // si el campo de correo electrónico está vacío
-            Toast.makeText(RecuperarDatosUsuario.this, "Debes introducir tu correo electrónico.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(RecuperarDatosUsuario.this, "Debes introducir tu correo electrónico.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(android.R.id.content),
+                    R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
         }
 
     }
@@ -221,7 +228,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("RecuperarDatosUsuario", "Error al obtener la clave del correo de noreply...");
                     }
                 });
@@ -242,16 +251,17 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com")); // quién lo envía
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo)); // a quién lo envía
                 message.setSubject("No-reply: Solicitud de contraseña nueva"); // asunto del correo
-                message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de cambio de contraseña para su cuenta de <b>Mi agenda FP</b>.</p>" +
+                message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de cambio de contraseña para tu cuenta de <b>Mi agenda FP</b>.</p>" +
                         " <p style=\"text-align:justify\">Su contraseña nueva es: <b>"+ claveNueva + "</b></p>" +
+                        " Puedes volver a cambiarla cuando desee desde tu perfil de usuario." +
+                        " <br/>Atentamente, <b>Mi agenda FP</b>. </p></div>" +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
                         "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         "Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de cambio de contraseña para el usuario registrado con este correo. "+
-                        " Puede volver a cambiar su contraseña desde su perfil de usuario." +
                         " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta." +
                         " <br/>Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
-                        " <br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
-                        " <br/>Atentamente, el equipo de <b>Mi agenda FP</b>. </p></div>", "text/html; charset=utf-8");
+                        " <br/>Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n"
+                        , "text/html; charset=utf-8");
                 Transport.send(message);
             } catch(MessagingException e) {
                 e.printStackTrace();
@@ -279,12 +289,11 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 message.setFrom(new InternetAddress("noreply.miagendafp@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Solicitud de recordatorio de nombre de usuario");
-                message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de recuperación de usuario para su cuenta de <b>Mi agenda FP</b>.</p>" +
-                        " <p style=\"text-align:justify\">Su nombre de usuario es: <b>"+ nUsuario + "</b></p><br/>" +
+                message.setContent("<p style=\"text-align:justify\">¡Hola! Hemos recibido una solicitud de recuperación de usuario para tu cuenta de <b>Mi agenda FP</b>.</p>" +
+                        " <p style=\"text-align:justify\">Tu nombre de usuario es: <b>"+ nUsuario + "</b></p><br/>" +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve
                         "<p style=\"margin-left: 10px; margin-right: 11px\">" +
                         " Este mensaje se ha generado automáticamente porque se ha recibido una solicitud de recuperación de nombre de usuario para el usuario registrado con este correo. "+
-                        " Puede volver a cambiar su contraseña desde su perfil de usuario." +
                         " <br/>Por favor <b>no responda a este correo</b>, no recibirá ninguna respuesta.\n" +
                         " <br/> Si tiene algún problema, duda o sugerencia, contacte con el soporte a través de la dirección de correo <b>soportemiagendafp@gmail.com</b>\n" +
                         " <br/> Si ha recibido este correo por error, por favor, le rogamos que lo elimine y se ponga en contacto con la dirección de correo indicada arriba.\n" +
@@ -342,7 +351,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.d("RecuperarDatosUsuario", "Error al conectar con el servidor para obtener el nombre de usuario");
                     }
                 }) {
@@ -391,7 +402,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.d("RecuperarDatosUsuario", "Error al conectar con el servidor para actualizar la clave de usuario");
                     }
                 }) {
