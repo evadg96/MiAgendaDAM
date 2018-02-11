@@ -20,7 +20,7 @@
     <string name="dialog_desbloqueo">Se ha enviado un código de desbloqueo al correo obtenido del usuario. Por favor,
     revisa tu bandeja de entrada e introduce el código para desbloquear tu cuenta.</string>
     <string name="text_introducir_codigo">Código de desbloqueo</string>
-    <string name="validar_codigo">Validar código</string>
+    <string name="validar_codigo">VALIDAR CÓDIGO</string>
     <string name="enviar_codigo_desbloqueo">Enviar código de desbloqueo</string>
     <string name="error_introducir_codigo">Debes introducir el código que se te ha enviado al correo.</string>
     <string name="usuario_desbloqueado">Usuario desbloqueado. Ya puedes iniciar sesión :)</string>
@@ -168,7 +168,9 @@
     <string name="jornada_partida">Jornada partida</string>
     <string name="reunion_fct_title">Si has tenido una reunión con tu tutor de módulo de prácticas, marca la siguiente opción:</string>
     <string name="reunion_fct">Reunión FCT</string>
-    <string name="reunion_fct_info">Al marcar esta opción se sumarán ¿X? horas a las de la jornada del día que se va a crear</string>
+    <string name="tiempo_reunion">Duración de la reunión (horas que computará)</string>
+    <string name="alert_horas_reunion">Las reuniones del módulo FCT no pueden tener una duración mayor a dos horas.</string>
+    <string name="alert_horas_reunion_2">Introduce una duración mayor a cero.</string>
     <string name="turno_1">Turno 1</string>
     <string name="turno_2">Turno 2</string>
     <string name="descripcion_registro">Descripción del día</string>

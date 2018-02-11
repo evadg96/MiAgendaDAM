@@ -65,9 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
-            android:text="@string/validar_codigo"
-            android:textAlignment="center"
-            android:visibility="gone" />
+            android:text="@string/validar_codigo" />
+
 
     </LinearLayout>
 

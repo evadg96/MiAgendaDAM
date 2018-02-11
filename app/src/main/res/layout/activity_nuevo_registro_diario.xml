@@ -217,6 +217,33 @@
                             android:textColor="@color/gris_oscuro"
                             android:textSize="16sp"
                             android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/tiempo_reunion"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/textView24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/roboto_thin"
+                                android:text="@string/tiempo_reunion"
+                                android:textColor="@color/colorAccent"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/txt_horas_reunion"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
