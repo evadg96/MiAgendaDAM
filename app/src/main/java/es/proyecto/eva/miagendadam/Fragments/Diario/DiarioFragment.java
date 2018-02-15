@@ -85,17 +85,21 @@ public class DiarioFragment extends Fragment {
     // no hace falta que sean strings estáticos porque los vamos a utilizar para componer la fecha,
     // que será lo que necesitaremos en la clase VerYEditarRegistroDiario para que el usuario lo vea
     // y esa sí que tendrá que ser estática para poder acceder a ella desde la otra clase
-    private String dia_seleccionado;
-    private String mes_seleccionado;
-    private String anyo_seleccionado;
+    public static String dia_seleccionado;
+    public static String mes_seleccionado;
+    public static String anyo_seleccionado;
     public static String jornada_partida_seleccionada;
     public static String hora_inicio_1_seleccionada;
+    public static String minuto_inicio_1_seleccionado;
     public static String hora_fin_1_seleccionada;
+    public static String minuto_fin_1_seleccionado;
     public static String hora_inicio_2_seleccionada;
+    public static String minuto_inicio_2_seleccionado;
     public static String hora_fin_2_seleccionada;
+    public static String minuto_fin_2_seleccionado;
+    public static String reunion_fct_seleccionada;
+    public static String horas_reunion_seleccionada;
     public static String fecha_seleccionada;
-    public static String horas_seleccionadas;
-    public static String minutos_seleccionados;
     public static String descripcion_seleccionada;
     public static String valoracion_seleccionada;
 
@@ -221,12 +225,16 @@ public class DiarioFragment extends Fragment {
                     anyo_seleccionado = jsonArrayDiario.getJSONObject(id).getString("anyo");
                     jornada_partida_seleccionada = jsonArrayDiario.getJSONObject(id).getString("jornada_partida");
                     hora_inicio_1_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_inicio_1");
+                    minuto_inicio_1_seleccionado = jsonArrayDiario.getJSONObject(id).getString("minuto_inicio_1");
                     hora_fin_1_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_fin_1");
+                    minuto_fin_1_seleccionado = jsonArrayDiario.getJSONObject(id).getString("minuto_fin_1");
                     hora_inicio_2_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_inicio_2");
+                    minuto_inicio_2_seleccionado = jsonArrayDiario.getJSONObject(id).getString("minuto_inicio_2");
                     hora_fin_2_seleccionada = jsonArrayDiario.getJSONObject(id).getString("hora_fin_2");
+                    minuto_fin_2_seleccionado = jsonArrayDiario.getJSONObject(id).getString("minuto_fin_2");
+                    reunion_fct_seleccionada = jsonArrayDiario.getJSONObject(id).getString("reunion_fct");
+                    horas_reunion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("horas_reunion");
                     fecha_seleccionada = dia_seleccionado + "/" + mes_seleccionado + "/" + anyo_seleccionado;
-                    horas_seleccionadas = jsonArrayDiario.getJSONObject(id).getString("horas");
-                    minutos_seleccionados = jsonArrayDiario.getJSONObject(id).getString("minutos");
                     descripcion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("descripcion");
                     valoracion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("valoracion");
                     // después de obtener los datos abrimos la nueva actividad que nos permitirá visualizarlos
@@ -234,10 +242,6 @@ public class DiarioFragment extends Fragment {
                    Log.d("DiarioFragment", "Vista detalle de un registro");
                     Intent intent = new Intent(getActivity(), VerYEditarRegistroDiario.class);
                     startActivity(intent);
-
-                    System.out.println("ID DEL DIA = " + id_dia_seleccionado + "\nFecha del día = " + fecha_seleccionada
-                            + "\nHora del día = " + horas_seleccionadas + "\nMinutos = " + minutos_seleccionados + "\nDescripción = " +
-                            descripcion_seleccionada + "\nValoración = " + valoracion_seleccionada);
 
                 } catch (Exception e) {
                     e.printStackTrace();

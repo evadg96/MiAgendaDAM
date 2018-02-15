@@ -171,6 +171,8 @@
     <string name="tiempo_reunion">Duración de la reunión (horas que computará)</string>
     <string name="alert_horas_reunion">Las reuniones del módulo FCT no pueden tener una duración mayor a dos horas.</string>
     <string name="alert_horas_reunion_2">Introduce una duración mayor a cero.</string>
+    <string name="msj_suma_reunion">+ Se sumarán las horas de reunión indicadas a las horas de la jornada laboral.</string>
+    <string name="msj_resta_reunion">- Al desmarcar la opción se restarán las horas de reunión que se habían indicado a las horas que computa el día.</string>
     <string name="turno_1">Turno 1</string>
     <string name="turno_2">Turno 2</string>
     <string name="descripcion_registro">Descripción del día</string>
@@ -199,6 +201,7 @@
     <string name="dialog_texto_borrar_registro">¿Estás seguro de que quieres eliminar el registro actual? Esta acción no se podrá deshacer.</string>
     <string name="dialog_opcion_borrar">Eliminar</string>
     <string name="toast_registro_eliminado">Registro eliminado.</string>
+    <string name="error_editar_fecha_registro">No se puede cambiar la fecha del registro.</string>
 
     <!-- String mensajes de acciones CORRECTAS -->
     <string name="toast_registro_creado">Registro creado correctamente.</string>

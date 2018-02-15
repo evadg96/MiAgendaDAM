@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vista_detalle_registro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
@@ -16,86 +19,273 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_thin"
-                android:text="@string/dia_practicas"
-                android:textColor="@color/azul_barra_notificaciones"
-                android:textStyle="bold" />
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/editText_fecha_seleccionada"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="@string/fecha_registro"
-                android:inputType="date"
-                android:maxLines="1" />
-
-            <TextView
-                android:id="@+id/tv_jornada"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_thin"
-                android:text="@string/jornada_laboral"
-                android:textColor="@color/azul_barra_notificaciones"
-                android:textStyle="bold" />
-
             <LinearLayout
+                android:id="@+id/datos_dia_seleccionado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/textView18"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
+                    android:text="@string/dia_practicas"
+                    android:textColor="@color/azul_barra_notificaciones"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/editText_horas_seleccionadas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/hora_inicio"
-                        android:inputType="number" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editText_fecha_seleccionada"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto_thin"
+                    android:hint="@string/fecha_registro"
+                    android:inputType="date"
+                    android:maxLines="1" />
 
-                    <EditText
-                        android:id="@+id/editText_minutos_seleccionados"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/hora_fin"
-                        android:inputType="number" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_jornada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
+                    android:text="@string/jornada_laboral"
+                    android:textColor="@color/azul_barra_notificaciones"
+                    android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/bloque_turnos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/jornada_partida_title"
+                        android:textSize="12sp" />
+
+                    <Switch
+                        android:id="@+id/switch_jornada_seleccionada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="@font/roboto_thin"
+                        android:text="@string/jornada_partida"
+                        android:textColor="@color/gris_oscuro"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_turno1_seleccionado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/turno_1"
+                        android:textColor="@color/azul_barra_notificaciones"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/bloque_turno_1_seleccionado"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/txt_hora_inicio_1_seleccionada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_thin"
+                            android:hint="@string/hora_inicio"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/txt_hora_fin_1_seleccionada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_thin"
+                            android:hint="@string/hora_fin"
+                            android:inputType="number" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_turno2_seleccionado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/turno_2"
+                        android:textColor="@color/azul_barra_notificaciones"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/bloque_turno_2_seleccionado"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/txt_hora_inicio_2_seleccionada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_thin"
+                            android:hint="@string/hora_inicio"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/txt_hora_fin_2_seleccionada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto_thin"
+                            android:hint="@string/hora_fin"
+                            android:inputType="number" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_ver_horas"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/roboto_thin"
+                            android:gravity="start"
+                            android:text="@string/ver_horas"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txt_horas_obtenidas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txt_info_reunion_seleccionada_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/msj_suma_reunion"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txt_info_reunion_seleccionada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/msj_resta_reunion"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/opciones_adicionales"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reunion_fct_title"
+                            android:textSize="12sp" />
+
+                        <Switch
+                            android:id="@+id/switch_reunion_seleccionada"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="@font/roboto_thin"
+                            android:text="@string/reunion_fct"
+                            android:textColor="@color/gris_oscuro"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/tiempo_reunion"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/textView24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/roboto_thin"
+                                android:text="@string/tiempo_reunion"
+                                android:textColor="@color/colorAccent"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/txt_horas_reunion_seleccionada"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/descripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.TextInputLayout
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_thin"
+                        android:text="@string/descripcion_registro"
+                        android:textColor="@color/azul_barra_notificaciones"
+                        android:textStyle="bold" />
+
+                    <ScrollView
+                        android:id="@+id/scroll_descripcion"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -103,12 +293,14 @@
                             android:id="@+id/editText_descripcion_seleccionada"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:focusableInTouchMode="false"
-                            android:hint="@string/descripcion_registro"
-                            android:maxLines="10" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:maxLines="6" />
+
+
+                    </ScrollView>
+
                 </LinearLayout>
-            </ScrollView>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView_valoracion"
@@ -122,6 +314,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/imagenes_valoracion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -134,7 +327,6 @@
                     android:layout_weight="1"
                     android:alpha="0.5"
                     android:background="@color/transparente"
-                    android:clickable="false"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
                     app:srcCompat="@drawable/ic_mood_green_24dp" />
@@ -146,7 +338,6 @@
                     android:layout_weight="1"
                     android:alpha="0.5"
                     android:background="@color/transparente"
-                    android:clickable="false"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
                     app:srcCompat="@drawable/ic_sentiment_neutral_yellow_24dp" />
@@ -158,14 +349,14 @@
                     android:layout_weight="1"
                     android:alpha="0.5"
                     android:background="@color/transparente"
-                    android:clickable="false"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
                     app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_red_24dp" />
+
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
+        </LinearLayout> <!-- cierre contenedor -->
+    </ScrollView> <!-- cierre de scroll pantalla -->
 
 </LinearLayout>
 

@@ -42,7 +42,6 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import es.proyecto.eva.miagendadam.R;
 
-// TODO: IMPLEMENTAR CAMPO DE HORAS DE REUNIÓN FCT
 /***************************************************************************************************
  *  Clase que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)         *
  *  y que sirve para crear un nuevo registro en el diario del usuario.                             *
@@ -51,7 +50,7 @@ import es.proyecto.eva.miagendadam.R;
 public class NuevoRegistroDiario extends AppCompatActivity {
     ImageButton btnBueno, btnRegular, btnMalo; // botones de imagen de la valoración del día
     EditText txtFecha, txtHoraInicio1, txtHoraFin1, txtHoraInicio2, txtHoraFin2, txtDescripcion, txtTiempoReunion; // campos de texto de información del día
-    TextView turno1, turno2, txtHoras; // para mostrar u ocultar los títulos que identifican a cada turno en caso de que haya varios
+    TextView turno1, turno2, txtHoras, txtInfoReunion; // para mostrar u ocultar los títulos que identifican a cada turno en caso de que haya varios
     Button btnVerHoras;
     Switch switchJornada, switchReunion; // para marcar o desmarcar las opciones y en base a eso mostrar u ocultar contenido
     LinearLayout bloqueTurno2, tiempoReunion; // la capa que contiene los campos de texto para introducir hora de inicio y fin del segundo turno
@@ -63,15 +62,15 @@ public class NuevoRegistroDiario extends AppCompatActivity {
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/inserta_nuevo_registro_diario.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/inserta_nuevo_registro_diario.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/check_fecha_registro.php";
-    private String reunion_fct = "";
-    private String horas_reunion = "";
+    private String reunion_fct = "0";
+    private String horas_reunion = "0";
     String sDia = "", sMes = "", sAnyo = ""; // la fecha seleccionada por el usuario a través del timePicker
     // Creamos variable de horas y minutos que serán las que usemos para obtener la hora seleccionada en el timepicker
     int tpHoras, tpMinutos;
     // Creamos variables para almacenar las distintas horas introducidas
     int horaInicio1 = 0, minutoInicio1 = 0, horaInicio2 = 0, minutoInicio2 = 0, horaFin1 = 0, minutoFin1 = 0, horaFin2 = 0, minutoFin2 = 0; //quizá no hagan falta las del turno 2, pero las ponemos por si acaso
     // creamos las horas de la jornada también en strings para guardarlas en la base de datos como texto
-    String sHoraInicio1 = "", sHoraFin1 = "", sHoraInicio2 = "" , sHoraFin2 = "";
+    String sHoraInicio1 = "0", sMinInicio1 = "0", sHoraFin1 = "0", sMinFin1 = "0", sHoraInicio2 = "0", sMinInicio2 = "0", sHoraFin2 = "0", sMinFin2 = "0";
     // Creamos variables de horas y minutos para los turnos que serán el resultado de las restas de horas y minutos de arriba
     int horasTurno1, minutosTurno1, horasTurno2, minutosTurno2;
     // Creamos horas y minutos que serán el producto de sumar las horas resultantes (horasTurno1 + horasTurno2) (minutosTurno1 + minutorTurno2)
@@ -104,6 +103,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         txtHoraInicio2 = (EditText) findViewById(R.id.txt_hora_inicio_2);
         txtHoraFin2 = (EditText) findViewById(R.id.txt_hora_fin_2);
         txtHoras = (TextView) findViewById(R.id.txt_horas_obtenidas);
+        txtInfoReunion = (TextView) findViewById(R.id.txt_info_reunion);
         txtTiempoReunion = (EditText) findViewById(R.id.txt_horas_reunion);
         // titulos de los bloques
         turno1 = (TextView) findViewById(R.id.tv_turno1);
@@ -204,11 +204,13 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     hayReunion = true;
                     reunion_fct = "1";
                     tiempoReunion.setVisibility(View.VISIBLE);
+                    txtInfoReunion.setVisibility(View.VISIBLE);
                 } else { // si se desactiva
                     System.out.println("REUNIÓN OFF");
                     hayReunion = false;
-                    reunion_fct = "";
+                    reunion_fct = "0";
                     tiempoReunion.setVisibility(View.GONE);
+                    txtInfoReunion.setVisibility(View.GONE);
                 }
 
             }
@@ -555,27 +557,31 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 if (esHoraInicio1){
                     horaInicio1 = tpHoras;
                     minutoInicio1 = tpMinutos;
-                    tiempo = sHoras + ":" + sMinutos; // concatenamos con dos puntos en medio para dar aspecto de reloj
-                    sHoraInicio1 = tiempo;
-                    txtHoraInicio1.setText(tiempo); // lo ponemos en el campo de texto correspondiente
+                    sHoraInicio1 = sHoras;
+                    sMinInicio1 = sMinutos;
+                    System.out.println("MINUTOS: "+ sMinutos);
+                    txtHoraInicio1.setText(sHoras + ":" + sMinutos);
                 } else if (esHoraInicio2){
                     horaInicio2 = tpHoras;
                     minutoInicio2 = tpMinutos;
-                    tiempo = sHoras + ":" + sMinutos;
-                    sHoraInicio2 = tiempo;
-                    txtHoraInicio2.setText(tiempo);
+                    sHoraInicio2 = sHoras;
+                    sMinInicio2 = sMinutos;
+                    System.out.println("MINUTOS: "+ sMinutos);
+                    txtHoraInicio2.setText(sHoras + ":" + sMinutos);
                 } else if (esHoraFin1){
                     horaFin1 = tpHoras;
                     minutoFin1 = tpMinutos;
-                    tiempo = sHoras + ":" + sMinutos;
-                    sHoraFin1 = tiempo;
-                    txtHoraFin1.setText(tiempo);
+                    sHoraFin1 = sHoras;
+                    sMinFin1 = sMinutos;
+                    System.out.println("MINUTOS: "+ sMinutos);
+                    txtHoraFin1.setText(sHoras + ":" + sMinutos);
                 } else if (esHoraFin2){
                     horaFin2 = tpHoras;
                     minutoFin2 = tpMinutos;
-                    tiempo = sHoras + ":" + sMinutos;
-                    sHoraFin2 = tiempo;
-                    txtHoraFin2.setText(tiempo);
+                    sHoraFin2 = sHoras;
+                    sMinFin2 = sMinutos;
+                    System.out.println("MINUTOS: "+ sMinutos);
+                    txtHoraFin2.setText(sHoras + ":" + sMinutos);
                 }
                 // ponemos de nuevo en false todos los booleanos cuando ya hayamos hecho las operaciones
                 esHoraInicio1 = false;
@@ -756,9 +762,13 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 parametros.put("reunion_fct", reunion_fct);
                 parametros.put("horas_reunion", horas_reunion);
                 parametros.put("hora_inicio_1", sHoraInicio1);
+                parametros.put("minuto_inicio_1", sMinInicio1);
                 parametros.put("hora_fin_1", sHoraFin1);
+                parametros.put("minuto_fin_1", sMinFin1);
                 parametros.put("hora_inicio_2", sHoraInicio2);
+                parametros.put("minuto_inicio_2", sMinInicio2);
                 parametros.put("hora_fin_2", sHoraFin2);
+                parametros.put("minuto_fin_2", sMinFin2);
                 parametros.put("descripcion", descripcion);
                 parametros.put("horas",sHorasResultado);
                 parametros.put("minutos", sMinutosResultado);
