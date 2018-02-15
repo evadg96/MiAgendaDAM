@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -357,32 +358,16 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
 
     public void deshabilitarEdicion(){
         // ************************* Inhabilitamos posibilidad de seleccionar/editar campos *****************************
-        txtDescripcionSeleccionada.setFocusableInTouchMode(false);
-        txtDescripcionSeleccionada.setClickable(false);
-        txtTiempoReunion.setClickable(false);
-        txtTiempoReunion.setFocusableInTouchMode(false);
-        txtDescripcionSeleccionada.setLongClickable(false);
-        txtTiempoReunion.setLongClickable(false);
-        txtFechaSeleccionada.setLongClickable(false); // desactiva opciones de copy/paste/select al pulsar prolongado
-        txtFechaSeleccionada.setClickable(false); // no se puede hacer click sobre el elemento, ni se colorea la barra inferior al pulsar el elemento
-        txtFechaSeleccionada.setFocusableInTouchMode(false); // no permite poner el foco en el elemento
-        txtHoraInicio1Seleccionada.setClickable(false);
-        txtHoraInicio1Seleccionada.setFocusableInTouchMode(false);
-        txtHoraInicio1Seleccionada.setLongClickable(false);
-        txtHoraFin1Seleccionada.setLongClickable(false);
-        txtHoraFin1Seleccionada.setClickable(false);
-        txtHoraFin1Seleccionada.setFocusableInTouchMode(false);
-        txtHoraInicio2Seleccionada.setLongClickable(false);
-        txtHoraInicio2Seleccionada.setClickable(false);
-        txtHoraInicio2Seleccionada.setFocusableInTouchMode(false);
-        txtHoraFin2Seleccionada.setLongClickable(false);
-        txtHoraFin2Seleccionada.setClickable(false);
-        txtHoraFin2Seleccionada.setFocusableInTouchMode(false);
+        txtDescripcionSeleccionada.setEnabled(false);
+        txtTiempoReunion.setEnabled(false);
+        txtFechaSeleccionada.setEnabled(false);
+        txtHoraInicio1Seleccionada.setEnabled(false);
+        txtHoraFin1Seleccionada.setEnabled(false);
+        txtHoraInicio2Seleccionada.setEnabled(false);
+        txtHoraFin2Seleccionada.setEnabled(false);
         btnValoracionSeleccionadaBueno.setClickable(false);
         btnValoracionSeleccionadaMalo.setClickable(false);
         btnValoracionSeleccionadaRegular.setClickable(false);
-        // TODO: Corregir. Cuando se modifica un campo de texto, al guardar los cambios se queda el foco en el campo y se permite su edición. Esto no debería ser así
-        vistaDetalle.isFocused(); // ponemos el foco en la capa contenedora de la pantalla para que no se queden campos seleccionados?
         // *************************************************************************************************************
        // Esto es necesario ya que una vez se ha pulsado la edición, luego los campos de hora y fecha se quedan 'clickables'
         txtFechaSeleccionada.setOnTouchListener(new View.OnTouchListener() {
@@ -446,17 +431,12 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         invalidateOptionsMenu(); // para llamar de nuevo al onCreateOptionsMenu y ocultar el botón de editar
         // y mostrar el de guardar
         editando = true;
-        txtDescripcionSeleccionada.setClickable(true);
-        txtDescripcionSeleccionada.setFocusableInTouchMode(true);
-        txtTiempoReunion.setClickable(true);
-        txtTiempoReunion.setFocusableInTouchMode(true);
-        txtDescripcionSeleccionada.setLongClickable(true);
-        txtTiempoReunion.setLongClickable(true);
-        txtFechaSeleccionada.setLongClickable(true);
-        txtHoraInicio1Seleccionada.setLongClickable(true);
-        txtHoraFin1Seleccionada.setLongClickable(true);
-        txtHoraInicio2Seleccionada.setLongClickable(true);
-        txtHoraFin2Seleccionada.setLongClickable(true);
+        txtDescripcionSeleccionada.setEnabled(true);
+        txtTiempoReunion.setEnabled(true);
+        txtHoraInicio1Seleccionada.setEnabled(true);
+        txtHoraFin1Seleccionada.setEnabled(true);
+        txtHoraInicio2Seleccionada.setEnabled(true);
+        txtHoraFin2Seleccionada.setEnabled(true);
 
         // Al pulsar sobre el campo de fecha mostramos mensaje de que no se puede cambiar la fecha
         txtFechaSeleccionada.setOnTouchListener(new View.OnTouchListener() {

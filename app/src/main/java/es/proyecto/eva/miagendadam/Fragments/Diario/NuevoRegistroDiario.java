@@ -661,7 +661,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         });
         dialog.setView(view);
         dialog.setCanceledOnTouchOutside(false); // evitamos la posibilidad de cerrar el diálogo al pulsar fuera,
-        // para evitarnos el problema de que no se ponga correctamente la hora que toca en el timepicker  
+        // para evitarnos el problema de que no se ponga correctamente la hora que toca en el timepicker
         dialog.show();
     }
 
