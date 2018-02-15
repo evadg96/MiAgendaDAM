@@ -756,6 +756,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         //inflate view for alertdialog since we are using multiple views inside a viewgroup (root = Layout top-level) (linear, relative, framelayout etc..)
         View view = inflater.inflate(R.layout.selector_time_picker, (ViewGroup) findViewById(R.id.selector_time_picker));
         final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true); // para que se vean las horas a elegir en formato 24h
         Button btnAceptar, btnCancelar;
         btnAceptar = (Button) view.findViewById(R.id.btn_aceptar_tp);
         btnCancelar = (Button) view.findViewById(R.id.btn_cancelar_tp);

@@ -20,16 +20,19 @@
         android:versionCode="3"
         android:versionName="1.0">
         <activity android:name=".PantallaCarga">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PantallaPrincipal" />
-        <activity android:name=".PantallaLogin" />
+        <activity android:name=".PantallaPrincipal"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PantallaLogin"
+            android:screenOrientation="portrait"/>
         <activity android:name=".RegistroNuevoUsuario"
-
+            android:screenOrientation="portrait"
             />
         <activity android:name=".ConfirmaRegistro" />
         <activity android:name=".ReenviarCodigoConfirmacion" />
@@ -39,14 +42,19 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".RecuperarDatosUsuario" />
-        <activity android:name=".AcercaDe" />
+        <activity android:name=".RecuperarDatosUsuario"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AcercaDe"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Fragments.Diario.NuevoRegistroDiario"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Fragments.Diario.VerYEditarRegistroDiario"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Fragments.Diario.EstadisticasDiario"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"
