@@ -169,7 +169,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             switchReunionSeleccionada.setChecked(false);
             System.out.println("REUNIÓN OFF");
             hayReunion = false;
-            reunion_fct = "";
+            reunion_fct = "0";
             tiempoReunion.setVisibility(View.GONE);
         }
         // y lo mismo con la jornada partida
@@ -214,6 +214,10 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                     bloqueTurno2.setVisibility(View.GONE);
                     hayDosJornadas = false;
                     jornada_partida = "0"; // cambiamos a 0 para guardarlo en la base de datos
+                    sHoraInicio2 = "0";
+                    sMinInicio2 = "0";
+                    sHoraFin2 = "0";
+                    sMinFin2 = "0";
                 }
 
             }
@@ -329,14 +333,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 descripcionNueva = txtDescripcionSeleccionada.getText().toString();
                 valoracionNueva = valoracion_seleccionada;
                 validarJornada();
-                if (sDia.isEmpty() || sMes.isEmpty() || sAnyo.isEmpty() || descripcionNueva.isEmpty() || valoracionNueva.isEmpty()){
-                    // Toast.makeText(NuevoRegistroDiario.this, "Debes completar todos los datos.", Toast.LENGTH_SHORT).show();
-                    Snackbar.make(findViewById(android.R.id.content),
-                            R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
-                    Log.d("menu_actualizar", "Día/Mes/Año/Descripción vacío");
-                } else {
-                   actualizarRegistro(); // actualizamos el registro
-                }
                 return true;
             case R.id.menu_editar: // Opción de editar el registro
                 //Log.i("VerYEditarRegistroD", "Action Editar registro");
@@ -622,14 +618,15 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 if (horaInicio1 > horaFin1 || horaInicio2 > horaFin2) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
                     // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
                     Snackbar.make(this.findViewById(android.R.id.content),
-                            R.string.error_datos_jornada_3, Snackbar.LENGTH_SHORT).show();
+                            R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horaInicio2 <= horaFin1) {// || horaInicio2 == horaFin1 && minutoInicio2 <= minutoFin1){ <--- Comento porque no sé si será posible en algún convenio hacer un descanso entre turno y turno inferior a una hora, que sería el único supuesto en el que coincidirían las horas de fin e inicio
                         // la hora de inicio del segundo turno es menor o igual que la de fin del primer turno. No puede ser.
                         Snackbar.make(this.findViewById(android.R.id.content),
-                                R.string.error_datos_jornada_6, Snackbar.LENGTH_LONG).show();
+                                R.string.error_datos_jornada_4, Snackbar.LENGTH_LONG).show();
                     } else {
-                        if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
+                        if (horasResultado <= 0 || horaInicio1 == horaFin1 && minutoInicio1 == minutoFin1 || horaInicio2 == horaFin2 && minutoInicio2 == minutoFin2) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
+                            // o que la hora de inicio sea exacta a la hora de fin en alguno de los turnos...
                             //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                             Snackbar.make(this.findViewById(android.R.id.content),
                                     R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
@@ -674,8 +671,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                                 } else {
                                     txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");
                                 }
+                            } else {
+                                actualizarRegistro(); // actualizamos el registro
                             }
-
                         }
                     }
                 }
@@ -690,7 +688,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 if (horaInicio1 > horaFin1) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
                     //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
                     Snackbar.make(this.findViewById(android.R.id.content),
-                            R.string.error_datos_jornada_3, Snackbar.LENGTH_SHORT).show();
+                            R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
                         //  Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
@@ -735,6 +733,8 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                             } else {
                                 txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");
                             }
+                        } else {
+                            actualizarRegistro(); // actualizamos el registro
                         }
                     }
                 }
@@ -744,6 +744,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                         R.string.error_datos_jornada_1, Snackbar.LENGTH_SHORT).show();
             }
         }
+        verHoras = false;
     }
 
     /***********************************************************************************************
@@ -760,6 +761,61 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         Button btnAceptar, btnCancelar;
         btnAceptar = (Button) view.findViewById(R.id.btn_aceptar_tp);
         btnCancelar = (Button) view.findViewById(R.id.btn_cancelar_tp);
+
+        // TODO: Corregir bug timepicker:
+        // Cuando se despliega el timepicker se pone la hora que hubiera escrita en el campo de texto correspondiente
+        // Por ejemplo: abrimos el timepicker desde el campo de hora de inicio del turno, que tenía como hora las 9:15,
+        // el reloj se pondrá automáticamente en las 9:15. El problema viene si cerramos este reloj sin pulsar en el botón
+        // aceptar o cancelar, pulsando fuera del cuadrado del reloj, por ejemplo. Si ahora abrimos el timepicker desde el campo
+        // de hora de fin del turno, que tuviera por ejemplo como hora las 14:30, la hora en el timepicker que se despliegue se pondrá
+        // en la hora de inicio del turno, las 9:15. ¿Por qué? Porque al no haber pulsado sobre Aceptar o Cancelar, la booleana esHoraInicio
+        // seguirá en true, y por tanto se detectará en verdadera cuando se haga la primera comprobación, y se pondrá la hora que hubiera
+        // guardada para la primera hora.
+
+
+     // ************* PONEMOS LA HORA QUE SE HA SELECCIONADO EN EL RELOJ AL ABRIRLO, YA QUE SI NO SE PONDRÁ SIEMPRE
+        // ******* LA HORA ACTUAL.
+        if (esHoraInicio1) {
+            // VERSIONES CON ANDROID 6.0 EN ADELANTE
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                timePicker.setHour(Integer.valueOf(sHoraInicio1));
+                timePicker.setMinute(Integer.valueOf(sMinInicio1));
+            } else {
+                timePicker.setCurrentHour(Integer.valueOf(sHoraInicio1));
+                timePicker.setCurrentMinute(Integer.valueOf(sMinInicio1));
+            }
+        } else if (esHoraFin1){
+            // VERSIONES CON ANDROID 6.0 EN ADELANTE
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                timePicker.setHour(Integer.valueOf(sHoraFin1));
+                timePicker.setMinute(Integer.valueOf(sMinFin1));
+            } else {
+                timePicker.setCurrentHour(Integer.valueOf(sHoraFin1));
+                timePicker.setCurrentMinute(Integer.valueOf(sMinFin1));
+            }
+        } else if (esHoraInicio2){
+            if (!sHoraInicio2.equals("0")) {
+                // VERSIONES CON ANDROID 6.0 EN ADELANTE
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    timePicker.setHour(Integer.valueOf(sHoraInicio2));
+                    timePicker.setMinute(Integer.valueOf(sMinInicio2));
+                } else {
+                    timePicker.setCurrentHour(Integer.valueOf(sHoraInicio2));
+                    timePicker.setCurrentMinute(Integer.valueOf(sMinInicio2));
+                }
+            }
+        } else if (esHoraFin2){
+            if (!sHoraFin2.equals("0")) {
+                // VERSIONES CON ANDROID 6.0 EN ADELANTE
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    timePicker.setHour(Integer.valueOf(sHoraFin2));
+                    timePicker.setMinute(Integer.valueOf(sMinFin2));
+                } else {
+                    timePicker.setCurrentHour(Integer.valueOf(sHoraFin2));
+                    timePicker.setCurrentMinute(Integer.valueOf(sMinFin2));
+                }
+            }
+        }
 
         // botón Aceptar del diálogo del timepicker que recoge los datos seleccionados y los pone en el campo de texto correspondiente
         btnAceptar.setOnClickListener(new View.OnClickListener() {
@@ -798,8 +854,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 if (tpMinutos<10){
                     sMinutos = "0"+sMinutos;
                 }
-                // para poner los datos recogidos en los campos de texto
-                String tiempo;
                 // Validamos desde donde se abre para saber donde guardar los datos obtenidos
                 if (esHoraInicio1){
                     horaInicio1 = tpHoras;
@@ -846,9 +900,15 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.cancel(); // cerramos diálogo sin hacer nada más
+                esHoraInicio1 = false;
+                esHoraFin1 = false;
+                esHoraInicio2 = false;
+                esHoraFin2 = false;
             }
         });
         dialog.setView(view);
+        dialog.setCanceledOnTouchOutside(false); // evitamos la posibilidad de cerrar el diálogo al pulsar fuera,
+        // para evitarnos el problema de que no se ponga correctamente la hora que toca en el timepicker
         dialog.show();
     }
 

@@ -188,13 +188,10 @@
 
     <string name="ver_horas">Ver horas de la jornada</string>
 
-    <string name="error_datos_jornada_1">Debes introducir las horas del turno</string>
-    <string name="error_datos_jornada_2">Debes introducir las horas de los turnos</string>
-    <string name="error_datos_jornada_3">Las horas de inicio y fin de turno introducidas no son válidas</string>
-    <string name="error_datos_jornada_4">La jornada introducida no es válida</string>
-    <string name="error_datos_jornada_5">La jornada de trabajo no puede superar las 8 horas</string>
-    <string name="error_datos_jornada_6">La hora de inicio del segundo turno no puede ser menor o igual que la de fin del primer turno</string>
-
+    <string name="error_datos_jornada_1">Debes introducir las horas del turno.</string>
+    <string name="error_datos_jornada_2">Debes introducir las horas de los turnos.</string>
+    <string name="error_datos_jornada_4">La jornada introducida no es válida.</string>
+    <string name="error_datos_jornada_5">La jornada de trabajo no puede ser superior a 8 horas.</string>
     <!-- Strings VerYEditarRegistroDiario -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
     <string name="dialog_borrar_registro">Eliminar registro</string>
