@@ -220,6 +220,6 @@ public class ConfirmaRegistro extends AppCompatActivity {
      * Al pulsar hacia atrás se cierra la actividad
      **********************************************************************************************/
     public void onBackPressed(){
-        finish(); // TODO: PENDIENTE DE DEPURACIÓN JUNTO CON REGISTRONUEVOUSUARIO
+        finish();
     }
 }

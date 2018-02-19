@@ -182,6 +182,8 @@ public class NavMenu extends AppCompatActivity
     /***********************************************************************************************
      * Método que obtiene los datos del usuario para mostrarlos
      **********************************************************************************************/
+    // Los obtenemos desde aquí para que no se produzca un lapso de un milisegundo de espera a que se obtengan
+    // los datos, que es lo que ocurre si se obtienen desde el propio fragmento del perfil
     public void obtenerDatosUsuario(){
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -195,9 +197,9 @@ public class NavMenu extends AppCompatActivity
                             provincia_del_usuario = jsonArray.getJSONObject(0).getString("provincia");
                             horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
                             centro_estudios_usuario = jsonArray.getJSONObject(0).getString("centro_estudios");
-                            familia_ciclo_usuario = jsonArray.getJSONObject(0).getString("familia_ciclo");
-                            ciclo_formativo_usuario = jsonArray.getJSONObject(0).getString("ciclo_formativo");
-                            centro_practicas_usuario = jsonArray.getJSONObject(0).getString("centro_practicas");
+                            familia_ciclo_usuario = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
+                            ciclo_formativo_usuario = codificaString(jsonArray.getJSONObject(0).getString("ciclo_formativo"));
+                            centro_practicas_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_practicas"));
                         } catch (Exception e) {
                             e.printStackTrace();
                             //Log.e("MiPerfilFragment", "Error al obtener datos del usuario");

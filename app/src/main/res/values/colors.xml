@@ -7,6 +7,8 @@
     <color name="azul_barra_notificaciones">#2f867f</color>
     <color name="gris_claro">#dadada</color>
     <color name="transparente">#00ffffff</color>
+    <color name="enabled_color">#000000</color>
+    <color name="disabled_color">#515151</color>
 
     <color name="lima">#cddc39</color>
     <color name="verde">#8bc34a</color>

@@ -57,7 +57,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
     // por defecto será invisible, solo se vera al marcar la opción Jornada partida
 
     private StringRequest request; // petición volley
-    private String fecha, descripcion, idUsuario = "", valoracionDia = "";
+    private String fecha_registro = "", fecha, descripcion = "", idUsuario = "", valoracionDia = "";
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/inserta_nuevo_registro_diario.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/inserta_nuevo_registro_diario.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/inserta_nuevo_registro_diario.php";
@@ -491,6 +491,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     sDia = "0"+sDia;
                 }
                 fecha = sDia + "/" + sMes + "/" + sAnyo;
+                fecha_registro = sAnyo + "-" + sMes + "-" + sDia; // guardamos la fecha en el formato aaaa-mm-dd para la base de datos
+                System.out.println("FECHA BD: " + fecha_registro);
                 dialog.cancel();
                 txtFecha.setText(fecha);
             }
@@ -788,16 +790,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("1")){ // Registro guardado con éxito
                             Toast.makeText(NuevoRegistroDiario.this, R.string.toast_registro_creado, Toast.LENGTH_LONG).show();
                           //  Log.d("NuevoRegistroDiario", "Registro creado");
                             finish(); // cerramos la actividad tras crear un nuevo registro
-                        } else {
-                            //Toast.makeText(NuevoRegistroDiario.this, R.string.error_registro, Toast.LENGTH_LONG).show();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    R.string.error_registro, Snackbar.LENGTH_SHORT).show();
-                           // Log.e("NuevoRegistroDiario", "ERROR: No se ha obtenido la respuesta esperada en el script de consulta al guardar el registro");
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -817,9 +812,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 parametros.put("dia", sDia);
                 parametros.put("mes", sMes);
                 parametros.put("anyo", sAnyo);
+                parametros.put("fecha", fecha_registro);
                 parametros.put("jornada_partida", jornada_partida);
-                parametros.put("reunion_fct", reunion_fct);
-                parametros.put("horas_reunion", horas_reunion);
                 parametros.put("hora_inicio_1", sHoraInicio1);
                 parametros.put("minuto_inicio_1", sMinInicio1);
                 parametros.put("hora_fin_1", sHoraFin1);
@@ -828,6 +822,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 parametros.put("minuto_inicio_2", sMinInicio2);
                 parametros.put("hora_fin_2", sHoraFin2);
                 parametros.put("minuto_fin_2", sMinFin2);
+                parametros.put("reunion_fct", reunion_fct);
+                parametros.put("horas_reunion", horas_reunion);
                 parametros.put("descripcion", descripcion);
                 parametros.put("horas",sHorasResultado);
                 parametros.put("minutos", sMinutosResultado);

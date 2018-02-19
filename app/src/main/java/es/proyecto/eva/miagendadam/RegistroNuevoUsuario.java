@@ -93,87 +93,87 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
     // Array de ciclos formativos
     private String[] ciclos = {"Selecciona un ciclo formativo",
-            "------------ Actividades físicas y deportivas ------------",
+            "  ACTIVIDADES FÍSICAS Y DEPORTIVAS  ",
             "Actividades ecuestres", "Acondicionamiento físico", "Enseñanza y animación sociodeportiva",
-            "---------------- Administración y gestión ----------------",
+            "  ADMINISTRACIÓN Y GESTIÓN  ",
             "Informática de oficina (básico)", "Servicios administrativos (básico)", "Gestión administrativa", "Administración y finanzas", "Asistencia a la dirección",
-            "----------------------------- Agraria ---------------------------------",
+            "  AGRARIA  ",
             "Actividades agropecuarias (básico)", "Agro-jardinería y composiciones florales (básico)",
             "Aprovechamientos forestales (básico)", "Actividades ecuestres", "Aprovechamiento y conservación del medio natural", "Jardinería y floristería",
             "Producción agroecológica", "Producción agropecuaria", "Ganadería y asistencia en sanidad animal", "Gestión florestal y del medio natural", "Paisajismo y medio rural",
-            "------------------------ Artes gráficas ------------------------",
+            "  ARTES GRÁFICAS  ",
             "Artes gráficas (básico)", "Impresión gráfica", "Postimpresión y acabados gráficos", "Preimpresión digital", "Diseño y edición de publicaciones impresas y multimedia",
             "Diseño y gestión de la producción gráfica",
-            "---------------------- Artes y artesanías ----------------------",
+            "  ARTES Y ARTESANÍAS  ",
             "Artista fallero y construcción de escenografías",
-            "------------------ Comercio y marketing ------------------",
+            "  COMERCIO Y MARKETING  ",
             "Servicios comerciales (básico)", "Actividades comerciales", "Comercio internacional", "Gestión de ventas y espacios comerciales", "Marketing y publicidad", "Transporte y logística",
-            "------------------ Edificación y obra civil ------------------",
+            "  EDIFICACIÓN Y OBRA CIVIL  ",
             "Reforma y mantenimiento de edificios (básico)", "Construcción", "Obras de interior, decoración y rehabilitación", "Organización y control de obras y construcción",
             "Proyectos de edificación", "Proyectos de obra civil",
-            "----------------- Electricidad y electrónica -----------------",
+            "  ELECTRICIDAD Y ELECTRÓNICA  ",
             "Electricidad y electrónica (básico)", "Fabricación de elementos metálicos (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Instalaciones eléctricas y automáticas", "Instalaciones de telecomunicaciones",
             "Automatización y robótica industrial", "Electromedicina clínica", "Mantenimiento electrónico", "Sistemas electrotécnicos y automatizados",
             "Sistemas de telecomunicaciones e informáticos",
-            "----------------------- Energía y agua ------------------------",
+            "  ENERGÍA Y AGUA  ",
             "Redes y estaciones de tratamiento de aguas", "Centrales eléctricas",
             "Eficiencia enegrética y energía solar térmica", "Energías renovables", "Gestión del agua",
-            "----------------- Fabricación y mecánica -----------------",
+            "  FABRICACIÓN Y MECÁNICA  ",
             "Fabricación de elementos metálicos (básico)",
             "Fabricación y montaje (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Conformado por moldeo de metales y polímeros",
             "Mecanizado", "Soldadura y calderería", "Construcciones metálicas", "Diseño en fabricación mecánica", "Programación de la producción en fabricación mecánica",
             "Programación de la producción en moldeo de metales y polímeros",
-            "------------------ Hostelería y turismo --------------------",
+            "  HOSTELERÍA Y TURISMO  ",
             "Actividades de panadería y pastelería (básico)", "Alojamiento y lavandería (básico)",
             "Cocina y restauración (básico)", "Cocina y gastronomía", "Servicios en restauración", "Agencias de viajes y gestión de eventos",
             "Dirección de cocina", "Dirección de servicios de restauración", "Gestión de alojamientos turísticos", "Guía, información y asistencias turísticas",
-            "---------------------- Imagen personal ------------------------",
+            "  IMAGEN PERSONAL  ",
             "Peluquería y estética (básico)", "Estética y belleza", "Peliquería y cosmética capilar", "Asesoría de imagen personal y corporativa",
             "Caracterización y maquillaje profesional", "Estilismo y dirección de peluquería", "Estética integral y bienestar",
-            "----------------------- Imagen y sonido -----------------------",
+            "  IMAGEN Y SONIDO  ",
             "Video disc-jockey y sonido", "Animaciones 3D, juegos y entornos interactivos", "Iluminación, captación y tratamiento de imagen", "Producción de audiovisuales y espectáculos",
             "Realización de audiovisuales y espectáculos", "Sonido para audiovisuales y espectáculos",
-            "----------------- Industrias alimentarias ----------------",
+            "  INDUSTRIAS ALIMENTARIAS  ",
             "Actividades de panadería y pastelería (básico)", "Industrias alimentarias (básico)", "Aceites de oliva y vinos", "Elaboración de productos alimenticios", "Panadería, repostería y confitería",
             "Procesos y calidad en la industria alimentaria", "Vitivinicultura",
-            "------------------- Industrias extractivas -------------------",
+            "  INDUSTRIAS EXTRACTIVAS  ",
             "Excavaciones y sondeos", "Piedra natural",
-            "------------ Informática y comunicaciones ------------",
+            "  INFORMÁTICA Y COMUNICACIONES  ",
             "Informática de oficina (básico)",
             "Informática y comunicaciones (básico)", "Sistemas microinformáticos y redes", "Administración de sistemas informáticos en red",
             "Desarrollo de aplicaciones multiplataforma", "Desarrollo de aplicaciones web",
-            "--------------- Instalación y mantenimiento --------------",
+            "  INSTALACIÓN Y MANTENIMIENTO  ",
             "Fabricación y montaje (básico)", "Mantenimiento de viviendas (básico)",
             "Instalaciones frigorísficas y de climatización", "Instalaciones de producción de calor", "Mantenimiento electromecánico",
             "Desarrollo de proyectos de instalaciones térmicas y de fluidos", "Mantenimiento de instalaciones térmicas y de fluidos", "Mecatrónica industrial",
-            "----------------- Madera, mueble y corcho ----------------",
+            "  MADERA, MUEBLE Y CORCHO  ",
             "Carpintería y mueble (básico)", "Carpintería y mueble (medio)", "Instalación y amueblamiento", "Diseño y amueblamiento",
-            "------------------- Marítimo-pesquera --------------------",
+            "  MARÍTIMO-PESQUERA  ",
             "Actividades marítimo-pesqueras (básico)",
             "Mantenimiento de embarcaciones deportivas y de recreo (básico)", "Cultivos acuícolas", "Mantenimiento y control de la maquinaria de buques y embarcaciones",
             "Navegación y pesca de litoral", "Operaciones subacuáticas e hiperbáricas", "Acuicultura", "Organización del mantenimiento de maquinaria de buques y embarcaciones",
             "Transporte marítimo y pesca de altura",
-            "----------------------------- Química ------------------------------",
+            "  QUÍMICA  ",
             "Operaciones de laboratorio", "Planta química", "Fabricación  de productos farmacéuticos, biotecnológicos y afines",
             "Laboratorio de análisis y control de calidad", "Química industrial",
-            "---------------------------- Sanidad -----------------------------",
+            "  SANIDAD  ",
             "Emergencias sanitarias", "Farmacia y parafarmacia", "Anatomía patológica y citodiagnóstico",
             "Audiología protésica", "Documentación y administración sanitarias", "Higiene bucodental", "Imagen para el diagnóstico y medicina nuclear",
             "Laboratorio clínico y biomédico", "Ortoprótesis y productos de apoyo", "Prótesis dentales", "Radioterapia y dosimetría",
-            "-------------- Seguridad y medio ambiente --------------",
+            "  SEGURIDAD Y MEDIO AMBIENTE  ",
             "Emergencias y protección civil",
             "Coordinación de emergencias y protección civil", "Educación y control ambiental",
-            "----------------- Servicios socioculturales ----------------",
+            "  SERVICIOS SOCIOCULTURALES  ",
             "Actividades domésticas y limpieza de edificios (básico)",
             "Atención a personas en situación de dependencia", "Animación sociocultural y turística", "Educación infantil", "Integración social", "Mediación comunicativa",
             "Promoción de igualdad de género",
-            "----------------- Textil, confección y piel ----------------",
+            "  TEXTIL, CONFECCIÓN Y PIEL  ",
             "Arreglo y reparación de artículos textiles y de piel (básico)", "Tapicería y cortinaje (básico)", "Calzado y complementos de moda", "Confección y moda", "Fabricación y ennoblecimiento de productos textiles", "Diseño técnico en textil y piel",
             "Diseño y producción de calzado y complementos", "Patronaje y moda", "Vestuario a medida y de espectáculos",
-            "---- Transporte y mantenimiento de vehículos ----",
+            "  TRANSPORTE Y MANTENIMIENTO DE VEHÍCULOS  ",
             "Mantenimiento de embarcaciones deportivas y de recreo (básico)", "Mantenimiento de vehículos (básico)", "Carrocería", "Conducción de vehículos de transporte por carretera", "Electromecánica de maquinaria", "Electromecánica de vehículos automóviles",
             "Mantenimiento de material rodante ferroviario", "Automoción",
-            "--------------------- Vidrio y cerámica ------------------------",
+            "  VIDRIO Y CERÁMICA  ",
             "Vidriería y alfarería (básico)", "Fabricación de productos cerámicos",
             "Desarrollo y fabricación de productos cerámicos"};
 
@@ -271,7 +271,35 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
 
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         if (nombre.isEmpty() || apellidos.isEmpty() || provincia.equals("Selecciona una provincia") || centro_estudios.isEmpty() || familiaCiclo.equals("Selecciona una familia de ciclos formativos") ||
-                ciclo_formativo.equals("Selecciona un ciclo formativo") || horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
+                ciclo_formativo.equals("Selecciona un ciclo formativo") ||
+                ciclo_formativo.equals("  ACTIVIDADES FÍSICAS Y DEPORTIVAS  ")||
+                ciclo_formativo.equals("  ADMINISTRACIÓN Y GESTIÓN  ") ||
+                ciclo_formativo.equals("  AGRARIA  ") ||
+                ciclo_formativo.equals("  ARTES GRÁFICAS  ") ||
+                ciclo_formativo.equals("  ARTES Y ARTESANÍAS  ") ||
+                ciclo_formativo.equals("  COMERCIO Y MARKETING  ") ||
+                ciclo_formativo.equals("  EDIFICACIÓN Y OBRA CIVIL  ") ||
+                ciclo_formativo.equals("  ELECTRICIDAD Y ELECTRÓNICA  ") ||
+                ciclo_formativo.equals("  ENERGÍA Y AGUA  ") ||
+                ciclo_formativo.equals("  FABRICACIÓN Y MECÁNICA  ") ||
+                ciclo_formativo.equals("  HOSTELERÍA Y TURISMO  ") ||
+                ciclo_formativo.equals("  IMAGEN PERSONAL  ") ||
+                ciclo_formativo.equals("  IMAGEN Y SONIDO  ") ||
+                ciclo_formativo.equals("  INDUSTRIAS ALIMENTARIAS  ") ||
+                ciclo_formativo.equals("  INDUSTRIAS EXTRACTIVAS  ") ||
+                ciclo_formativo.equals("  INFORMÁTICA Y COMUNICACIONES  ") ||
+                ciclo_formativo.equals("  INSTALACIÓN Y MANTENIMIENTO  ") ||
+                ciclo_formativo.equals("  MADERA, MUEBLE Y CORCHO  ") ||
+                ciclo_formativo.equals("  MARÍTIMO-PESQUERA  ") ||
+                ciclo_formativo.equals("  QUÍMICA  ") ||
+                ciclo_formativo.equals("  SANIDAD  ") ||
+                ciclo_formativo.equals("  SEGURIDAD Y MEDIO AMBIENTE  ") ||
+                ciclo_formativo.equals("  SERVICIOS SOCIOCULTURALES  ") ||
+                ciclo_formativo.equals("  TEXTIL, CONFECCIÓN Y PIEL  ") ||
+                ciclo_formativo.equals("  TRANSPORTE Y MANTENIMIENTO DE VEHÍCULOS  ") ||
+                ciclo_formativo.equals("  VIDRIO Y CERÁMICA  ") ||
+
+                horas_fct.isEmpty() || centro_practicas.isEmpty() || correo.isEmpty() || n_Usuario.isEmpty() || clave.isEmpty() || clave2.isEmpty()) { // validamos que no haya ningún campo en blanco
            // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
            // Log.i("RegistroNuevoUsuario", "Campos vacíos");
             Snackbar.make(findViewById(android.R.id.content),
@@ -361,7 +389,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                                     // la actividad no se pueda volver a esta pantalla
                                                                                     Intent intent = new Intent(RegistroNuevoUsuario.this, ConfirmaRegistro.class);
                                                                                     startActivity(intent);
-                                                                                    finish(); // <-- TODO: PENDIENTE DE DEPURACIÓN
+                                                                                    finish();
                                                                                 }
                                                                             });
                                                                     /**.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -504,7 +532,6 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                         "tu cuenta introduciendo el código de confirmación que se indica aquí abajo.</p>" +
                         "<p style=\"text-align:justify\">Código de confirmación: <b>" + codigoConfirmacion + "</b></p> " +
                         "<p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p>" +
-                        "<p style=\"text-align:justify\">S" +
                         "<br/>Atentamente, <b>Mi agenda FP</b>." +
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
                         "<p style=\"margin-left: 10px; margin-right: 11px\">" +

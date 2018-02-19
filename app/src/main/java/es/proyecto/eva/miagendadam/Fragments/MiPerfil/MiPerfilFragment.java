@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -42,7 +44,7 @@ import static es.proyecto.eva.miagendadam.NavMenu.horas_fct_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.familia_ciclo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.ciclo_formativo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.provincia_del_usuario;
-
+// TODO: Corregir bug con los spinner. No muestra bien los datos cuando son actualizados y se refrescan después
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.
@@ -66,6 +68,108 @@ public class MiPerfilFragment extends Fragment {
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|0|1|2|3|4|5|6|7|8|9" // números
             + "|!|=|-|_|@|:|%|~|#)+";
+
+    // Array de provincias
+    private String[] provincias = {provincia_del_usuario, "A Coruña", "Álava", "Albacete","Alicante","Almería","Asturias","Ávila","Badajoz","Islas Baleares",
+            "Barcelona","Burgos","Cáceres","Cádiz","Cantabria","Castellón","Ciudad Real","Córdoba","Cuenca","Girona","Granada",
+            "Guadalajara","Guipúzcoa","Huelva","Huesca","Jaén","La Rioja","Las Palmas","León","Lleida","Lugo","Madrid","Málaga",
+            "Murcia","Navarra","Orense","Palencia","Pontevedra","Salamanca","Segovia","Sevilla","Soria","Tarragona","Santa Cruz de Tenerife",
+            "Teruel","Toledo","Valencia","Valladolid","Vizcaya","Zamora","Zaragoza"};
+
+    // Array de familias de ciclos formativos
+    // Ponemos como primer elemento el dato obtenido del usuario para que aparezca como valor en el spinner sin desplegar
+    private String[] familias = {familia_ciclo_usuario, "Actividades físicas y deportivas", "Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías",
+            "Comercio y marketing", "Edificación y obra civil", "Electricidad y electrónica", "Energía y agua", "Fabricación mecánica", "Hostelería y turismo",
+            "Imagen personal", "Imagen y sonido", "Industrias alimentarias", "Industrias extractivas", "Informática y comunicaciones", "Instalación y mantenimiento",
+            "Madera, mueble y corcho", "Marítimo-pesquera", "Química", "Sanidad", "Seguridad y medio ambiente", "Servicios socioculturales y a la comunidad",
+            "Textil, confección y piel", "Transporte y mantenimiento de vehículos", "Vidrio y cerámica"};
+
+    // Array de ciclos formativos
+    private String[] ciclos = {ciclo_formativo_usuario,
+            "  ACTIVIDADES FÍSICAS Y DEPORTIVAS  ",
+            "Actividades ecuestres", "Acondicionamiento físico", "Enseñanza y animación sociodeportiva",
+            "  ADMINISTRACIÓN Y GESTIÓN  ",
+            "Informática de oficina (básico)", "Servicios administrativos (básico)", "Gestión administrativa", "Administración y finanzas", "Asistencia a la dirección",
+            "  AGRARIA  ",
+            "Actividades agropecuarias (básico)", "Agro-jardinería y composiciones florales (básico)",
+            "Aprovechamientos forestales (básico)", "Actividades ecuestres", "Aprovechamiento y conservación del medio natural", "Jardinería y floristería",
+            "Producción agroecológica", "Producción agropecuaria", "Ganadería y asistencia en sanidad animal", "Gestión florestal y del medio natural", "Paisajismo y medio rural",
+            "  ARTES GRÁFICAS  ",
+            "Artes gráficas (básico)", "Impresión gráfica", "Postimpresión y acabados gráficos", "Preimpresión digital", "Diseño y edición de publicaciones impresas y multimedia",
+            "Diseño y gestión de la producción gráfica",
+            "  ARTES Y ARTESANÍAS  ",
+            "Artista fallero y construcción de escenografías",
+            "  COMERCIO Y MARKETING  ",
+            "Servicios comerciales (básico)", "Actividades comerciales", "Comercio internacional", "Gestión de ventas y espacios comerciales", "Marketing y publicidad", "Transporte y logística",
+            "  EDIFICACIÓN Y OBRA CIVIL  ",
+            "Reforma y mantenimiento de edificios (básico)", "Construcción", "Obras de interior, decoración y rehabilitación", "Organización y control de obras y construcción",
+            "Proyectos de edificación", "Proyectos de obra civil",
+            "  ELECTRICIDAD Y ELECTRÓNICA  ",
+            "Electricidad y electrónica (básico)", "Fabricación de elementos metálicos (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Instalaciones eléctricas y automáticas", "Instalaciones de telecomunicaciones",
+            "Automatización y robótica industrial", "Electromedicina clínica", "Mantenimiento electrónico", "Sistemas electrotécnicos y automatizados",
+            "Sistemas de telecomunicaciones e informáticos",
+            "  ENERGÍA Y AGUA  ",
+            "Redes y estaciones de tratamiento de aguas", "Centrales eléctricas",
+            "Eficiencia enegrética y energía solar térmica", "Energías renovables", "Gestión del agua",
+            "  FABRICACIÓN Y MECÁNICA  ",
+            "Fabricación de elementos metálicos (básico)",
+            "Fabricación y montaje (básico)", "Instalaciones electrotécnicas y mecánica (básico)", "Conformado por moldeo de metales y polímeros",
+            "Mecanizado", "Soldadura y calderería", "Construcciones metálicas", "Diseño en fabricación mecánica", "Programación de la producción en fabricación mecánica",
+            "Programación de la producción en moldeo de metales y polímeros",
+            "  HOSTELERÍA Y TURISMO  ",
+            "Actividades de panadería y pastelería (básico)", "Alojamiento y lavandería (básico)",
+            "Cocina y restauración (básico)", "Cocina y gastronomía", "Servicios en restauración", "Agencias de viajes y gestión de eventos",
+            "Dirección de cocina", "Dirección de servicios de restauración", "Gestión de alojamientos turísticos", "Guía, información y asistencias turísticas",
+            "  IMAGEN PERSONAL  ",
+            "Peluquería y estética (básico)", "Estética y belleza", "Peliquería y cosmética capilar", "Asesoría de imagen personal y corporativa",
+            "Caracterización y maquillaje profesional", "Estilismo y dirección de peluquería", "Estética integral y bienestar",
+            "  IMAGEN Y SONIDO  ",
+            "Video disc-jockey y sonido", "Animaciones 3D, juegos y entornos interactivos", "Iluminación, captación y tratamiento de imagen", "Producción de audiovisuales y espectáculos",
+            "Realización de audiovisuales y espectáculos", "Sonido para audiovisuales y espectáculos",
+            "  INDUSTRIAS ALIMENTARIAS  ",
+            "Actividades de panadería y pastelería (básico)", "Industrias alimentarias (básico)", "Aceites de oliva y vinos", "Elaboración de productos alimenticios", "Panadería, repostería y confitería",
+            "Procesos y calidad en la industria alimentaria", "Vitivinicultura",
+            "  INDUSTRIAS EXTRACTIVAS  ",
+            "Excavaciones y sondeos", "Piedra natural",
+            "  INFORMÁTICA Y COMUNICACIONES  ",
+            "Informática de oficina (básico)",
+            "Informática y comunicaciones (básico)", "Sistemas microinformáticos y redes", "Administración de sistemas informáticos en red",
+            "Desarrollo de aplicaciones multiplataforma", "Desarrollo de aplicaciones web",
+            "  INSTALACIÓN Y MANTENIMIENTO  ",
+            "Fabricación y montaje (básico)", "Mantenimiento de viviendas (básico)",
+            "Instalaciones frigorísficas y de climatización", "Instalaciones de producción de calor", "Mantenimiento electromecánico",
+            "Desarrollo de proyectos de instalaciones térmicas y de fluidos", "Mantenimiento de instalaciones térmicas y de fluidos", "Mecatrónica industrial",
+            "  MADERA, MUEBLE Y CORCHO  ",
+            "Carpintería y mueble (básico)", "Carpintería y mueble (medio)", "Instalación y amueblamiento", "Diseño y amueblamiento",
+            "  MARÍTIMO-PESQUERA  ",
+            "Actividades marítimo-pesqueras (básico)",
+            "Mantenimiento de embarcaciones deportivas y de recreo (básico)", "Cultivos acuícolas", "Mantenimiento y control de la maquinaria de buques y embarcaciones",
+            "Navegación y pesca de litoral", "Operaciones subacuáticas e hiperbáricas", "Acuicultura", "Organización del mantenimiento de maquinaria de buques y embarcaciones",
+            "Transporte marítimo y pesca de altura",
+            "  QUÍMICA  ",
+            "Operaciones de laboratorio", "Planta química", "Fabricación  de productos farmacéuticos, biotecnológicos y afines",
+            "Laboratorio de análisis y control de calidad", "Química industrial",
+            "  SANIDAD  ",
+            "Emergencias sanitarias", "Farmacia y parafarmacia", "Anatomía patológica y citodiagnóstico",
+            "Audiología protésica", "Documentación y administración sanitarias", "Higiene bucodental", "Imagen para el diagnóstico y medicina nuclear",
+            "Laboratorio clínico y biomédico", "Ortoprótesis y productos de apoyo", "Prótesis dentales", "Radioterapia y dosimetría",
+            "  SEGURIDAD Y MEDIO AMBIENTE  ",
+            "Emergencias y protección civil",
+            "Coordinación de emergencias y protección civil", "Educación y control ambiental",
+            "  SERVICIOS SOCIOCULTURALES  ",
+            "Actividades domésticas y limpieza de edificios (básico)",
+            "Atención a personas en situación de dependencia", "Animación sociocultural y turística", "Educación infantil", "Integración social", "Mediación comunicativa",
+            "Promoción de igualdad de género",
+            "  TEXTIL, CONFECCIÓN Y PIEL  ",
+            "Arreglo y reparación de artículos textiles y de piel (básico)", "Tapicería y cortinaje (básico)", "Calzado y complementos de moda", "Confección y moda", "Fabricación y ennoblecimiento de productos textiles", "Diseño técnico en textil y piel",
+            "Diseño y producción de calzado y complementos", "Patronaje y moda", "Vestuario a medida y de espectáculos",
+            "  TRANSPORTE Y MANTENIMIENTO DE VEHÍCULOS  ",
+            "Mantenimiento de embarcaciones deportivas y de recreo (básico)", "Mantenimiento de vehículos (básico)", "Carrocería", "Conducción de vehículos de transporte por carretera", "Electromecánica de maquinaria", "Electromecánica de vehículos automóviles",
+            "Mantenimiento de material rodante ferroviario", "Automoción",
+            "  VIDRIO Y CERÁMICA  ",
+            "Vidriería y alfarería (básico)", "Fabricación de productos cerámicos",
+            "Desarrollo y fabricación de productos cerámicos"};
+
 
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
@@ -118,6 +222,7 @@ public class MiPerfilFragment extends Fragment {
             case R.id.menu_refrescar_datos: // Opción de refrescar los datos de usuario obtenidos de la bd y visibles en los campos
                 //Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
                 obtenerDatosUsuario();
+                rellenarCampos();
                 return true;
             case R.id.menu_editar_datos_perfil: // Opción de abilitar la edición de datos
                 //Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
@@ -126,6 +231,7 @@ public class MiPerfilFragment extends Fragment {
             case R.id.menu_cancelar_edicion_perfil: // Opción de cancelar la edición de datos
                 //Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
                 cancelarEdicion();
+                getActivity().invalidateOptionsMenu();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -156,6 +262,7 @@ public class MiPerfilFragment extends Fragment {
         btnActualizaClave = (Button) view.findViewById(R.id.btn_cambiar_clave);
         // colocamos los datos obtenidos en NavMenu en los campos correspondientes
         rellenarCampos();
+        cancelarEdicion();
         // Al pulsar el botón de actualizar clave...
         btnActualizaClave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,14 +274,19 @@ public class MiPerfilFragment extends Fragment {
         return view;
     }
 
+    /***********************************************************************************************
+     * Método que deshabilita la edición de los campos de cualquier manera
+     **********************************************************************************************/
     public void cancelarEdicion(){
         editando = false;
-        txtNombre.setFocusableInTouchMode(false);
-        txtApellidos.setFocusableInTouchMode(false);
-        txtCentroPracticas.setFocusableInTouchMode(false);
-        txtCentroEstudios.setFocusableInTouchMode(false);
-        txtHorasFCT.setFocusableInTouchMode(false);
-        getActivity().invalidateOptionsMenu();
+        txtNombre.setEnabled(false);
+        txtApellidos.setEnabled(false);
+        txtCentroPracticas.setEnabled(false);
+        txtCentroEstudios.setEnabled(false);
+        txtHorasFCT.setEnabled(false);
+        spinnerFamiliaCiclo.setEnabled(false);
+        spinnerCiclo.setEnabled(false);
+        spinnerProvincia.setEnabled(false);
     }
 
     /***********************************************************************************************
@@ -190,14 +302,13 @@ public class MiPerfilFragment extends Fragment {
                             jsonArray = new JSONArray(response); // guardamos los registros en el array
                             nombre_del_estudiante = jsonArray.getJSONObject(0).getString("nombre");
                             apellidos_del_usuario = jsonArray.getJSONObject(0).getString("apellidos");
-                          // TODO: Rellenar spinners con los datos correspondientes
                             provincia_del_usuario = jsonArray.getJSONObject(0).getString("provincia");
+                            System.out.println("PROVINCIA REFRESCADA: " + provincia_del_usuario);
                             horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
                             centro_estudios_usuario = jsonArray.getJSONObject(0).getString("centro_estudios");
-                            familia_ciclo_usuario = jsonArray.getJSONObject(0).getString("familia_ciclo");
-                            ciclo_formativo_usuario = jsonArray.getJSONObject(0).getString("ciclo_formativo");
-                            centro_practicas_usuario = jsonArray.getJSONObject(0).getString("centro_practicas");
-                            rellenarCampos();
+                            familia_ciclo_usuario = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
+                            ciclo_formativo_usuario = codificaString(jsonArray.getJSONObject(0).getString("ciclo_formativo"));
+                            centro_practicas_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_practicas"));
                              Toast.makeText(getActivity(), R.string.datos_refrescados, Toast.LENGTH_SHORT).show();
                            // Snackbar.make(getActivity().findViewById(android.R.id.content),
                              //       R.string.datos_refrescados, Snackbar.LENGTH_LONG).show();
@@ -238,6 +349,11 @@ public class MiPerfilFragment extends Fragment {
             String apellidosCodificados = codificaString(apellidos_del_usuario);
             String centroEstudiosCodificado = codificaString(centro_estudios_usuario);
             String centroPracticasCodificado = codificaString(centro_practicas_usuario);
+            // asignamos los adaptadores de los spinner con los datos de cada array
+            spinnerFamiliaCiclo.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, familias));
+            spinnerProvincia.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, provincias));
+            spinnerCiclo.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, ciclos));
+            // ponemos los textos correspondientes en cada campo
             tvNombreSaludo.setText(" " + nombreCodificado);
             txtNombre.setText(nombreCodificado);
             txtApellidos.setText(apellidosCodificados);
@@ -258,11 +374,57 @@ public class MiPerfilFragment extends Fragment {
        editando = true;
        getActivity().invalidateOptionsMenu(); // para llamar de nuevo al onCreateOptionsMenu y ocultar el botón de editar
         // y mostrar el de guardar
-        txtNombre.setFocusableInTouchMode(true);
-        txtApellidos.setFocusableInTouchMode(true);
-        txtCentroPracticas.setFocusableInTouchMode(true);
-        txtCentroEstudios.setFocusableInTouchMode(true);
-        txtHorasFCT.setFocusableInTouchMode(true);
+        txtNombre.setEnabled(true);
+        txtApellidos.setEnabled(true);
+        txtCentroPracticas.setEnabled(true);
+        txtCentroEstudios.setEnabled(true);
+        txtHorasFCT.setEnabled(true);
+        spinnerFamiliaCiclo.setEnabled(true);
+        spinnerProvincia.setEnabled(true);
+        spinnerCiclo.setEnabled(true);
+        // controlamos la selección del spinner y lo añadimos al String provincia
+        spinnerProvincia.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        provincia_del_usuario = provincias[(position)];
+                        // Log.d("RegistroNuevoUsuario", "Provincia seleccionada: "+ provincia);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
+        // obtenemos la familia de ciclo seleccionada
+        spinnerFamiliaCiclo.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        familia_ciclo_usuario = familias[(position)];
+                        //  Log.d("RegistroNuevoUsuario", "Familia de ciclo seleccionada: "+ familiaCiclo);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
+        // lo mismo con el spinner de familias de ciclo
+        spinnerCiclo.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent,
+                                               android.view.View v, int position, long id) {
+                        ciclo_formativo_usuario = ciclos[(position)];
+                        // Log.d("RegistroNuevoUsuario", "Ciclo formativo seleccionado: "+ ciclo_formativo);
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
+
     }
 
     /***********************************************************************************************
@@ -275,31 +437,69 @@ public class MiPerfilFragment extends Fragment {
         final String centro_practicas_nuevo = txtCentroPracticas.getText().toString();
         final String centro_estudios_nuevo = txtCentroEstudios.getText().toString();
         final String horas_fct_nuevas = txtHorasFCT.getText().toString();
+
+        // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         // si alguno de los campos está vacío, no continuamos
-        if (nombre_nuevo.isEmpty() || apellidos_nuevos.isEmpty() || centro_practicas_nuevo.isEmpty() || centro_estudios_nuevo.isEmpty() || horas_fct_nuevas.isEmpty()){
+        if (nombre_nuevo.isEmpty() || apellidos_nuevos.isEmpty() || centro_practicas_nuevo.isEmpty() || centro_estudios_nuevo.isEmpty() || horas_fct_nuevas.isEmpty() ||
+                // tampoco permitimos la selección de las familias a las que pertenecen los ciclos, puesto que son títulos para organizar los ciclos que contiene cada familia
+                ciclo_formativo_usuario.equals("  ACTIVIDADES FÍSICAS Y DEPORTIVAS  ")||
+                ciclo_formativo_usuario.equals("  ADMINISTRACIÓN Y GESTIÓN  ") ||
+                ciclo_formativo_usuario.equals("  AGRARIA  ") ||
+                ciclo_formativo_usuario.equals("  ARTES GRÁFICAS  ") ||
+                ciclo_formativo_usuario.equals("  ARTES Y ARTESANÍAS  ") ||
+                ciclo_formativo_usuario.equals("  COMERCIO Y MARKETING  ") ||
+                ciclo_formativo_usuario.equals("  EDIFICACIÓN Y OBRA CIVIL  ") ||
+                ciclo_formativo_usuario.equals("  ELECTRICIDAD Y ELECTRÓNICA  ") ||
+                ciclo_formativo_usuario.equals("  ENERGÍA Y AGUA  ") ||
+                ciclo_formativo_usuario.equals("  FABRICACIÓN Y MECÁNICA  ") ||
+                ciclo_formativo_usuario.equals("  HOSTELERÍA Y TURISMO  ") ||
+                ciclo_formativo_usuario.equals("  IMAGEN PERSONAL  ") ||
+                ciclo_formativo_usuario.equals("  IMAGEN Y SONIDO  ") ||
+                ciclo_formativo_usuario.equals("  INDUSTRIAS ALIMENTARIAS  ") ||
+                ciclo_formativo_usuario.equals("  INDUSTRIAS EXTRACTIVAS  ") ||
+                ciclo_formativo_usuario.equals("  INFORMÁTICA Y COMUNICACIONES  ") ||
+                ciclo_formativo_usuario.equals("  INSTALACIÓN Y MANTENIMIENTO  ") ||
+                ciclo_formativo_usuario.equals("  MADERA, MUEBLE Y CORCHO  ") ||
+                ciclo_formativo_usuario.equals("  MARÍTIMO-PESQUERA  ") ||
+                ciclo_formativo_usuario.equals("  QUÍMICA  ") ||
+                ciclo_formativo_usuario.equals("  SANIDAD  ") ||
+                ciclo_formativo_usuario.equals("  SEGURIDAD Y MEDIO AMBIENTE  ") ||
+                ciclo_formativo_usuario.equals("  SERVICIOS SOCIOCULTURALES  ") ||
+                ciclo_formativo_usuario.equals("  TEXTIL, CONFECCIÓN Y PIEL  ") ||
+                ciclo_formativo_usuario.equals("  TRANSPORTE Y MANTENIMIENTO DE VEHÍCULOS  ") ||
+                ciclo_formativo_usuario.equals("  VIDRIO Y CERÁMICA  ")){
              Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
             // Con los botones en la barra de acción no saca los snackbar
             //Snackbar.make(getActivity().findViewById(android.R.id.content),
               //      R.string.error_campos_vacios, Snackbar.LENGTH_LONG).show();
 
         } else {
-            editando = false; // deshabilitamos la edición de campos de nuevo
-            txtNombre.setFocusableInTouchMode(false);
-            txtApellidos.setFocusableInTouchMode(false);
-            txtCentroPracticas.setFocusableInTouchMode(false);
-            txtCentroEstudios.setFocusableInTouchMode(false);
-            txtHorasFCT.setFocusableInTouchMode(false);
+            System.out.println("NOMBRE: " + nombre_nuevo +
+                    "\n APELLIDOS: " + apellidos_nuevos +
+                    "\n PROVINCIA: " + provincia_del_usuario +
+                    "\n HORAS FCT: " + horas_fct_nuevas +
+                    "\n CENTRO ESTUDIOS: " + centro_estudios_nuevo +
+                    "\n FAMILIA CICLO: " + familia_ciclo_usuario +
+                    "\n CICLO: " + ciclo_formativo_usuario +
+                    "\n CENTRO PRACTICAS: " + centro_practicas_nuevo);
             // consulta volley para actualizar los datos del usuario
             request = new StringRequest(Request.Method.POST, url_consulta,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                             Toast.makeText(getActivity(), R.string.perfil_actualizado, Toast.LENGTH_SHORT).show();
-                            // Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                 //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
+                            if (response.equals("1")) {
+                                Toast.makeText(getActivity(), R.string.perfil_actualizado, Toast.LENGTH_SHORT).show();
+                                // Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
                                 //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
+                                System.out.println("DATOS ACTUALIZADOS");
+                                editando = false; // deshabilitamos la edición de campos de nuevo
+                                cancelarEdicion();
                                 getActivity().invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente
-                            System.out.println("DATOS ACTUALIZADOS");
+                            } else {
+                                Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                        "Error al actualizar los datos del usuario.", Snackbar.LENGTH_LONG).show();
+                            }
                         }
                     },
                     new Response.ErrorListener() {
@@ -391,7 +591,7 @@ public class MiPerfilFragment extends Fragment {
                                                         try {
                                                             System.out.println("CLAVE NUEVA DEL USUARIO: " + claveNueva);
                                                             //Log.d("MiPerfilFragment", "Clave actualizada correctamente.");
-                                                            // todo: Mostrar algún mensaje de "Contraseña actualizada con éxito"
+                                                            Toast.makeText(getActivity(), R.string.clave_actualizada, Toast.LENGTH_SHORT).show();
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
                                                             //Log.e("MiPerfilFragment", "Error al actualizar la clave");

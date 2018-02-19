@@ -48,6 +48,7 @@ import javax.mail.internet.MimeMessage;
 
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import static es.proyecto.eva.miagendadam.PantallaCarga.estaBloqueado;
+
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave, btnDesbloquearCuenta;
     private EditText txtNombreUsuario, txtClave;
@@ -120,10 +121,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String sCodigoDesbloqueo = "";
 
 /**********************************************************************************
-* TODO:
-* - Añadir info en Acerca de de que trabaja con ciclos amparados en la LOE
-* (consultar esto último con el tutor)
-* - Subir al repo web la clase Acerca de, que creo que no está
+* TODO: Subir al repo web la clase Acerca de, que creo que no está
 **********************************************************************************/
     
     @Override
@@ -746,7 +744,6 @@ public class PantallaLogin extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
                             idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
-                            // TODO: OBTENER TODOS LOS DATOS QUE SEAN NECESARIOS CON SUS CORRESPONDIENTES TILDES.
                             familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
                             Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);

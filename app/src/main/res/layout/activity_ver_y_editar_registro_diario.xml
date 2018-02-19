@@ -46,7 +46,8 @@
                     android:fontFamily="@font/roboto_thin"
                     android:hint="@string/fecha_registro"
                     android:inputType="date"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    />
 
                 <TextView
                     android:id="@+id/tv_jornada"
@@ -108,7 +109,8 @@
                             android:focusable="false"
                             android:fontFamily="@font/roboto_thin"
                             android:hint="@string/hora_inicio"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@drawable/edit_text_selector"/>
 
                         <EditText
                             android:id="@+id/txt_hora_fin_1_seleccionada"
@@ -120,7 +122,8 @@
                             android:focusable="false"
                             android:fontFamily="@font/roboto_thin"
                             android:hint="@string/hora_fin"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@drawable/edit_text_selector"/>
 
                     </LinearLayout>
 
@@ -150,7 +153,8 @@
                             android:focusable="false"
                             android:fontFamily="@font/roboto_thin"
                             android:hint="@string/hora_inicio"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@drawable/edit_text_selector"/>
 
                         <EditText
                             android:id="@+id/txt_hora_fin_2_seleccionada"
@@ -162,7 +166,8 @@
                             android:focusable="false"
                             android:fontFamily="@font/roboto_thin"
                             android:hint="@string/hora_fin"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@drawable/edit_text_selector" />
 
                     </LinearLayout>
 
@@ -262,7 +267,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:textColor="@drawable/edit_text_selector"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -294,7 +300,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:maxLines="6" />
+                            android:maxLines="6"
+                            android:textColor="@drawable/edit_text_selector"/>
 
 
                     </ScrollView>

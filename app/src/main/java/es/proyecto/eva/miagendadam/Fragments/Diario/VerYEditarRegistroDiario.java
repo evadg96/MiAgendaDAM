@@ -742,17 +742,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         btnAceptar = (Button) view.findViewById(R.id.btn_aceptar_tp);
         btnCancelar = (Button) view.findViewById(R.id.btn_cancelar_tp);
 
-        // TODO: Corregir bug timepicker:
-        // Cuando se despliega el timepicker se pone la hora que hubiera escrita en el campo de texto correspondiente
-        // Por ejemplo: abrimos el timepicker desde el campo de hora de inicio del turno, que tenía como hora las 9:15,
-        // el reloj se pondrá automáticamente en las 9:15. El problema viene si cerramos este reloj sin pulsar en el botón
-        // aceptar o cancelar, pulsando fuera del cuadrado del reloj, por ejemplo. Si ahora abrimos el timepicker desde el campo
-        // de hora de fin del turno, que tuviera por ejemplo como hora las 14:30, la hora en el timepicker que se despliegue se pondrá
-        // en la hora de inicio del turno, las 9:15. ¿Por qué? Porque al no haber pulsado sobre Aceptar o Cancelar, la booleana esHoraInicio
-        // seguirá en true, y por tanto se detectará en verdadera cuando se haga la primera comprobación, y se pondrá la hora que hubiera
-        // guardada para la primera hora.
-
-
      // ************* PONEMOS LA HORA QUE SE HA SELECCIONADO EN EL RELOJ AL ABRIRLO, YA QUE SI NO SE PONDRÁ SIEMPRE
         // ******* LA HORA ACTUAL.
         if (esHoraInicio1) {

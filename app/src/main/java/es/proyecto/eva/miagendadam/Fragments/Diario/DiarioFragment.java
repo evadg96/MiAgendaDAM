@@ -39,7 +39,7 @@ import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 /**
- * TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
+ * TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
 * TODO: Añadir visualización de estadísticas de los registros con una opción en un icono del action bar
 * Para ello crear consultas con uso de funciones como COUNT, SUM, AVG..
 * Algunas estadísticas que se pretenden implementar:
@@ -48,7 +48,7 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 * - Día que más horas se ha trabajado
 * -  "   " menos "    "  "   "
 * - ... ?
-* Añadir también búsqueda a través de filtrado:
+* TODO: Añadir búsqueda de registros a través de filtrado:
 * - Filtrado por búsqueda de día exacto
 * - Filtrado por franja de horas
 * - Filtrado por horas exactas
@@ -132,7 +132,7 @@ public class DiarioFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-           /** TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
+           /** TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
             * case R.id.menu_ordenar_registros: // Opción de guardar los datos de usuario actualizados
                 Log.i("DiarioFragment", "Action Ordenar registros");
                 seleccionaOrdenRegistros();
@@ -140,6 +140,9 @@ public class DiarioFragment extends Fragment {
             **/
             case R.id.menu_busqueda_registros: // Opción de guardar los datos de usuario actualizados
                Log.i("DiarioFragment", "Action Búsqueda de registros");
+            // abrimos pantalla de búsqueda de registros
+                Intent intent = new Intent (getActivity(), BusquedaRegistros.class);
+                startActivity(intent);
                 return true;
             case R.id.menu_estadisticas: // Opción de guardar los datos de usuario actualizados
                Log.i("DiarioFragment", "Action Estadísticas de registros");
@@ -177,7 +180,7 @@ public class DiarioFragment extends Fragment {
      * Método que ordena los registros del diario  por más o menos recientes
     **********************************************************************************************
      public void seleccionaOrdenRegistros(){
-        TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
+        TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
     }
     */
     public DiarioFragment() {

@@ -6,7 +6,7 @@
         android:title="@string/menu_buqueda_registros"
         app:showAsAction="ifRoom" />
    <!--
-        TODO: ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
+        TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
 
         <item
         android:id="@+id/menu_ordenar_registros"

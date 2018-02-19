@@ -156,6 +156,22 @@
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
     <string name="no_hay_registros">No hay registros que borrar.</string>
 
+    <!-- Strings pantalla BusquedaRegistros -->
+    <string name="busqueda_horas">Búsqueda por horas</string>
+         <string name="busqueda_horas_trabajadas">Horas trabajadas</string>
+            <string name="busq_horas_exactas">Buscar registros por horas exactas</string>
+            <string name="busq_franja_horas">Buscar registros por rango de horas</string>
+         <string name="busqueda_horas_jornada">Horas de inicio/fin de jornada</string>
+            <string name="busq_hora_inicio_jornada">Buscar registros por hora de inicio de jornada</string>
+            <string name="busq_hora_fin_jornada">Buscar registros por hora de fin de jornada</string>
+            <string name="busq_horas_jornada">Buscar registros por hora de inicio y fin de jornada</string>
+            <string name="busq_jornada_partida">Buscar registros con jornada partida</string>
+    <string name="busqueda_fechas">Búsqueda por fecha</string>
+             <string name="busqueda_fecha_exacta">Buscar registros por fecha exacta</string>
+             <string name="busq_rango_dias">Buscar registros entre rango de fechas</string>
+             <string name="busq_meses">Buscar registros de un mes concreto</string>
+    <string name="busqueda_valoracion">Búsqueda por valoración</string>
+        <string name="busq_valoracion">Buscar registros por valoración</string>
 
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
@@ -223,6 +239,7 @@
     <string name="opc_refrescar_datos">Refrescar datos</string>
     <string name="perfil_actualizado">Datos actualizados correctamente.</string>
     <string name="datos_refrescados">Datos refrescados.</string>
+    <string name="clave_actualizada">Contraseña actualizada.</string>
 
     <string name="error_introduce_clave">Introduce una contraseña</string>
     <string name="title_dialog_actualizar_clave_mi_perfil">Cambiar contraseña</string>
@@ -268,5 +285,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_instrucciones">Instrucciones</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
