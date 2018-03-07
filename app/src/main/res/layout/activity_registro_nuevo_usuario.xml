@@ -35,7 +35,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/sNombre"
-                        android:inputType="textPersonName"
+                        android:inputType="textCapWords|textPersonName"
                         android:maxLength="20" />
 
                     <LinearLayout
@@ -50,7 +50,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/sApe_uno"
-                            android:inputType="textPersonName"
+                            android:inputType="textCapWords|textPersonName"
                             android:maxLength="50" />
 
                     </LinearLayout>
@@ -100,7 +100,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/sCentro_estudios"
-                        android:inputType="textPersonName"
+                        android:inputType="textCapSentences|textPersonName"
                         android:maxLength="50" />
 
                     <TextView
@@ -137,7 +137,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/sCentro_practicas"
-                        android:inputType="textPersonName"
+                        android:inputType="textCapSentences|textPersonName"
                         android:maxLength="50" />
 
                     <EditText

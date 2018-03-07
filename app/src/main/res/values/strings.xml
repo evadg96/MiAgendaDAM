@@ -157,14 +157,13 @@
     <string name="no_hay_registros">No hay registros que borrar.</string>
 
     <!-- Strings pantalla BusquedaRegistros -->
-    <string name="busqueda_horas">Búsqueda por horas</string>
+    <string name="busqueda_horas">Búsqueda por horas trabajadas</string>
          <string name="busqueda_horas_trabajadas">Horas trabajadas</string>
             <string name="busq_horas_exactas">Buscar registros por horas exactas</string>
             <string name="busq_franja_horas">Buscar registros por rango de horas</string>
-         <string name="busqueda_horas_jornada">Horas de inicio/fin de jornada</string>
+         <string name="busqueda_horas_jornada">Horas de jornada</string>
             <string name="busq_hora_inicio_jornada">Buscar registros por hora de inicio de jornada</string>
             <string name="busq_hora_fin_jornada">Buscar registros por hora de fin de jornada</string>
-            <string name="busq_horas_jornada">Buscar registros por hora de inicio y fin de jornada</string>
             <string name="busq_jornada_partida">Buscar registros con jornada partida</string>
     <string name="busqueda_fechas">Búsqueda por fecha</string>
              <string name="busqueda_fecha_exacta">Buscar registros por fecha exacta</string>
@@ -173,6 +172,16 @@
     <string name="busqueda_valoracion">Búsqueda por valoración</string>
         <string name="busq_valoracion">Buscar registros por valoración</string>
 
+    <string name="error_horas_exactas">Debes introducir un número de horas trabajadas.</string>
+    <string name="error_rango_horas">Debes introducir un mínimo y un máximo de horas trabajadas.</string>
+    <string name="error_hora_inicio_jornada">Debes introducir una hora de inicio de jornada de trabajo.</string>
+    <string name="error_hora_fin_jornada">Debes introducir una hora de fin de jornada de trabajo.</string>
+    <string name="error_fecha_exacta">Debes introducir una fecha.</string>
+    <string name="error_rango_fechas">Debes introducir dos fechas para establecer el rango.</string>
+    <string name="error_mes">Debes seleccionar un mes para buscar sus registros.</string>
+    <string name="error_valoraciones">Debes seleccionar una valoración.</string>
+    <string name="error_no_hay_resultados">No se ha obtenido ningún registro tras la búsqueda.</string>
+    
     <!-- Strings pantalla NuevoRegistroDiario -->
     <string name="title_activity_nuevo_registro_diario">Nuevo registro</string>
     <string name="dia_practicas">Día de prácticas</string>

@@ -9,13 +9,16 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <TextView
                 android:id="@+id/title_horas"
@@ -210,49 +213,6 @@
                         <ImageButton
                             android:id="@+id/btn_buscar_fin_jornada"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/transparent"
-                            android:scaleType="fitEnd"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/ic_search_black_24dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/textView34"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_thin"
-                        android:text="@string/busq_horas_jornada"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:id="@+id/txt_busqueda_rango_jornadas"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/txt_jornada_inicio"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:inputType="textPersonName" />
-
-                        <EditText
-                            android:id="@+id/txt_jornada_fin"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:inputType="textPersonName" />
-
-                        <ImageButton
-                            android:id="@+id/btn_buscar_jornadas"
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/transparent"
