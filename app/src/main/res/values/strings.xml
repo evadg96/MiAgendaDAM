@@ -142,6 +142,7 @@
     <string name="action_settings">Ajustes</string>
 
     <!-- Strings fragment Diario -->
+    <string name="error_modulo_fct_completado">No puedes crear más registros porque ya has cursado todas las horas del módulo FCT.</string>
     <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
     <string name="menu_estadisticas_registros_diario">Estadísticas</string>
     <string name="menu_buqueda_registros">Buscar registros</string>
@@ -229,6 +230,13 @@
     <string name="toast_registro_creado">Registro creado correctamente.</string>
     <string name="toast_cambios_guardados">Cambios guardados.</string>
 
+    <!-- String fragment Horas -->
+    <string name="horas_trabajadas">tiempo trabajado</string>
+    <string name="horas_restantes">tiempo restante</string>
+    <string name="info_horas_trabajadas">El número de horas trabajadas se obtiene de la suma de horas trabajadas de todos los registros del diario.</string>
+    <string name="info_horas_restantes">El número de horas restantes se obtiene de la resta de la totalidad de horas del módulo FCT y las horas ya trabajadas. Esta cifra
+    se corresponde con las horas que quedan por trabajar para completar el cómputo de horas del módulo FCT.</string>
+
     <!-- Strings fragment Mi perfil -->
     <string name="mi_perfil_saludo_inicial">¡Hola </string>
     <string name="datos_personales">Datos personales</string>
@@ -292,7 +300,6 @@
     <string name="error_correo_ya_existe">Ya hay un usuario registrado con el correo introducido.</string>
     <string name="error_usuario_ya_existe">Ya hay un usuario registrado con ese nombre. Prueba con otro.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_instrucciones">Instrucciones</string>
     <string name="section_format">Hello World from section: %1$d</string>

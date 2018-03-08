@@ -100,6 +100,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String nUsuario=""; // el nombre de usuario que introduce el usuario para logearse (no tiene por qué ser válido, hay que comprobarlo)
     private String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
     private String familiaCiclo = "";
+    private String horas_fct = "";
     private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     // a su familia
     private StringRequest request;
@@ -120,10 +121,6 @@ public class PantallaLogin extends AppCompatActivity {
     private int codigo_desbloqueo = 0;
     private String sCodigoDesbloqueo = "";
 
-/**********************************************************************************
-* TODO: Subir al repo web la clase Acerca de, que creo que no está
-**********************************************************************************/
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -746,9 +743,11 @@ public class PantallaLogin extends AppCompatActivity {
                             idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
                             familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
+                            horas_fct = jsonArray.getJSONObject(0).getString("horas_fct");
                             Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
                             Log.d("PantallaLogin","FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
                             Log.d("PantallaLogin","CORREO ELECTRÓNICO "+ correo_de_usuario);
+                            Log.d("PantallaLogin", "HORAS FCT " + horas_fct);
                         } catch (Exception e){
                             e.printStackTrace();
                             Log.e("PantallaLogin", "Error al obtener datos del usuario");
@@ -830,6 +829,7 @@ public class PantallaLogin extends AppCompatActivity {
         editor.putString("nombre_de_usuario", nombre_usuario);
         editor.putString("correo_de_usuario", correo_de_usuario);
         editor.putString("familia_ciclo", familiaCiclo);
+        editor.putString("horas_fct", horas_fct);
         editor.putString("idUsuario", idUsuario);
         editor.commit();
         Log.d("PantallaLogin", "Preferencias guardadas");

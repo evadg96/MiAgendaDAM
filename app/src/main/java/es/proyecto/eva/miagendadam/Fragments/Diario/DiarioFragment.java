@@ -48,13 +48,7 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 * - Día que más horas se ha trabajado
 * -  "   " menos "    "  "   "
 * - ... ?
-* TODO: Añadir búsqueda de registros a través de filtrado:
-* - Filtrado por búsqueda de día exacto
-* - Filtrado por franja de horas
-* - Filtrado por horas exactas
-* - Filtrado por valoración
-* - ... ?
-*/
+
 
 /***************************************************************************************************
  * Fragmento de la opción Diario que se incluye en la actividad NavMenu. Se muestra por defecto
@@ -117,6 +111,8 @@ public class DiarioFragment extends Fragment {
     private String url_consulta = "http://miagendafp.000webhostapp.com/select_dias.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/delete_all_registros.php";
     private String nombre_de_usuario = "";
+    private String horas_fct = "";
+    private String horas_trabajadas = "";
     private boolean hayRegistros;
     private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
     // en preferencias para saberlo)
@@ -201,6 +197,11 @@ public class DiarioFragment extends Fragment {
         // Obtenemos de las preferencias el nombre del usuario
         SharedPreferences preferences = this.getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
+        // ************* Para comprobar que no se han trabajado ya todas las horas del módulo, en cuyo caso no
+        // dejaremos crear más registros.
+        horas_fct = preferences.getString("horas_fct", "");
+        horas_trabajadas = preferences.getString("horas_trabajadas", "");
+        // ***************************************************************************************************
         Log.d("DiarioFragment", "onCreateView");
         // Al pulsar en el botón de nuevo (+) procedemos a crear un nuevo registro
         btnNuevo = (FloatingActionButton) view.findViewById(R.id.btn_nuevo_registro);
@@ -208,8 +209,14 @@ public class DiarioFragment extends Fragment {
             @Override
             public void onClick(View v) {
                Log.d("DiarioFragment", "Nuevo registro de diario");
-                Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
-                startActivity(intent);
+               // primero comprobramos que no se haya completado el cómputo de horas del módulo FCT:
+                // TODO: DEPURAR
+                if (Integer.valueOf(horas_trabajadas) >= Integer.valueOf(horas_fct)){
+                    Toast.makeText(getActivity(), R.string.error_modulo_fct_completado, Toast.LENGTH_LONG).show();
+                } else { // si no se ha completado, procedemos a la creación del nuevo registro
+                    Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
+                    startActivity(intent);
+                }
             }
         });
 

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,6 +64,7 @@ public class MiPerfilFragment extends Fragment {
     private String correo_usuario = "", nombre_de_usuario = "";
     boolean editando = false; // para controlar si se ha pulsado el botón de edición de datos del perfil
     private String claveNueva = "", repiteClave = "";
+    private String horas_fct_nuevas = "";
     // Patrón para controlar el formato de la contraseña nueva
     private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
@@ -274,6 +276,18 @@ public class MiPerfilFragment extends Fragment {
         return view;
     }
 
+    // TODO: DEPURAR
+    /******************************************************************************************************
+     * Método que actualiza las horas del módulo fct de las preferencias. Solo se ejecuta si se actualizan
+     * los datos del perfil del usuario
+     ***********************************************************************************************/
+    private void guardarPreferencias() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("horas_fct", horas_fct_nuevas);
+        editor.commit();
+    }
+
     /***********************************************************************************************
      * Método que deshabilita la edición de los campos de cualquier manera
      **********************************************************************************************/
@@ -436,7 +450,7 @@ public class MiPerfilFragment extends Fragment {
         final String apellidos_nuevos = txtApellidos.getText().toString();
         final String centro_practicas_nuevo = txtCentroPracticas.getText().toString();
         final String centro_estudios_nuevo = txtCentroEstudios.getText().toString();
-        final String horas_fct_nuevas = txtHorasFCT.getText().toString();
+        horas_fct_nuevas = txtHorasFCT.getText().toString();
 
         // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
         // si alguno de los campos está vacío, no continuamos
@@ -493,6 +507,7 @@ public class MiPerfilFragment extends Fragment {
                                 //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
                                 //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
                                 System.out.println("DATOS ACTUALIZADOS");
+                                guardarPreferencias(); // Actualizamos las horas del módulo fct en preferencias TODO: DEPURAR
                                 editando = false; // deshabilitamos la edición de campos de nuevo
                                 cancelarEdicion();
                                 getActivity().invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente
