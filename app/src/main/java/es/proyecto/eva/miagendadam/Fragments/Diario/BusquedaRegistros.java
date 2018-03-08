@@ -72,6 +72,7 @@ public class BusquedaRegistros extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busqueda_registros);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
         txtHorasExactas = (EditText) findViewById(R.id.txt_horas_exactas);

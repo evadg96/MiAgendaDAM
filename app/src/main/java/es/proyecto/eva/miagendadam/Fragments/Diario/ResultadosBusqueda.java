@@ -25,6 +25,7 @@ public class ResultadosBusqueda extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultados_busqueda);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listaResultado = (ListView) findViewById(R.id.lista_resultados_busqueda);
         // recorremos el array para obtener los datos y añadirlos a la lista
         for (int i = 0; i < jsonArray.length(); i++){

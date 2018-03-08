@@ -35,6 +35,11 @@ import es.proyecto.eva.miagendadam.Fragments.Inicio.InicioFragment;
 import es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
+// TODO: Fix bug
+// En algunas opciones (p. ej. Diario) al seleccionar el apartado no se marca nada
+// En otras (p. ej. Horas) al seleccionar el apartado se queda marcado en el menú desplegable
+// PROBLEMA: unas sí otras no. Además, con los que se quedan marcados, si seleccionas uno de los que no se marcan,
+// aunque estés en ese apartado se seguirá viendo marcado el que sí se marcaba.
 
 /***************************************************************************************************
  *  Menú lateral desplegable con las opciones de la aplicación.                                    *
@@ -116,6 +121,8 @@ public class NavMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_inicio);
+        // todo: fix bug
+        // Al actualiza la familia de ciclo del usuario desde Mi perfil, no se actualiza su valor en la cabecera del menú lateral...
     }
 
 

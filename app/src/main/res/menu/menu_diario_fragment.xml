@@ -12,11 +12,13 @@
         android:id="@+id/menu_ordenar_registros"
         android:title="@string/menu_ordenar_registros"
         app:showAsAction="never" /> -->
-    <item
+
+    <!--<item
+    TODO: Pendiente, mientras tanto queda oculto
         android:id="@+id/menu_estadisticas"
         android:icon="@drawable/ic_assessment_white_24dp"
         android:title="@string/menu_estadisticas_registros_diario"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />-->
 
    <item
         android:id="@+id/menu_borrar_todo"

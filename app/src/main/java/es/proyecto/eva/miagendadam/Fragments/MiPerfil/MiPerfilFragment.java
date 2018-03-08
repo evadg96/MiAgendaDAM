@@ -285,6 +285,7 @@ public class MiPerfilFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("horas_fct", horas_fct_nuevas);
+        editor.putString("familia_ciclo", familia_ciclo_usuario);
         editor.commit();
     }
 

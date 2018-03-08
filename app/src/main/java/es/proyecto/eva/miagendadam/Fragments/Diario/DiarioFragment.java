@@ -140,9 +140,9 @@ public class DiarioFragment extends Fragment {
                 Intent intent = new Intent (getActivity(), BusquedaRegistros.class);
                 startActivity(intent);
                 return true;
-            case R.id.menu_estadisticas: // Opción de guardar los datos de usuario actualizados
-               Log.i("DiarioFragment", "Action Estadísticas de registros");
-                return true;
+           // case R.id.menu_estadisticas: // Opción de guardar los datos de usuario actualizados
+             //  Log.i("DiarioFragment", "Action Estadísticas de registros");
+               // return true;
             case R.id.menu_borrar_todo: // Opción de guardar los datos de usuario actualizados
                 Log.i("DiarioFragment", "Action Borrar todo");
                 // Preguntamos antes de proceder con el borrado de datos
