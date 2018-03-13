@@ -21,6 +21,7 @@ public class ResultadosBusqueda extends AppCompatActivity {
     ArrayList <String> arrayHoras = new ArrayList<>(); // array en el que introduciremos las horas obtenidas
     ArrayList <String> arrayMinutos = new ArrayList<>(); // array en el que introduciremos los minutos obtenidos
     ArrayList <String> arrayValoraciones = new ArrayList<>(); // array en el que introduciremos las valoraciones obtenidas
+    ArrayList <String> arrayReuniones = new ArrayList<>(); // array en el que se introducen las reuniones obtenidas
     AdaptadorListaDiario adaptador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class ResultadosBusqueda extends AppCompatActivity {
             }
 
         }
-        adaptador = new AdaptadorListaDiario(this, arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones);
+        adaptador = new AdaptadorListaDiario(this, arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones, arrayReuniones);
         listaResultado.setAdapter(adaptador); // lo asociamos a la lista
 /**
         // Al pulsar sobre algún item de la lista (sobre algún registro del diario) lo mostramos en detalle en otra actividad:

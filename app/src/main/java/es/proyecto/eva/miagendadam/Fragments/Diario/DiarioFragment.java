@@ -73,6 +73,7 @@ public class DiarioFragment extends Fragment {
     private String horas;
     private String minutos;
     private String valoracion;
+    private String reunion_fct;
 
     // Datos del item seleccionado que se van a mostrar al pulsar sobre un registro
     public static String id_dia_seleccionado;
@@ -103,6 +104,8 @@ public class DiarioFragment extends Fragment {
     ArrayList <String> arrayHoras = new ArrayList<>(); // array en el que introduciremos las horas obtenidas
     ArrayList <String> arrayMinutos = new ArrayList<>(); // array en el que introduciremos los minutos obtenidos
     ArrayList <String> arrayValoraciones = new ArrayList<>(); // array en el que introduciremos las valoraciones obtenidas
+    ArrayList <String> arrayReuniones = new ArrayList<>(); // array en el que introduciremos los valores del campo reunion_fct
+    // para cada día. Si hay un 1, será que sí hay. Si hay un 0, será que no.
     AdaptadorListaDiario adaptador; // objeto de la clase AdaptadorListaDiario que utilizaremos como adaptador personalizado para
     // nuestra lista de registros
 
@@ -115,10 +118,12 @@ public class DiarioFragment extends Fragment {
     private String horas_trabajadas = "";
     private boolean hayRegistros;
 
+    // TODO ??
+    // *************************  PENDIENTE **********************************************************************************************
     private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
     // en preferencias para saberlo)
     private boolean menosRecientesPrimero = false; // para saber que queremos que se vean primero los menos recientes
-
+    // **********************************************************************************************************************************
     // Creamos el menú en el action bar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -402,6 +407,7 @@ public class DiarioFragment extends Fragment {
         arrayHoras = new ArrayList<>();
         arrayMinutos = new ArrayList<>();
         arrayValoraciones = new ArrayList<>();
+        arrayReuniones = new ArrayList<>();
         for (int i = 0; i < jsonArrayDiario.length(); i++){ // hasta que se hayan obtenido todos los registros:
             try {
                 dia = jsonArrayDiario.getJSONObject(i).getString("dia"); // obtenemos dia
@@ -418,7 +424,9 @@ public class DiarioFragment extends Fragment {
                     arrayMinutos.add("");
                 }
                 valoracion = jsonArrayDiario.getJSONObject(i).getString("valoracion"); // obtenemos valoración
-                arrayValoraciones.add(valoracion); // las añadimos al array de valoraciones
+                arrayValoraciones.add(valoracion); // la añadimos al array de valoraciones
+                reunion_fct = jsonArrayDiario.getJSONObject(i).getString("reunion_fct"); // obtenemos valor de reunion_fct ( 1 = sí, 0 = no)
+                arrayReuniones.add(reunion_fct); // añadimos el valor al array
             } catch (Exception e){ // Error al intentar obtener los datos
                 e.printStackTrace();
                 Log.e("DiarioFragment", "Error al cargar los registros de usuario");
@@ -430,7 +438,7 @@ public class DiarioFragment extends Fragment {
         }
 
         // creamos adaptador personalizado a nuestra lista de registros
-        adaptador = new AdaptadorListaDiario(getActivity(), arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones);
+        adaptador = new AdaptadorListaDiario(getActivity(), arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones, arrayReuniones);
         listaResultado.setAdapter(adaptador); // lo asociamos a la lista
     }
 }

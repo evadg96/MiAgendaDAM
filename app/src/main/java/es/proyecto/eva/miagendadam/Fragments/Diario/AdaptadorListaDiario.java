@@ -25,13 +25,15 @@ public class AdaptadorListaDiario extends BaseAdapter {
     private ArrayList <String> arrayHoras;
     private ArrayList <String> arrayMinutos;
     private ArrayList <String> arrayValoraciones;
+    private ArrayList <String> arrayReuniones;
 
-    public AdaptadorListaDiario (Context context, ArrayList<String> arrayFechas, ArrayList<String> arrayHoras, ArrayList<String> arrayMinutos, ArrayList<String> arrayValoraciones){
+    public AdaptadorListaDiario (Context context, ArrayList<String> arrayFechas, ArrayList<String> arrayHoras, ArrayList<String> arrayMinutos, ArrayList<String> arrayValoraciones, ArrayList<String> arrayReuniones){
         this.context = context;
         this.arrayFechas = arrayFechas;
         this.arrayHoras = arrayHoras;
         this.arrayMinutos = arrayMinutos;
         this.arrayValoraciones = arrayValoraciones;
+        this.arrayReuniones = arrayReuniones;
     }
 
     @Override
@@ -60,7 +62,8 @@ public class AdaptadorListaDiario extends BaseAdapter {
         TextView tag_valoracion = (TextView) convertView.findViewById(R.id.tv_valoracion); // la valoración del registro.
         // Será un cuadrado en el lateral superior derecho de cada registro que servirá para indicarnos a primera vista
         // mediante un color de fondo definitorio la valoración del registro sin entrar en él para verlo.
-
+        TextView tvReunion = (TextView) convertView.findViewById(R.id.tv_reunion); // para indicar si en el día en cuestión
+        // ha habido una reunión de fct
         tvFecha.setText(arrayFechas.get(position));
         tvHoras.setText(arrayHoras.get(position));
         tvMinutos.setText(arrayMinutos.get(position));
@@ -73,6 +76,12 @@ public class AdaptadorListaDiario extends BaseAdapter {
         // Si la valoración del registro es mala, se pone el cuadro de color rojo
         } else if (arrayValoraciones.get(position).equals("Malo")){
             tag_valoracion.setBackgroundColor(Color.parseColor("#c7de0000"));
+        }
+        if (arrayReuniones.get(position).equals("1")) {
+            tvReunion.setVisibility(View.VISIBLE); // el valor 1 indica que hay reunión ese día, así que añadimos el tag para indicarlo
+        } else {
+            tvReunion.setVisibility(View.GONE); // si no es 1, quiere decir que no hay reunión en ese día, y por tanto quitamos el tag de reunión
+            // para ese día
         }
         return convertView;
     }
