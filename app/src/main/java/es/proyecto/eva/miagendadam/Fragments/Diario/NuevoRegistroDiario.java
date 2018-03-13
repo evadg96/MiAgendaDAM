@@ -276,7 +276,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
 
     /***********************************************************************************************
      * Método que comprueba que no se crea un registro nuevo con una fecha de un registro
-     * que ya existe en el diario
+     * que ya existe en el diario.
+     * Si se pasa la validación correctamente, se procede a guardar satisfactoriamente el registro
+     * llamando al método correspondiente (guardarRegistro() )
      **********************************************************************************************/
     public void validarFecha(){
         System.out.println("Validando fecha...");
@@ -530,13 +532,14 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         verHoras = false;
     }
 
+    /***********************************************************************************************
+     * Método que se ejecuta una vez se han pasado todas las validaciones del método validarJornada()
+     * Cuando se ejecuta este, se llama a la validación de la fecha introducida, y desde ahí
+     * se determina si se guarda el registro o no.
+     **********************************************************************************************/
     public void pasaValidacion(){
-
-        System.out.println("HORAS RESULTADO: " + horasResultado);
-        System.out.println("MINUTOS RESULTADO: " + minutosResultado);
-        System.out.println("HORAS TURNO 1: " + horasTurno1);
         descripcion = txtDescripcion.getText().toString();
-        if (sDia.isEmpty() || sMes.isEmpty() || sAnyo.isEmpty() ||descripcion.isEmpty() || valoracionDia.isEmpty()){
+        if (sDia.isEmpty() || sMes.isEmpty() || sAnyo.isEmpty() || descripcion.isEmpty() || valoracionDia.isEmpty()){
             // Toast.makeText(NuevoRegistroDiario.this, "Debes completar todos los datos.", Toast.LENGTH_SHORT).show();
             System.out.println("ALGUNO DE LOS CAMPOS DE FECHA / DESCRIPCIÓN / VALORACIÓN ESTÁ VACÍO");
             Snackbar.make(findViewById(android.R.id.content),

@@ -69,7 +69,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     TextView turno1, turno2, txtHoras, txtInfoReunion, txtInfoReunion2; // para mostrar u ocultar los títulos que identifican a cada turno en caso de que haya varios
     private StringRequest request;
     String sDia = "", sMes = "", sAnyo = ""; // la fecha seleccionada por el usuario a través del timePicker
-    private String fechaNueva = "", horasNuevas = "", minutosNuevos = "", descripcionNueva = "", valoracionNueva = "";
+    private String descripcionNueva = "", valoracionNueva = "";
     // Creamos variable de horas y minutos que serán las que usemos para obtener la hora seleccionada en el timepicker
     int tpHoras, tpMinutos;
     // Creamos variables para almacenar las distintas horas introducidas
@@ -272,12 +272,12 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         minutoInicio2 = Integer.valueOf(minuto_inicio_2_seleccionado);
         horaFin2 = Integer.valueOf(hora_fin_2_seleccionada);
         minutoFin2 = Integer.valueOf(minuto_fin_2_seleccionado);
-        fechaNueva = fecha_seleccionada;
         sDia = dia_seleccionado;
         sMes = mes_seleccionado;
         sAnyo = anyo_seleccionado;
         horas_reunion = horas_reunion_seleccionada;
 
+        // ******************** PONEMOS DATOS EN CAMPOS *******************************
         // Fijamos los datos que queremos que se muestren
         txtFechaSeleccionada.setText(fecha_seleccionada);
         txtHoraInicio1Seleccionada.setText(sHoraInicio1 + ":" + sMinInicio1);
@@ -327,7 +327,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             case R.id.menu_actualizar: // Opción de guardar el registro actualizado
                 //Log.i("VerYEditarRegistroD", "Action Guardar (actualizar) registro");
                 // obtenemos los datos nuevos
-                fechaNueva = txtFechaSeleccionada.getText().toString();
                 descripcionNueva = txtDescripcionSeleccionada.getText().toString();
                 valoracionNueva = valoracion_seleccionada;
                 validarJornada();
@@ -577,146 +576,203 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
      * También pone las horas y minutos obtenidos de la jornada en un textView
      **********************************************************************************************/
     public void validarJornada(){
-        // Validamos que no haya campos en blanco
-        if (hayDosJornadas) { // hay dos jornadas
+        // Validamos que no haya campos en blanco:
+        if (hayDosJornadas) { // Si HAY DOS JORNADAS ...
             System.out.println("HAY DOS JORNADAS");
             if (horaInicio2 == 0 || horaFin2 == 0 || horaInicio1 == 0 || horaFin1 == 0) { // hay dos jornadas, y alguno de los campos está en blanco
                 //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_2, Toast.LENGTH_SHORT).show();
+                System.out.println("DATOS EN BLANCO EN DOS JORNADAS.");
                 Snackbar.make(this.findViewById(android.R.id.content),
                         R.string.error_datos_jornada_2, Snackbar.LENGTH_SHORT).show();
             } else {
-
                 // hay dos jornadas y no hay datos en blanco en ninguna jornada, así que procedemos a hacer los cálculos y validaciones
                 // primero hacemos todos los cálculos de horas y minutos correspondientes
                 System.out.println("Hay dos jornadas y los datos están completos. Calculando horas...");
                 calcularHoras();
                 System.out.println("Tiempo calculado correctamente. Validando datos...");
-                // Validamos previamente que no salen jornadas excesivas o negativas
+                // Validamos previamente que no salen jornadas excesivas o negativas:
                 if (horaInicio1 > horaFin1 || horaInicio2 > horaFin2) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
                     // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    System.out.println("JORNADA(S) NO VÁLIDA(S) 1.");
                     Snackbar.make(this.findViewById(android.R.id.content),
                             R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horaInicio2 <= horaFin1) {// || horaInicio2 == horaFin1 && minutoInicio2 <= minutoFin1){ <--- Comento porque no sé si será posible en algún convenio hacer un descanso entre turno y turno inferior a una hora, que sería el único supuesto en el que coincidirían las horas de fin e inicio
                         // la hora de inicio del segundo turno es menor o igual que la de fin del primer turno. No puede ser.
+                        System.out.println("JORNADA(S) NO VÁLIDA(S) 2.");
                         Snackbar.make(this.findViewById(android.R.id.content),
                                 R.string.error_datos_jornada_4, Snackbar.LENGTH_LONG).show();
-                    } else {
-                        if (horasResultado <= 0 || horaInicio1 == horaFin1 && minutoInicio1 == minutoFin1 || horaInicio2 == horaFin2 && minutoInicio2 == minutoFin2) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
-                            // o que la hora de inicio sea exacta a la hora de fin en alguno de los turnos...
-                            //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
-                            Snackbar.make(this.findViewById(android.R.id.content),
-                                    R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
-                        } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
-                            // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
-                            Snackbar.make(this.findViewById(android.R.id.content),
-                                    R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            if (!hayReunion){ // comprobamos si se ha desmarcado el selector de la reunión para restar esas horas
-                                System.out.println("NO HAY/SE HA DESMARCADO REUNIÓN FCT (DOS JORNADAS)");
-                            } else if (hayReunion) {
-                                System.out.println("HAY REUNIÓN. SE SUMAN SUS HORAS");
-                                horas_reunion = txtTiempoReunion.getText().toString();
-                                if (horas_reunion.isEmpty()){ // comprobamos si se han introducido las horas
+                    } else if (horasResultado <= 0 || horaInicio1 == horaFin1 && minutoInicio1 == minutoFin1 || horaInicio2 == horaFin2 && minutoInicio2 == minutoFin2) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
+                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        System.out.println("JORNADA(S) NO VÁLIDA(S) 3.");
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
+                    } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
+                        // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
+                        System.out.println("JORNADA(S) NO VÁLIDA(S) 4.");
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
+                    } else { // No hay ningún error con los datos de la jornada. Pasamos a la siguiente comprobación: ¿hay reunión fct?
+                        // creamos los String para poner las horas y los minutos en el textView de horas
+                        sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
+                        sMinutosResultado = String.valueOf(minutosResultado); // hacemos lo mismo con los minutos
+                        if (hayReunion){ // SÍ HAY REUNIÓN
+                            System.out.println("HAY REUNIÓN.");
+                            horas_reunion = txtTiempoReunion.getText().toString();
+                            if (horas_reunion.isEmpty()){ // si NO HAY HORAS DE REUNIÓN introducidas...
+                                System.out.println("HORAS REUNIÓN EN BLANCO.");
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                            } else { // SÍ HAY HORAS DE REUNIÓN, validamos formato...
+                                if (Integer.valueOf(horas_reunion) == 0){
+                                    System.out.println("ERROR HORAS REUNIÓN 1.");
                                     Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
-                                    Log.d("validarJornada", "horas_reunion VACÍO");
-                                } else {
-                                    if (Integer.valueOf(horas_reunion) == 0){
-                                        Snackbar.make(findViewById(android.R.id.content),
-                                                R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
-                                    }else if (Integer.valueOf(horas_reunion) > 2){
-                                        Snackbar.make(findViewById(android.R.id.content),
-                                                R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                            R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
+                                } else if (Integer.valueOf(horas_reunion) > 2){
+                                    System.out.println("ERROR HORAS REUNIÓN 2.");
+                                    Snackbar.make(findViewById(android.R.id.content),
+                                            R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                } else { // No hay ningún problema con las horas, por lo tanto se pasan todas las validaciones y se guarda el registro
+                                    System.out.println("SUMAMOS " + horas_reunion + " HORAS DE REUNIÓN FCT AL TOTAL DE HORAS CALCULADAS DE LA JORNADA");
+                                    horasResultado = horasResultado + Integer.valueOf(horas_reunion);
+                                    sHorasResultado = String.valueOf(horasResultado);
+                                    if (verHoras) { // si está en true, es porque se ha pulsado el botón de ver las horas obtenidas de la(s) jornada(s) introducida(s)
+                                        System.out.println("VISUALIZACIÓN DE HORAS OBTENIDAS SIN GUARDAR EL REGISTRO, CON REUNIÓN, DOS JORNADAS.");
+                                        if (minutosResultado == 0) { // No hay minutos
+                                            if (horasResultado == 1){ // Solo hay una hora
+                                                txtHoras.setText(sHorasResultado + " hora");
+                                            } else { // Más de una hora
+                                                txtHoras.setText(sHorasResultado + " horas");
+                                            }
+                                        } else { // Hay minutos
+                                            if (horasResultado == 1){ // Solo hay una hora
+                                                txtHoras.setText(sHorasResultado + " hora y "  + sMinutosResultado + " minutos");
+                                            } else {
+                                                txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");                                            }
+                                        }
                                     } else {
-                                        System.out.println("SUMAMOS " + horas_reunion + " HORAS DE REUNIÓN FCT AL TOTAL DE HORAS CALCULADAS DE LA JORNADA");
-                                        horasResultado = horasResultado + Integer.valueOf(horas_reunion);
+                                        System.out.println("PASA A VALIDACIÓN FINAL DESDE 2 JORNADAS CON REUNIÓN");
+                                        actualizarRegistro();
                                     }
                                 }
                             }
-                            // creamos los String para poner las horas y los minutos en el textView de horas
-                            sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
-                            sMinutosResultado = String.valueOf(minutosResultado); // hacemos lo mismo con los minutos
-                            System.out.println("HORAS RESULTADO: " + horasResultado);
-                            System.out.println("MINUTOS RESULTADO: " + minutosResultado);
-                            System.out.println("HORAS TURNO 1: " + horasTurno1);
-                            System.out.println("HORAS TURNO 2: " + horasTurno2);
-                            // validamos si hay minutos, para no poner un 0 en el textView
-                            if (verHoras) {
-                                if (minutosResultado == 0) {
-                                    txtHoras.setText(sHorasResultado + " horas");
-                                } else {
-                                    txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");
+                        } else { // NO HAY REUNIÓN, se pasa directamente a guardar el registro
+                            if (verHoras) { // si está en true, es porque se ha pulsado el botón de ver las horas obtenidas de la(s) jornada(s) introducida(s)
+                                // y por tanto solo VEREMOS LOS DATOS, no guardaremos nada
+                                System.out.println("VISUALIZACIÓN DE HORAS OBTENIDAS SIN GUARDAR EL REGISTRO, SIN REUNIÓN, DOS JORNADAS.");
+                                if (minutosResultado == 0) { // No hay minutos
+                                    if (horasResultado == 1){ // Solo hay una hora
+                                        txtHoras.setText(sHorasResultado + " hora");
+                                    } else { // Más de una hora
+                                        txtHoras.setText(sHorasResultado + " horas");
+                                    }
+                                } else { // Hay minutos
+                                    if (horasResultado == 1){ // Solo hay una hora
+                                        txtHoras.setText(sHorasResultado + " hora y "  + sMinutosResultado + " minutos");
+                                    } else {
+                                        txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");                                            }
                                 }
                             } else {
-                                actualizarRegistro(); // actualizamos el registro
+                                System.out.println("PASA A VALIDACIÓN FINAL DESDE 2 JORNADAS SIN REUNIÓN");
+                                actualizarRegistro();
                             }
                         }
                     }
                 }
-
             }
-        } else { // No hay dos jornadas, validamos entonces con una sola:
-            if (horaInicio1 != 0 || horaFin1 != 0) { // los datos de la jornada base no están en blanco
-                System.out.println("Los campos de jornada no están vacíos");// , y los campos de la jornada base no están en blanco, así que calculamos
+        } else { // SOLO UNA JORNADA, validamos entonces con una sola:
+            if (horaInicio1 != 0 || horaFin1 != 0) { // los datos de la jornada base NO están EN BLANCO
+                System.out.println("Los campos de la jornada no están vacíos, calculamos horas...");// , y los campos de la jornada base no están en blanco, así que calculamos
                 // Primero hacemos todos los cálculos de horas y minutos correspondientes
                 calcularHoras();
                 // validamos previamente que no salen jornadas excesivas o negativas
                 if (horaInicio1 > horaFin1) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
                     //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    System.out.println("JORNADA NO VÁLIDA 1.");
                     Snackbar.make(this.findViewById(android.R.id.content),
                             R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
                         //  Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        System.out.println("JORNADA NO VÁLIDA 2.");
                         Snackbar.make(this.findViewById(android.R.id.content),
                                 R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
                         //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
+                        System.out.println("JORNADA NO VÁLIDA 3.");
                         Snackbar.make(findViewById(android.R.id.content),
                                 R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        if (!hayReunion){ // comprobamos si se ha desmarcado el selector de la reunión para restar esas horas
-                            System.out.println("NO HAY/SE HA DESMARCADO REUNIÓN FCT (UNA JORNADA)");
-                        } else if (hayReunion){
-                            System.out.println("HAY REUNIÓN, SUMAMOS LAS HORAS CORRESPONDIENTES");
-                            horas_reunion = txtTiempoReunion.getText().toString();
-                            if (horas_reunion.isEmpty()){ // comprobamos si se han introducido las horas
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
-                                Log.d("validarJornada","solo 1 jornada, horas_reunion VACÍO");
-                            } else {
-                                if (Integer.valueOf(horas_reunion) == 0){
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
-                                }else if (Integer.valueOf(horas_reunion) > 2){
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
-                                } else {
-                                    System.out.println("SUMAMOS " + horas_reunion + " HORAS DE REUNIÓN FCT AL TOTAL DE HORAS CALCULADAS DE LA JORNADA");
-                                    horasResultado = horasResultado + Integer.valueOf(horas_reunion);
-                                }
-                            }
-                        }
+                    } else { // No hay errores con la jornada, seguimos con las comprobaciones:
                         // creamos los String para poner las horas y los minutos en el textView de horas
                         sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
                         sMinutosResultado = String.valueOf(minutosResultado); // hacemos lo mismo con los minutos
-                        System.out.println("HORAS RESULTADO: " + horasResultado);
-                        System.out.println("MINUTOS RESULTADO: " + minutosResultado);
-                        System.out.println("HORAS TURNO 1: " + horasTurno1);
-                        if (verHoras) {
-                            if (minutosResultado == 0) {
-                                txtHoras.setText(sHorasResultado + " horas");
+                        if (hayReunion){ // si HAY REUNIÓN...
+                            System.out.println("HAY REUNIÓN (UNA JORNADA)");
+                            horas_reunion = txtTiempoReunion.getText().toString();
+                            if (horas_reunion.isEmpty()){ // comprobamos si se han introducido las horas
+                                System.out.println("ERROR HORAS REUNIÓN 1 (UNA JORNADA).");
+                                Snackbar.make(findViewById(android.R.id.content),
+                                        R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
                             } else {
-                                txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");
+                                if (Integer.valueOf(horas_reunion) == 0){
+                                    System.out.println("ERROR HORAS REUNIÓN 2 (UNA JORNADA).");
+                                    Snackbar.make(findViewById(android.R.id.content),
+                                            R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
+                                } else if (Integer.valueOf(horas_reunion) > 2){
+                                    System.out.println("ERROR HORAS REUNIÓN 3 (UNA JORNADA).");
+                                    Snackbar.make(findViewById(android.R.id.content),
+                                            R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                } else { // No hay errores con las horas de la reunión, pasamos al guardado del registro.
+                                    System.out.println("SUMAMOS " + horas_reunion + " HORAS DE REUNIÓN FCT AL TOTAL DE HORAS CALCULADAS DE LA JORNADA");
+                                    horasResultado = horasResultado + Integer.valueOf(horas_reunion);
+                                    sHorasResultado = String.valueOf(horasResultado);
+                                    if (verHoras) { // si está en true, es porque se ha pulsado el botón de ver las horas obtenidas de la(s) jornada(s) introducida(s)
+                                        // y por tanto solo veremos los resultados, no guardarmos nada
+                                        System.out.println("VISUALIZACIÓN DE HORAS OBTENIDAS SIN GUARDAR EL REGISTRO, CON REUNIÓN, UNA JORNADA.");
+                                        if (minutosResultado == 0) { // No hay minutos
+                                            if (horasResultado == 1){ // Solo hay una hora
+                                                txtHoras.setText(sHorasResultado + " hora");
+                                            } else { // Más de una hora
+                                                txtHoras.setText(sHorasResultado + " horas");
+                                            }
+                                        } else { // Hay minutos
+                                            if (horasResultado == 1){ // Solo hay una hora
+                                                txtHoras.setText(sHorasResultado + " hora y "  + sMinutosResultado + " minutos");
+                                            } else {
+                                                txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");                                            }
+                                        }
+                                    } else { // si no está en true, quiere decir que se ha pulsado el botón de guardar y no el de ver horas, así que directamente pasamos
+                                        System.out.println("PASA A VALIDACIÓN FINAL DESDE 1 JORNADA CON REUNIÓN");
+                                        actualizarRegistro();
+                                    }
+                                }
                             }
-                        } else {
-                            actualizarRegistro(); // actualizamos el registro
+                        } else { // NO HAY REUNIÓN, se pasa directamente al guardado del registro
+                            if (verHoras) { // si está en true, es porque se ha pulsado el botón de ver las horas obtenidas de la(s) jornada(s) introducida(s)
+                                System.out.println("VISUALIZACIÓN DE HORAS OBTENIDAS SIN GUARDAR EL REGISTRO, SIN REUNIÓN, UNA JORNADA.");
+                                if (minutosResultado == 0) { // No hay minutos
+                                    if (horasResultado == 1){ // Solo hay una hora
+                                        txtHoras.setText(sHorasResultado + " hora");
+                                    } else { // Más de una hora
+                                        txtHoras.setText(sHorasResultado + " horas");
+                                    }
+                                } else { // Hay minutos
+                                    if (horasResultado == 1){ // Solo hay una hora
+                                        txtHoras.setText(sHorasResultado + " hora y "  + sMinutosResultado + " minutos");
+                                    } else {
+                                        txtHoras.setText(sHorasResultado + " horas y " + sMinutosResultado + " minutos");
+                                    }
+                                }
+                            } else {
+                                System.out.println("PASA A VALIDACIÓN FINAL DESDE 1 JORNADA SIN REUNIÓN");
+                                actualizarRegistro();
+                            }
                         }
                     }
                 }
-            } else { // los campos de la jornada base están en blanco
+            } else { // los CAMPOS de la jornada base están EN BLANCO
                 //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_1, Toast.LENGTH_SHORT).show();
+                System.out.println("ERROR DATOS JORNADA EN BLANCO.");
                 Snackbar.make(this.findViewById(android.R.id.content),
                         R.string.error_datos_jornada_1, Snackbar.LENGTH_SHORT).show();
             }
@@ -943,17 +999,18 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
      **********************************************************************************************/
     public void actualizarRegistro() {
         // validamos que no queden campos en blanco
-        if (fechaNueva.isEmpty() || descripcionNueva.isEmpty() || valoracionNueva.isEmpty()) {
+        if (descripcionNueva.isEmpty() || valoracionNueva.isEmpty()) {
             //Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
             Snackbar.make(this.findViewById(android.R.id.content),
                     R.string.error_campos_vacios, Snackbar.LENGTH_LONG).show();
-            Log.d("actualizarRegistro","fecha/descripcion/valoracion VACÍO");
+            Log.d("actualizarRegistro","descripcion/valoracion VACÍO");
         } else {
             // Deshabilitamos la edición de t0dos los campos
             editando = false;
             //Log.i("VerYEditarRegistroD", "Edición de campos deshabilitada");
             deshabilitarEdicion();
             // consulta volley para guardar datos
+            System.out.println("Actualizando registro...");
             request = new StringRequest(Request.Method.POST, url_consulta,
                     new Response.Listener<String>() {
                         @Override
@@ -986,9 +1043,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> parametros = new HashMap<>();
-                    parametros.put("dia", sDia);
-                    parametros.put("mes", sMes);
-                    parametros.put("anyo", sAnyo);
                     parametros.put("jornada_partida", jornada_partida);
                     parametros.put("hora_inicio_1", sHoraInicio1);
                     parametros.put("minuto_inicio_1", sMinInicio1);
