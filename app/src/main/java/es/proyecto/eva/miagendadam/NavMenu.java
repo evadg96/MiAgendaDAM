@@ -33,6 +33,7 @@ import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
 import es.proyecto.eva.miagendadam.Fragments.Inicio.InicioFragment;
 import es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment;
+import es.proyecto.eva.miagendadam.Fragments.Tutores.TutoresFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 // TODO: Fix bug
@@ -174,6 +175,7 @@ public class NavMenu extends AppCompatActivity
         } else if (id == R.id.nav_tutores) {
            // Log.i("NavMenu", "Opción menú: Tutores");
             setTitle(R.string.opc_tutores);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new TutoresFragment()).commit();
         } else if (id == R.id.nav_proyecto) {
           //  Log.i("NavMenu", "Opción menú: Anteproyecto");
         } else if (id == R.id.nav_perfil) {

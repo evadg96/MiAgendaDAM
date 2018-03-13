@@ -114,6 +114,7 @@ public class DiarioFragment extends Fragment {
     private String horas_fct = "";
     private String horas_trabajadas = "";
     private boolean hayRegistros;
+
     private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
     // en preferencias para saberlo)
     private boolean menosRecientesPrimero = false; // para saber que queremos que se vean primero los menos recientes

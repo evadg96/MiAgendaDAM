@@ -70,9 +70,11 @@
             android:name=".Instrucciones"
             android:label="@string/title_activity_instrucciones"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Fragments.Diario.BusquedaRegistros"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Fragments.Diario.ResultadosBusqueda"></activity>
+        <activity
+            android:name=".Fragments.Diario.BusquedaRegistros"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Fragments.Diario.ResultadosBusqueda" />
+        <activity android:name=".Fragments.Tutores.NuevoTutor"></activity>
     </application>
 
 </manifest>

@@ -46,6 +46,7 @@ import static es.proyecto.eva.miagendadam.NavMenu.familia_ciclo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.ciclo_formativo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.provincia_del_usuario;
 // TODO: Corregir bug con los spinner. No muestra bien los datos cuando son actualizados y se refrescan después
+// TODO: Corregir bug al actualizar datos del perfil
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.

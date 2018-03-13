@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -33,7 +31,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -310,7 +307,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
      **********************************************************************************************/
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_registro_diario, menu); // la R referencia a la ubicación del archivo
+        getMenuInflater().inflate(R.menu.menu_edicion_actualizacion, menu); // la R referencia a la ubicación del archivo
         if (editando) { // si estamos en modo edición, habilitamos el icono de guardado y ocultamos el de editar
             //Log.d("VerYEditarRegistroD", "Modo edición: ocultamos icono editar y mostramos el de guardar");
             menu.findItem(R.id.menu_actualizar).setVisible(true);

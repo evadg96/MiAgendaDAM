@@ -1,14 +1,10 @@
 package es.proyecto.eva.miagendadam.Fragments.Diario;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -56,7 +52,7 @@ public class AdaptadorListaDiario extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         if(convertView == null){
-            convertView = View.inflate(context, R.layout.listview_item_row, null);
+            convertView = View.inflate(context, R.layout.item_registro_diario, null);
         }
         TextView tvFecha = (TextView) convertView.findViewById(R.id.tv_fecha); // la fecha del registro (dd/mm/aa)
         TextView tvHoras = (TextView) convertView.findViewById(R.id.tv_horas); // las horas del registro
