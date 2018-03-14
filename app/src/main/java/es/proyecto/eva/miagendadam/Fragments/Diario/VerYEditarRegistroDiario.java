@@ -1061,7 +1061,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                     parametros.put("idUsuario", idUsuario);
                     parametros.put("idDia", id_dia_seleccionado);
                     return parametros;
-                }
+                } 
             };
             AppController.getInstance().addToRequestQueue(request);
         }

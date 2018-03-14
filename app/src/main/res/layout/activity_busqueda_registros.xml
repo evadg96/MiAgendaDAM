@@ -41,6 +41,7 @@
                     android:id="@+id/textView28"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/roboto_thin"
                     android:text="@string/busqueda_horas_trabajadas"
                     android:textColor="@color/azul_fondo"
@@ -59,6 +60,7 @@
                         android:id="@+id/textView32"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_thin"
                         android:text="@string/busq_horas_exactas"
                         android:textStyle="bold" />
@@ -138,7 +140,7 @@
                     android:id="@+id/textView29"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/roboto_thin"
                     android:text="@string/busqueda_horas_jornada"
                     android:textColor="@color/azul_fondo"
@@ -157,6 +159,7 @@
                         android:id="@+id/textView36"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_thin"
                         android:text="@string/busq_hora_inicio_jornada"
                         android:textStyle="bold" />
@@ -258,7 +261,7 @@
                 android:id="@+id/title_fecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_thin"
                 android:text="@string/busqueda_fechas"
                 android:textColor="@color/colorAccent"
@@ -276,9 +279,10 @@
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto_thin"
                     android:text="@string/busqueda_fecha_exacta"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/roboto_thin"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/txt_busqueda_fecha"
@@ -390,7 +394,7 @@
                 android:id="@+id/title_valoracion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_thin"
                 android:text="@string/busqueda_valoracion"
                 android:textColor="@color/colorAccent"
@@ -408,7 +412,7 @@
                     android:id="@+id/textView39"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/roboto_thin"
                     android:text="@string/busq_valoracion"
                     android:textStyle="bold" />
