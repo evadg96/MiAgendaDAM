@@ -77,7 +77,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName" />
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:maxLines="1" />
 
                         <ImageButton
                             android:id="@+id/btn_buscar_horas_exactas"
@@ -112,7 +114,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName" />
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:maxLines="1" />
 
                         <EditText
                             android:id="@+id/txt_rango_horas_2"
@@ -120,7 +124,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName" />
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:maxLines="1" />
 
                         <ImageButton
                             android:id="@+id/btn_buscar_rango_horas"
@@ -176,7 +182,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName" />
+                            android:inputType="textPersonName"
+                            android:maxLines="1" />
 
                         <ImageButton
                             android:id="@+id/btn_buscar_inicio_jornada"
@@ -211,7 +218,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName" />
+                            android:inputType="textPersonName"
+                            android:maxLines="1" />
 
                         <ImageButton
                             android:id="@+id/btn_buscar_fin_jornada"
@@ -296,7 +304,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLines="1" />
 
                     <ImageButton
                         android:id="@+id/btn_buscar_fecha"
@@ -331,7 +340,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLines="1" />
 
                     <EditText
                         android:id="@+id/txt_fecha_2"
@@ -339,7 +349,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:maxLines="1" />
 
                     <ImageButton
                         android:id="@+id/btn_buscar_rango_fechas"

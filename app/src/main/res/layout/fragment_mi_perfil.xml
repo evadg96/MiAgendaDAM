@@ -81,6 +81,9 @@
                         android:ems="10"
                         android:hint="@string/mi_perfil_nombre"
                         android:inputType="textCapWords|textPersonName"
+                        android:lines="1"
+                        android:maxLength="20"
+                        android:maxLines="1"
                         android:textColor="@drawable/edit_text_selector" />
 
                     <EditText
@@ -91,6 +94,9 @@
                         android:ems="10"
                         android:hint="@string/mi_perfil_apellidos"
                         android:inputType="textCapWords|textPersonName"
+                        android:lines="1"
+                        android:maxLength="50"
+                        android:maxLines="1"
                         android:textColor="@drawable/edit_text_selector" />
                 </LinearLayout>
 
@@ -133,6 +139,7 @@
                         android:ems="10"
                         android:hint="@string/sHorasFct"
                         android:inputType="textPersonName"
+                        android:maxLength="3"
                         android:textColor="@drawable/edit_text_selector" />
 
 
@@ -168,7 +175,9 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:inputType="textCapWords|textPersonName"
+                            android:lines="1"
                             android:maxLength="50"
+                            android:maxLines="1"
                             android:textColor="@drawable/edit_text_selector" />
                     </LinearLayout>
 
@@ -196,7 +205,9 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:inputType="textCapWords|textPersonName"
+                            android:lines="1"
                             android:maxLength="50"
+                            android:maxLines="1"
                             android:textColor="@drawable/edit_text_selector" />
                     </LinearLayout>
 
@@ -296,7 +307,9 @@
                     android:ems="10"
                     android:hint="@string/sClave"
                     android:inputType="textPassword"
+                    android:lines="1"
                     android:maxLength="20"
+                    android:maxLines="1"
                     android:textColor="@drawable/edit_text_selector" />
 
                 <EditText
@@ -307,7 +320,9 @@
                     android:ems="10"
                     android:hint="@string/sClave2"
                     android:inputType="textPassword"
+                    android:lines="1"
                     android:maxLength="20"
+                    android:maxLines="1"
                     android:textColor="@drawable/edit_text_selector" />
 
                 <Button

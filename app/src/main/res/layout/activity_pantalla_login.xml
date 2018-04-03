@@ -44,7 +44,10 @@
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/hint_nombre_usuario"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:lines="1"
+                android:maxLength="20"
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -60,6 +63,8 @@
                 android:imeActionId="6"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
+                android:lines="1"
+                android:maxLength="100"
                 android:maxLines="1"
                 android:singleLine="true" />
 

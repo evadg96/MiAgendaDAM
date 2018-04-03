@@ -20,7 +20,11 @@
                 android:id="@+id/editText_correo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/sCorreo" />
+                android:hint="@string/sCorreo"
+                android:inputType="textEmailAddress"
+                android:lines="1"
+                android:maxLength="100"
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -31,9 +35,13 @@
                 android:id="@+id/editText_codigo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_codigo_confirmacion" />
+                android:hint="@string/hint_codigo_confirmacion"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="6"
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
-
+        <!-- si se cambiase la longitud de los códigos de confirmación habría que cambiar el maxLength del EditText correspondiente-->
         <Button
             android:id="@+id/btn_confirmar"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
