@@ -1,0 +1,164 @@
+package es.proyecto.eva.miagendadam.Fragments.Contactos;
+
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.nombre_seleccionado_codificado;
+import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.modulo_seleccionado_codificado;
+import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.correo_seleccionado;
+import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.telefono_seleccionado;
+
+import es.proyecto.eva.miagendadam.R;
+
+public class VerContacto extends AppCompatActivity {
+    TextView txtNombre, txtModulo, txtCorreo, txtTelefono;
+    ImageButton btnLlamar, btnEnviarCorreo;
+    FloatingActionButton btnEditar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ver_contacto);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        txtNombre = (TextView) findViewById(R.id.txt_nombre);
+        txtModulo = (TextView) findViewById(R.id.txt_modulo);
+        txtCorreo = (TextView) findViewById(R.id.txt_correo);
+        txtTelefono = (TextView) findViewById(R.id.txt_telefono);
+        btnLlamar = (ImageButton) findViewById(R.id.btn_llamar);
+        btnEnviarCorreo = (ImageButton) findViewById(R.id.btn_correo);
+        btnEditar = (FloatingActionButton) findViewById(R.id.btn_editar_contacto);
+        System.out.println("VISTA DETALLE DE CONTACTO.");
+        System.out.println("NOMBRE SELECCIONADO: " + nombre_seleccionado_codificado + "\n CORREO SELECCIONADO: "+ correo_seleccionado
+                + "\n MODULO SELECCIONADO: "+ modulo_seleccionado_codificado + "\n TELEFONO: "+ telefono_seleccionado);
+        // Ponemos los datos obtenidos del contacto seleccionado
+        txtNombre.setText(nombre_seleccionado_codificado);
+        txtModulo.setText(modulo_seleccionado_codificado);
+        txtCorreo.setText(correo_seleccionado);
+        // si el contacto seleccionado no tiene teléfono asociado, escondemos el TextView del teléfono y el icono de llamar
+        if (telefono_seleccionado.equals("")) {
+            btnLlamar.setVisibility(View.GONE);
+            txtTelefono.setVisibility(View.GONE);
+        } else {
+            txtTelefono.setText(telefono_seleccionado);
+            // asignamos la función de llamar al botón
+            btnLlamar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Llamar contacto");
+                    llamada();
+                }
+            });
+        }
+        btnEnviarCorreo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                escribirCorreo();
+            }
+        });
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerContacto.this, EditarContacto.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onResume(){
+       super.onResume();
+       System.out.println("ON RESUME VER CONTACTO");
+    }
+
+    /***********************************************************************************************
+     * Método que realiza una llamada de teléfono al número de teléfono del contacto
+     **********************************************************************************************/
+    public void llamada(){
+        Intent i = new Intent(android.content.Intent.ACTION_CALL, Uri.parse("tel:" + telefono_seleccionado));
+        // comprobamos si el permiso de llamada está concedido o no
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) { // No está concedido
+            System.out.println("Permiso no concedido, solicitar permiso");
+            AlertDialog.Builder builder = new AlertDialog.Builder(VerContacto.this);
+            builder.setMessage(R.string.texto_permiso_llamada)
+                    .setPositiveButton(R.string.opc_permiso, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            gestionaPermisos();
+                        }
+                    })
+                    .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Se cancela el diálogo, dejamos
+                            // en blanco para que no se haga nada,
+                            // solo cerrar el diálogo
+                        }
+                    });
+            Dialog dialog = builder.create();
+            dialog.show(); // mostramos el diálogo
+            return;
+        } else { // Sí está concedido
+            startActivity(i);
+            System.out.println("Permiso concedido, llamando...");
+        }
+    }
+
+    public void gestionaPermisos(){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+        intent.setData(uri);
+        this.startActivity(intent);
+    }
+
+    /*******************************************************************************************************
+     * Método que abre una app cliente de correo electrónico para enviarle un email al contacto seleccionado
+     ******************************************************************************************************/
+    public void escribirCorreo(){
+        Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", correo_seleccionado , null));
+        // i.putExtra(Intent.EXTRA_SUBJECT, "Asunto"); <-- si quisiéramos poner un asunto por defecto
+        try {
+            startActivity(Intent.createChooser(i, "Enviar email..."));
+            finish();
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "No tienes clientes de email instalados.", Toast.LENGTH_SHORT).show();
+        }
+
+        /*******************************************************************************************
+         *  OTRA FORMA DE HACERLO:
+         *  protected void sendEmail() {
+             String[] TO = {"contacto@seogalicia.es"}; // aquí pon tu correo
+             String[] CC = {""};
+             Intent emailIntent = new Intent(Intent.ACTION_SEND);
+             emailIntent.setData(Uri.parse("mailto:"));
+             emailIntent.setType("text/plain");
+             emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+             emailIntent.putExtra(Intent.EXTRA_CC, CC);
+             // Esto podrás modificarlo si quieres, el asunto y el cuerpo del mensaje
+             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Asunto");
+             emailIntent.putExtra(Intent.EXTRA_TEXT, "Escribe aquí tu mensaje");
+
+             try {
+                 startActivity(Intent.createChooser(emailIntent, "Enviar email..."));
+                 finish();
+             } catch (android.content.ActivityNotFoundException ex) {
+                 Toast.makeText(MainActivity.this,
+                 "No tienes clientes de email instalados.", Toast.LENGTH_SHORT).show();
+             }
+         }
+         ******************************************************************************************/
+    }
+}
