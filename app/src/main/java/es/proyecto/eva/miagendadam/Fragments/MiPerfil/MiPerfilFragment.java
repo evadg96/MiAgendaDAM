@@ -289,28 +289,34 @@ public class MiPerfilFragment extends Fragment {
      **********************************************************************************************/
     public void rellenarCampos(){
         try {
-            rellenarSpinners();
-            // asignamos los adaptadores de los spinner con los datos de cada array
-            spinnerFamiliaCiclo.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, familias));
-            spinnerProvincia.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, provincias));
-            spinnerCiclo.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, ciclos));
-            // ponemos los textos correspondientes en cada campo
-            tvNombreSaludo.setText(" " + nombre_del_estudiante);
-            txtNombre.setText(nombre_del_estudiante);
-            txtApellidos.setText(apellidos_del_usuario);
-            txtCentroEstudios.setText(centro_estudios_usuario);
-            txtCentroPracticas.setText(centro_practicas_usuario);
-            txtHorasFCT.setText(horas_fct_usuario);
-            tvNombreUsuario.setText(nombre_de_usuario);
-            tvCorreo.setText(correo_usuario);
-            spinnerProvincia.setPrompt(provincia_del_usuario);
-            spinnerCiclo.setPrompt(ciclo_formativo_usuario);
-            spinnerFamiliaCiclo.setPrompt(familia_ciclo_usuario);
+
+            // primero validamos que no haya habido errores al obtener los datos del usuario y los campos no estén vacíos:
+            if (nombre_del_estudiante.isEmpty() || apellidos_del_usuario.isEmpty() || centro_estudios_usuario.isEmpty() || centro_practicas_usuario.isEmpty() || horas_fct_usuario.isEmpty()){
+                Snackbar.make(getActivity().findViewById(android.R.id.content),
+                        R.string.error_obtener_datos_usuario, Snackbar.LENGTH_LONG).show();
+            } else {
+                rellenarSpinners();
+                // asignamos los adaptadores de los spinner con los datos de cada array
+                spinnerFamiliaCiclo.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, familias));
+                spinnerProvincia.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, provincias));
+                spinnerCiclo.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, ciclos));
+                // ponemos los textos correspondientes en cada campo
+                tvNombreSaludo.setText(" " + nombre_del_estudiante);
+                txtNombre.setText(nombre_del_estudiante);
+                txtApellidos.setText(apellidos_del_usuario);
+                txtCentroEstudios.setText(centro_estudios_usuario);
+                txtCentroPracticas.setText(centro_practicas_usuario);
+                txtHorasFCT.setText(horas_fct_usuario);
+                tvNombreUsuario.setText(nombre_de_usuario);
+                tvCorreo.setText(correo_usuario);
+                spinnerProvincia.setPrompt(provincia_del_usuario);
+                spinnerCiclo.setPrompt(ciclo_formativo_usuario);
+                spinnerFamiliaCiclo.setPrompt(familia_ciclo_usuario);
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
     }
-
 
     // TODO 2: falta por añadir algunas validaciones de formato más: en registro de nuevo usuario, para los apellidos. En contactos, para el módulo y el correo ...?
     /***********************************************************************************************
