@@ -9,25 +9,41 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.id_contacto_seleccionado;
 import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.nombre_seleccionado_codificado;
 import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.modulo_seleccionado_codificado;
 import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.correo_seleccionado;
 import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.telefono_seleccionado;
 
 import es.proyecto.eva.miagendadam.R;
+import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class VerContacto extends AppCompatActivity {
     TextView txtNombre, txtModulo, txtCorreo, txtTelefono;
     ImageButton btnLlamar, btnEnviarCorreo;
     FloatingActionButton btnEditar;
+    private StringRequest request;
+    private String url_consulta = "http://miagendafp.000webhostapp.com/delete_contacto.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +99,35 @@ public class VerContacto extends AppCompatActivity {
     public void onResume(){
        super.onResume();
        System.out.println("ON RESUME VER CONTACTO");
+    }
+
+    /***********************************************************************************************
+     * Crea el menú de opciones de la barra de acciones
+     * @param menu
+     * @return
+     **********************************************************************************************/
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_borrar, menu); // la R referencia a la ubicación del archivo
+        return true;
+    }
+
+    /***********************************************************************************************
+     *     Opciones del menú de la barra de acciones
+     **********************************************************************************************/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_borrar: //Opción de borrar el registro
+                //Log.i("VerYEditarRegistroD", "Action Borrar registro");
+                borrarContacto();
+                return true;
+            case android.R.id.home: // Opción de volver hacia atrás
+                //Log.i("VerYEditarRegistroD", "Action Atrás");
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /***********************************************************************************************
@@ -160,5 +205,54 @@ public class VerContacto extends AppCompatActivity {
              }
          }
          ******************************************************************************************/
+    }
+
+    /***********************************************************************************************
+     * Método que elimina el registro seleccionado, preguntando previamente si se desea realizar la
+     * operación
+     **********************************************************************************************/
+    public void borrarContacto(){
+        // Preguntamos antes de borrar definitivamente
+        AlertDialog.Builder builder = new AlertDialog.Builder(VerContacto.this);
+        builder.setTitle(R.string.dialog_borrar_contacto); // titulo del diálogo
+        builder.setMessage(R.string.dialog_texto_borrar_contacto)
+                .setPositiveButton(R.string.dialog_opcion_borrar, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        request = new StringRequest(Request.Method.POST, url_consulta,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Toast.makeText(VerContacto.this, R.string.toast_contacto_eliminado, Toast.LENGTH_LONG).show();
+                                        finish(); // cerramos la actividad para volver al fragmento con el listado de registros
+                                        //Log.d("VerYEditarRegistroDiario", "Registro borrado");
+
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                        //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para borrar el registro seleccionado");
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> parametros = new HashMap<>();
+                                parametros.put("idContacto", id_contacto_seleccionado);
+                                return parametros;
+                            }
+                        };
+                        AppController.getInstance().addToRequestQueue(request);
+                    }
+                })
+                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                    }
+                });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }

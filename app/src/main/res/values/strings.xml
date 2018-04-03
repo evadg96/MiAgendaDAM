@@ -157,13 +157,21 @@
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
     <string name="no_hay_registros">No hay registros que borrar.</string>
 
-    <!-- Strings fragment Contacto -->
+    <!-- Strings fragment ContactosFragment -->
     <string name="texto_contactos_vacio">¡Vaya, parece que no has añadido ningún contacto todavía! Pulsa el botón circular de abajo para crear un contacto nuevo.</string>
+    <string name="eliminar_todos_contactos">Eliminar todos los contactos</string>
+    <string name="alert_borrar_contactos">¿Estás seguro de que deseas borrar todos los contactos? Esta acción
+    no se podrá deshacer.</string>
+    <string name="contactos_borrados">Contactos borrados correctamente</string>
+    <string name="no_hay_contactos">No hay contactos que borrar.</string>
 
     <!-- Strings VerContacto -->
     <string name="texto_permiso_llamada">Para realizar esta acción es necesario que le otorgues a la aplicación el permiso de realizar llamadas. Puedes revocar este u otros permisos
     en cualquier momento a través de los ajustes de la aplicación.</string>
     <string name="opc_permiso">Gestionar permisos</string>
+    <string name="dialog_borrar_contacto">Eliminar contacto</string>
+    <string name="dialog_texto_borrar_contacto">¿Estás seguro de que quieres eliminar al contacto actual? Esta acción no se podrá deshacer.</string>
+    <string name="toast_contacto_eliminado">Contacto eliminado.</string>
 
     <!-- Strings NuevoContacto -->
     <string name="nuevo_contacto_nombre">Nombre</string>
