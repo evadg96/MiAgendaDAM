@@ -1,5 +1,6 @@
 package es.proyecto.eva.miagendadam.Fragments.Horas;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.PantallaLogin;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
@@ -44,6 +46,8 @@ public class HorasFragment extends Fragment {
     private String url_consulta = "http://miagendafp.000webhostapp.com/select_horas_minutos_trabajados.php";
     private String idUsuario = "";
     private JSONArray jsonArray;
+    private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
+    ProgressDialog progressDialog;
 
     public HorasFragment() {
         // Required empty public constructor
@@ -68,6 +72,11 @@ public class HorasFragment extends Fragment {
         txtMinutosRestantes = (TextView) view.findViewById(R.id.txt_minutos_restantes);
         txtM1 = (TextView) view.findViewById(R.id.txt_min); // si no hay minutos, la letra m desaperecerá en ambos casos
         txtM2 = (TextView) view.findViewById(R.id.txt_min_2);
+        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Obteniendo horas...");
+        progressDialog.show();
         obtenerHorasTrabajadas();
         txtHorasModuloFCT.setText(horas_fct);
         return view;
@@ -169,7 +178,8 @@ public class HorasFragment extends Fragment {
         } else {
             horas_restantes = Integer.valueOf(horas_fct) - horas_trabajadas;
         }
-        // Ponemos los valores en los campos
+        // Ponemos los valores en los campos, no sin antes cerrar el diálogo de carga
+        progressDialog.cancel();
         txtHorasRestantes.setText(String.valueOf(horas_restantes)); // ponemos en el campo de horas restantes las horas obtenidas
         if (minutos_restantes > 0) { // si hay minutos restantes, los ponemos
             txtMinutosRestantes.setText(String.valueOf(minutos_restantes));

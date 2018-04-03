@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -45,7 +44,6 @@ import javax.mail.internet.MimeMessage;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class RegistroNuevoUsuario extends AppCompatActivity {
-
     Button btnRegistro;
     Spinner spinnerProvincia, spinnerFamiliasCiclo, spinnerCiclo;
     EditText txtNombre, txtApellidos, txtCentroEstudios, txtHorasFct, txtCentroPracticas, txtCorreo, txtNombreUsuario, txtClave, txtClave2;
@@ -180,10 +178,14 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"; // declaramos patrón para validar el formato del correo electrónico introducido
     // por el usuario
-    private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+    private String pattern_formato_n_usuario_y_clave = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|0|1|2|3|4|5|6|7|8|9" // números
             + "|!|=|-|_|@|:|%|~|#)+";
+
+    private String pattern_formato_nombre_ape = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+            + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
+            + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,136 +312,143 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 Snackbar.make(findViewById(android.R.id.content),
                         R.string.error_horas_practicas, Snackbar.LENGTH_LONG).show();
                 // Log.i("RegistroNuevoUsuario", "Horas FCT por encima de lo permitido");
-            } else {
-                Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
-                Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
-                if (!matcher.matches()) { // si el correo no cumple con el formato del patrón, salta el mensaje de error
-                   // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
+            } else { // Validamos formato del nombre
+                if (!nombre.matches(pattern_formato_nombre_ape)) { // si el correo no cumple con el formato del patrón, salta el mensaje de error
+                    // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
                     Snackbar.make(findViewById(android.R.id.content),
-                            R.string.error_correo_no_valido, Snackbar.LENGTH_SHORT).show();
+                            R.string.error_nombre_invalido, Snackbar.LENGTH_LONG).show();
                     //  Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
-                } else {
-                    if (n_Usuario.length() < 6) {
-                       // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_usuario, Toast.LENGTH_LONG).show();
+                } else { // validamos formato del correo
+                    Pattern pattern = Pattern.compile(pattern_email); // creamos el patrón asignándole el formato declarado arriba para el correo electrónico
+                    Matcher matcher = pattern.matcher(correo); // le indicamos que queremos que aplique el patrón al correo
+                    if (!matcher.matches()) { // si el correo no cumple con el formato del patrón, salta el mensaje de error
+                        // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
                         Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_longitud_usuario, Snackbar.LENGTH_LONG).show();
-                       // Log.i("RegistroNuevoUsuario", "Longitud de nombre de usuario inferior a la necesaria");
-                    } else {
-                        if (clave.length() < 8) {
-                          //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
+                                R.string.error_correo_no_valido, Snackbar.LENGTH_SHORT).show();
+                        //  Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
+                    } else { // validamos longitud del nombre de usuario
+                        if (n_Usuario.length() < 6) {
+                            // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_usuario, Toast.LENGTH_LONG).show();
                             Snackbar.make(findViewById(android.R.id.content),
-                                    R.string.error_longitud_clave, Snackbar.LENGTH_LONG).show();
-                            //   Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
-                        } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE:
-                            if (!clave.matches(pattern_formato) || !n_Usuario.matches(pattern_formato)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
-                             //   Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_clave, Toast.LENGTH_LONG).show();
+                                    R.string.error_longitud_usuario, Snackbar.LENGTH_LONG).show();
+                            // Log.i("RegistroNuevoUsuario", "Longitud de nombre de usuario inferior a la necesaria");
+                        } else { // validamos longitud de la clave
+                            if (clave.length() < 8) {
+                                //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
                                 Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_formato_clave, Snackbar.LENGTH_LONG).show();
-                                //   Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
-                            } else {
-                                if (!clave.equals(clave2)) {
-                                  //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
+                                        R.string.error_longitud_clave, Snackbar.LENGTH_LONG).show();
+                                //   Log.i("RegistroNuevoUsuario", "Longitud de clave inferior a la necesaria");
+                            } else { // VALIDAMOS CARACTERES ACEPTADOS PARA LA CLAVE y el nombre de usuario:
+                                if (!clave.matches(pattern_formato_n_usuario_y_clave) || !n_Usuario.matches(pattern_formato_n_usuario_y_clave)) { // si la clave o el nombre de usuario no cumplen con el formato del patrón
+                                    //   Toast.makeText(RegistroNuevoUsuario.this, R.string.error_formato_clave, Toast.LENGTH_LONG).show();
                                     Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_claves_no_coinciden, Snackbar.LENGTH_SHORT).show();
-                                    //   Log.i("RegistroNuevoUsuario", "Las claves no coinciden");
-                                    txtClave.setText(""); // Borramos los campos de clave
-                                    txtClave2.setText("");
-                                } else {
-                                    System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellidos + "\n" + provincia + "\n"
-                                            + centro_estudios + "\n" + ciclo_formativo + "\n" + horas_fct + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
-                                    // INICIAMOS CONEXIÓN CON VOLLEY
-                                    StringRequest request = new StringRequest(Request.Method.POST, url_consulta,
-                                            new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    if (response.equals("1")) {
-                                                        try {
-                                                          //  Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese correo");
-                                                           // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
-                                                            Snackbar.make(findViewById(android.R.id.content),
-                                                                    R.string.error_correo_ya_existe, Snackbar.LENGTH_SHORT).show();
-                                                        } catch (Exception e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    } else {
-                                                        if (response.equals("2")) {
+                                            R.string.error_formato_clave, Snackbar.LENGTH_LONG).show();
+                                    //   Log.i("RegistroNuevoUsuario", "Formato de clave o nombre de usuario no válido");
+                                } else { // LOS FORMATOS SON CORRECTOS
+                                    if (!clave.equals(clave2)) { // si las claves no coinciden...
+                                        //  Toast.makeText(RegistroNuevoUsuario.this, R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                R.string.error_claves_no_coinciden, Snackbar.LENGTH_SHORT).show();
+                                        //   Log.i("RegistroNuevoUsuario", "Las claves no coinciden");
+                                        txtClave.setText(""); // Borramos los campos de clave
+                                        txtClave2.setText("");
+                                    } else { // TODOS LOS DATOS SON CORRECTOS!!
+                                        System.out.println("DATOS USUARIO A REGISTRAR: " + "\n" + nombre + "\n" + apellidos + "\n" + provincia + "\n"
+                                                + centro_estudios + "\n" + ciclo_formativo + "\n" + horas_fct + "\n" + centro_practicas + "\n" + correo + "\n" + n_Usuario + "\n" + clave + "\n" + clave2);
+                                        // INICIAMOS CONEXIÓN CON VOLLEY
+                                        StringRequest request = new StringRequest(Request.Method.POST, url_consulta,
+                                                new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        if (response.equals("1")) {
                                                             try {
-                                                             //   Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese nombre");
-                                                                //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
+                                                                //  Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese correo");
+                                                                // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
                                                                 Snackbar.make(findViewById(android.R.id.content),
-                                                                        R.string.error_usuario_ya_existe, Snackbar.LENGTH_LONG).show();
+                                                                        R.string.error_correo_ya_existe, Snackbar.LENGTH_SHORT).show();
                                                             } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
                                                         } else {
-                                                            if (response.equals("0")) { // datos y registro correcto
+                                                            if (response.equals("2")) {
                                                                 try {
-                                                                  //  Log.d("RegistroNuevoUsuario", "Usuario creado correctamente");
-                                                                    enviarCorreoConfirmacion();
-                                                                    // Creamos alerta de confirmación  para decir que se ha creado correctamente
-                                                                    // y mandamos a la pantalla de confirmación de usuario
-                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistroNuevoUsuario.this);
-                                                                    builder.setTitle(R.string.title_dialog_registro_correcto); // titulo del diálogo
-                                                                    builder.setMessage(R.string.text_dialog_registro_correcto)
-                                                                            .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
-                                                                                public void onClick(DialogInterface dialog, int id) {
-                                                                                    // mandamos a la pantalla de confirmación de registro
-                                                                                    // La idea es que al abrir la pantalla de confirmación esta se cierre,
-                                                                                    // para que al cerrar la pantalla de confirmación al pulsar atrás y destruir
-                                                                                    // la actividad no se pueda volver a esta pantalla
-                                                                                    Intent intent = new Intent(RegistroNuevoUsuario.this, ConfirmaRegistro.class);
-                                                                                    startActivity(intent);
-                                                                                    finish();
-                                                                                }
-                                                                            });
-                                                                    /**.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                                                     public void onClick(DialogInterface dialog, int id) {
-                                                                     // User cancelled the dialog
-                                                                     }
-                                                                     });*/
-                                                                    // Create the AlertDialog object and return it
-                                                                    Dialog dialog = builder.create();
-                                                                    dialog.show();
-
+                                                                    //   Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese nombre");
+                                                                    //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
+                                                                    Snackbar.make(findViewById(android.R.id.content),
+                                                                            R.string.error_usuario_ya_existe, Snackbar.LENGTH_LONG).show();
                                                                 } catch (Exception e) {
                                                                     e.printStackTrace();
-                                                                  //  Log.e("RegistroNuevoUsuario", "Error al intentar enviar el correo con el código de confirmación");
+                                                                }
+                                                            } else {
+                                                                if (response.equals("0")) { // datos y registro correcto
+                                                                    try {
+                                                                        //  Log.d("RegistroNuevoUsuario", "Usuario creado correctamente");
+                                                                        enviarCorreoConfirmacion();
+                                                                        // Creamos alerta de confirmación  para decir que se ha creado correctamente
+                                                                        // y mandamos a la pantalla de confirmación de usuario
+                                                                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistroNuevoUsuario.this);
+                                                                        builder.setTitle(R.string.title_dialog_registro_correcto); // titulo del diálogo
+                                                                        builder.setMessage(R.string.text_dialog_registro_correcto)
+                                                                                .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
+                                                                                    public void onClick(DialogInterface dialog, int id) {
+                                                                                        // mandamos a la pantalla de confirmación de registro
+                                                                                        // La idea es que al abrir la pantalla de confirmación esta se cierre,
+                                                                                        // para que al cerrar la pantalla de confirmación al pulsar atrás y destruir
+                                                                                        // la actividad no se pueda volver a esta pantalla
+                                                                                        Intent intent = new Intent(RegistroNuevoUsuario.this, ConfirmaRegistro.class);
+                                                                                        startActivity(intent);
+                                                                                        finish();
+                                                                                    }
+                                                                                });
+                                                                        /**.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                                                         public void onClick(DialogInterface dialog, int id) {
+                                                                         // User cancelled the dialog
+                                                                         }
+                                                                         });*/
+                                                                        // Create the AlertDialog object and return it
+                                                                        Dialog dialog = builder.create();
+                                                                        dialog.show();
+
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                        //  Log.e("RegistroNuevoUsuario", "Error al intentar enviar el correo con el código de confirmación");
+                                                                    }
                                                                 }
                                                             }
                                                         }
                                                     }
-                                                }
-                                            },
-                                            new Response.ErrorListener() {
-                                                @Override
-                                                public void onErrorResponse(VolleyError error) {
-                                                    //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                                    Snackbar.make(findViewById(android.R.id.content),
-                                                            R.string.error_servidor, Snackbar.LENGTH_LONG).show();
-                                                   // Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para crear el nuevo usuario");
-                                                }
-                                            }) {
-                                        @Override
-                                        protected Map<String, String> getParams() throws AuthFailureError {
-                                            // AQUI SE ENVIARÁN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                                            Map<String, String> parametros = new HashMap<>();
-                                            parametros.put("nombre", nombre);
-                                            parametros.put("apellidos", apellidos);
-                                            // parametros.put("apellido_dos", apellido_dos);
-                                            parametros.put("provincia", provincia);
-                                            parametros.put("centro_estudios", centro_estudios);
-                                            parametros.put("familia_ciclo", familiaCiclo);
-                                            parametros.put("ciclo_formativo", ciclo_formativo);
-                                            parametros.put("horas_fct", horas_fct);
-                                            parametros.put("centro_practicas", centro_practicas);
-                                            parametros.put("correo", correo);
-                                            parametros.put("nUsuario", n_Usuario);
-                                            parametros.put("clave", clave);
-                                            parametros.put("fecha_registro", fecha_registro);
-                                            return parametros;
-                                        }
-                                    };
-                                    AppController.getInstance().addToRequestQueue(request);
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                                        Snackbar.make(findViewById(android.R.id.content),
+                                                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                                        // Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para crear el nuevo usuario");
+                                                    }
+                                                }) {
+                                            @Override
+                                            protected Map<String, String> getParams() throws AuthFailureError {
+                                                // AQUI SE ENVIARÁN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                                                Map<String, String> parametros = new HashMap<>();
+                                                parametros.put("nombre", nombre);
+                                                parametros.put("apellidos", apellidos);
+                                                // parametros.put("apellido_dos", apellido_dos);
+                                                parametros.put("provincia", provincia);
+                                                parametros.put("centro_estudios", centro_estudios);
+                                                parametros.put("familia_ciclo", familiaCiclo);
+                                                parametros.put("ciclo_formativo", ciclo_formativo);
+                                                parametros.put("horas_fct", horas_fct);
+                                                parametros.put("centro_practicas", centro_practicas);
+                                                parametros.put("correo", correo);
+                                                parametros.put("nUsuario", n_Usuario);
+                                                parametros.put("clave", clave);
+                                                parametros.put("fecha_registro", fecha_registro);
+                                                return parametros;
+                                            }
+                                        };
+                                        AppController.getInstance().addToRequestQueue(request);
+                                    }
                                 }
                             }
                         }

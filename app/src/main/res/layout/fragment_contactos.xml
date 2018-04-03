@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.proyecto.eva.miagendadam.Fragments.Tutores.TutoresFragment">
+    tools:context="es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
         android:padding="20dp">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_nuevo_tutor"
+            android:id="@+id/btn_nuevo_contacto"
             style="@style/Widget.Design.FloatingActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -68,7 +68,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     Button btnVerHoras;
     TextView turno1, turno2, txtHoras, txtInfoReunion, txtInfoReunion2; // para mostrar u ocultar los títulos que identifican a cada turno en caso de que haya varios
     private StringRequest request;
-    String sDia = "", sMes = "", sAnyo = ""; // la fecha seleccionada por el usuario a través del timePicker
     private String descripcionNueva = "", valoracionNueva = "";
     // Creamos variable de horas y minutos que serán las que usemos para obtener la hora seleccionada en el timepicker
     int tpHoras, tpMinutos;
@@ -254,8 +253,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
             }
         });
 
-        // igualamos fecha y horas de jornada a los datos que tenía el registro, por si no se modifican,
-        // para que guarde los datos que había si se actualiza el registro
         sHoraInicio1 = hora_inicio_1_seleccionada;
         sMinInicio1 = minuto_inicio_1_seleccionado;
         sHoraFin1 = hora_fin_1_seleccionada;
@@ -272,12 +269,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         minutoInicio2 = Integer.valueOf(minuto_inicio_2_seleccionado);
         horaFin2 = Integer.valueOf(hora_fin_2_seleccionada);
         minutoFin2 = Integer.valueOf(minuto_fin_2_seleccionado);
-        sDia = dia_seleccionado;
-        sMes = mes_seleccionado;
-        sAnyo = anyo_seleccionado;
         horas_reunion = horas_reunion_seleccionada;
 
-        // ******************** PONEMOS DATOS EN CAMPOS *******************************
+        // PONEMOS DATOS del registro seleccionado en sus correspondientes campos
         // Fijamos los datos que queremos que se muestren
         txtFechaSeleccionada.setText(fecha_seleccionada);
         txtHoraInicio1Seleccionada.setText(sHoraInicio1 + ":" + sMinInicio1);
@@ -287,8 +281,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         // Codificamos los datos de la descripción para visualizar sus tildes y otros caracteres
         String descripcionCodificada = codificaString(descripcion_seleccionada);
         txtDescripcionSeleccionada.setText(descripcionCodificada);
-
-        // ************************* Inhabilitamos posibilidad de seleccionar/editar campos *****************************
+        //  Inhabilitamos edición de campos
         deshabilitarEdicion();
         // marcamos el icono que se corresponda con la valoración del día
         if (valoracion_seleccionada.equals("Bueno")) {
@@ -352,6 +345,9 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /***********************************************************************************************
+     * Método que deshabilita la edición de campos para que no se puedan cambiar datos del registro
+     **********************************************************************************************/
     public void deshabilitarEdicion(){
         // ************************* Inhabilitamos posibilidad de seleccionar/editar campos *****************************
         txtDescripcionSeleccionada.setEnabled(false);
@@ -1061,7 +1057,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                     parametros.put("idUsuario", idUsuario);
                     parametros.put("idDia", id_dia_seleccionado);
                     return parametros;
-                } 
+                }
             };
             AppController.getInstance().addToRequestQueue(request);
         }

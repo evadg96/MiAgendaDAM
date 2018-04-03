@@ -43,7 +43,7 @@
     <string name="sClave2">Repite la contraseña</string>
     <string name="sFamiliaCiclo">Familia del ciclo formativo</string>
 
-    <!-- diálogo registro -->
+    <!-- diálogo registro RegistroNuevoUsuario -->
     <string name="title_dialog_registro_correcto">¡Registro (casi) completado!</string>
     <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa
         tu bandeja de entrada.
@@ -86,7 +86,7 @@
     <string name="title_dialog_recuperar_usuario">Nombre de usuario enviado</string>
     <string name="txt_dialog_recuperar_usuario">Se ha enviado el nombre de usuario a la dirección de correo electrónico de usuario introducidad. Revisa tu bandeja de entrada.</string>
 
-    <!-- Strings opciones menu nav draw -->
+    <!-- Strings opciones menu nav draw NavMenu -->
     <string name="opc_inicio">Inicio</string>
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
@@ -101,11 +101,11 @@
     <string name="opc_mat_reco">Material recomendado</string>
     <string name="opc_mat_perso">Material personalizado</string>
     <string name="opc_perfil">Mi perfil</string>
-    <string name="opc_tutores">Tutores</string>
+    <string name="opc_contactos">Contactos de interés</string>
     <string name="nombre_usuario_menu">Nombre de usuario</string>
     <string name="correo_usuario_menu">Correo electrónico</string>
 
-    <!-- Strings acerca de pantalla login-->
+    <!-- Strings pantalla AcercaDe -->
     <string name="title_activity_acerca_de">Acerca de</string>
     <string name="acerca_de">Mi agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
         de España para proporcionar el listado de ciclos formativos y sus familias de origen, así como para establecer el cómputo
@@ -157,15 +157,26 @@
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
     <string name="no_hay_registros">No hay registros que borrar.</string>
 
-    <!-- Strings fragment Tutores -->
-    <string name="texto_tutores_vacio">¡Vaya, parece que no has añadido ningún tutor todavía! Pulsa el botón circular de abajo para crear un tutor nuevo.</string>
+    <!-- Strings fragment Contacto -->
+    <string name="texto_contactos_vacio">¡Vaya, parece que no has añadido ningún contacto todavía! Pulsa el botón circular de abajo para crear un contacto nuevo.</string>
 
-    <!-- Strings NuevoTutos -->
-    <string name="nuevo_tutor_nombre">Nombre</string>
-    <string name="nuevo_tutor_modulo">Módulo que imparte</string>
-    <string name="nuevo_tutor_correo">Correo electrónico</string>
-    <string name="nuevo_tutor_telefono">Teléfono (opcional)</string>
-    <string name="error_guardar_tutor">Se ha producido un error al intentar añadir al nuevo tutor.</string>
+    <!-- Strings VerContacto -->
+    <string name="texto_permiso_llamada">Para realizar esta acción es necesario que le otorgues a la aplicación el permiso de realizar llamadas. Puedes revocar este u otros permisos
+    en cualquier momento a través de los ajustes de la aplicación.</string>
+    <string name="opc_permiso">Gestionar permisos</string>
+
+    <!-- Strings NuevoContacto -->
+    <string name="nuevo_contacto_nombre">Nombre</string>
+    <string name="nuevo_contacto_modulo">Rol que desempeña (p.ej. Tutor FCT) </string>
+    <string name="nuevo_contacto_correo">Correo electrónico</string>
+    <string name="nuevo_contacto_telefono">Teléfono (opcional)</string>
+    <string name="contacto_guardado">Nuevo contacto guardado.</string>
+    <string name="error_guardar_contacto">Se ha producido un error al intentar añadir al nuevo contacto.</string>
+    <string name="error_nombre_invalido">El nombre introducido no es válido. Introduce otro que no tenga números ni caracteres que no sean acentuaciones.</string>
+
+    <!-- String EditarContacto -->
+    <string name="editar_contacto">Datos de contacto actualizados correctamente.</string>
+    <string name="error_editar_contacto">No se ha podido actualizar el contacto. Por favor, vuelve a intentarlo.</string>
 
     <!-- Strings pantalla BusquedaRegistros -->
     <string name="busqueda_horas">Búsqueda por horas trabajadas</string>
@@ -222,14 +233,12 @@
     <string name="respuesta_dialog_volver">Volver</string>
     <string name="respuesta_dialog_no">No</string>
     <string name="error_crear_registro">Se ha producido un error al intentar añadir el nuevo registro al diario.</string>
-
-
     <string name="ver_horas">Ver horas de la jornada</string>
-
     <string name="error_datos_jornada_1">Debes introducir las horas del turno.</string>
     <string name="error_datos_jornada_2">Debes introducir las horas de los turnos.</string>
     <string name="error_datos_jornada_4">La jornada introducida no es válida.</string>
     <string name="error_datos_jornada_5">La jornada de trabajo no puede ser superior a 8 horas.</string>
+
     <!-- Strings VerYEditarRegistroDiario -->
     <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
     <string name="dialog_borrar_registro">Eliminar registro</string>
@@ -242,12 +251,13 @@
     <string name="toast_registro_creado">Registro creado correctamente.</string>
     <string name="toast_cambios_guardados">Cambios guardados.</string>
 
-    <!-- String fragment Horas -->
+    <!-- String fragment HorasFragment -->
     <string name="horas_trabajadas">tiempo trabajado</string>
     <string name="horas_restantes">tiempo restante</string>
     <string name="info_horas_trabajadas">El número de horas trabajadas se obtiene de la suma de horas trabajadas de todos los registros del diario.</string>
     <string name="info_horas_restantes">El número de horas restantes se obtiene de la resta de la totalidad de horas del módulo FCT y las horas ya trabajadas. Esta cifra
     se corresponde con las horas que quedan por trabajar para completar el cómputo de horas del módulo FCT.</string>
+    <string name="dialog_cargando_horas">Obteniendo horas trabajadas y pendientes...</string>
 
     <!-- Strings fragment Mi perfil -->
     <string name="mi_perfil_saludo_inicial">¡Hola </string>

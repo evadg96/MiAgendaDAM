@@ -3,7 +3,6 @@ package es.proyecto.eva.miagendadam;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -12,11 +11,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,14 +26,14 @@ import org.json.JSONArray;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment;
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
 import es.proyecto.eva.miagendadam.Fragments.Inicio.InicioFragment;
 import es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment;
-import es.proyecto.eva.miagendadam.Fragments.Tutores.TutoresFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-// TODO: Fix bug
+// TODO: Fix bug, foco en opción seleccionada del menú lateral
 // En algunas opciones (p. ej. Diario) al seleccionar el apartado no se marca nada
 // En otras (p. ej. Horas) al seleccionar el apartado se queda marcado en el menú desplegable
 // PROBLEMA: unas sí otras no. Además, con los que se quedan marcados, si seleccionas uno de los que no se marcan,
@@ -122,8 +119,8 @@ public class NavMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_inicio);
-        // todo: fix bug
-        // Al actualiza la familia de ciclo del usuario desde Mi perfil, no se actualiza su valor en la cabecera del menú lateral...
+        // todo: Fix bug 2 (familia de ciclo en cabecera)
+        // Al actualizar la familia de ciclo del usuario desde Mi perfil, no se actualiza su valor en la cabecera del menú lateral...
     }
 
 
@@ -174,8 +171,8 @@ public class NavMenu extends AppCompatActivity
             setTitle(R.string.opc_anotaciones);
         } else if (id == R.id.nav_tutores) {
            // Log.i("NavMenu", "Opción menú: Tutores");
-            setTitle(R.string.opc_tutores);
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new TutoresFragment()).commit();
+            setTitle(R.string.opc_contactos);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new ContactosFragment()).commit();
         } else if (id == R.id.nav_proyecto) {
           //  Log.i("NavMenu", "Opción menú: Anteproyecto");
         } else if (id == R.id.nav_perfil) {
@@ -201,11 +198,11 @@ public class NavMenu extends AppCompatActivity
                         try {
                             //Log.d("MiPerfilFragment", "Obtenemos datos del usuario");
                             jsonArray = new JSONArray(response); // guardamos los registros en el array
-                            nombre_del_estudiante = jsonArray.getJSONObject(0).getString("nombre");
-                            apellidos_del_usuario = jsonArray.getJSONObject(0).getString("apellidos");
-                            provincia_del_usuario = jsonArray.getJSONObject(0).getString("provincia");
+                            nombre_del_estudiante = codificaString(jsonArray.getJSONObject(0).getString("nombre"));
+                            apellidos_del_usuario = codificaString(jsonArray.getJSONObject(0).getString("apellidos"));
+                            provincia_del_usuario = codificaString(jsonArray.getJSONObject(0).getString("provincia"));
                             horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
-                            centro_estudios_usuario = jsonArray.getJSONObject(0).getString("centro_estudios");
+                            centro_estudios_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_estudios"));
                             familia_ciclo_usuario = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
                             ciclo_formativo_usuario = codificaString(jsonArray.getJSONObject(0).getString("ciclo_formativo"));
                             centro_practicas_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_practicas"));

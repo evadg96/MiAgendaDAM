@@ -147,7 +147,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/sCorreo"
-                        android:inputType="textPersonName"
+                        android:inputType="textEmailAddress"
                         android:maxLength="100" />
 
                     <EditText

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".VolleyController.AppController"
@@ -74,7 +75,9 @@
             android:name=".Fragments.Diario.BusquedaRegistros"
             android:screenOrientation="portrait" />
         <activity android:name=".Fragments.Diario.ResultadosBusqueda" />
-        <activity android:name=".Fragments.Tutores.NuevoTutor"></activity>
+        <activity android:name=".Fragments.Contactos.NuevoContacto" />
+        <activity android:name=".Fragments.Contactos.VerContacto" />
+        <activity android:name=".Fragments.Contactos.EditarContacto"></activity>
     </application>
 
 </manifest>

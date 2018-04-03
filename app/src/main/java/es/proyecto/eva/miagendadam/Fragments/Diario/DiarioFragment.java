@@ -207,6 +207,7 @@ public class DiarioFragment extends Fragment {
         // dejaremos crear más registros.
         horas_fct = preferences.getString("horas_fct", "");
         horas_trabajadas = preferences.getString("horas_trabajadas", "");
+        System.out.println("HORAS FCT: " + horas_fct + " HORAS TRABAJADAS: " + horas_trabajadas);
         // ***************************************************************************************************
         Log.d("DiarioFragment", "onCreateView");
         // Al pulsar en el botón de nuevo (+) procedemos a crear un nuevo registro
@@ -216,10 +217,28 @@ public class DiarioFragment extends Fragment {
             public void onClick(View v) {
                Log.d("DiarioFragment", "Nuevo registro de diario");
                // primero comprobramos que no se haya completado el cómputo de horas del módulo FCT:
-                // TODO: DEPURAR
-                if (Integer.valueOf(horas_trabajadas) >= Integer.valueOf(horas_fct)){
-                    Toast.makeText(getActivity(), R.string.error_modulo_fct_completado, Toast.LENGTH_LONG).show();
-                } else { // si no se ha completado, procedemos a la creación del nuevo registro
+                // TODO: PENDIENTE DE DEPURAR
+                // Primero validamos que haya horas trabajadas almacenadas
+                // ¿Por qué? Porque si es la primera vez que accedemos al diario para crear un registro,
+                // aún no existirán horas trabajadas porque no hay registros de donde cogerlas, y por tanto
+                // la variable estará vacía, así que al hacer la validación de si hay más o iguales horas trabajadas
+                // que de fct, estará comparando un dato en blanco, y saltará error y cierre
+                // También está el problema de que la variable horas_trabajadas solo se crea cuando se comprueban las horas
+                // desde el apartado Horas. Si se diese el caso de que el usuario NUNCA accede a ese apartado, nunca se creará
+                // la variable, y por tanto no se podrá validar. Además está también el problema de que la variable solo se actualiza
+                // cuando el usuario accede a las horas. Podría darse por ejemplo el caso de que el usuario lleve semanas sin ver ese
+                // apartado, pero haya ido añadiendo registros. Por tanto, las horas_trabajadas no estarán actualizadas y el valor
+                // de la variable no se corresponderá con el valor real de horas, así que la validación sería inútil...
+
+                if(!horas_trabajadas.isEmpty()) { // si hay horas, comprobamos si hay más o iguales trabajadas que de fct
+                    if (Integer.valueOf(horas_trabajadas) >= Integer.valueOf(horas_fct)) {
+                        Toast.makeText(getActivity(), R.string.error_modulo_fct_completado, Toast.LENGTH_LONG).show();
+                    } else { // si no se ha completado, procedemos a la creación del nuevo registro
+                        Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
+                        startActivity(intent);
+                    }
+                }  else { // si no hay horas, directamente pasamos a la pantalla de creación
+                    System.out.println("NO HAY HORAS");
                     Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
                     startActivity(intent);
                 }

@@ -2,12 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_refrescar_datos"
-        android:icon="@drawable/ic_cached_white_24dp"
-        android:title="@string/opc_refrescar_datos"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/menu_editar_datos_perfil"
         android:icon="@drawable/ic_create_black_24dp"
         android:title="@string/menu_editar"

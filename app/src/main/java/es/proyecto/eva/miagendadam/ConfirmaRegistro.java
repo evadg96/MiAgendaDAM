@@ -134,7 +134,7 @@ public class ConfirmaRegistro extends AppCompatActivity {
                                                                     }
                                                                 });
                                                         Dialog dialog = builder.create();
-                                                        dialog.show(); // mostramos el diálofo
+                                                        dialog.show(); // mostramos el diálogo
                                                     } else { // El código NO es correcto
                                                        // Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
                                                         Snackbar.make(findViewById(android.R.id.content),

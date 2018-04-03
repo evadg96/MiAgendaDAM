@@ -80,8 +80,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/mi_perfil_nombre"
-                        android:inputType="textPersonName"
-                        android:textColor="@drawable/edit_text_selector"/>
+                        android:inputType="textCapWords|textPersonName"
+                        android:textColor="@drawable/edit_text_selector" />
 
                     <EditText
                         android:id="@+id/txt_apellidos_mi_perfil"
@@ -90,8 +90,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/mi_perfil_apellidos"
-                        android:inputType="textPersonName"
-                        android:textColor="@drawable/edit_text_selector"/>
+                        android:inputType="textCapWords|textPersonName"
+                        android:textColor="@drawable/edit_text_selector" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,7 +120,8 @@
                             android:id="@+id/spinner_provincias_mi_perfil"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:spinnerMode="dialog" />
 
                     </LinearLayout>
 
@@ -132,7 +133,7 @@
                         android:ems="10"
                         android:hint="@string/sHorasFct"
                         android:inputType="textPersonName"
-                        android:textColor="@drawable/edit_text_selector"/>
+                        android:textColor="@drawable/edit_text_selector" />
 
 
                 </LinearLayout>
@@ -166,9 +167,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName"
+                            android:inputType="textCapWords|textPersonName"
                             android:maxLength="50"
-                            android:textColor="@drawable/edit_text_selector"/>
+                            android:textColor="@drawable/edit_text_selector" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -194,9 +195,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:inputType="textPersonName"
+                            android:inputType="textCapWords|textPersonName"
                             android:maxLength="50"
-                            android:textColor="@drawable/edit_text_selector"/>
+                            android:textColor="@drawable/edit_text_selector" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -216,7 +217,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="start"/>
+                    android:gravity="start"
+                    android:spinnerMode="dialog" />
 
                 <TextView
                     android:id="@+id/textView_ciclo"
@@ -233,7 +235,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="start" />
+                    android:gravity="start"
+                    android:spinnerMode="dialog" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -294,7 +297,7 @@
                     android:hint="@string/sClave"
                     android:inputType="textPassword"
                     android:maxLength="20"
-                    android:textColor="@drawable/edit_text_selector"/>
+                    android:textColor="@drawable/edit_text_selector" />
 
                 <EditText
                     android:id="@+id/txt_repite_clave_mi_perfil"
@@ -305,7 +308,7 @@
                     android:hint="@string/sClave2"
                     android:inputType="textPassword"
                     android:maxLength="20"
-                    android:textColor="@drawable/edit_text_selector"/>
+                    android:textColor="@drawable/edit_text_selector" />
 
                 <Button
                     android:id="@+id/btn_cambiar_clave"
