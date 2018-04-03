@@ -130,7 +130,7 @@ public class HorasFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                         //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         Snackbar.make(getActivity().findViewById(android.R.id.content),
                                 R.string.error_servidor, Snackbar.LENGTH_SHORT).show();

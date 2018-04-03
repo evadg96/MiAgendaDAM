@@ -311,7 +311,7 @@ public class MiPerfilFragment extends Fragment {
         }
     }
 
-    // TODO: (por poner en algún sitio) poner limitación de caracteres en todos los campos de introducción de texto, con una longitud acorde con lo máximo permitido para su campo en la base de datos.
+
     // TODO 2: falta por añadir algunas validaciones de formato más: en registro de nuevo usuario, para los apellidos. En contactos, para el módulo y el correo ...?
     /***********************************************************************************************
      * Método que habilita la edición de los campos de datos del perfil del usuario

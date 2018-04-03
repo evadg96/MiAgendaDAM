@@ -120,6 +120,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String valor_isLocked = "";
     private int codigo_desbloqueo = 0;
     private String sCodigoDesbloqueo = "";
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +181,10 @@ public class PantallaLogin extends AppCompatActivity {
                         Toast.makeText(PantallaLogin.this, R.string.error_introducir_clave, Toast.LENGTH_SHORT).show();
                     } else {
                         System.out.println("DATOS INTRODUCIDOS: " + nUsuario + " " + clave);
+                        progressDialog = new ProgressDialog(PantallaLogin.this);
+                        progressDialog.setTitle(R.string.dialog_cargando);
+                        progressDialog.setMessage("Comprobando datos. Por favor, espera un momento.");
+                        progressDialog.show();
                         compruebaUsuario();
                     }
                 }
@@ -216,12 +221,14 @@ public class PantallaLogin extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("2")) { // ERROR: usuario no existe
                             try {
+                                progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                                 //  Toast.makeText(PantallaLogin.this, R.string.error_usuario_no_existe, Toast.LENGTH_SHORT).show();
                                 Snackbar.make(findViewById(android.R.id.content),
                                         R.string.error_usuario_no_existe, Snackbar.LENGTH_LONG).show();
                                 //Log.i("PantallaLogin", "El usuario introducido no existe");
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                                 //Log.e("PantallaLogin", "Error al comprobar el usuario");
                             }
                         } else { // Sí existe el usuario
@@ -236,7 +243,8 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                        // Snackbar.make(findViewById(android.R.id.content),
                          //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar el usuario");
@@ -270,6 +278,7 @@ public class PantallaLogin extends AppCompatActivity {
                                 check_isLocked();
                             } else { // NO está confirmado, obligamos a confirmar
                                 Log.i("PantallaLogin", "Usuario no confirmado");
+                                progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                                 // no hace falta comprobar isLogged, porque lógicamente es imposible que esté en 1 si no ha confirmado su registro
                                 AlertDialog.Builder builder = new AlertDialog.Builder(PantallaLogin.this);
                                 builder.setMessage(R.string.text_dialog_confirm)
@@ -292,13 +301,14 @@ public class PantallaLogin extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                          progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                           Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                        // Snackbar.make(findViewById(android.R.id.content),
                          //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
@@ -329,6 +339,7 @@ public class PantallaLogin extends AppCompatActivity {
                             //  Log.i("PantallaLogin", "El usuario no está bloqueado");
                             comprobarClave(); // comprobamos si la clave es correcta para hacer el login
                         } else {
+                            progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                             // AL DETECTAR QUE ESTÁ BLOQUEADO, MOSTRAMOS DIRECTAMENTE EL CAMPO DE DESBLOQUEO
                             desbloquearCuenta.setVisibility(View.VISIBLE);
                             // LE PROHIBIMOS ACCEDER
@@ -343,7 +354,7 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                          Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                         //Snackbar.make(findViewById(android.R.id.content),
                           //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
@@ -374,10 +385,12 @@ public class PantallaLogin extends AppCompatActivity {
                             // INTENTO FALLIDO DE INICIO DE SESIÓN
                             //Log.i("PantallaLogin", "Contraseña incorrecta");
                             try {
+                                progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                                 // restamos intentos restantes de inicio de sesión
                                 restaIntentos();
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                             }
                         } else { // Usuario y contraseña correctos
                             if (response.equals("4")) { // Respuesta "4" = login correcto.
@@ -391,7 +404,8 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                           Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
+                        Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                       //  Snackbar.make(findViewById(android.R.id.content),
                         //        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaLogin", "Error al conectar con el servidor para comprobar la clave del usuario");
@@ -705,7 +719,7 @@ public class PantallaLogin extends AppCompatActivity {
                         "<p style=\"text-align:justify\">Podrás recuperar tu cuenta accediendo a la aplicación y pulsando sobre la opción <b>Desbloquear mi cuenta</b> que aparecerá en la pantalla de inicio de sesión.</p> " +
                         "<p style=\"text-align:justify\">Esta opción aparece automáticamente cuando se detecta que el usuario que está intentando iniciar sesión está bloqueado. Si no la ves, intenta iniciar sesión con tu cuenta bloqueada y deberá aparecerte abajo.</p> " +
                         "<p style=\"text-align:justify\">Al pulsar sobre ella aparecerá un cuadro de diálogo. Deberás pulsar sobre el botón <b>Enviar código de desbloqueo</b>. Se te enviará a continuación un correo electrónico con un <b>código de desbloqueo</b>, que después deberás introducir" +
-                        " en el campo de <b>Código de desbloqueo</b>. Cuando lo hayas escrito, pulsa sobre <b>Validar código</b>. Si el código es correcto, desbloquearás tu cuenta al instante.</p> " +
+                        " en el campo <b>Código de desbloqueo</b>. Cuando lo hayas escrito, pulsa sobre <b>Validar código</b>. Si el código es correcto, desbloquearás tu cuenta al instante.</p> " +
                         "<p style=\"text-align:justify\">Sentimos lo ocurrido y esperamos que vuelvas lo antes posible.</p>" +
                         "<p style=\"text-align:justify\">Atentamente, Mi agenda FP.</p> "+
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
@@ -781,11 +795,8 @@ public class PantallaLogin extends AppCompatActivity {
         Log.i("PantallaLogin", "Login correcto");
         reseteaIntentos(); // reseteamos número de intentos de login restantes
         // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
-        ProgressDialog progressDialog = new ProgressDialog(PantallaLogin.this);
-        progressDialog.setTitle(R.string.dialog_cargando);
-        progressDialog.setMessage("Comprobando datos. Por favor, espera un momento.");
-        progressDialog.show();
         // Cargamos la pantalla principal de la aplicación
+        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
         Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
         startActivity(intent);
         // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga en la próxima apertura de la app
@@ -801,6 +812,7 @@ public class PantallaLogin extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                         Toast.makeText(PantallaLogin.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
                      //   Snackbar.make(findViewById(android.R.id.content),
                        //         R.string.error_servidor, Snackbar.LENGTH_LONG).show();
@@ -874,7 +886,6 @@ public class PantallaLogin extends AppCompatActivity {
     public void desbloquearUsuario(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final Button btnEnviarCodigoRC, btnValidarCodigoRC, btnCancelarRecuperaCuenta;
-
         final EditText txtCodigo;
         final AlertDialog dialog = alert.create();
         LayoutInflater inflater = getLayoutInflater();
@@ -1067,7 +1078,7 @@ public class PantallaLogin extends AppCompatActivity {
                         "<p style=\"text-align:justify\">Introduce este código pulsando la opción <b>Desbloquear mi cuenta</b> que encontrarás en la pantalla de inicio de sesión de <b>Mi agenda FP </b>.</p> " +
                         "<p style=\"text-align:justify\">Esta opción aparece automáticamente cuando se detecta que el usuario que está intentando iniciar sesión está bloqueado. Si no la ves, intenta iniciar sesión con tu cuenta bloqueada y deberá aparecerte abajo.</p> " +
                         "<p style=\"text-align:justify\">Al pulsar sobre ella aparecerá un cuadro de diálogo. Deberás introducir el código" +
-                        " en el campo de <b>Código de desbloqueo</b> y pulsar sobre <b>Validar código</b>. Si el código es correcto, desbloquearás tu cuenta al instante.</p> " +
+                        " en el campo <b>Código de desbloqueo</b> y pulsar sobre <b>Validar código</b>. Si el código es correcto, desbloquearás tu cuenta al instante.</p> " +
                         "<p style=\"text-align:justify\">Atentamente, Mi agenda FP.</p> "+
                         "<div style=\"background-color:#EEEEEE; border:1px solid #BABABA; box-shadow: 2px 2px 5px #999; font-size:10px; text-align:justify\">" + // el sombreado no se ve en el móvil
                         "<p style=\"margin-left: 10px; margin-right: 11px\">" +

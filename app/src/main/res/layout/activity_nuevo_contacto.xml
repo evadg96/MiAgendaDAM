@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -30,15 +31,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:fontFamily="@font/roboto_thin"
             android:hint="@string/nuevo_contacto_nombre"
             android:inputType="textCapWords|textPersonName"
             android:lines="1"
-            android:maxLength="70" />
+            android:maxLength="70"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -56,15 +60,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:fontFamily="@font/roboto_thin"
             android:hint="@string/nuevo_contacto_modulo"
             android:inputType="textCapSentences|textPersonName"
             android:lines="1"
-            android:maxLength="30" />
+            android:maxLength="30"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -82,16 +89,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:fontFamily="@font/roboto_thin"
             android:hint="@string/nuevo_contacto_correo"
             android:inputType="text|textEmailAddress"
             android:lines="1"
-            android:maxLength="100" />
+            android:maxLength="100"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -109,10 +119,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:fontFamily="@font/roboto_thin"
             android:hint="@string/nuevo_contacto_telefono"
             android:inputType="number|phone"
             android:lines="1"
-            android:maxLength="15" />
+            android:maxLength="15"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

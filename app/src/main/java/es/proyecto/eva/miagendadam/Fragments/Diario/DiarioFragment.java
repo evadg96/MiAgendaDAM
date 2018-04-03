@@ -2,6 +2,7 @@ package es.proyecto.eva.miagendadam.Fragments.Diario;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -117,8 +118,8 @@ public class DiarioFragment extends Fragment {
     private String horas_fct = "";
     private String horas_trabajadas = "";
     private boolean hayRegistros;
+    private ProgressDialog progressDialog;
 
-    // TODO ??
     // *************************  PENDIENTE **********************************************************************************************
     private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
     // en preferencias para saberlo)
@@ -312,6 +313,11 @@ public class DiarioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("DiarioFragment", "Fragment reanudado");
+        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Obteniendo registros...");
+        progressDialog.show();
         obtenerRegistrosDiario();
     }
 
@@ -386,6 +392,7 @@ public class DiarioFragment extends Fragment {
                                     cargarRegistros(); // cargamos en pantalla los registros
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                                     Log.e("DiarioFragment", "Error al obtener los registros del usuario");
                                 }
                             }
@@ -400,6 +407,7 @@ public class DiarioFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                         //Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
                         Snackbar.make(getActivity().findViewById(android.R.id.content),
                                 R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
@@ -458,6 +466,7 @@ public class DiarioFragment extends Fragment {
 
         // creamos adaptador personalizado a nuestra lista de registros
         adaptador = new AdaptadorListaDiario(getActivity(), arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones, arrayReuniones);
+        progressDialog.cancel();
         listaResultado.setAdapter(adaptador); // lo asociamos a la lista
     }
 }
