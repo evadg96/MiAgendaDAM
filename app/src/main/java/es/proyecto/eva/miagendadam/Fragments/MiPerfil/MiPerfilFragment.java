@@ -43,6 +43,9 @@ import static es.proyecto.eva.miagendadam.NavMenu.familia_ciclo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.ciclo_formativo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.provincia_del_usuario;
 
+import static es.proyecto.eva.miagendadam.NavMenu.headerView;
+import static es.proyecto.eva.miagendadam.NavMenu.familiaCiclo;
+
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.
@@ -376,6 +379,11 @@ public class MiPerfilFragment extends Fragment {
 
     }
 
+    public void actualizarCabecera(){
+        familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
+        familiaCiclo.setText(familia_ciclo_usuario);
+    }
+
     /***********************************************************************************************
      * Método que actualiza los datos del usuario desde el perfil
      **********************************************************************************************/
@@ -421,7 +429,6 @@ public class MiPerfilFragment extends Fragment {
             // Con los botones en la barra de acción no saca los snackbar
             //Snackbar.make(getActivity().findViewById(android.R.id.content),
               //      R.string.error_campos_vacios, Snackbar.LENGTH_LONG).show();
-
         } else {
             // consulta volley para actualizar los datos del usuario
             request = new StringRequest(Request.Method.POST, url_consulta,
@@ -434,6 +441,7 @@ public class MiPerfilFragment extends Fragment {
                                 //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
                                 //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
                                 System.out.println("DATOS ACTUALIZADOS");
+                                actualizarCabecera();
                                 guardarPreferencias(); // Actualizamos las horas del módulo fct en preferencias
                                 editando = false; // deshabilitamos la edición de campos de nuevo
                                 cancelarEdicion();

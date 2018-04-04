@@ -42,7 +42,9 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
 public class NavMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    TextView nombreUsuario, correoUsuario, familiaCiclo;
+    TextView nombreUsuario, correoUsuario;
+    public static TextView familiaCiclo; // estático para poder actualizar la familia del ciclo automáticamente si se cambia
+    // desde el perfil del usuario
     private String nombre_de_usuario;
     private String correo_de_usuario;
     private String familia_ciclo;
@@ -61,7 +63,8 @@ public class NavMenu extends AppCompatActivity
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
     SharedPreferences preferences;
     NavigationView navigationView;
-    View headerView;
+    public static View headerView; // estático para poder actualizar la familia del ciclo automáticamente si se cambia
+    // desde el perfil del usuario
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
      * caracteres especiales
@@ -78,15 +81,6 @@ public class NavMenu extends AppCompatActivity
         }
         return datoCodificado;
     }
-    /**
-    @Override
-    public void onResume(){
-        super.onResume();
-        familia_ciclo = preferences.getString("familia_ciclo", "");
-        familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
-        String familiaCicloCodificado = codificaString(familia_ciclo);
-        familiaCiclo.setText(familiaCicloCodificado);
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +118,6 @@ public class NavMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_inicio);
-        // todo: Fix bug 2 (familia de ciclo en cabecera)
-        // Al actualizar la familia de ciclo del usuario desde Mi perfil, no se actualiza su valor en la cabecera del menú lateral...
     }
 
 
