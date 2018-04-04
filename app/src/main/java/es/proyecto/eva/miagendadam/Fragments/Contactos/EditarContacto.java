@@ -29,8 +29,6 @@ import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.
 import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.nombre_seleccionado_codificado;
 import static es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment.telefono_seleccionado;
 
-// TODO: (aquí o en VerContacto) que se actualicen los datos del contacto al editarlo y guardar datos nuevos
-// TODO: implementar validación también en el campo módulo (incluir números?) -> también al crear nuevo contacto
 /**********************************************************************************************************************
  * Mediante esta clase se lleva a cabo el proceso de actualización de un contacto para el que se ha editado alguno de
  * los datos personales que lo componen
@@ -40,10 +38,20 @@ public class EditarContacto extends AppCompatActivity {
     EditText txtNombre, txtModulo, txtCorreo, txtTelefono;
     private String nombreContacto = "", correoContacto = "", modulo = "", telefono = "", idUsuario = "";
     private StringRequest request;
-    // Patrón de caracteres que no queremos que tenga el nombre del contacto
+    // Patrón de caracteres que queremos que ACEPTE el nombre del contacto
     private String pattern_formato_nombre = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
+    // Patrón de caracteres que queremos que acepte el módulo (rol que desempeña el contacto)
+    private String pattern_formato_modulo = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+            + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
+            + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ"
+            + "|0|1|2|3|4|5|6|7|8|9)+";
+
+    // Patrón de caracteres para validar un formato de email correcto
+    private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,19 +97,28 @@ public class EditarContacto extends AppCompatActivity {
                 } else {
                     Pattern pattern = Pattern.compile(pattern_formato_nombre); // creamos el patrón asignándole los caracteres que no queremos que tenga
                     Matcher matcher = pattern.matcher(nombreContacto); // le indicamos que queremos que aplique el patrón al correo
+                    // Primero validamos el nombre del contacto introducido...
                     if (!matcher.matches()) { // si el nombre del contacto no cumple con los caracteres aceptados por el patrón, no dejamos guardar
-                        System.out.println("FORMATO INVÁLIDO");
-                        Toast.makeText(EditarContacto.this, R.string.error_nombre_invalido, Toast.LENGTH_SHORT).show();
+                        System.out.println("FORMATO NOMBRE INVÁLIDO");
+                        Toast.makeText(EditarContacto.this, R.string.error_nombre_invalido, Toast.LENGTH_LONG).show();
                     } else {
-                        actualizarContacto();
+                        // Después validamos el rol introducido...
+                        if (!modulo.matches(pattern_formato_modulo)){
+                            System.out.println("FORMATO MÓDULO INVÁLIDO");
+                            Toast.makeText(EditarContacto.this, R.string.error_modulo_invalido, Toast.LENGTH_LONG).show();
+                        } else {
+                            // A continuación validamos el correo electrónico...
+                            if (!correoContacto.matches(pattern_email)){
+                                System.out.println("FORMATO CORREO INVÁLIDO");
+                                Toast.makeText(EditarContacto.this, R.string.error_correo_no_valido, Toast.LENGTH_LONG).show();
+                            } else {
+                                // Se han validado los campos correctamente, actualizamos finalmente el contacto:
+                                actualizarContacto();
+                            }
+                        }
                     }
                     // actualizamos los datos del contacto seleccionado y actualizado para que aparezcan actualizados
                     // en la pantalla de visualización en detalle del contacto
-                    // TODO: NO SE ACTUALIZA EN LA VISTA DETALLE
-                    nombre_seleccionado_codificado = nombreContacto;
-                    correo_seleccionado = correoContacto;
-                    modulo_seleccionado_codificado = modulo;
-                    telefono_seleccionado = telefono;
                     System.out.println("DATOS ACTUALIZADOS.");
                     System.out.println("NOMBRE SELECCIONADO: " + nombre_seleccionado_codificado + "\n CORREO SELECCIONADO: "+ correo_seleccionado
                     + "\n MODULO SELECCIONADO: "+ modulo_seleccionado_codificado + "\n TELEFONO: "+ telefono_seleccionado);
@@ -123,6 +140,10 @@ public class EditarContacto extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        nombre_seleccionado_codificado = nombreContacto;
+                        correo_seleccionado = correoContacto;
+                        modulo_seleccionado_codificado = modulo;
+                        telefono_seleccionado = telefono;
                         if(response.equals("1")){
                             Toast.makeText(EditarContacto.this, R.string.editar_contacto, Toast.LENGTH_LONG).show();
                             finish();

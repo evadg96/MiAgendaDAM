@@ -60,25 +60,7 @@ public class VerContacto extends AppCompatActivity {
         System.out.println("VISTA DETALLE DE CONTACTO.");
         System.out.println("NOMBRE SELECCIONADO: " + nombre_seleccionado_codificado + "\n CORREO SELECCIONADO: "+ correo_seleccionado
                 + "\n MODULO SELECCIONADO: "+ modulo_seleccionado_codificado + "\n TELEFONO: "+ telefono_seleccionado);
-        // Ponemos los datos obtenidos del contacto seleccionado
-        txtNombre.setText(nombre_seleccionado_codificado);
-        txtModulo.setText(modulo_seleccionado_codificado);
-        txtCorreo.setText(correo_seleccionado);
-        // si el contacto seleccionado no tiene teléfono asociado, escondemos el TextView del teléfono y el icono de llamar
-        if (telefono_seleccionado.equals("")) {
-            btnLlamar.setVisibility(View.GONE);
-            txtTelefono.setVisibility(View.GONE);
-        } else {
-            txtTelefono.setText(telefono_seleccionado);
-            // asignamos la función de llamar al botón
-            btnLlamar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("Llamar contacto");
-                    llamada();
-                }
-            });
-        }
+
         btnEnviarCorreo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +81,25 @@ public class VerContacto extends AppCompatActivity {
     public void onResume(){
        super.onResume();
        System.out.println("ON RESUME VER CONTACTO");
+        // Ponemos los datos obtenidos del contacto seleccionado
+        txtNombre.setText(nombre_seleccionado_codificado);
+        txtModulo.setText(modulo_seleccionado_codificado);
+        txtCorreo.setText(correo_seleccionado);
+        // si el contacto seleccionado no tiene teléfono asociado, escondemos el TextView del teléfono y el icono de llamar
+        if (telefono_seleccionado.equals("")) {
+            btnLlamar.setVisibility(View.GONE);
+            txtTelefono.setVisibility(View.GONE);
+        } else {
+            txtTelefono.setText(telefono_seleccionado);
+            // asignamos la función de llamar al botón
+            btnLlamar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Llamar contacto");
+                    llamada();
+                }
+            });
+        }
     }
 
     /***********************************************************************************************

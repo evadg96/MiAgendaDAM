@@ -78,7 +78,8 @@
                                 android:id="@+id/spinner_provincia"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                android:spinnerMode="dialog" />
                         </LinearLayout>
 
                         <EditText
@@ -115,7 +116,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="left" />
+                        android:gravity="left"
+                        android:spinnerMode="dialog" />
 
                     <TextView
                         android:id="@+id/textView_ciclo"
@@ -128,7 +130,8 @@
                         android:id="@+id/spinner_ciclo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:spinnerMode="dialog" />
 
                     <EditText
                         android:id="@+id/editText_centro_practicas"

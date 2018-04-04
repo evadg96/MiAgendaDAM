@@ -43,6 +43,12 @@
     <string name="sClave2">Repite la contraseña</string>
     <string name="sFamiliaCiclo">Familia del ciclo formativo</string>
 
+    <string name="error_seleccionar_provincia">Debes seleccionar una provincia.</string>
+    <string name="error_seleccionar_familia_ciclo">Debes seleccionar una familia de ciclos formativos.</string>
+    <string name="error_seleccionar_ciclo">Debes seleccionar un ciclo formativo.</string>
+
+    <string name="error_apellidos_invalidos">No se pueden introducir números ni caracteres especiales salvo acentuaciones en los apellidos.</string>
+
     <!-- diálogo registro RegistroNuevoUsuario -->
     <string name="title_dialog_registro_correcto">¡Registro (casi) completado!</string>
     <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa
@@ -181,6 +187,7 @@
     <string name="contacto_guardado">Nuevo contacto guardado.</string>
     <string name="error_guardar_contacto">Se ha producido un error al intentar añadir al nuevo contacto.</string>
     <string name="error_nombre_invalido">El nombre introducido no es válido. Introduce otro que no tenga números ni caracteres que no sean acentuaciones.</string>
+    <string name="error_modulo_invalido">No se admiten caracteres especiales que no sean acentuaciones para el rol del contacto.</string>
 
     <!-- String EditarContacto -->
     <string name="editar_contacto">Datos de contacto actualizados correctamente.</string>
@@ -322,7 +329,7 @@
     <string name="error_usuario_no_existe">No existe ningún usuario con ese nombre.</string>
     <string name="error_correo_no_existe">No existe ningún usuario registrado con ese correo electrónico.</string>
     <string name="error_campos_vacios">Debes rellenar todos los campos.</string>
-    <string name="error_horas_practicas">No se pueden cursar tantas horas en el módulo FCT.</string>
+    <string name="error_horas_practicas">No se puede cursar ese número de horas en el módulo FCT.</string>
     <string name="error_correo_no_valido">El correo introducido no es un correo válido.</string>
     <string name="error_longitud_usuario">Debes introducir un nombre de usuario que tenga entre 6 y 20 caracteres.</string>
     <string name="error_longitud_clave">Debes introducir una contraseña que tenga entre 8 y 20 caracteres.</string>

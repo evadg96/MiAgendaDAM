@@ -43,7 +43,6 @@ import static es.proyecto.eva.miagendadam.NavMenu.familia_ciclo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.ciclo_formativo_usuario;
 import static es.proyecto.eva.miagendadam.NavMenu.provincia_del_usuario;
 
-// TODO: Pendiente de depuración a fondo. En principio parece funcionar correctamente.
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.
@@ -256,7 +255,6 @@ public class MiPerfilFragment extends Fragment {
         return view;
     }
 
-    // TODO: DEPURAR
     /******************************************************************************************************
      * Método que actualiza las horas del módulo fct de las preferencias. Solo se ejecuta si se actualizan
      * los datos del perfil del usuario
@@ -318,7 +316,6 @@ public class MiPerfilFragment extends Fragment {
         }
     }
 
-    // TODO 2: falta por añadir algunas validaciones de formato más: en registro de nuevo usuario, para los apellidos. En contactos, para el módulo y el correo ...?
     /***********************************************************************************************
      * Método que habilita la edición de los campos de datos del perfil del usuario
      **********************************************************************************************/
@@ -437,7 +434,7 @@ public class MiPerfilFragment extends Fragment {
                                 //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
                                 //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
                                 System.out.println("DATOS ACTUALIZADOS");
-                                guardarPreferencias(); // Actualizamos las horas del módulo fct en preferencias TODO: DEPURAR
+                                guardarPreferencias(); // Actualizamos las horas del módulo fct en preferencias
                                 editando = false; // deshabilitamos la edición de campos de nuevo
                                 cancelarEdicion();
                                 getActivity().invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente

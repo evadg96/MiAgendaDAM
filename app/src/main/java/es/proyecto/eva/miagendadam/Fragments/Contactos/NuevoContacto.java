@@ -31,6 +31,17 @@ public class NuevoContacto extends AppCompatActivity {
     private String pattern_formato_nombre = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
+
+    // Patrón de caracteres que queremos que acepte el módulo (rol que desempeña el contacto)
+    private String pattern_formato_modulo = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+            + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
+            + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ"
+            + "|0|1|2|3|4|5|6|7|8|9)+";
+
+    // Patrón de caracteres para validar un formato de email correcto
+    private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +83,22 @@ public class NuevoContacto extends AppCompatActivity {
                     Pattern pattern = Pattern.compile(pattern_formato_nombre); // creamos el patrón asignándole los caracteres que no queremos que tenga
                     Matcher matcher = pattern.matcher(nombreContacto); // le indicamos que queremos que aplique el patrón al correo
                     if (!matcher.matches()) { // si el nombre del contacto a guardar no contiene exclusivamente caracteres del patrón, no dejamos guardar
-                        Toast.makeText(NuevoContacto.this, R.string.error_nombre_invalido, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NuevoContacto.this, R.string.error_nombre_invalido, Toast.LENGTH_LONG).show();
                     } else {
-                        guardarContacto();
+                        // Después validamos el rol introducido...
+                        if (!modulo.matches(pattern_formato_modulo)){
+                            System.out.println("FORMATO MÓDULO INVÁLIDO");
+                            Toast.makeText(NuevoContacto.this, R.string.error_modulo_invalido, Toast.LENGTH_LONG).show();
+                        } else {
+                            // A continuación validamos el correo electrónico...
+                            if (!correoContacto.matches(pattern_email)) {
+                                System.out.println("FORMATO CORREO INVÁLIDO");
+                                Toast.makeText(NuevoContacto.this, R.string.error_correo_no_valido, Toast.LENGTH_LONG).show();
+                            } else {
+                                // Se han validado los campos correctamente, actualizamos finalmente el contacto:
+                                guardarContacto();
+                            }
+                        }
                     }
                 }
                 return true;
