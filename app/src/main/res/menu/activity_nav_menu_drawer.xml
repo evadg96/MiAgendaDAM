@@ -7,17 +7,14 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_inicio"
-            android:checkable="false"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/opc_inicio" />
         <item
             android:id="@+id/nav_perfil"
-            android:checkable="false"
             android:icon="@drawable/ic_account_box_black_24dp"
             android:title="@string/opc_perfil" />
         <item
             android:id="@+id/nav_diario"
-            android:checkable="false"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/opc_diario" />
         <item

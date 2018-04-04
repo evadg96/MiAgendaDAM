@@ -33,12 +33,6 @@ import es.proyecto.eva.miagendadam.Fragments.Inicio.InicioFragment;
 import es.proyecto.eva.miagendadam.Fragments.MiPerfil.MiPerfilFragment;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-// TODO: Fix bug, foco en opción seleccionada del menú lateral
-// En algunas opciones (p. ej. Diario) al seleccionar el apartado no se marca nada
-// En otras (p. ej. Horas) al seleccionar el apartado se queda marcado en el menú desplegable
-// PROBLEMA: unas sí otras no. Además, con los que se quedan marcados, si seleccionas uno de los que no se marcan,
-// aunque estés en ese apartado se seguirá viendo marcado el que sí se marcaba.
-
 /***************************************************************************************************
  *  Menú lateral desplegable con las opciones de la aplicación.                                    *
  *  Será a su vez la clase contenedora del layout que contenga los fragments                       *
@@ -65,7 +59,9 @@ public class NavMenu extends AppCompatActivity
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_recuperar_datos_perfil_usuario.php";
     private JSONArray jsonArray;
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-
+    SharedPreferences preferences;
+    NavigationView navigationView;
+    View headerView;
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
      * caracteres especiales
@@ -82,14 +78,24 @@ public class NavMenu extends AppCompatActivity
         }
         return datoCodificado;
     }
+    /**
+    @Override
+    public void onResume(){
+        super.onResume();
+        familia_ciclo = preferences.getString("familia_ciclo", "");
+        familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
+        String familiaCicloCodificado = codificaString(familia_ciclo);
+        familiaCiclo.setText(familiaCicloCodificado);
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
-        SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        // Obtenemos preferencias
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
         correo_de_usuario = preferences.getString("correo_de_usuario", "");
         familia_ciclo = preferences.getString("familia_ciclo", "");
@@ -105,17 +111,16 @@ public class NavMenu extends AppCompatActivity
         // más abrirse la aplicación. Si no se pone aquí, y se pone, por ejemplo, al pulsar sobre la
         // opción Mi perfil, no se obtendrán los datos en la primera pulsación. Saldrán después siempre,
         // pero la primera vez nunca.
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        headerView = navigationView.getHeaderView(0);
         obtenerDatosUsuario();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
         // añadimos en el menú lateral el nombre y correo del usuario
         nombreUsuario = (TextView) headerView.findViewById(R.id.nombre_usuario_nav);
         nombreUsuario.setText(nombre_de_usuario);
         correoUsuario = (TextView) headerView.findViewById(R.id.correo_nav);
         correoUsuario.setText(correo_de_usuario);
         familiaCiclo = (TextView) headerView.findViewById(R.id.familia_ciclo_nav);
-        String familiaCicloCodificado = codificaString(familia_ciclo);
-        familiaCiclo.setText(familiaCicloCodificado);
+        familiaCiclo.setText(familia_ciclo);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit(); // abrimos por defecto el fragmento Diario
         setTitle(R.string.opc_inicio);
@@ -236,8 +241,6 @@ public class NavMenu extends AppCompatActivity
      * Método que cierra la sesión del usuario activo (actualiza isLogged a 0 y vuelva a la pantalla de login)   *
      ************************************************************************************************************/
     public void cerrarSesion(){
-        Intent intent = new Intent(NavMenu.this, PantallaLogin.class);
-        startActivity(intent);
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
@@ -265,5 +268,10 @@ public class NavMenu extends AppCompatActivity
             }
         };
         AppController.getInstance().addToRequestQueue(request);
+
+        // vamos a pantalla login
+        Intent intent = new Intent(NavMenu.this, PantallaLogin.class);
+        startActivity(intent);
+        finish(); // cerramos para imposibilitar vuelta
     }
 }

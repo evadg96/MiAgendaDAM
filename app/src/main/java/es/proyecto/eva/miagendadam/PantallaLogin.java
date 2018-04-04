@@ -122,6 +122,17 @@ public class PantallaLogin extends AppCompatActivity {
     private String sCodigoDesbloqueo = "";
     private ProgressDialog progressDialog;
 
+    private String codificaString(String dato){
+        String datoCodificado = "";
+        try {
+            byte[] arrByteNombre = dato.getBytes("ISO-8859-1");
+            datoCodificado = new String(arrByteNombre);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return datoCodificado;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -222,9 +233,9 @@ public class PantallaLogin extends AppCompatActivity {
                         if (response.equals("2")) { // ERROR: usuario no existe
                             try {
                                 progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
-                                //  Toast.makeText(PantallaLogin.this, R.string.error_usuario_no_existe, Toast.LENGTH_SHORT).show();
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_usuario_no_existe, Snackbar.LENGTH_LONG).show();
+                                  Toast.makeText(PantallaLogin.this, R.string.error_usuario_no_existe, Toast.LENGTH_SHORT).show();
+                                //Snackbar.make(findViewById(android.R.id.content),
+                                  //      R.string.error_usuario_no_existe, Snackbar.LENGTH_LONG).show();
                                 //Log.i("PantallaLogin", "El usuario introducido no existe");
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -755,7 +766,7 @@ public class PantallaLogin extends AppCompatActivity {
                         try {
                             JSONArray jsonArray = new JSONArray(response); // creamos array json para obtener el objeto del correo
                             idUsuario = jsonArray.getJSONObject(0).getString("idUsuario");
-                            familiaCiclo = jsonArray.getJSONObject(0).getString("familia_ciclo");
+                            familiaCiclo = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
                             horas_fct = jsonArray.getJSONObject(0).getString("horas_fct");
                             Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
@@ -797,8 +808,6 @@ public class PantallaLogin extends AppCompatActivity {
         // Creamos ventana de diálogo con circulo de carga para la espera de carga de los datos
         // Cargamos la pantalla principal de la aplicación
         progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
-        Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
-        startActivity(intent);
         // A continuación cambiamos el valor de isLogged a 1 para hacer login automático en la pantalla de carga en la próxima apertura de la app
         // y la fecha de último login
         request = new StringRequest(Request.Method.POST, url_consulta2,
@@ -829,6 +838,10 @@ public class PantallaLogin extends AppCompatActivity {
             }
         };
         AppController.getInstance().addToRequestQueue(request);
+        // Abrimos el menú pcpal de la app y finalizamos la actividad actual
+        Intent intent = new Intent(PantallaLogin.this, NavMenu.class);
+        startActivity(intent);
+        finish();
     }
 
     /*********************************************************************************************************************************
@@ -875,10 +888,10 @@ public class PantallaLogin extends AppCompatActivity {
     /***********************************************************************************************
      * Método que se ejecuta al pulsar Atrás
      **********************************************************************************************/
-    @Override
-    public void onBackPressed() {
+ //   @Override
+  //  public void onBackPressed() {
         // dejamos en blanco para que no se haga nada
-    }
+   // }
 
     /***********************************************************************************************
      * Método que valida la clave introducida por el usuario para desbloquear su cuenta
