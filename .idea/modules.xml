@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MiagendaDAM.iml" filepath="$PROJECT_DIR$/MiagendaDAM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MiAgendaDAM.iml" filepath="$PROJECT_DIR$/MiAgendaDAM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
