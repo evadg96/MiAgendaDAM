@@ -126,6 +126,12 @@ public class ContactosFragment extends Fragment {
             }
         });
 
+        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Obteniendo contactos...");
+        progressDialog.show();
+
         return view;
     }
 
@@ -133,11 +139,6 @@ public class ContactosFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("ContactosFragment", "Fragment reanudado");
-        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle(R.string.dialog_cargando);
-        progressDialog.setMessage("Obteniendo contactos...");
-        progressDialog.show();
         obtenerContactos();
     }
 
@@ -152,6 +153,7 @@ public class ContactosFragment extends Fragment {
                         if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene contactos creados
                                 txt.setText(R.string.texto_contactos_vacio);
+                                progressDialog.cancel();
                                 hayContactos = false;
                                 if (!hayContactos) {
                                     System.out.println("NO HAY CONTACTOS");
@@ -200,7 +202,7 @@ public class ContactosFragment extends Fragment {
     }
 
     /*********************************************************************************************************
-     * Método que carga los registros de diario del usuario activo obtenidos en un ListView personalizado
+     * Método que carga los contactos del usuario activo obtenidos en un ListView personalizado
      ********************************************************************************************************/
     private void cargarContactos() {
         ArrayList<String> lista = new ArrayList<>(); // al declararlo nuevamente lo estaremos vaciando, para no duplicar cada vez que se obtengan

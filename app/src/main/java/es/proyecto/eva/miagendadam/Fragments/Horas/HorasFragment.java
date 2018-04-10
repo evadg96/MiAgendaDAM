@@ -46,7 +46,6 @@ public class HorasFragment extends Fragment {
     private String url_consulta = "http://miagendafp.000webhostapp.com/select_horas_minutos_trabajados.php";
     private String idUsuario = "";
     private JSONArray jsonArray;
-    private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
     ProgressDialog progressDialog;
 
     public HorasFragment() {

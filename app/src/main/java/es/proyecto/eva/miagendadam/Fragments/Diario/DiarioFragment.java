@@ -78,12 +78,13 @@ public class DiarioFragment extends Fragment {
 
     // Datos del item seleccionado que se van a mostrar al pulsar sobre un registro
     public static String id_dia_seleccionado;
-    // no hace falta que sean strings estáticos porque los vamos a utilizar para componer la fecha,
+    // no hace falta que estos tres sean strings estáticos porque los vamos a utilizar para componer la fecha,
     // que será lo que necesitaremos en la clase VerYEditarRegistroDiario para que el usuario lo vea
     // y esa sí que tendrá que ser estática para poder acceder a ella desde la otra clase
     public static String dia_seleccionado;
     public static String mes_seleccionado;
     public static String anyo_seleccionado;
+    // --------------------------------------------
     public static String jornada_partida_seleccionada;
     public static String hora_inicio_1_seleccionada;
     public static String minuto_inicio_1_seleccionado;
@@ -285,6 +286,13 @@ public class DiarioFragment extends Fragment {
                 }
             }
         });
+
+        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Obteniendo registros...");
+        progressDialog.show();
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -313,11 +321,6 @@ public class DiarioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("DiarioFragment", "Fragment reanudado");
-        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle(R.string.dialog_cargando);
-        progressDialog.setMessage("Obteniendo registros...");
-        progressDialog.show();
         obtenerRegistrosDiario();
     }
 
@@ -373,6 +376,7 @@ public class DiarioFragment extends Fragment {
                         if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene registros en el diario
                                 txt.setText(R.string.texto_diario_vacio);
+                                progressDialog.cancel();
                                 hayRegistros = false;
                                 if (!hayRegistros) {
                                     System.out.println("NO HAY REGISTROS");

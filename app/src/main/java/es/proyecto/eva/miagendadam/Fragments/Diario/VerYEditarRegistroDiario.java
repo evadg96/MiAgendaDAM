@@ -321,7 +321,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 //Log.i("VerYEditarRegistroD", "Action Guardar (actualizar) registro");
                 // obtenemos los datos nuevos
                 descripcionNueva = txtDescripcionSeleccionada.getText().toString();
-                valoracionNueva = valoracion_seleccionada;
                 validarJornada();
                 return true;
             case R.id.menu_editar: // Opción de editar el registro
@@ -495,7 +494,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 btnValoracionSeleccionadaBueno.setAlpha(1f); // opaco
                 btnValoracionSeleccionadaRegular.setAlpha(0.5f); // semitransparente
                 btnValoracionSeleccionadaMalo.setAlpha(0.5f); // "
-                valoracion_seleccionada = "Bueno";
+                valoracionNueva = "Bueno";
             }
         });
         btnValoracionSeleccionadaRegular.setOnClickListener(new View.OnClickListener() {
@@ -503,7 +502,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 btnValoracionSeleccionadaRegular.setAlpha(1f);
                 btnValoracionSeleccionadaBueno.setAlpha(0.5f);
                 btnValoracionSeleccionadaMalo.setAlpha(0.5f);
-                valoracion_seleccionada = "Regular";
+                valoracionNueva = "Regular";
             }
         });
         btnValoracionSeleccionadaMalo.setOnClickListener(new View.OnClickListener() {
@@ -511,7 +510,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
                 btnValoracionSeleccionadaMalo.setAlpha(1f);
                 btnValoracionSeleccionadaBueno.setAlpha(0.5f);
                 btnValoracionSeleccionadaRegular.setAlpha(0.5f);
-                valoracion_seleccionada = "Malo";
+                valoracionNueva = "Malo";
             }
         });
     }

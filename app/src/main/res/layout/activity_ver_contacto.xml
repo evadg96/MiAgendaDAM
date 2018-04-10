@@ -18,10 +18,9 @@
             android:id="@+id/txt_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_thin"
+            android:fontFamily="@font/roboto_light"
             android:text="Nombre"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -55,29 +54,26 @@
             android:id="@+id/txt_modulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_thin"
+            android:fontFamily="@font/roboto_light"
             android:text="Módulo"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/txt_correo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_thin"
+            android:fontFamily="@font/roboto_light"
             android:text="Correo electrónico"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/txt_telefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_thin"
-            android:text="Teléfono"
             android:autoLink="phone"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/roboto_light"
+            android:text="Teléfono"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout

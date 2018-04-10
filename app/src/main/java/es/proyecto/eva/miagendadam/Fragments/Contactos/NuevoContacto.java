@@ -1,6 +1,9 @@
 package es.proyecto.eva.miagendadam.Fragments.Contactos;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,7 +50,7 @@ public class NuevoContacto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_contacto);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Nuevo contacto");
+        setTitle(R.string.title_nuevo_contacto);
         txtNombre = (EditText) findViewById(R.id.txt_nombre_contacto);
         txtCorreo = (EditText) findViewById(R.id.txt_correo);
         txtModulo = (EditText) findViewById(R.id.txt_modulo);
@@ -104,7 +107,7 @@ public class NuevoContacto extends AppCompatActivity {
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
                 // Log.i("NuevoRegistroDiario", "Action Atrás");
-                onBackPressed();
+                onBackPressed(); // todo implementar verificación de volver atrás sin guardar
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -147,4 +150,34 @@ public class NuevoContacto extends AppCompatActivity {
         };
         AppController.getInstance().addToRequestQueue(request);
     }
+
+    public void onBackPressed(){
+        nombreContacto = txtNombre.getText().toString();
+        correoContacto = txtCorreo.getText().toString();
+        modulo = txtModulo.getText().toString();
+        telefono = txtTelefono.getText().toString();
+        // comprobamos si los campos están totalmente vacíos, ya que de esa manera volveremos atrás sin preguntar nada, puesto que el usuario no perderá cambios significativos
+        if (nombreContacto.isEmpty() && correoContacto.isEmpty() && modulo.isEmpty() && telefono.isEmpty()){
+            finish();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(NuevoContacto.this);
+            builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
+            builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
+                    .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish(); // volvemos atrás
+                        }
+                    })
+                    .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            Dialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
 }

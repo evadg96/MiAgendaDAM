@@ -1,6 +1,8 @@
 package es.proyecto.eva.miagendadam.Fragments.Contactos;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,7 +60,7 @@ public class EditarContacto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_contacto);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Editar contacto");
+        setTitle("");
         // Obtenemos de las preferencias el nombre del usuario
         SharedPreferences preferences = this.getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
@@ -174,4 +176,35 @@ public class EditarContacto extends AppCompatActivity {
         };
         AppController.getInstance().addToRequestQueue(request);
     }
+
+    public void onBackPressed(){
+        nombreContacto = txtNombre.getText().toString();
+        correoContacto = txtCorreo.getText().toString();
+        modulo = txtModulo.getText().toString();
+        telefono = txtTelefono.getText().toString();
+        // primero validamos si se ha hecho alguna modificación en los datos del contacto al momento de pulsar atrás
+      if (nombreContacto.equals(nombre_seleccionado_codificado) && correoContacto.equals(correo_seleccionado) && modulo.equals(modulo_seleccionado_codificado) &&
+              telefono.equals(telefono_seleccionado)) {
+            finish(); // al no haber cambiado nada, volvemos atrás sin preguntar nada
+      } else { // si en cambio algún dato es diferente, deberemos preguntar ya que se perderían los cambios realizados
+          android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditarContacto.this);
+          builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
+          builder.setMessage(R.string.contenido_dialog_salir_editar_sin_guardar)
+                  .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          finish();// cerramos la actividad actual
+                      }
+                  })
+                  .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int id) {
+                          // User cancelled the dialog
+                          //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                      }
+                  });
+          // Create the AlertDialog object and return it
+          Dialog dialog = builder.create();
+          dialog.show();
+      }
+    }
+
 }

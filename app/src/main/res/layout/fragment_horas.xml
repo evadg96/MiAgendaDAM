@@ -23,7 +23,7 @@
                 android:id="@+id/txt_horas_trabajadas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_thin"
+                android:fontFamily="@font/roboto_light"
                 android:textColor="@color/azul_fondo"
                 android:textSize="60sp"
                 android:textStyle="bold" />
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/roboto_thin"
+                android:fontFamily="@font/roboto_light"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:fontFamily="@font/roboto_thin"
+                android:fontFamily="@font/roboto_light"
                 android:textColor="@color/colorAccent"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/roboto_thin"
+            android:fontFamily="@font/roboto_light"
             android:gravity="center"
             android:text="@string/horas_trabajadas"
             android:textColor="@color/colorAccent"
@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/roboto_thin"
+                android:fontFamily="@font/roboto_light"
                 android:textColor="@color/colorAccent"
                 android:textSize="50sp"
                 android:textStyle="bold" />
@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/roboto_thin"
+                android:fontFamily="@font/roboto_light"
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -143,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/roboto_thin"
+            android:fontFamily="@font/roboto_light"
             android:gravity="center"
             android:text="@string/horas_restantes"
             android:textColor="@color/colorAccent"

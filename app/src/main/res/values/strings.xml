@@ -103,7 +103,7 @@
     <string name="opc_guia_anteproyecto">Guía de anteproyecto</string>
     <string name="opc_cerrar_sesion">Cerrar sesión</string>
     <string name="opc_contacto">Contacto</string>
-    <string name="opc_anotaciones">Anotaciones</string>
+    <string name="opc_anotaciones">Notas</string>
     <string name="opc_mat_reco">Material recomendado</string>
     <string name="opc_mat_perso">Material personalizado</string>
     <string name="opc_perfil">Mi perfil</string>
@@ -147,7 +147,7 @@
 
     <string name="action_settings">Ajustes</string>
 
-    <!-- Strings fragment Diario -->
+    <!-- Strings fragment DiarioFragment -->
     <string name="error_modulo_fct_completado">No puedes crear más registros porque ya has cursado todas las horas del módulo FCT.</string>
     <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
     <string name="menu_estadisticas_registros_diario">Estadísticas</string>
@@ -188,6 +188,7 @@
     <string name="error_guardar_contacto">Se ha producido un error al intentar añadir al nuevo contacto.</string>
     <string name="error_nombre_invalido">El nombre introducido no es válido. Introduce otro que no tenga números ni caracteres que no sean acentuaciones.</string>
     <string name="error_modulo_invalido">No se admiten caracteres especiales que no sean acentuaciones para el rol del contacto.</string>
+    <string name="title_nuevo_contacto">Nuevo contacto</string>
 
     <!-- String EditarContacto -->
     <string name="editar_contacto">Datos de contacto actualizados correctamente.</string>
@@ -244,7 +245,7 @@
     <string name="alert_ya_existe_fecha">Ya existe un registro en el diario con esa fecha.</string>
     <!-- Strings diálogo salir sin guardar -->
     <string name="titulo_dialog_salir_sin_guardar">¿Deseas volver atrás?</string>
-    <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderá el registro nuevo.</string>
+    <string name="contenido_dialog_salir_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios realizados.</string>
     <string name="respuesta_dialog_volver">Volver</string>
     <string name="respuesta_dialog_no">No</string>
     <string name="error_crear_registro">Se ha producido un error al intentar añadir el nuevo registro al diario.</string>
@@ -255,7 +256,7 @@
     <string name="error_datos_jornada_5">La jornada de trabajo no puede ser superior a 8 horas.</string>
 
     <!-- Strings VerYEditarRegistroDiario -->
-    <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios del registro.</string>
+    <string name="contenido_dialog_salir_editar_sin_guardar">Si vuelves atrás sin guardar se perderán los cambios realizados.</string>
     <string name="dialog_borrar_registro">Eliminar registro</string>
     <string name="dialog_texto_borrar_registro">¿Estás seguro de que quieres eliminar el registro actual? Esta acción no se podrá deshacer.</string>
     <string name="dialog_opcion_borrar">Eliminar</string>
@@ -295,7 +296,7 @@
     <string name="datos_refrescados">Datos refrescados.</string>
     <string name="clave_actualizada">Contraseña actualizada.</string>
     <string name="error_obtener_datos_usuario">No se han podido obtener los datos del usuario. Por favor, vuelve a intentarlo.</string>
-    
+
     <string name="error_introduce_clave">Introduce una contraseña</string>
     <string name="title_dialog_actualizar_clave_mi_perfil">Cambiar contraseña</string>
     <string name="txt_dialog_actualizar_clave_mi_perfil">¿Estás seguro de que deseas cambiar tu contraseña de usuario?
@@ -308,6 +309,32 @@
     <string name="txt_instrucciones_recuperar_clave"> Introduce el correo electrónico con el que estés registrado para recuperar tus datos
     de usuario. Por motivos de seguridad no podemos recuperar tu clave, pero puedes solicitar una nueva que podrás cambiar después en
     tu perfil de usuario.</string>
+
+    <!-- Strings NotasFragment -->
+    <string name="texto_notas_vacio">¡Vaya, parece que no has añadido ninguna nota todavía! Pulsa el botón circular de abajo para crear una nota nueva.</string>
+    <string name="no_hay_notas">No hay notas que borrar.</string>
+    <string name="alert_borrar_notas">¿Estás seguro de que deseas borrar todas las notas? Esta acción no se podrá deshacer.</string>
+    <string name="notas_borradas">Notas borradas correctamente.</string>
+    <!-- Strings de menú de ActionBar -->
+    <string name="borrar_todas_notas">Eliminar todas las notas</string>
+    <string name="ordenar_notas">Ordenar notas...</string> <!-- todo: ordenar notas por fecha de creación, edición...? -->
+
+    <!-- Strings NuevaNota -->
+    <string name="hint_contenido_nota">Escribe algo...</string> <!-- " todo " hint que se pone por defecto en las notas al crearlas. Dejar en blanco o ponerlo? -->
+    <string name="menu_color">Seleccionar color...</string>
+    <string name="error_nueva_nota">No se ha podido guardar la nota. Por favor, vuelve a intentarlo.</string>
+    <string name="nota_creada">Nota creada correctamente</string>
+    <string name="error_nota_vacia">No se puede crear una nota en blanco.</string>
+    <string name="title_nueva_nota">Nueva nota</string>
+
+    <!-- String VerEditarNota -->
+    <string name="nota_actualizada">Nota actualizada correctamente.</string>
+    <string name="error_actualizar_nota">No se ha podido actualizar la nota. Por favor, vuelve a intentarlo.</string>
+    <string name="nota_borrada">Nota borrada correctamente.</string>
+    <string name="error_borrar_nota">No se ha podido borrar la nota. Por favor, vuelve a intentarlo.</string>
+    <string name="dialog_borrar_nota">Eliminar nota</string>
+    <string name="dialog_texto_borrar_nota">¿Estás seguro de que quieres eliminar la nota actual? Esta acción no se podrá deshacer.</string>
+
 
     <!-- Strings ERRORES/AVISOS -->
     <string name="error_servidor">Se ha producido un error al intentar conectar con el servidor.</string>

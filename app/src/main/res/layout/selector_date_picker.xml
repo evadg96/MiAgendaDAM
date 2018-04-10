@@ -21,7 +21,9 @@
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_cancelar" />
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/btn_cancelar"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_aceptar_dp"
@@ -29,9 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/roboto_light"
             android:gravity="right"
             android:text="@string/btn_aceptar"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

@@ -49,6 +49,7 @@ public class VerContacto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_contacto);
+        setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         txtNombre = (TextView) findViewById(R.id.txt_nombre);
         txtModulo = (TextView) findViewById(R.id.txt_modulo);

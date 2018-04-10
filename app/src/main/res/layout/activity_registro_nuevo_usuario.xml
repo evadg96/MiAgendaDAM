@@ -28,20 +28,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/editText_nombre"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/sNombre"
-                        android:inputType="textCapWords|textPersonName"
-                        android:maxLength="20" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/editText_nombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:fontFamily="@font/roboto_light"
+                            android:hint="@string/sNombre"
+                            android:inputType="textCapWords|textPersonName"
+                            android:maxLength="20" />
 
                         <EditText
                             android:id="@+id/editText_ape_uno"
@@ -50,6 +51,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/sApe_uno"
+                            android:fontFamily="@font/roboto_light"
                             android:inputType="textCapWords|textPersonName"
                             android:maxLength="50" />
 
@@ -72,6 +74,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/roboto_light"
                                 android:text="@string/sProvincia" />
 
                             <Spinner
@@ -89,26 +92,46 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/sHorasFct"
+                            android:fontFamily="@font/roboto_light"
                             android:inputType="number"
                             android:maxLength="3" />
 
                     </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/editText_centro_estudios"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/sCentro_estudios"
-                        android:inputType="textCapSentences|textPersonName"
-                        android:maxLength="50" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/editText_centro_estudios"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:fontFamily="@font/roboto_light"
+                            android:hint="@string/sCentro_estudios"
+                            android:inputType="textCapSentences|textPersonName"
+                            android:maxLength="50" />
+
+                        <EditText
+                            android:id="@+id/editText_centro_practicas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:fontFamily="@font/roboto_light"
+                            android:hint="@string/sCentro_practicas"
+                            android:inputType="textCapSentences|textPersonName"
+                            android:maxLength="50" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/textView_familia_ciclo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/roboto_light"
                         android:text="@string/sFamiliaCiclo" />
 
                     <Spinner
@@ -124,6 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/roboto_light"
                         android:text="@string/sCiclo" />
 
                     <Spinner
@@ -134,21 +158,12 @@
                         android:spinnerMode="dialog" />
 
                     <EditText
-                        android:id="@+id/editText_centro_practicas"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="@string/sCentro_practicas"
-                        android:inputType="textCapSentences|textPersonName"
-                        android:maxLength="50" />
-
-                    <EditText
                         android:id="@+id/editText_correo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/sCorreo"
                         android:inputType="textEmailAddress"
                         android:maxLength="100" />
@@ -159,6 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/sNombreUsuario"
                         android:inputType="textPersonName"
                         android:maxLength="20" />
@@ -169,6 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/sClave"
                         android:inputType="textPassword"
                         android:maxLength="20" />
@@ -179,6 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/sClave2"
                         android:inputType="textPassword"
                         android:maxLength="20" />
@@ -189,7 +207,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/roboto_thin"
+                        android:fontFamily="@font/roboto_light"
                         android:onClick="registro"
                         android:text="@string/btn_registrar_usuario"
                         android:textColor="@color/colorAccent"

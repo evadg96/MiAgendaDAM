@@ -16,7 +16,7 @@
             android:id="@+id/txt_vacio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_thin"
+            android:fontFamily="@font/roboto_light"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="24sp" />
@@ -32,8 +32,6 @@
             android:id="@+id/lista"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
         </ListView>
     </LinearLayout>
 

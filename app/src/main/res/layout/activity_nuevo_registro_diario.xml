@@ -33,7 +33,7 @@
                     android:id="@+id/textView18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_thin"
+                    android:fontFamily="@font/roboto_light"
                     android:text="@string/dia_practicas"
                     android:textColor="@color/azul_barra_notificaciones"
                     android:textStyle="bold" />
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="false"
-                    android:fontFamily="@font/roboto_thin"
+                    android:fontFamily="@font/roboto_light"
                     android:hint="@string/fecha_registro"
                     android:inputType="date"
                     android:maxLines="1" />
@@ -53,7 +53,7 @@
                     android:id="@+id/tv_jornada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_thin"
+                    android:fontFamily="@font/roboto_light"
                     android:text="@string/jornada_laboral"
                     android:textColor="@color/azul_barra_notificaciones"
                     android:textStyle="bold" />
@@ -78,7 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:fontFamily="@font/roboto_thin"
+                        android:fontFamily="@font/roboto_light"
                         android:text="@string/jornada_partida"
                         android:textColor="@color/gris_oscuro"
                         android:textSize="16sp"
@@ -107,7 +107,7 @@
                             android:clickable="true"
                             android:ems="10"
                             android:focusable="false"
-                            android:fontFamily="@font/roboto_thin"
+                            android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_inicio"
                             android:inputType="number" />
 
@@ -119,7 +119,7 @@
                             android:clickable="true"
                             android:ems="10"
                             android:focusable="false"
-                            android:fontFamily="@font/roboto_thin"
+                            android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_fin"
                             android:inputType="number" />
 
@@ -149,7 +149,7 @@
                             android:clickable="true"
                             android:ems="10"
                             android:focusable="false"
-                            android:fontFamily="@font/roboto_thin"
+                            android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_inicio"
                             android:inputType="number" />
 
@@ -161,7 +161,7 @@
                             android:clickable="true"
                             android:ems="10"
                             android:focusable="false"
-                            android:fontFamily="@font/roboto_thin"
+                            android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_fin"
                             android:inputType="number" />
 
@@ -178,7 +178,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/roboto_thin"
+                            android:fontFamily="@font/roboto_light"
                             android:gravity="start"
                             android:text="@string/ver_horas"
                             android:textAlignment="center"
@@ -222,7 +222,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:fontFamily="@font/roboto_thin"
+                            android:fontFamily="@font/roboto_light"
                             android:text="@string/reunion_fct"
                             android:textColor="@color/gris_oscuro"
                             android:textSize="16sp"
@@ -240,7 +240,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:fontFamily="@font/roboto_thin"
+                                android:fontFamily="@font/roboto_light"
                                 android:text="@string/tiempo_reunion"
                                 android:textColor="@color/colorAccent"
                                 android:textStyle="bold" />
@@ -268,7 +268,7 @@
                         android:id="@+id/textView20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_thin"
+                        android:fontFamily="@font/roboto_light"
                         android:text="@string/descripcion_registro"
                         android:textColor="@color/azul_barra_notificaciones"
                         android:textStyle="bold" />
@@ -296,7 +296,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/roboto_thin"
+                android:fontFamily="@font/roboto_light"
                 android:text="@string/valoracion_registro"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"

@@ -77,7 +77,9 @@
         <activity android:name=".Fragments.Diario.ResultadosBusqueda" />
         <activity android:name=".Fragments.Contactos.NuevoContacto" />
         <activity android:name=".Fragments.Contactos.VerContacto" />
-        <activity android:name=".Fragments.Contactos.EditarContacto"></activity>
+        <activity android:name=".Fragments.Contactos.EditarContacto" />
+        <activity android:name=".Fragments.Notas.VerEditarNota" />
+        <activity android:name=".Fragments.Notas.NuevaNota" />
     </application>
 
 </manifest>

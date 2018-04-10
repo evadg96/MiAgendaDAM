@@ -589,4 +589,7 @@ public class MiPerfilFragment extends Fragment {
             }
         }
     }
+
+    // todo: implementar método onBackPressed para preguntar por salir sin guardar
+
 }

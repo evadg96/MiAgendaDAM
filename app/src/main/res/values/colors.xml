@@ -11,26 +11,47 @@
     <color name="disabled_color">#515151</color>
 
     <color name="lima">#cddc39</color>
+    <color name="lima_dark">#a4af2f</color>
     <color name="verde">#8bc34a</color>
+    <color name="verde_dark">#6f9b3c</color>
     <color name="verde_oscuro">#4caf50</color>
+    <color name="verde_oscuro_dark">#3a853d</color>
     <color name="azul">#03a9f4</color>
+    <color name="azul_dark">#0084c0</color>
     <color name="cyan">#00bcd4</color>
+    <color name="cyan_dark">#019aae</color>
     <color name="turquesa">#00acc1</color>
+    <color name="turquesa_dark">#028797</color>
     <color name="aqua">#009688</color>
+    <color name="aqua_dark">#006d63</color>
     <color name="azul_oscuro">#1a43b4</color>
+    <color name="azul_oscuro_dark">#122e7a</color>
     <color name="morado_claro">#9c27b0</color>
+    <color name="morado_claro_dark">#771e86</color>
     <color name="morado">#673ab7</color>
+    <color name="morado_dark">#422575</color>
     <color name="amarillo">#ffeb3b</color>
+    <color name="amarillo_dark">#d3c233</color>
     <color name="naranja_suave">#ffc107</color>
+    <color name="naranja_suave_dark">#c29305</color>
     <color name="naranja">#ff9800</color>
+    <color name="naranja_dark">#d07c01</color>
     <color name="naranja_fuerte">#ff7322</color>
+    <color name="naranja_fuerte_dark">#c3581b</color>
     <color name="rosa">#e91e8a</color>
+    <color name="rosa_dark">#a0145e</color>
     <color name="rojo">#f44336</color>
+    <color name="rojo_dark">#b33127</color>
     <color name="granate">#b71c1c</color>
+    <color name="granate_dark">#7b1313</color>
     <color name="marron">#795548</color>
+    <color name="marron_dark">#5b4036</color>
     <color name="blue_gray">#607d8b</color>
+    <color name="blue_gray_dark">#3f525b</color>
     <color name="gray">#9e9e9e</color>
+    <color name="gray_dark">#797878</color>
     <color name="transparent">#00000000</color>
+
     <color name="gris_oscuro">#7b7b7b</color>
     <color name="azul_claro">#04ffee</color>
 </resources>

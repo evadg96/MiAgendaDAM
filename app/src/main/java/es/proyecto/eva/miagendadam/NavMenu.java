@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment;
 import es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment;
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
 import es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment;
@@ -166,6 +167,7 @@ public class NavMenu extends AppCompatActivity
         } else if (id == R.id.nav_anotaciones) {
            // Log.i("NavMenu", "Opción menú: Anotaciones");
             setTitle(R.string.opc_anotaciones);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new NotasFragment()).commit();
         } else if (id == R.id.nav_tutores) {
            // Log.i("NavMenu", "Opción menú: Tutores");
             setTitle(R.string.opc_contactos);

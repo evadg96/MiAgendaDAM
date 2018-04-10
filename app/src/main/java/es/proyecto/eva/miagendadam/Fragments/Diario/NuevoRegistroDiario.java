@@ -848,23 +848,34 @@ public class NuevoRegistroDiario extends AppCompatActivity {
     // En caso de pulsar hacia atrás, bien desde la flecha del dispositivo, bien desde la de la app,
     // preguntamos si está seguro, y si es que sí, cerramos la actividad
     public void onBackPressed(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
-        builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
-        builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
-                .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish(); // volvemos atrás
-                    }
-                })
-                .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
-                    }
-                });
-        // Create the AlertDialog object and return it
-        Dialog dialog = builder.create();
-        dialog.show();
+        // validamos primero que se haya introducido algún dato en algún campo, de no ser así entenderemos que no se ha escrito nada y por tanto no se va
+        // a perder nada de información, así que cerraríamos sin preguntar
+        if (fecha_registro.isEmpty() && jornada_partida.equals("0") && sHoraInicio1.equals("0") && sMinInicio1.equals("0")
+                && sHoraFin1.equals("0") && sMinFin1.equals("0") && sHoraInicio2.equals("0") && sMinInicio2.equals("0") && sHoraFin2.equals("0")
+                && sMinFin2.equals("0") && reunion_fct.equals("0") && horas_reunion.equals("0") && descripcion.isEmpty()
+                && valoracionDia.isEmpty()){
+            System.out.println("ESTÁ VACÍO");
+            finish();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(NuevoRegistroDiario.this);
+            builder.setTitle(R.string.titulo_dialog_salir_sin_guardar); // titulo del diálogo
+            builder.setMessage(R.string.contenido_dialog_salir_sin_guardar)
+                    .setPositiveButton(R.string.respuesta_dialog_volver, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish(); // volvemos atrás
+                        }
+                    })
+                    .setNegativeButton(R.string.respuesta_dialog_no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            //no hacemos nada, y al pulsar el botón simplemente se cerrará el diálogo
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            Dialog dialog = builder.create();
+            dialog.show();
+        }
+
     }
 
     /***********************************************************************************************

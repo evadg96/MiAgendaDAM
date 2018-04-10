@@ -17,7 +17,7 @@ import es.proyecto.eva.miagendadam.R;
 
 /***************************************************************************************************
  * Clase adaptador de la lista de registros de diario del usuario que sirve para personalizarla
- * utilizando como estructura base el layout listview_item_row.xml
+ * utilizando como estructura base el layout item_registro_diario.xml
  **************************************************************************************************/
 public class AdaptadorListaDiario extends BaseAdapter {
     private Context context;
