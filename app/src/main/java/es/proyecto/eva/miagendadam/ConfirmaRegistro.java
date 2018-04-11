@@ -44,6 +44,8 @@ public class ConfirmaRegistro extends AppCompatActivity {
     private String correo_electronico = "";
     private StringRequest request;
 
+    // todo validar formato correo
+
     // ******************************* SERVIDORES Y CONSULTAS **************************************
 
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/update_isConfirmed.php";

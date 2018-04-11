@@ -69,6 +69,9 @@ public class BusquedaRegistros extends AppCompatActivity {
     // Array de valoraciones
     private String[] valoraciones = {"Selecciona una valoración", "Bueno", "Regular", "Malo"};
 
+    // Patrón para controlar el formato de la contraseña nueva
+    private String pattern_formato = "(0|1|2|3|4|5|6|7|8|9)+"; // solo aceptamos números
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,45 +135,49 @@ public class BusquedaRegistros extends AppCompatActivity {
                 if (horas_exactas.isEmpty()){
                     Toast.makeText(BusquedaRegistros.this, R.string.error_horas_exactas, Toast.LENGTH_SHORT).show();
                 } else {
-                    // consulta
-                    request = new StringRequest(Request.Method.POST, url_consulta,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    if (response.equals("0")){ // 0 significa que no se obtienen registros
-                                        Toast.makeText(BusquedaRegistros.this, R.string.error_no_hay_resultados, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        try {
-                                            response = response.replace("][", ",");
-                                            jsonArray = new JSONArray(response);
-                                            Intent intent = new Intent(BusquedaRegistros.this, ResultadosBusqueda.class);
-                                            startActivity(intent);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                    if (!horas_exactas.matches(pattern_formato)) {
+                        Toast.makeText(BusquedaRegistros.this, R.string.error_horas_exactas, Toast.LENGTH_SHORT).show();
+                    } else {
+                        // consulta
+                        request = new StringRequest(Request.Method.POST, url_consulta,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if (response.equals("0")) { // 0 significa que no se obtienen registros
+                                            Toast.makeText(BusquedaRegistros.this, R.string.error_no_hay_resultados, Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            try {
+                                                response = response.replace("][", ",");
+                                                jsonArray = new JSONArray(response);
+                                                Intent intent = new Intent(BusquedaRegistros.this, ResultadosBusqueda.class);
+                                                startActivity(intent);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
-                                    // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                            Map<String, String> parametros = new HashMap<>();
-                            parametros.put("horas", horas_exactas);
-                            parametros.put("idUsuario", idUsuario);
-                            return parametros;
-                        }
-                    };
-                    AppController.getInstance().addToRequestQueue(request);
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                        // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                                Map<String, String> parametros = new HashMap<>();
+                                parametros.put("horas", horas_exactas);
+                                parametros.put("idUsuario", idUsuario);
+                                return parametros;
+                            }
+                        };
+                        AppController.getInstance().addToRequestQueue(request);
+                    }
                 }
             }
         });
@@ -182,46 +189,50 @@ public class BusquedaRegistros extends AppCompatActivity {
                 if (horas_1.isEmpty() || horas_2.isEmpty()){
                     Toast.makeText(BusquedaRegistros.this, R.string.error_rango_horas, Toast.LENGTH_SHORT).show();
                 } else {
-                    // consulta
-                    request = new StringRequest(Request.Method.POST, url_consulta2,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    if (response.equals("0")){ // 0 significa que no se obtienen registros
-                                        Toast.makeText(BusquedaRegistros.this, R.string.error_no_hay_resultados, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        try {
-                                            response = response.replace("][", ",");
-                                            jsonArray = new JSONArray(response);
-                                            Intent intent = new Intent(BusquedaRegistros.this, ResultadosBusqueda.class);
-                                            startActivity(intent);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                    if (!horas_1.matches(pattern_formato) || !horas_2.matches(pattern_formato)){
+                        Toast.makeText(BusquedaRegistros.this, R.string.error_horas_exactas, Toast.LENGTH_SHORT).show();
+                    } else {
+                        // consulta
+                        request = new StringRequest(Request.Method.POST, url_consulta2,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if (response.equals("0")) { // 0 significa que no se obtienen registros
+                                            Toast.makeText(BusquedaRegistros.this, R.string.error_no_hay_resultados, Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            try {
+                                                response = response.replace("][", ",");
+                                                jsonArray = new JSONArray(response);
+                                                Intent intent = new Intent(BusquedaRegistros.this, ResultadosBusqueda.class);
+                                                startActivity(intent);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
-                                    // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                            Map<String, String> parametros = new HashMap<>();
-                            parametros.put("hora_1", horas_1);
-                            parametros.put("hora_2", horas_2);
-                            parametros.put("idUsuario", idUsuario);
-                            return parametros;
-                        }
-                    };
-                    AppController.getInstance().addToRequestQueue(request);
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+                                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                        // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                                Map<String, String> parametros = new HashMap<>();
+                                parametros.put("hora_1", horas_1);
+                                parametros.put("hora_2", horas_2);
+                                parametros.put("idUsuario", idUsuario);
+                                return parametros;
+                            }
+                        };
+                        AppController.getInstance().addToRequestQueue(request);
+                    }
                 }
             }
         });

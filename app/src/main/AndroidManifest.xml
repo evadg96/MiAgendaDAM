@@ -79,7 +79,8 @@
         <activity android:name=".Fragments.Contactos.VerContacto" />
         <activity android:name=".Fragments.Contactos.EditarContacto" />
         <activity android:name=".Fragments.Notas.VerEditarNota" />
-        <activity android:name=".Fragments.Notas.NuevaNota" />
+        <activity android:name=".Fragments.Notas.NuevaNota"
+            android:windowSoftInputMode="stateVisible"/>
     </application>
 
 </manifest>

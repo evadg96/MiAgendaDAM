@@ -68,7 +68,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     Button btnVerHoras;
     TextView turno1, turno2, txtHoras, txtInfoReunion, txtInfoReunion2; // para mostrar u ocultar los títulos que identifican a cada turno en caso de que haya varios
     private StringRequest request;
-    private String descripcionNueva = "", valoracionNueva = "";
+    private String descripcionNueva = "", valoracionNueva = valoracion_seleccionada;
     // Creamos variable de horas y minutos que serán las que usemos para obtener la hora seleccionada en el timepicker
     int tpHoras, tpMinutos;
     // Creamos variables para almacenar las distintas horas introducidas

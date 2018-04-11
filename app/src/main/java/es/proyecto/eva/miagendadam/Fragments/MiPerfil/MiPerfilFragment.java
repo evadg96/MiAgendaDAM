@@ -2,12 +2,18 @@ package es.proyecto.eva.miagendadam.Fragments.MiPerfil;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +33,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +59,6 @@ import static es.proyecto.eva.miagendadam.NavMenu.familiaCiclo;
  * la modificación de algunos de estos datos.
  **************************************************************************************************/
 public class MiPerfilFragment extends Fragment {
-
     EditText txtNombre, txtApellidos, txtHorasFCT, txtCentroEstudios, txtCentroPracticas, txtClave, txtRepiteClave;
     Spinner spinnerProvincia, spinnerFamiliaCiclo, spinnerCiclo;
     TextView tvNombreSaludo, tvNombreUsuario, tvCorreo;
@@ -59,19 +66,44 @@ public class MiPerfilFragment extends Fragment {
     private StringRequest request;
     private String url_consulta = "http://miagendafp.000webhostapp.com/update_datos_perfil_usuario.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/update_clave_perfil_usuario.php";
+    private String url_consulta3 = "http://miagendafp.000webhostapp.com/consulta_recuperar_datos_perfil_usuario.php";
     private String correo_usuario = "", nombre_de_usuario = "";
     boolean editando = false; // para controlar si se ha pulsado el botón de edición de datos del perfil
     private String claveNueva = "", repiteClave = "";
+    private JSONArray jsonArray;
+    private ProgressDialog progressDialog;
+
     // Patrón para controlar el formato de la contraseña nueva
     private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|0|1|2|3|4|5|6|7|8|9" // números
             + "|!|=|-|_|@|:|%|~|#)+";
 
+    private String pattern_formato_nombre_ape = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+            + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
+            + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
 
 
     // Array de provincias
     private String[] provincias;
+
+    /***********************************************************************************************
+     * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
+     * caracteres especiales
+     * @param dato
+     * @return
+     **********************************************************************************************/
+    private String codificaString(String dato){
+        String datoCodificado = "";
+        try {
+            byte[] arrByteNombre = dato.getBytes("ISO-8859-1");
+            datoCodificado = new String(arrByteNombre);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return datoCodificado;
+    }
+
 
     // Array de familias de ciclos formativos
     private String[] familias;
@@ -206,7 +238,115 @@ public class MiPerfilFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_actualizar_perfil: // Opción de guardar los datos de usuario actualizados
                 //Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
-                actualizarDatosUsuario();
+                // Actualizamos el valor de los datos con lo introducido en los campos
+                nombre_del_estudiante = txtNombre.getText().toString();
+                apellidos_del_usuario = txtApellidos.getText().toString();
+                centro_practicas_usuario = txtCentroPracticas.getText().toString();
+                centro_estudios_usuario = txtCentroEstudios.getText().toString();
+                horas_fct_usuario = txtHorasFCT.getText().toString();
+
+                // todo : añadir el coloreado de campos incorrectos también en el resto de pantallas que tengan validaciones en campos
+                // ponemos todos los editText con fondo negro para resetear los que pudieran estar en rojo
+                txtNombre.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtApellidos.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtCentroPracticas.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtCentroEstudios.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHorasFCT.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
+                // si alguno de los campos está vacío, no continuamos
+                // VALIDACIÓN 1: CAMPOS VACÍOS
+                if (nombre_del_estudiante.isEmpty() || apellidos_del_usuario.isEmpty() || centro_practicas_usuario.isEmpty() || centro_estudios_usuario.isEmpty() || horas_fct_usuario.isEmpty()) {
+                    Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+                    // Con los botones en la barra de acción no saca los snackbar
+                    //Snackbar.make(getActivity().findViewById(android.R.id.content),
+                    //      R.string.error_campos_vacios, Snackbar.LENGTH_LONG).show();
+                } else {
+                    // VALIDACIÓN 2: NOMBRE
+                    if (!nombre_del_estudiante.matches(pattern_formato_nombre_ape)) { // si el nombre no cumple con el formato del patrón, salta el mensaje de error
+                        Toast.makeText(getActivity(), R.string.error_datos_invalidos_formato, Toast.LENGTH_LONG).show();
+                        //señalamos el campo erróneo en rojo
+                        txtNombre.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        // Snackbar.make(findViewById(android.R.id.content),
+                        //      R.string.error_nombre_invalido, Snackbar.LENGTH_LONG).show();
+                        //  Log.i("RegistroNuevoUsuario", "Formato de correo no válido");
+                    } else { // validamos formato de los apellidos
+                        // VALIDACIÓN 3: APELLIDOS
+                        if (!apellidos_del_usuario.matches(pattern_formato_nombre_ape)) {
+                            Toast.makeText(getActivity(), R.string.error_datos_invalidos_formato, Toast.LENGTH_LONG).show();
+                            txtApellidos.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                            // Snackbar.make(findViewById(android.R.id.content),
+                            //   R.string.error_apellidos_invalidos, Snackbar.LENGTH_LONG).show();
+                        } else {
+                            // VALIDACIÓN 4: PROVINCIA
+                            if (provincia_del_usuario.equals("Selecciona una provincia")) {
+                                Toast.makeText(getActivity(), R.string.error_seleccionar_provincia, Toast.LENGTH_SHORT).show();
+                            } else {
+                                // VALIDACIÓN 5: FAMILIA CICLO
+                                spinnerCiclo.setPrompt(ciclo_formativo_usuario);
+                                if (familiaCiclo.equals("Selecciona una familia de ciclos formativos")) {
+                                    Toast.makeText(getActivity(), R.string.error_seleccionar_familia_ciclo, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // VALIDACIÓN 6: CICLO FORMATIVO
+                                    spinnerProvincia.setPrompt(provincia_del_usuario);
+                                    if (ciclo_formativo_usuario.equals("Selecciona un ciclo formativo") ||
+                                            ciclo_formativo_usuario.equals("  ACTIVIDADES FÍSICAS Y DEPORTIVAS  ") ||
+                                            ciclo_formativo_usuario.equals("  ADMINISTRACIÓN Y GESTIÓN  ") ||
+                                            ciclo_formativo_usuario.equals("  AGRARIA  ") ||
+                                            ciclo_formativo_usuario.equals("  ARTES GRÁFICAS  ") ||
+                                            ciclo_formativo_usuario.equals("  ARTES Y ARTESANÍAS  ") ||
+                                            ciclo_formativo_usuario.equals("  COMERCIO Y MARKETING  ") ||
+                                            ciclo_formativo_usuario.equals("  EDIFICACIÓN Y OBRA CIVIL  ") ||
+                                            ciclo_formativo_usuario.equals("  ELECTRICIDAD Y ELECTRÓNICA  ") ||
+                                            ciclo_formativo_usuario.equals("  ENERGÍA Y AGUA  ") ||
+                                            ciclo_formativo_usuario.equals("  FABRICACIÓN Y MECÁNICA  ") ||
+                                            ciclo_formativo_usuario.equals("  HOSTELERÍA Y TURISMO  ") ||
+                                            ciclo_formativo_usuario.equals("  IMAGEN PERSONAL  ") ||
+                                            ciclo_formativo_usuario.equals("  IMAGEN Y SONIDO  ") ||
+                                            ciclo_formativo_usuario.equals("  INDUSTRIAS ALIMENTARIAS  ") ||
+                                            ciclo_formativo_usuario.equals("  INDUSTRIAS EXTRACTIVAS  ") ||
+                                            ciclo_formativo_usuario.equals("  INFORMÁTICA Y COMUNICACIONES  ") ||
+                                            ciclo_formativo_usuario.equals("  INSTALACIÓN Y MANTENIMIENTO  ") ||
+                                            ciclo_formativo_usuario.equals("  MADERA, MUEBLE Y CORCHO  ") ||
+                                            ciclo_formativo_usuario.equals("  MARÍTIMO-PESQUERA  ") ||
+                                            ciclo_formativo_usuario.equals("  QUÍMICA  ") ||
+                                            ciclo_formativo_usuario.equals("  SANIDAD  ") ||
+                                            ciclo_formativo_usuario.equals("  SEGURIDAD Y MEDIO AMBIENTE  ") ||
+                                            ciclo_formativo_usuario.equals("  SERVICIOS SOCIOCULTURALES  ") ||
+                                            ciclo_formativo_usuario.equals("  TEXTIL, CONFECCIÓN Y PIEL  ") ||
+                                            ciclo_formativo_usuario.equals("  TRANSPORTE Y MANTENIMIENTO DE VEHÍCULOS  ") ||
+                                            ciclo_formativo_usuario.equals("  VIDRIO Y CERÁMICA  ")) {
+
+                                        Toast.makeText(getActivity(), R.string.error_seleccionar_ciclo, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        spinnerFamiliaCiclo.setPrompt(familia_ciclo_usuario);
+                                        // VALIDACIÓN 7: HORAS FCT
+                                        if (Integer.valueOf(horas_fct_usuario) > 500 || Integer.valueOf(horas_fct_usuario) < 1) {
+                                            Toast.makeText(getActivity(), R.string.error_horas_practicas, Toast.LENGTH_LONG).show();
+                                            txtHorasFCT.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                                            // Snackbar.make(findViewById(android.R.id.content),
+                                            //      R.string.error_horas_practicas, Snackbar.LENGTH_LONG).show();
+                                            // Log.i("RegistroNuevoUsuario", "Horas FCT por encima de lo permitido");
+                                        } else {
+                                            // VALIDACIÓN 8: CENTRO ESTUDIOS Y PRÁCTICAS
+                                            if (!centro_estudios_usuario.matches(pattern_formato_nombre_ape)) {
+                                                Toast.makeText(getActivity(), R.string.error_datos_invalidos_formato, Toast.LENGTH_LONG).show();
+                                                txtCentroEstudios.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                                            } else {
+                                                if (!centro_practicas_usuario.matches(pattern_formato_nombre_ape)) {
+                                                    Toast.makeText(getActivity(), R.string.error_datos_invalidos_formato, Toast.LENGTH_LONG).show();
+                                                    txtCentroPracticas.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                                                } else {
+                                                    actualizarDatosUsuario();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 return true;
             case R.id.menu_editar_datos_perfil: // Opción de abilitar la edición de datos
                 //Log.i("MiPerfilFragment", "Action Actualizar datos de usuario");
@@ -244,9 +384,14 @@ public class MiPerfilFragment extends Fragment {
         tvNombreUsuario = (TextView) view.findViewById(R.id.tv_nombre_usuario_mi_perfil);
         tvCorreo = (TextView) view.findViewById(R.id.tv_correo_mi_perfil);
         btnActualizaClave = (Button) view.findViewById(R.id.btn_cambiar_clave);
-        // colocamos los datos obtenidos en NavMenu en los campos correspondientes
-        rellenarCampos();
-        cancelarEdicion();
+        // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Obteniendo registros...");
+        progressDialog.show();
+        // obtenemos los datos de los usuarios
+        obtenerDatosUsuario();
+        cancelarEdicion(); // cancelamos la edición de campos por defecto
         // Al pulsar el botón de actualizar clave...
         btnActualizaClave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +419,12 @@ public class MiPerfilFragment extends Fragment {
      * Método que deshabilita la edición de los campos de cualquier manera
      **********************************************************************************************/
     public void cancelarEdicion(){
+        // ponemos todos los editText con fondo negro para resetear los que pudieran estar en rojo
+        txtNombre.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtApellidos.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtCentroPracticas.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtCentroEstudios.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtHorasFCT.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         editando = false;
         txtNombre.setEnabled(false);
         txtApellidos.setEnabled(false);
@@ -286,11 +437,60 @@ public class MiPerfilFragment extends Fragment {
     }
 
     /***********************************************************************************************
+     * Método que obtiene los datos del usuario para mostrarlos
+     **********************************************************************************************/
+    // Los obtenemos desde aquí para que no se produzca un lapso de un milisegundo de espera a que se obtengan
+    // los datos, que es lo que ocurre si se obtienen desde el propio fragmento del perfil
+    public void obtenerDatosUsuario(){
+        request = new StringRequest(Request.Method.POST, url_consulta3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //Log.d("MiPerfilFragment", "Obtenemos datos del usuario");
+                            jsonArray = new JSONArray(response); // guardamos los registros en el array
+                            nombre_del_estudiante = codificaString(jsonArray.getJSONObject(0).getString("nombre"));
+                            apellidos_del_usuario = codificaString(jsonArray.getJSONObject(0).getString("apellidos"));
+                            provincia_del_usuario = codificaString(jsonArray.getJSONObject(0).getString("provincia"));
+                            horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
+                            centro_estudios_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_estudios"));
+                            familia_ciclo_usuario = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
+                            ciclo_formativo_usuario = codificaString(jsonArray.getJSONObject(0).getString("ciclo_formativo"));
+                            centro_practicas_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_practicas"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            //Log.e("MiPerfilFragment", "Error al obtener datos del usuario");
+                        }
+                        rellenarCampos();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       progressDialog.cancel();
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        //Log.d("MiPerfilFragment", "Error al conectar con el servidor para obtener datos del usuario");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nUsuario", nombre_de_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+
+    /***********************************************************************************************
      * Método que rellena los campos con los datos del usuario obtenidos
      **********************************************************************************************/
     public void rellenarCampos(){
         try {
-
             // primero validamos que no haya habido errores al obtener los datos del usuario y los campos no estén vacíos:
             if (nombre_del_estudiante.isEmpty() || apellidos_del_usuario.isEmpty() || centro_estudios_usuario.isEmpty() || centro_practicas_usuario.isEmpty() || horas_fct_usuario.isEmpty()){
                 Snackbar.make(getActivity().findViewById(android.R.id.content),
@@ -313,9 +513,11 @@ public class MiPerfilFragment extends Fragment {
                 spinnerProvincia.setPrompt(provincia_del_usuario);
                 spinnerCiclo.setPrompt(ciclo_formativo_usuario);
                 spinnerFamiliaCiclo.setPrompt(familia_ciclo_usuario);
+                progressDialog.cancel();
             }
         } catch (Exception e){
             e.printStackTrace();
+            progressDialog.cancel();
         }
     }
 
@@ -388,98 +590,56 @@ public class MiPerfilFragment extends Fragment {
      * Método que actualiza los datos del usuario desde el perfil
      **********************************************************************************************/
     public void actualizarDatosUsuario(){
-        // Actualizamos el valor de los datos con lo introducido en los campos
-        nombre_del_estudiante = txtNombre.getText().toString();
-        apellidos_del_usuario = txtApellidos.getText().toString();
-        centro_practicas_usuario = txtCentroPracticas.getText().toString();
-        centro_estudios_usuario = txtCentroEstudios.getText().toString();
-        horas_fct_usuario = txtHorasFCT.getText().toString();
-
-        // validamos si alguno de los campos está vacío, para no dejarle seguir al usuario.
-        // si alguno de los campos está vacío, no continuamos
-        if (nombre_del_estudiante.isEmpty() || apellidos_del_usuario.isEmpty() || centro_practicas_usuario.isEmpty() || centro_estudios_usuario.isEmpty() || horas_fct_usuario.isEmpty() ||
-                // tampoco permitimos la selección de las familias a las que pertenecen los ciclos, puesto que son títulos para organizar los ciclos que contiene cada familia
-                ciclo_formativo_usuario.equals("  ACTIVIDADES FÍSICAS Y DEPORTIVAS  ")||
-                ciclo_formativo_usuario.equals("  ADMINISTRACIÓN Y GESTIÓN  ") ||
-                ciclo_formativo_usuario.equals("  AGRARIA  ") ||
-                ciclo_formativo_usuario.equals("  ARTES GRÁFICAS  ") ||
-                ciclo_formativo_usuario.equals("  ARTES Y ARTESANÍAS  ") ||
-                ciclo_formativo_usuario.equals("  COMERCIO Y MARKETING  ") ||
-                ciclo_formativo_usuario.equals("  EDIFICACIÓN Y OBRA CIVIL  ") ||
-                ciclo_formativo_usuario.equals("  ELECTRICIDAD Y ELECTRÓNICA  ") ||
-                ciclo_formativo_usuario.equals("  ENERGÍA Y AGUA  ") ||
-                ciclo_formativo_usuario.equals("  FABRICACIÓN Y MECÁNICA  ") ||
-                ciclo_formativo_usuario.equals("  HOSTELERÍA Y TURISMO  ") ||
-                ciclo_formativo_usuario.equals("  IMAGEN PERSONAL  ") ||
-                ciclo_formativo_usuario.equals("  IMAGEN Y SONIDO  ") ||
-                ciclo_formativo_usuario.equals("  INDUSTRIAS ALIMENTARIAS  ") ||
-                ciclo_formativo_usuario.equals("  INDUSTRIAS EXTRACTIVAS  ") ||
-                ciclo_formativo_usuario.equals("  INFORMÁTICA Y COMUNICACIONES  ") ||
-                ciclo_formativo_usuario.equals("  INSTALACIÓN Y MANTENIMIENTO  ") ||
-                ciclo_formativo_usuario.equals("  MADERA, MUEBLE Y CORCHO  ") ||
-                ciclo_formativo_usuario.equals("  MARÍTIMO-PESQUERA  ") ||
-                ciclo_formativo_usuario.equals("  QUÍMICA  ") ||
-                ciclo_formativo_usuario.equals("  SANIDAD  ") ||
-                ciclo_formativo_usuario.equals("  SEGURIDAD Y MEDIO AMBIENTE  ") ||
-                ciclo_formativo_usuario.equals("  SERVICIOS SOCIOCULTURALES  ") ||
-                ciclo_formativo_usuario.equals("  TEXTIL, CONFECCIÓN Y PIEL  ") ||
-                ciclo_formativo_usuario.equals("  TRANSPORTE Y MANTENIMIENTO DE VEHÍCULOS  ") ||
-                ciclo_formativo_usuario.equals("  VIDRIO Y CERÁMICA  ")){
-             Toast.makeText(getActivity(), R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
-            // Con los botones en la barra de acción no saca los snackbar
-            //Snackbar.make(getActivity().findViewById(android.R.id.content),
-              //      R.string.error_campos_vacios, Snackbar.LENGTH_LONG).show();
-        } else {
-            // consulta volley para actualizar los datos del usuario
-            request = new StringRequest(Request.Method.POST, url_consulta,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.equals("1")) {
-                                Toast.makeText(getActivity(), R.string.perfil_actualizado, Toast.LENGTH_SHORT).show();
-                                // Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
-                                //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
-                                System.out.println("DATOS ACTUALIZADOS");
-                                actualizarCabecera();
-                                guardarPreferencias(); // Actualizamos las horas del módulo fct en preferencias
-                                editando = false; // deshabilitamos la edición de campos de nuevo
-                                cancelarEdicion();
-                                getActivity().invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente
-                                // actualizamos los datos a visualizar automáticamente, para evitar que el usuario tenga que hacerlo manualmente
-                                rellenarCampos();
-                            } else {
-                                Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                        "Error al actualizar los datos del usuario.", Snackbar.LENGTH_LONG).show();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+        // PASADAS CON ÉXITO TODAS LAS VALIDACIONES, GUARDAMOS LOS DATOS DEL PERFIL:
+        // consulta volley para actualizar los datos del usuario
+        request = new StringRequest(Request.Method.POST, url_consulta,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("1")) {
+                            Toast.makeText(getActivity(), R.string.perfil_actualizado, Toast.LENGTH_SHORT).show();
+                            // Snackbar.make(getActivity().findViewById(android.R.id.content),
+                            //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
+                            //Log.d("VerYEditarRegistroDiario", "Registro actualizado");
+                            System.out.println("DATOS ACTUALIZADOS");
+                            actualizarCabecera();
+                            guardarPreferencias(); // Actualizamos las horas del módulo fct en preferencias
+                            editando = false; // deshabilitamos la edición de campos de nuevo
+                            cancelarEdicion();
+                            getActivity().invalidateOptionsMenu(); // llamamos otra vez para quitar el icono de guardado una vez que se ha guardado correctamente
+                            // actualizamos los datos a visualizar automáticamente, para evitar que el usuario tenga que hacerlo manualmente
+                            rellenarCampos();
+                        } else {
                             Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
-                            //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para actualizar el registro");
+                                    "Error al actualizar los datos del usuario.", Snackbar.LENGTH_LONG).show();
                         }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("nombre", nombre_del_estudiante);
-                    parametros.put("apellidos", apellidos_del_usuario);
-                    parametros.put("provincia", provincia_del_usuario);
-                    parametros.put("horas_fct", horas_fct_usuario);
-                    parametros.put("centro_estudios", centro_estudios_usuario);
-                    parametros.put("familia_ciclo", familia_ciclo_usuario);
-                    parametros.put("ciclo_formativo", ciclo_formativo_usuario);
-                    parametros.put("centro_practicas", centro_practicas_usuario);
-                    parametros.put("nUsuario", nombre_de_usuario);
-                    return parametros;
-                }
-            };
-            AppController.getInstance().addToRequestQueue(request);
-        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para actualizar el registro");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("nombre", nombre_del_estudiante);
+                parametros.put("apellidos", apellidos_del_usuario);
+                parametros.put("provincia", provincia_del_usuario);
+                parametros.put("horas_fct", horas_fct_usuario);
+                parametros.put("centro_estudios", centro_estudios_usuario);
+                parametros.put("familia_ciclo", familia_ciclo_usuario);
+                parametros.put("ciclo_formativo", ciclo_formativo_usuario);
+                parametros.put("centro_practicas", centro_practicas_usuario);
+                parametros.put("nUsuario", nombre_de_usuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     /***********************************************************************************************
@@ -489,6 +649,8 @@ public class MiPerfilFragment extends Fragment {
         // Validamos primero:
         claveNueva = txtClave.getText().toString();
         repiteClave = txtRepiteClave.getText().toString();
+        txtCentroEstudios.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtHorasFCT.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
         if (claveNueva.isEmpty() || repiteClave.isEmpty()) {
             //Log.d("MiPerfilFragment", "Campos de clave vacíos");
@@ -496,13 +658,13 @@ public class MiPerfilFragment extends Fragment {
             Snackbar.make(getActivity().findViewById(android.R.id.content),
                     R.string.error_introduce_clave, Snackbar.LENGTH_LONG).show();
         } else { // Los campos no están vacíos. Continuamos validando...
-            
             // Si la clave introducida es menor a 8 caracteres, no permitimos continuar
             // (no validamos la longitud máxima porque ya hemos definido el campo para que solo acepte
             // hasta 20 caracteres)
             if (claveNueva.length() < 8) {
                 //Log.d("MiPerfilFragment", "Longitud de clave inferior a la permitida");
                 //Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
+                txtClave.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                 Snackbar.make(getActivity().findViewById(android.R.id.content),
                         R.string.error_longitud_clave, Snackbar.LENGTH_LONG).show();
             } else { // La longitud de clave es correcta. Continuamos validando...
@@ -512,9 +674,11 @@ public class MiPerfilFragment extends Fragment {
                    // Toast.makeText(getActivity(), R.string.error_formato_clave, Toast.LENGTH_LONG).show();
                     Snackbar.make(getActivity().findViewById(android.R.id.content),
                             R.string.error_formato_clave, Snackbar.LENGTH_LONG).show();
+                    txtClave.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                 } else { // La clave tiene un formato correcto. Continuamos validando...
                     // Si la clave no repite con la repetida no permitimos continuar
                     if (!claveNueva.equals(repiteClave)) {
+                        txtRepiteClave.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         //Log.d("MiPerfilFragment", "Las claves no coinciden");
                        // Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
                         Snackbar.make(getActivity().findViewById(android.R.id.content),

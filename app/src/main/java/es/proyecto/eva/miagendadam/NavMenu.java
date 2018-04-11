@@ -59,29 +59,13 @@ public class NavMenu extends AppCompatActivity
     //    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/cerrar_sesion.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
-    private String url_consulta2 = "http://miagendafp.000webhostapp.com/consulta_recuperar_datos_perfil_usuario.php";
-    private JSONArray jsonArray;
+
+
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
     SharedPreferences preferences;
     NavigationView navigationView;
     public static View headerView; // estático para poder actualizar la familia del ciclo automáticamente si se cambia
     // desde el perfil del usuario
-    /***********************************************************************************************
-     * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
-     * caracteres especiales
-     * @param dato
-     * @return
-     **********************************************************************************************/
-    private String codificaString(String dato){
-        String datoCodificado = "";
-        try {
-            byte[] arrByteNombre = dato.getBytes("ISO-8859-1");
-            datoCodificado = new String(arrByteNombre);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return datoCodificado;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +92,7 @@ public class NavMenu extends AppCompatActivity
         // pero la primera vez nunca.
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
-        obtenerDatosUsuario();
+
         // añadimos en el menú lateral el nombre y correo del usuario
         nombreUsuario = (TextView) headerView.findViewById(R.id.nombre_usuario_nav);
         nombreUsuario.setText(nombre_de_usuario);
@@ -184,52 +168,6 @@ public class NavMenu extends AppCompatActivity
         return true;
     }
 
-    /***********************************************************************************************
-     * Método que obtiene los datos del usuario para mostrarlos
-     **********************************************************************************************/
-    // Los obtenemos desde aquí para que no se produzca un lapso de un milisegundo de espera a que se obtengan
-    // los datos, que es lo que ocurre si se obtienen desde el propio fragmento del perfil
-    public void obtenerDatosUsuario(){
-        request = new StringRequest(Request.Method.POST, url_consulta2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            //Log.d("MiPerfilFragment", "Obtenemos datos del usuario");
-                            jsonArray = new JSONArray(response); // guardamos los registros en el array
-                            nombre_del_estudiante = codificaString(jsonArray.getJSONObject(0).getString("nombre"));
-                            apellidos_del_usuario = codificaString(jsonArray.getJSONObject(0).getString("apellidos"));
-                            provincia_del_usuario = codificaString(jsonArray.getJSONObject(0).getString("provincia"));
-                            horas_fct_usuario = jsonArray.getJSONObject(0).getString("horas_fct");
-                            centro_estudios_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_estudios"));
-                            familia_ciclo_usuario = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
-                            ciclo_formativo_usuario = codificaString(jsonArray.getJSONObject(0).getString("ciclo_formativo"));
-                            centro_practicas_usuario = codificaString(jsonArray.getJSONObject(0).getString("centro_practicas"));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            //Log.e("MiPerfilFragment", "Error al obtener datos del usuario");
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
-                        //Log.d("MiPerfilFragment", "Error al conectar con el servidor para obtener datos del usuario");
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                Map<String, String> parametros = new HashMap<>();
-                parametros.put("nUsuario", nombre_de_usuario);
-                return parametros;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(request);
-    }
 
     /*************************************************************************************************************
      * Método que cierra la sesión del usuario activo (actualiza isLogged a 0 y vuelva a la pantalla de login)   *

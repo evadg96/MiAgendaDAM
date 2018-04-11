@@ -16,6 +16,8 @@
         android:ems="10"
         android:hint="@string/hint_contenido_nota"
         android:inputType="textCapSentences|textMultiLine"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
 </LinearLayout>

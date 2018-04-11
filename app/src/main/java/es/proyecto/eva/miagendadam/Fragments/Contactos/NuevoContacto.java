@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -45,6 +47,8 @@ public class NuevoContacto extends AppCompatActivity {
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    // todo : añadir validación de teléfono
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,12 @@ public class NuevoContacto extends AppCompatActivity {
                 correoContacto = txtCorreo.getText().toString();
                 modulo = txtModulo.getText().toString();
                 telefono = txtTelefono.getText().toString();
+
+                txtNombre.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtModulo.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtCorreo.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtTelefono.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+
                 // Todos los campos son obligatorios salvo el del teléfono, que no se tiene por qué conocer
                 if (nombreContacto.isEmpty() || correoContacto.isEmpty() || modulo.isEmpty()){
                     // Toast.makeText(NuevoRegistroDiario.this, "Debes completar todos los datos.", Toast.LENGTH_SHORT).show();
@@ -86,15 +96,18 @@ public class NuevoContacto extends AppCompatActivity {
                     Pattern pattern = Pattern.compile(pattern_formato_nombre); // creamos el patrón asignándole los caracteres que no queremos que tenga
                     Matcher matcher = pattern.matcher(nombreContacto); // le indicamos que queremos que aplique el patrón al correo
                     if (!matcher.matches()) { // si el nombre del contacto a guardar no contiene exclusivamente caracteres del patrón, no dejamos guardar
+                        txtNombre.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         Toast.makeText(NuevoContacto.this, R.string.error_nombre_invalido, Toast.LENGTH_LONG).show();
                     } else {
                         // Después validamos el rol introducido...
                         if (!modulo.matches(pattern_formato_modulo)){
+                            txtModulo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                             System.out.println("FORMATO MÓDULO INVÁLIDO");
                             Toast.makeText(NuevoContacto.this, R.string.error_modulo_invalido, Toast.LENGTH_LONG).show();
                         } else {
                             // A continuación validamos el correo electrónico...
                             if (!correoContacto.matches(pattern_email)) {
+                                txtCorreo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                 System.out.println("FORMATO CORREO INVÁLIDO");
                                 Toast.makeText(NuevoContacto.this, R.string.error_correo_no_valido, Toast.LENGTH_LONG).show();
                             } else {
@@ -107,7 +120,7 @@ public class NuevoContacto extends AppCompatActivity {
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
                 // Log.i("NuevoRegistroDiario", "Action Atrás");
-                onBackPressed(); // todo implementar verificación de volver atrás sin guardar
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

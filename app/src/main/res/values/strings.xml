@@ -49,6 +49,7 @@
 
     <string name="error_apellidos_invalidos">No se pueden introducir números ni caracteres especiales salvo acentuaciones en los apellidos.</string>
 
+    <string name="error_datos_invalidos_formato">No se pueden introducir números ni caracteres especiales salvo acentuaciones.</string>
     <!-- diálogo registro RegistroNuevoUsuario -->
     <string name="title_dialog_registro_correcto">¡Registro (casi) completado!</string>
     <string name="text_dialog_registro_correcto">Se ha enviado un código de confirmación a tu correo para poder completar el registro. Por favor, revisa

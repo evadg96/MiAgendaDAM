@@ -97,6 +97,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
     // metemos la clave generada en otro string
     private String claveNueva = generaClave();
 
+    // todo validar formato de campos de datos
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

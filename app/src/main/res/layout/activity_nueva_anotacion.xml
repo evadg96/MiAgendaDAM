@@ -16,5 +16,7 @@
         android:background="@color/transparent"
         android:ems="10"
         android:hint="@string/hint_contenido_nota"
-        android:inputType="textCapSentences|textMultiLine" />
+        android:inputType="textCapSentences|textMultiLine"
+        android:focusableInTouchMode="true"
+        android:focusable="true"/>
 </LinearLayout>

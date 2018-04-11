@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,6 +56,7 @@ public class EditarContacto extends AppCompatActivity {
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    // todo añadir validación de teléfono aquí también
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,12 @@ public class EditarContacto extends AppCompatActivity {
                 correoContacto = txtCorreo.getText().toString();
                 modulo = txtModulo.getText().toString();
                 telefono = txtTelefono.getText().toString();
+
+                txtNombre.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtModulo.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtCorreo.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtTelefono.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+
                 // Todos los campos son obligatorios salvo el del teléfono, que no se tiene por qué conocer
                 if (nombreContacto.isEmpty() || correoContacto.isEmpty() || modulo.isEmpty()){
                     // Toast.makeText(NuevoRegistroDiario.this, "Debes completar todos los datos.", Toast.LENGTH_SHORT).show();
@@ -101,16 +110,19 @@ public class EditarContacto extends AppCompatActivity {
                     Matcher matcher = pattern.matcher(nombreContacto); // le indicamos que queremos que aplique el patrón al correo
                     // Primero validamos el nombre del contacto introducido...
                     if (!matcher.matches()) { // si el nombre del contacto no cumple con los caracteres aceptados por el patrón, no dejamos guardar
+                        txtNombre.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         System.out.println("FORMATO NOMBRE INVÁLIDO");
                         Toast.makeText(EditarContacto.this, R.string.error_nombre_invalido, Toast.LENGTH_LONG).show();
                     } else {
                         // Después validamos el rol introducido...
                         if (!modulo.matches(pattern_formato_modulo)){
+                            txtModulo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                             System.out.println("FORMATO MÓDULO INVÁLIDO");
                             Toast.makeText(EditarContacto.this, R.string.error_modulo_invalido, Toast.LENGTH_LONG).show();
                         } else {
                             // A continuación validamos el correo electrónico...
                             if (!correoContacto.matches(pattern_email)){
+                                txtCorreo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                 System.out.println("FORMATO CORREO INVÁLIDO");
                                 Toast.makeText(EditarContacto.this, R.string.error_correo_no_valido, Toast.LENGTH_LONG).show();
                             } else {

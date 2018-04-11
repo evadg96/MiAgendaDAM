@@ -111,6 +111,8 @@ public class PantallaLogin extends AppCompatActivity {
         return fecha;
     }
 
+    // todo validar formato de clave y nombre
+
     private String fecha_ultimo_login = "";
     private String fecha_bloqueo = "";
     // Declaramos el número de intentos de inicio de sesión base, para ir restándolo y mostrándoselo al usuario con cada intento fallido que haga
