@@ -233,7 +233,7 @@ public class VerContacto extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                                        // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                                         Snackbar.make(findViewById(android.R.id.content),
                                                 R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                                         //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para borrar el registro seleccionado");

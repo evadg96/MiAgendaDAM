@@ -30,8 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/roboto_light"
-            android:text="@string/enviar_codigo_desbloqueo"
-            android:textStyle="bold" />
+            android:text="@string/enviar_codigo_desbloqueo" />
     </LinearLayout>
 
     <EditText
@@ -59,8 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/roboto_light"
-            android:text="@string/btn_cancelar"
-            android:textStyle="bold" />
+            android:text="@string/btn_cancelar" />
 
         <Button
             android:id="@+id/btn_validar_codigo"
@@ -68,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_light"
             android:inputType="number"
             android:text="@string/validar_codigo"
             android:visibility="gone" />

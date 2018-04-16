@@ -160,16 +160,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                        Snackbar.make(findViewById(android.R.id.content),
-                                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                        Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                      //  Snackbar.make(findViewById(android.R.id.content),
+                                        //        R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                         // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                     }
                                 }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
-                                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                                 Map<String, String> parametros = new HashMap<>();
                                 parametros.put("horas", horas_exactas);
                                 parametros.put("idUsuario", idUsuario);
@@ -214,16 +212,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                        Snackbar.make(findViewById(android.R.id.content),
-                                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                        Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                       // Snackbar.make(findViewById(android.R.id.content),
+                                         //       R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                         // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                     }
                                 }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
-                                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                                 Map<String, String> parametros = new HashMap<>();
                                 parametros.put("hora_1", horas_1);
                                 parametros.put("hora_2", horas_2);
@@ -275,16 +271,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                    //Snackbar.make(findViewById(android.R.id.content),
+                                      //      R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                     // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                 }
                             }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                             Map<String, String> parametros = new HashMap<>();
                             parametros.put("hora_inicio", hora_inicio);
                             parametros.put("minuto_inicio", minuto_inicio);
@@ -335,16 +329,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                    // Snackbar.make(findViewById(android.R.id.content),
+                                        //    R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                     // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                 }
                             }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                             Map<String, String> parametros = new HashMap<>();
                             parametros.put("hora_fin", hora_fin);
                             parametros.put("minuto_fin", minuto_fin);
@@ -381,16 +373,15 @@ public class BusquedaRegistros extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+
+                                Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                              //  Snackbar.make(findViewById(android.R.id.content),
+                                  //      R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                 // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                             }
                         }) {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                         Map<String, String> parametros = new HashMap<>();
                         parametros.put("idUsuario", idUsuario);
                         return parametros;
@@ -440,16 +431,15 @@ public class BusquedaRegistros extends AppCompatActivity {
                            new Response.ErrorListener() {
                                @Override
                                public void onErrorResponse(VolleyError error) {
-                                   // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                   //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                   Snackbar.make(findViewById(android.R.id.content),
-                                           R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+
+                                   Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                   // Snackbar.make(findViewById(android.R.id.content),
+                                      //     R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                    // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                }
                            }) {
                        @Override
                        protected Map<String, String> getParams() throws AuthFailureError {
-                           // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                            Map<String, String> parametros = new HashMap<>();
                            parametros.put("dia", sDia);
                            parametros.put("mes", sMes);
@@ -521,16 +511,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                    // Snackbar.make(findViewById(android.R.id.content),
+                                       //     R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                     // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                 }
                             }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                             Map<String, String> parametros = new HashMap<>();
                             parametros.put("fecha_1", fecha_1);
                             parametros.put("fecha_2", fecha_2);
@@ -600,16 +588,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                    // Snackbar.make(findViewById(android.R.id.content),
+                                       //     R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                     // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                 }
                             }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                             Map<String, String> parametros = new HashMap<>();
                             parametros.put("mes", mes);
                             parametros.put("idUsuario", idUsuario);
@@ -651,16 +637,14 @@ public class BusquedaRegistros extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(BusquedaRegistros.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                    // Snackbar.make(findViewById(android.R.id.content),
+                                        //    R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                                     // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                                 }
                             }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                             Map<String, String> parametros = new HashMap<>();
                             parametros.put("valoracion", valoracion);
                             parametros.put("idUsuario", idUsuario);

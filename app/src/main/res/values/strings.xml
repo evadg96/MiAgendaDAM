@@ -150,8 +150,9 @@
 
     <!-- Strings fragment DiarioFragment -->
     <string name="error_modulo_fct_completado">No puedes crear más registros porque ya has cursado todas las horas del módulo FCT.</string>
-    <string name="texto_diario_vacio">¡Vaya, parece que no tienes ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
+    <string name="texto_diario_vacio">¡Vaya, parece que no has añadido ningún registro todavía! Pulsa el botón circular de abajo para crear un registro nuevo.</string>
     <string name="menu_estadisticas_registros_diario">Estadísticas</string>
+    <string name="alert_no_hay_registros">No puedes realizar ninguna búsqueda porque aún no has creado ningún registro.</string>
     <string name="menu_buqueda_registros">Buscar registros</string>
     <string name="menu_borrar_todo">Borrar todos los registros</string>
     <string name="menu_ordenar_registros">Ordenar registros...</string>
@@ -166,7 +167,7 @@
 
     <!-- Strings fragment ContactosFragment -->
     <string name="texto_contactos_vacio">¡Vaya, parece que no has añadido ningún contacto todavía! Pulsa el botón circular de abajo para crear un contacto nuevo.</string>
-    <string name="eliminar_todos_contactos">Eliminar todos los contactos</string>
+    <string name="eliminar_todos_contactos">Borrar todos los contactos</string>
     <string name="alert_borrar_contactos">¿Estás seguro de que deseas borrar todos los contactos? Esta acción
     no se podrá deshacer.</string>
     <string name="contactos_borrados">Contactos borrados correctamente</string>
@@ -275,6 +276,7 @@
     <string name="info_horas_restantes">El número de horas restantes se obtiene de la resta de la totalidad de horas del módulo FCT y las horas ya trabajadas. Esta cifra
     se corresponde con las horas que quedan por trabajar para completar el cómputo de horas del módulo FCT.</string>
     <string name="dialog_cargando_horas">Obteniendo horas trabajadas y pendientes...</string>
+    <string name="alert_horas_no_hay_registros">Aún no has creado ningún registro del que obtener horas trabajadas.</string>
 
     <!-- Strings fragment MiPerfilFragment -->
     <string name="mi_perfil_saludo_inicial">¡Hola </string>
@@ -297,6 +299,7 @@
     <string name="datos_refrescados">Datos refrescados.</string>
     <string name="clave_actualizada">Contraseña actualizada.</string>
     <string name="error_obtener_datos_usuario">No se han podido obtener los datos del usuario. Por favor, vuelve a intentarlo.</string>
+    <string name="error_actualizar_datos_usuario">No se han podido actualizar los datos del usuario. Por favor, vuelve a intentarlo.</string>
 
     <string name="error_introduce_clave">Introduce una contraseña</string>
     <string name="title_dialog_actualizar_clave_mi_perfil">Cambiar contraseña</string>
@@ -307,7 +310,7 @@
     <string name="btn_cambiar">Cambiar</string>
 
 
-    <string name="txt_instrucciones_recuperar_clave"> Introduce el correo electrónico con el que estés registrado para recuperar tus datos
+    <string name="txt_instrucciones_recuperar_clave">Introduce el correo electrónico con el que estés registrado para recuperar tus datos
     de usuario. Por motivos de seguridad no podemos recuperar tu clave, pero puedes solicitar una nueva que podrás cambiar después en
     tu perfil de usuario.</string>
 
@@ -317,7 +320,7 @@
     <string name="alert_borrar_notas">¿Estás seguro de que deseas borrar todas las notas? Esta acción no se podrá deshacer.</string>
     <string name="notas_borradas">Notas borradas correctamente.</string>
     <!-- Strings de menú de ActionBar -->
-    <string name="borrar_todas_notas">Eliminar todas las notas</string>
+    <string name="borrar_todas_notas">Borrar todas las notas</string>
     <string name="ordenar_notas">Ordenar notas...</string> <!-- todo: ordenar notas por fecha de creación, edición...? -->
 
     <!-- Strings NuevaNota -->
@@ -349,8 +352,9 @@
     <string name="error_codigo_incorrecto">El código introducido no es correcto.</string>
     <string name="error_introducir_nombre_usuario">Debes introducir tu nombre de usuario.</string>
     <string name="error_introducir_clave">Debes introducir tu contraseña.</string>
-    <string name="aviso_bloqueo_realizado">Se ha bloqueado al usuario. Pulse sobre el botón "Desbloquear cuenta" para recuperar su cuenta de usuario.</string>
+    <string name="aviso_bloqueo_realizado">Se ha bloqueado al usuario. Pulsa sobre el botón "Desbloquear mi cuenta" para recuperar tu cuenta de usuario.</string>
     <string name="aviso_usuario_bloqueado">Usuario bloqueado. No puedes iniciar sesión con esta cuenta.</string>
+    <string name="aviso_usuario_bloqueado_2">El usuario está bloqueado. A continuación pulsa sobre la opción "Desbloquear mi cuenta" para recuperar tu cuenta de usuario.</string>
     <string name="aviso_clave_incorrecta">La clave introducida no es correcta. Intentos de inicio restantes: </string>
     <string name="aviso_pocos_intentos_restantes">AVISO: Solo te quedan </string>
     <string name="aviso_pocos_intentos_restantes_2"> intentos restantes. Si los agotas se bloqueará tu cuenta de usuario.</string>

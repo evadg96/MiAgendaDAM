@@ -51,6 +51,10 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     private Session session;
     private StringRequest request;
 
+    // Patrón para validar el formato del correo electrónico introducido
+    private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/check_correo.php";
 //    private String url_consulta2 = "http://192.168.0.12/MiAgenda/clave_gmail.php";
 
@@ -80,59 +84,61 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                 //Log.d("ReenviarCodigoConf", "Reenviar código de confirmación");
                 correo = txtCorreo.getText().toString();
                 if (!correo.isEmpty()){
-                    request = new StringRequest(Request.Method.POST, url_consulta,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    if (response.equals("0")) { // no existe el correo en la bd
-                                      //  Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
-                                        Snackbar.make(findViewById(android.R.id.content),
-                                                R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
-                                        //Log.d("ReenviarCodigoConfirmacion", "No existe ningún usuario con ese correo");
-                                    } else {
-                                        if (response.equals("1")) { // existe el correo, así que le enviamos el código
-                                            enviarCorreoConfirmacion();
-                                            // Creamos alerta de confirmación  para decir que se ha creado correctamente
-                                            // y mandamos a la pantalla de confirmación de usuario
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(ReenviarCodigoConfirmacion.this);
-                                            builder.setTitle(R.string.dialog_codigo_reenviado); // titulo del diálogo
-                                            builder.setMessage(R.string.dialog_mensaje_codigo_reenviado)
-                                                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            finish(); // cerramos la actividad para volver a la de confirmación
-                                                        }
-                                                    });
-                                            // Create the AlertDialog object and return it
-                                            Dialog dialog = builder.create();
-                                            dialog.show();
+                    if (!correo.matches(pattern_email)){ // validamos el formato del email
+                        Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
+                    } else {
+                        request = new StringRequest(Request.Method.POST, url_consulta,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if (response.equals("0")) { // no existe el correo en la bd
+                                              Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                            //Snackbar.make(findViewById(android.R.id.content),
+                                              //      R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
+                                            //Log.d("ReenviarCodigoConfirmacion", "No existe ningún usuario con ese correo");
+                                        } else {
+                                            if (response.equals("1")) { // existe el correo, así que le enviamos el código
+                                                enviarCorreoConfirmacion();
+                                                // Creamos alerta de confirmación  para decir que se ha creado correctamente
+                                                // y mandamos a la pantalla de confirmación de usuario
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ReenviarCodigoConfirmacion.this);
+                                                builder.setTitle(R.string.dialog_codigo_reenviado); // titulo del diálogo
+                                                builder.setMessage(R.string.dialog_mensaje_codigo_reenviado)
+                                                        .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                finish(); // cerramos la actividad para volver a la de confirmación
+                                                            }
+                                                        });
+                                                // Create the AlertDialog object and return it
+                                                Dialog dialog = builder.create();
+                                                dialog.show();
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                  //  Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.error_servidor, Snackbar.LENGTH_LONG).show();
-                                    //Log.e("ReenviarCodigoConfirmacion", "Error al conectar con el servidor para comprobar el correo electrónico introducido");
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                            Map<String, String> parametros = new HashMap<>();
-                            parametros.put("correo", correo);
-                            return parametros;
-                        }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                        //Snackbar.make(findViewById(android.R.id.content),
+                                          //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                        //Log.e("ReenviarCodigoConfirmacion", "Error al conectar con el servidor para comprobar el correo electrónico introducido");
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> parametros = new HashMap<>();
+                                parametros.put("correo", correo);
+                                return parametros;
+                            }
 
-                    };
-                    AppController.getInstance().addToRequestQueue(request);
-
+                        };
+                        AppController.getInstance().addToRequestQueue(request);
+                    }
                 } else {
-                  //  Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
-                    Snackbar.make(findViewById(android.R.id.content),
-                            R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
+                   Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+                   // Snackbar.make(findViewById(android.R.id.content),
+                     //       R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -195,9 +201,9 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                       // Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                       Toast.makeText(ReenviarCodigoConfirmacion.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("ReenviarCodigoConf", "Error al conectar con el servidor para obtener la clave del correo noreply...");
                     }
                 });

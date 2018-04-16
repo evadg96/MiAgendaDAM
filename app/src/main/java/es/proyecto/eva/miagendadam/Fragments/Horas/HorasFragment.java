@@ -71,13 +71,13 @@ public class HorasFragment extends Fragment {
         txtMinutosRestantes = (TextView) view.findViewById(R.id.txt_minutos_restantes);
         txtM1 = (TextView) view.findViewById(R.id.txt_min); // si no hay minutos, la letra m desaperecerá en ambos casos
         txtM2 = (TextView) view.findViewById(R.id.txt_min_2);
+        txtHorasModuloFCT.setText(horas_fct);
         // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle(R.string.dialog_cargando);
         progressDialog.setMessage("Obteniendo horas...");
         progressDialog.show();
         obtenerHorasTrabajadas();
-        txtHorasModuloFCT.setText(horas_fct);
         return view;
     }
 
@@ -90,47 +90,52 @@ public class HorasFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            jsonArray = new JSONArray(response);
-                            // obtenemos el sumatorio de minutos y horas trabajadas
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                sHoras_trabajadas = jsonArray.getJSONObject(i).getString("sumaHoras");
-                                sMinutos_trabajados = jsonArray.getJSONObject(i).getString("sumaMinutos");
+                            try {
+                                jsonArray = new JSONArray(response);
+                                // obtenemos el sumatorio de minutos y horas trabajadas
+                                sHoras_trabajadas = jsonArray.getJSONObject(0).getString("sumaHoras");
+                                sMinutos_trabajados = jsonArray.getJSONObject(0).getString("sumaMinutos");
+                                // validamos si se han obtenido datos
+                                if (sHoras_trabajadas.isEmpty() && sMinutos_trabajados.isEmpty()){
+                                    progressDialog.cancel();
+                                    Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                            R.string.alert_horas_no_hay_registros, Snackbar.LENGTH_LONG).show();
+                                } else{
+                                    // pasamos los String a enteros para hacer las cuentas
+                                    horas_trabajadas = Integer.valueOf(sHoras_trabajadas);
+                                    minutos_trabajados = Integer.valueOf(sMinutos_trabajados);
+                                    // comprobamos que los minutos obtenidos no pasen de 59. De ser así se deberá restar 60 e incrementar una hora hasta que la cifra de minutos
+                                    // esté finalmente por debajo de 590
+                                    while (minutos_trabajados > 59) {
+                                        minutos_trabajados = minutos_trabajados - 60;
+                                        horas_trabajadas++;
+                                        System.out.println("SUMA HORA");
+                                    }
+                                    // comprobamos que los cálculos se han hecho bien
+                                    System.out.println("HORAS TRABAJADAS: " + horas_trabajadas + "\n MINUTOS TRABAJADOS: " + minutos_trabajados);
+                                    guardarPreferencias(); // guardamos el número de horas obtenidas
+                                    // ponemos la cifra de las horas trabajadas obtenidas
+                                    txtHorasTrabajadas.setText(String.valueOf(horas_trabajadas));
+                                    // si hay minutos se ponen, si no se ocultan todos los elementos de los minutos (cifra y letra correspondiente)
+                                    if (minutos_trabajados > 0) {
+                                        txtMinutosTrabajados.setText(String.valueOf(minutos_trabajados));
+                                    } else {
+                                        txtMinutosTrabajados.setVisibility(View.GONE);
+                                        txtM1.setVisibility(View.GONE);
+                                    }
+                                }
+                                // A continuación obtenemos las horas restantes de trabajo
+                                obtenerHorasRestantes();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            // pasamos los String a enteros para hacer las cuentas
-                            horas_trabajadas = Integer.valueOf(sHoras_trabajadas);
-                            minutos_trabajados = Integer.valueOf(sMinutos_trabajados);
-                            // comprobamos que los minutos obtenidos no pasen de 59. De ser así se deberá restar 60 e incrementar una hora hasta que la cifra de minutos
-                            // esté finalmente por debajo de 590
-                            while (minutos_trabajados > 59){
-                                minutos_trabajados = minutos_trabajados - 60;
-                                horas_trabajadas++;
-                                System.out.println("SUMA HORA");
-                            }
-                            // comprobamos que los cálculos se han hecho bien
-                            System.out.println("HORAS TRABAJADAS: " + horas_trabajadas + "\n MINUTOS TRABAJADOS: " + minutos_trabajados );
-                            guardarPreferencias(); // guardamos el número de horas obtenidas
-                            // ponemos la cifra de las horas trabajadas obtenidas
-                            txtHorasTrabajadas.setText(String.valueOf(horas_trabajadas));
-                            // si hay minutos se ponen, si no se ocultan todos los elementos de los minutos (cifra y letra correspondiente)
-                            if (minutos_trabajados > 0) {
-                                txtMinutosTrabajados.setText(String.valueOf(minutos_trabajados));
-                            } else {
-                                txtMinutosTrabajados.setVisibility(View.GONE);
-                                txtM1.setVisibility(View.GONE);
-                            }
-                            // A continuación obtenemos las horas restantes de trabajo
-                            obtenerHorasRestantes();
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
-                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                         Snackbar.make(getActivity().findViewById(android.R.id.content),
                                 R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                         // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
@@ -138,7 +143,6 @@ public class HorasFragment extends Fragment {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("idUsuario", idUsuario);
                 return parametros;

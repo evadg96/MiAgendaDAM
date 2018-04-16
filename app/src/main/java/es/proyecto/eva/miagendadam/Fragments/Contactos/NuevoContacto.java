@@ -150,7 +150,6 @@ public class NuevoContacto extends AppCompatActivity {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nombreContacto", nombreContacto);
                 parametros.put("correoContacto", correoContacto);

@@ -97,7 +97,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
     // metemos la clave generada en otro string
     private String claveNueva = generaClave();
 
-    // todo validar formato de campos de datos
+    private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,50 +139,54 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
         ////Log.d("RecuperarDatosUsuario", "Comprobamos el correo introducido");
         correo = txtCorreo.getText().toString();
         if (!correo.isEmpty()){ // si se ha introducido un dato en el campo de correo...
-            request = new StringRequest(Request.Method.POST, url_consulta2,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.equals("0")) { // no existe el usuario en la bd
-                                //Log.i("RecuperarDatosUsuario", "No hay ningún usuario con ese correo");
-                            //   Toast.makeText(RecuperarDatosUsuario.this, "No hay ningún usuario registrado con ese correo.", Toast.LENGTH_SHORT).show();
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
-                            } else if(response.equals("1")){
-                                // Comprobamos qué botón había pulsado el usuario:
-                                if (enviarClave){ // Si es el de solicitar una clave nueva...
-                                    // Generamos una clave nueva
-                                    actualizaClave();
-                                } else if (enviarUsuario){ // Si es el de recuperar el nombre de usuario...
-                                    // Obtenemos el nombre del usuario asociado al correo indicado
-                                    recuperaUsuario();
+            // validamos el formato del correo
+            if (!correo.matches(pattern_email)){
+                Toast.makeText(RecuperarDatosUsuario.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
+            } else {
+                request = new StringRequest(Request.Method.POST, url_consulta2,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.equals("0")) { // no existe el usuario en la bd
+                                    //Log.i("RecuperarDatosUsuario", "No hay ningún usuario con ese correo");
+                                       Toast.makeText(RecuperarDatosUsuario.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                    //Snackbar.make(findViewById(android.R.id.content),
+                                      //      R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
+                                } else if (response.equals("1")) {
+                                    // Comprobamos qué botón había pulsado el usuario:
+                                    if (enviarClave) { // Si es el de solicitar una clave nueva...
+                                        // Generamos una clave nueva
+                                        actualizaClave();
+                                    } else if (enviarUsuario) { // Si es el de recuperar el nombre de usuario...
+                                        // Obtenemos el nombre del usuario asociado al correo indicado
+                                        recuperaUsuario();
+                                    }
                                 }
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                           // Toast.makeText(RecuperarDatosUsuario.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
-                            //Log.e("RecuperarDatosUsuario", "Error al conectar con el servidor para comprobar el correo introducido");
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("correo", correo);
-                    return parametros;
-                }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                 Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                //Snackbar.make(findViewById(android.R.id.content),
+                                  //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                //Log.e("RecuperarDatosUsuario", "Error al conectar con el servidor para comprobar el correo introducido");
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> parametros = new HashMap<>();
+                        parametros.put("correo", correo);
+                        return parametros;
+                    }
 
-            };
-            AppController.getInstance().addToRequestQueue(request);
+                };
+                AppController.getInstance().addToRequestQueue(request);
+            }
         } else { // si el campo de correo electrónico está vacío
-           // Toast.makeText(RecuperarDatosUsuario.this, "Debes introducir tu correo electrónico.", Toast.LENGTH_SHORT).show();
-            Snackbar.make(findViewById(android.R.id.content),
-                    R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(RecuperarDatosUsuario.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+           // Snackbar.make(findViewById(android.R.id.content),
+             //       R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
         }
 
     }
@@ -230,9 +236,9 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                     //   Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                     //   Snackbar.make(findViewById(android.R.id.content),
+                       //         R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("RecuperarDatosUsuario", "Error al obtener la clave del correo de noreply...");
                     }
                 });
@@ -353,15 +359,14 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                       // Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.d("RecuperarDatosUsuario", "Error al conectar con el servidor para obtener el nombre de usuario");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("correo", correo);
                 return parametros;
@@ -404,15 +409,14 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(RecuperarDatosUsuario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        //Snackbar.make(findViewById(android.R.id.content),
+                          //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.d("RecuperarDatosUsuario", "Error al conectar con el servidor para actualizar la clave de usuario");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("correo", correo);
                 parametros.put("clave", claveNueva);

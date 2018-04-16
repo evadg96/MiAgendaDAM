@@ -144,9 +144,15 @@ public class DiarioFragment extends Fragment {
             **/
             case R.id.menu_busqueda_registros: // Opción de guardar los datos de usuario actualizados
                Log.i("DiarioFragment", "Action Búsqueda de registros");
-            // abrimos pantalla de búsqueda de registros
-                Intent intent = new Intent (getActivity(), BusquedaRegistros.class);
-                startActivity(intent);
+                // primero validamos si hay registros sobre los que buscar
+                if (hayRegistros) {
+                    // abrimos pantalla de búsqueda de registros
+                    Intent intent = new Intent(getActivity(), BusquedaRegistros.class);
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content),
+                            R.string.alert_no_hay_registros, Snackbar.LENGTH_LONG).show();
+                }
                 return true;
            // case R.id.menu_estadisticas: // Opción de guardar los datos de usuario actualizados
              //  Log.i("DiarioFragment", "Action Estadísticas de registros");
@@ -353,7 +359,6 @@ public class DiarioFragment extends Fragment {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_de_usuario); // pasamos el nombre de usuario como parámetro de la consulta para obtener sus registros del diario
                 return parametros;
@@ -420,7 +425,6 @@ public class DiarioFragment extends Fragment {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_de_usuario); // pasamos el nombre de usuario como parámetro de la consulta para obtener sus registros del diario
                 return parametros;

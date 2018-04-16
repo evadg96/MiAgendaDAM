@@ -141,7 +141,7 @@
                         android:ems="10"
                         android:fontFamily="@font/roboto_light"
                         android:hint="@string/sHorasFct"
-                        android:inputType="textPersonName"
+                        android:inputType="textPersonName|number"
                         android:maxLength="3"
                         android:textColor="@drawable/edit_text_selector" />
 

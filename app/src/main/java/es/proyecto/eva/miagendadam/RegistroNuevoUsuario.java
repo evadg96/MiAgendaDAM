@@ -190,6 +190,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -408,9 +409,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                                 if (response.equals("1")) { // Error 1: se ha detectado qie ya existe un usuario con el correo introducido
                                                                                     try {
                                                                                         //  Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese correo");
-                                                                                        // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
-                                                                                        Snackbar.make(findViewById(android.R.id.content),
-                                                                                                R.string.error_correo_ya_existe, Snackbar.LENGTH_SHORT).show();
+                                                                                         Toast.makeText(RegistroNuevoUsuario.this, R.string.error_correo_ya_existe, Toast.LENGTH_SHORT).show();
+                                                                                        // Snackbar.make(findViewById(android.R.id.content),
+                                                                                           //     R.string.error_correo_ya_existe, Snackbar.LENGTH_SHORT).show();
                                                                                     } catch (Exception e) {
                                                                                         e.printStackTrace();
                                                                                     }
@@ -418,9 +419,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                                     if (response.equals("2")) { // Error 2: se ha detectado que ya existe un usuario con el nombre de usuario introducido
                                                                                         try {
                                                                                             //   Log.d("RegistroNuevoUsuario", "Ya existe un usuario con ese nombre");
-                                                                                            //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
-                                                                                            Snackbar.make(findViewById(android.R.id.content),
-                                                                                                    R.string.error_usuario_ya_existe, Snackbar.LENGTH_LONG).show();
+                                                                                            Toast.makeText(RegistroNuevoUsuario.this, R.string.error_usuario_ya_existe, Toast.LENGTH_LONG).show();
+                                                                                            //Snackbar.make(findViewById(android.R.id.content),
+                                                                                              //      R.string.error_usuario_ya_existe, Snackbar.LENGTH_LONG).show();
                                                                                         } catch (Exception e) {
                                                                                             e.printStackTrace();
                                                                                         }
@@ -467,9 +468,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                         new Response.ErrorListener() {
                                                                             @Override
                                                                             public void onErrorResponse(VolleyError error) {
-                                                                                //Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                                                                Snackbar.make(findViewById(android.R.id.content),
-                                                                                        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                                                                Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                                                                //Snackbar.make(findViewById(android.R.id.content),
+                                                                                  //      R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                                                                                 // Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para crear el nuevo usuario");
                                                                             }
                                                                         }) {
@@ -568,9 +569,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                       // Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(RegistroNuevoUsuario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("RegistroNuevoUsuario", "Error al conectar con el servidor para obtener la clave del correo noreply...");
                     }
                 });

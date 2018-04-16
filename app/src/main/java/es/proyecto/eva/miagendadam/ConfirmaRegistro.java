@@ -44,7 +44,9 @@ public class ConfirmaRegistro extends AppCompatActivity {
     private String correo_electronico = "";
     private StringRequest request;
 
-    // todo validar formato correo
+    // Patrón para validar el formato del correo electrónico introducido
+    private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     // ******************************* SERVIDORES Y CONSULTAS **************************************
 
@@ -100,107 +102,111 @@ public class ConfirmaRegistro extends AppCompatActivity {
         //Log.i("ConfirmaRegistro", "Comprobamos existencia de correo introducido");
         correo_electronico = txtCorreo.getText().toString();
         if (!correo_electronico.isEmpty()){ // si se ha introducido un dato en el campo de correo...
-            request = new StringRequest(Request.Method.POST, url_consulta2,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.equals("0")) { // NO EXISTE el usuario en la bd
-                                //Log.i("ConfirmaRegistro", "No existe ningún usuario con ese correo");
-                                //Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
-                            } else if(response.equals("1")){ // SÍ EXISTE, comprobamos código de confirmación:
-                                //Log.i("ConfirmaRegistro", "Comprobamos código de confirmación");
-                                request = new StringRequest(Request.Method.POST, url_consulta,
-                                        new Response.Listener<String>() {
-                                            @Override
-                                            public void onResponse(String response) {
-                                                // Obtenemos el dato introducido por el usuario en el campo de texto del código
-                                                String codigo = txtCodigo.getText().toString();
-                                                if (!codigo_de_confirmacion.isEmpty()) { // aseguramos que tengamos el dato del código almacenado
-                                                    if (codigo.equals(codigo_de_confirmacion)) { // EL CÓDIGO ES CORRECTO
-                                                        //Log.d("ConfirmaRegistro", "Código correcto");
-                                                        // Creamos diálogo alerta de aviso que lleva a pantalla login
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmaRegistro.this);
-                                                        builder.setMessage(R.string.dialog_confirmacion_correcta)
-                                                                .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
-                                                                    public void onClick(DialogInterface dialog, int id) {
-                                                                        finish(); // cerramos la actividad para volver a pantalla de inicio de sesión
-                                                                    }
-                                                                })
-                                                                .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
-                                                                    public void onClick(DialogInterface dialog, int id) {
-                                                                        // Se cancela el diálogo, dejamos
-                                                                        // en blanco para que no se haga nada,
-                                                                        // solo cerrar el diálogo
-                                                                    }
-                                                                });
-                                                        Dialog dialog = builder.create();
-                                                        dialog.show(); // mostramos el diálogo
-                                                    } else { // El código NO es correcto
-                                                       // Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
-                                                        Snackbar.make(findViewById(android.R.id.content),
-                                                                R.string.error_codigo_incorrecto, Snackbar.LENGTH_SHORT).show();
-                                                        //Log.d("ConfirmaRegistro", "Código incorrecto");
+            // validamos si el correo tiene un formato válido
+            if (!correo_electronico.matches(pattern_email)){
+                Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_valido, Toast.LENGTH_SHORT).show();
+            } else {
+                request = new StringRequest(Request.Method.POST, url_consulta2,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.equals("0")) { // NO EXISTE el usuario en la bd
+                                    //Log.i("ConfirmaRegistro", "No existe ningún usuario con ese correo");
+                                    Toast.makeText(ConfirmaRegistro.this, R.string.error_correo_no_existe, Toast.LENGTH_SHORT).show();
+                                    //Snackbar.make(findViewById(android.R.id.content),
+                                      //      R.string.error_correo_no_existe, Snackbar.LENGTH_LONG).show();
+                                } else if (response.equals("1")) { // SÍ EXISTE, comprobamos código de confirmación:
+                                    //Log.i("ConfirmaRegistro", "Comprobamos código de confirmación");
+                                    request = new StringRequest(Request.Method.POST, url_consulta,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    // Obtenemos el dato introducido por el usuario en el campo de texto del código
+                                                    String codigo = txtCodigo.getText().toString();
+                                                    if (!codigo_de_confirmacion.isEmpty()) { // aseguramos que tengamos el dato del código almacenado
+                                                        if (codigo.equals(codigo_de_confirmacion)) { // EL CÓDIGO ES CORRECTO
+                                                            //Log.d("ConfirmaRegistro", "Código correcto");
+                                                            // Creamos diálogo alerta de aviso que lleva a pantalla login
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmaRegistro.this);
+                                                            builder.setMessage(R.string.dialog_confirmacion_correcta)
+                                                                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            finish(); // cerramos la actividad para volver a pantalla de inicio de sesión
+                                                                        }
+                                                                    })
+                                                                    .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            // Se cancela el diálogo, dejamos
+                                                                            // en blanco para que no se haga nada,
+                                                                            // solo cerrar el diálogo
+                                                                        }
+                                                                    });
+                                                            Dialog dialog = builder.create();
+                                                            dialog.show(); // mostramos el diálogo
+                                                        } else { // El código NO es correcto
+                                                            Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_incorrecto, Toast.LENGTH_SHORT).show();
+                                                            //Snackbar.make(findViewById(android.R.id.content),
+                                                              //      R.string.error_codigo_incorrecto, Snackbar.LENGTH_SHORT).show();
+                                                            //Log.d("ConfirmaRegistro", "Código incorrecto");
+                                                        }
+                                                    } else { // Si no hay codigo de confirmación en las preferencias, le decimos que ha expirado, para que solicite uno nuevo
+                                                        Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_expirado, Toast.LENGTH_LONG).show();
+                                                        // Snackbar.make(findViewById(android.R.id.content),
+                                                             //   R.string.error_codigo_expirado, Snackbar.LENGTH_LONG).show();
+                                                        //Log.d("ConfirmaRegistro", "No hay ningún código almacenado");
                                                     }
-                                                } else { // Si no hay codigo de confirmación en las preferencias, le decimos que ha expirado, para que solicite uno nuevo
-                                                   // Toast.makeText(ConfirmaRegistro.this, R.string.error_codigo_expirado, Toast.LENGTH_LONG).show();
-                                                    Snackbar.make(findViewById(android.R.id.content),
-                                                            R.string.error_codigo_expirado, Snackbar.LENGTH_LONG).show();
-                                                    //Log.d("ConfirmaRegistro", "No hay ningún código almacenado");
                                                 }
-                                            }
-                                        },
-                                        // Error al confirmar el registro
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                               // Toast.makeText(ConfirmaRegistro.this, R.string.error_confirmar_registro, Toast.LENGTH_LONG).show();
-                                                Snackbar.make(findViewById(android.R.id.content),
-                                                        R.string.error_confirmar_registro, Snackbar.LENGTH_LONG).show();
-                                                //Log.e("ConfirmaRegistro", "Error al conectar con el servidor para confirmar el registro del usuario");
-                                            }
-                                        }) {
-                                    // Enviamos los datos necesarios al script php para que pueda realizar la consulta
-                                    @Override
-                                    protected Map<String, String> getParams() throws AuthFailureError {
-                                        // Enviamos los datos en un objeto Map<clave, valor> (el nombre del dato que se pide en el script y el nombre de la variable
-                                        // que se enviará como ese dato)
-                                        Map<String, String> parametros = new HashMap<>();
-                                        parametros.put("correo", correo_electronico); // en este caso enviamos el correo
-                                        // para confirmar el registro del usuario asociado a dicho correo
-                                        return parametros;
-                                    }
+                                            },
+                                            // Error al confirmar el registro
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                     Toast.makeText(ConfirmaRegistro.this, R.string.error_confirmar_registro, Toast.LENGTH_LONG).show();
+                                                    // Snackbar.make(findViewById(android.R.id.content),
+                                                       //     R.string.error_confirmar_registro, Snackbar.LENGTH_LONG).show();
+                                                    //Log.e("ConfirmaRegistro", "Error al conectar con el servidor para confirmar el registro del usuario");
+                                                }
+                                            }) {
+                                        // Enviamos los datos necesarios al script php para que pueda realizar la consulta
+                                        @Override
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            // Enviamos los datos en un objeto Map<clave, valor> (el nombre del dato que se pide en el script y el nombre de la variable
+                                            // que se enviará como ese dato)
+                                            Map<String, String> parametros = new HashMap<>();
+                                            parametros.put("correo", correo_electronico); // en este caso enviamos el correo
+                                            // para confirmar el registro del usuario asociado a dicho correo
+                                            return parametros;
+                                        }
 
-                                };
-                                AppController.getInstance().addToRequestQueue(request); // añadimos a la cola de peticiones la petición actual
+                                    };
+                                    AppController.getInstance().addToRequestQueue(request); // añadimos a la cola de peticiones la petición actual
+                                }
                             }
-                        }
-                    },
-                    // Error al comprobar el correo
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                           // Toast.makeText(ConfirmaRegistro.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    R.string.error_servidor, Snackbar.LENGTH_LONG).show();
-                            //Log.e("ConfirmaRegistro", "Error al conectar con el servidor para comprobar el correo del usuario");
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("correo", correo_electronico);
-                    return parametros;
-                }
+                        },
+                        // Error al comprobar el correo
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                 Toast.makeText(ConfirmaRegistro.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                // Snackbar.make(findViewById(android.R.id.content),
+                                   //     R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                                //Log.e("ConfirmaRegistro", "Error al conectar con el servidor para comprobar el correo del usuario");
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> parametros = new HashMap<>();
+                        parametros.put("correo", correo_electronico);
+                        return parametros;
+                    }
 
-            };
-            AppController.getInstance().addToRequestQueue(request);
+                };
+                AppController.getInstance().addToRequestQueue(request);
+            }
         } else { // si el campo de nombre de usuario está vacío
-          //  Toast.makeText(ConfirmaRegistro.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
-            Snackbar.make(findViewById(android.R.id.content),
-                    R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(ConfirmaRegistro.this, R.string.error_introducir_correo, Toast.LENGTH_SHORT).show();
+          //  Snackbar.make(findViewById(android.R.id.content),
+            //        R.string.error_introducir_correo, Snackbar.LENGTH_SHORT).show();
             //Log.e("ConfirmaRegistro", "No hay nombre de usuario almacenado");
         }
     }

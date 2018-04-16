@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.Fragments.Contactos.NuevoContacto;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import es.proyecto.eva.miagendadam.R;
 
@@ -288,8 +289,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("1")){ // Hay un registro con esa fecha
                             System.out.println("ERROR FECHA DE REGISTRO YA EXISTENTE.");
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    R.string.alert_ya_existe_fecha, Snackbar.LENGTH_SHORT).show();
+                           // Snackbar.make(findViewById(android.R.id.content),
+                             //       R.string.alert_ya_existe_fecha, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(NuevoRegistroDiario.this, R.string.alert_ya_existe_fecha, Toast.LENGTH_SHORT).show();
                         } else if (response.equals("0")){ // No hay ningún registro con esa fecha
                             System.out.println("Guardando registro...");
                             guardarRegistro(); // guardamos el registro en la base de datos
@@ -299,15 +301,14 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        //Snackbar.make(findViewById(android.R.id.content),
+                          //      R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                         Log.e("DiarioFragment", "Error al realizar la conexión con el servidor para comprobar la fecha del registro nuevo.");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("dia", sDia);
                 parametros.put("mes", sMes);
@@ -332,10 +333,10 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         if (hayDosJornadas) { // Si HAY DOS JORNADAS ...
             System.out.println("HAY DOS JORNADAS");
             if (horaInicio2 == 0 || horaFin2 == 0 || horaInicio1 == 0 || horaFin1 == 0) { // hay dos jornadas, y alguno de los campos está en blanco
-                //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_2, Toast.LENGTH_SHORT).show();
+                Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_2, Toast.LENGTH_SHORT).show();
                 System.out.println("DATOS EN BLANCO EN DOS JORNADAS.");
-                Snackbar.make(this.findViewById(android.R.id.content),
-                        R.string.error_datos_jornada_2, Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(this.findViewById(android.R.id.content),
+                  //      R.string.error_datos_jornada_2, Snackbar.LENGTH_SHORT).show();
             } else {
                 // hay dos jornadas y no hay datos en blanco en ninguna jornada, así que procedemos a hacer los cálculos y validaciones
                 // primero hacemos todos los cálculos de horas y minutos correspondientes
@@ -344,26 +345,28 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 System.out.println("Tiempo calculado correctamente. Validando datos...");
                 // Validamos previamente que no salen jornadas excesivas o negativas:
                 if (horaInicio1 > horaFin1 || horaInicio2 > horaFin2) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
-                    // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                     System.out.println("JORNADA(S) NO VÁLIDA(S) 1.");
-                    Snackbar.make(this.findViewById(android.R.id.content),
-                            R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(this.findViewById(android.R.id.content),
+                      //      R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horaInicio2 <= horaFin1) {// || horaInicio2 == horaFin1 && minutoInicio2 <= minutoFin1){ <--- Comento porque no sé si será posible en algún convenio hacer un descanso entre turno y turno inferior a una hora, que sería el único supuesto en el que coincidirían las horas de fin e inicio
                         // la hora de inicio del segundo turno es menor o igual que la de fin del primer turno. No puede ser.
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 2.");
-                        Snackbar.make(this.findViewById(android.R.id.content),
-                                R.string.error_datos_jornada_4, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(this.findViewById(android.R.id.content),
+                            //    R.string.error_datos_jornada_4, Snackbar.LENGTH_LONG).show();
                     } else if (horasResultado <= 0 || horaInicio1 == horaFin1 && minutoInicio1 == minutoFin1 || horaInicio2 == horaFin2 && minutoInicio2 == minutoFin2) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
-                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 3.");
-                        Snackbar.make(this.findViewById(android.R.id.content),
-                                R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
+                       // Snackbar.make(this.findViewById(android.R.id.content),
+                        //        R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
                         // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 4.");
-                        Snackbar.make(this.findViewById(android.R.id.content),
-                                R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_SHORT).show();
+                    //Snackbar.make(this.findViewById(android.R.id.content),
+                          //      R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
                     } else { // No hay ningún error con los datos de la jornada. Pasamos a la siguiente comprobación: ¿hay reunión fct?
                         // creamos los String para poner las horas y los minutos en el textView de horas
                         sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
@@ -373,17 +376,20 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                             horas_reunion = txtTiempoReunion.getText().toString();
                             if (horas_reunion.isEmpty()){ // si NO HAY HORAS DE REUNIÓN introducidas...
                                 System.out.println("HORAS REUNIÓN EN BLANCO.");
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(NuevoRegistroDiario.this, R.string.error_horas_reunion, Toast.LENGTH_SHORT).show();
+                                //Snackbar.make(findViewById(android.R.id.content),
+                                  //      R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
                             } else { // SÍ HAY HORAS DE REUNIÓN, validamos formato...
                                 if (Integer.valueOf(horas_reunion) == 0){
                                     System.out.println("ERROR HORAS REUNIÓN 1.");
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion_2, Toast.LENGTH_SHORT).show();
+                                    //Snackbar.make(findViewById(android.R.id.content),
+                                      //      R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
                                 } else if (Integer.valueOf(horas_reunion) > 2){
                                     System.out.println("ERROR HORAS REUNIÓN 2.");
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion, Toast.LENGTH_SHORT).show();
+                                   // Snackbar.make(findViewById(android.R.id.content),
+                                     //       R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
                                 } else { // No hay ningún problema con las horas, por lo tanto se pasan todas las validaciones y se guarda el registro
                                     System.out.println("SUMAMOS " + horas_reunion + " HORAS DE REUNIÓN FCT AL TOTAL DE HORAS CALCULADAS DE LA JORNADA");
                                     horasResultado = horasResultado + Integer.valueOf(horas_reunion);
@@ -439,21 +445,21 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 calcularHoras();
                 // validamos previamente que no salen jornadas excesivas o negativas
                 if (horaInicio1 > horaFin1) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
-                    //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_3, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                     System.out.println("JORNADA NO VÁLIDA 1.");
-                    Snackbar.make(this.findViewById(android.R.id.content),
-                            R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
+                   // Snackbar.make(this.findViewById(android.R.id.content),
+                     //       R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
-                      //  Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                      Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                         System.out.println("JORNADA NO VÁLIDA 2.");
-                        Snackbar.make(this.findViewById(android.R.id.content),
-                                R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
+                       // Snackbar.make(this.findViewById(android.R.id.content),
+                          //      R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
-                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
                         System.out.println("JORNADA NO VÁLIDA 3.");
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
+                       // Snackbar.make(findViewById(android.R.id.content),
+                          //      R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
                     } else { // No hay errores con la jornada, seguimos con las comprobaciones:
                         // creamos los String para poner las horas y los minutos en el textView de horas
                         sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
@@ -463,17 +469,20 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                             horas_reunion = txtTiempoReunion.getText().toString();
                             if (horas_reunion.isEmpty()){ // comprobamos si se han introducido las horas
                                 System.out.println("ERROR HORAS REUNIÓN 1 (UNA JORNADA).");
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(NuevoRegistroDiario.this, R.string.error_horas_reunion, Toast.LENGTH_SHORT).show();
+                                //Snackbar.make(findViewById(android.R.id.content),
+                                   //     R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
                             } else {
                                 if (Integer.valueOf(horas_reunion) == 0){
                                     System.out.println("ERROR HORAS REUNIÓN 2 (UNA JORNADA).");
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion_2, Toast.LENGTH_SHORT).show();
+                                   // Snackbar.make(findViewById(android.R.id.content),
+                                     //       R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
                                 } else if (Integer.valueOf(horas_reunion) > 2){
                                     System.out.println("ERROR HORAS REUNIÓN 3 (UNA JORNADA).");
-                                    Snackbar.make(findViewById(android.R.id.content),
-                                            R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion, Toast.LENGTH_SHORT).show();
+                               //     Snackbar.make(findViewById(android.R.id.content),
+                                 //           R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
                                 } else { // No hay errores con las horas de la reunión, pasamos al guardado del registro.
                                     System.out.println("SUMAMOS " + horas_reunion + " HORAS DE REUNIÓN FCT AL TOTAL DE HORAS CALCULADAS DE LA JORNADA");
                                     horasResultado = horasResultado + Integer.valueOf(horas_reunion);
@@ -523,10 +532,10 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     }
                 }
             } else { // los CAMPOS de la jornada base están EN BLANCO
-                //Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_1, Toast.LENGTH_SHORT).show();
+                Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_1, Toast.LENGTH_SHORT).show();
                 System.out.println("ERROR DATOS JORNADA EN BLANCO.");
-                Snackbar.make(this.findViewById(android.R.id.content),
-                        R.string.error_datos_jornada_1, Snackbar.LENGTH_SHORT).show();
+               // Snackbar.make(this.findViewById(android.R.id.content),
+                 //       R.string.error_datos_jornada_1, Snackbar.LENGTH_SHORT).show();
             }
         }
         verHoras = false;
@@ -540,10 +549,10 @@ public class NuevoRegistroDiario extends AppCompatActivity {
     public void pasaValidacion(){
         descripcion = txtDescripcion.getText().toString();
         if (sDia.isEmpty() || sMes.isEmpty() || sAnyo.isEmpty() || descripcion.isEmpty() || valoracionDia.isEmpty()){
-            // Toast.makeText(NuevoRegistroDiario.this, "Debes completar todos los datos.", Toast.LENGTH_SHORT).show();
+             Toast.makeText(NuevoRegistroDiario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
             System.out.println("ALGUNO DE LOS CAMPOS DE FECHA / DESCRIPCIÓN / VALORACIÓN ESTÁ VACÍO");
-            Snackbar.make(findViewById(android.R.id.content),
-                    R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
+           // Snackbar.make(findViewById(android.R.id.content),
+             //       R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
         } else {
             System.out.println("Pasando a validación de fecha...");
             validarFecha(); // validamos la fecha para comprobar que no haya ya un registro con esa misma fecha
@@ -899,16 +908,15 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        //Snackbar.make(findViewById(android.R.id.content),
+                          //      R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
                        // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("dia", sDia);
                 parametros.put("mes", sMes);
@@ -926,7 +934,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 parametros.put("reunion_fct", reunion_fct);
                 parametros.put("horas_reunion", horas_reunion);
                 parametros.put("descripcion", descripcion);
-                parametros.put("horas",sHorasResultado);
+                parametros.put("horas", sHorasResultado);
                 parametros.put("minutos", sMinutosResultado);
                 parametros.put("valoracion", valoracionDia);
                 parametros.put("idUsuario", idUsuario);

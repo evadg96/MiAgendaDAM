@@ -197,7 +197,7 @@ public class PantallaCarga extends AppCompatActivity {
                             // al estar bloqueado
                             //Log.i("PantallaCarga", "Está bloqueado");
                             estaBloqueado = true;
-                            Toast.makeText(PantallaCarga.this, "El usuario está bloqueado. Contacte con soporte.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PantallaCarga.this, R.string.aviso_usuario_bloqueado_2, Toast.LENGTH_LONG).show();
                             abrePantallaLogin(); // en la pantalla de login está el botón de acerca de donde se puede ver el correo de contacto
                         }
                     }
@@ -207,7 +207,7 @@ public class PantallaCarga extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Se ejecuta cuando algo sale mal en la consulta
-                       // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                         Snackbar.make(findViewById(android.R.id.content),
                                 R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el bloqueo del usuario");
@@ -269,8 +269,8 @@ public class PantallaCarga extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                           // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+
+                           // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                             Snackbar.make(findViewById(android.R.id.content),
                                     R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar la confirmación del usuario");
@@ -278,7 +278,6 @@ public class PantallaCarga extends AppCompatActivity {
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                     Map<String, String> parametros = new HashMap<>();
                     parametros.put("nUsuario", nombre_de_usuario);
                     return parametros;
@@ -329,8 +328,8 @@ public class PantallaCarga extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                         //   Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+
+                         //   Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                             Snackbar.make(findViewById(android.R.id.content),
                                     R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                             //Log.e("PantallaCarga", "Error al conectar con el servidor para comprobar el login del usuario");
@@ -338,7 +337,6 @@ public class PantallaCarga extends AppCompatActivity {
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                     Map<String, String> parametros = new HashMap<>();
                     parametros.put("nUsuario", nombre_de_usuario);
                     return parametros;
@@ -366,8 +364,8 @@ public class PantallaCarga extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                       // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+
+                       // Toast.makeText(PantallaCarga.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                         Snackbar.make(findViewById(android.R.id.content),
                                 R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("PantallaCarga", "Error al conectar con el servidor para actualizar la fecha de último inicio de sesión");
@@ -375,7 +373,6 @@ public class PantallaCarga extends AppCompatActivity {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_de_usuario);
                 parametros.put("fecha_ultimo_login", fecha_ultimo_login);

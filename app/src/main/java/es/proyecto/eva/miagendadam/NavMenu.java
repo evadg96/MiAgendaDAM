@@ -51,11 +51,6 @@ public class NavMenu extends AppCompatActivity
     private String familia_ciclo;
     private StringRequest request;
 
-    // Datos del usuario que se mostrarán en la opción Mi perfil
-    public static String nombre_del_estudiante = "", apellidos_del_usuario = "", provincia_del_usuario = "",
-            centro_estudios_usuario = "", familia_ciclo_usuario = "", ciclo_formativo_usuario = "", centro_practicas_usuario = "",
-            horas_fct_usuario = "";
-
     //    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/cerrar_sesion.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
@@ -193,7 +188,6 @@ public class NavMenu extends AppCompatActivity
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_de_usuario);
                 return parametros;

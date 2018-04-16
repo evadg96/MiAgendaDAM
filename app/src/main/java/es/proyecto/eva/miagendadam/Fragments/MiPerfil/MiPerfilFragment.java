@@ -42,15 +42,6 @@ import java.util.Map;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-import static es.proyecto.eva.miagendadam.NavMenu.nombre_del_estudiante;
-import static es.proyecto.eva.miagendadam.NavMenu.apellidos_del_usuario;
-import static es.proyecto.eva.miagendadam.NavMenu.centro_estudios_usuario;
-import static es.proyecto.eva.miagendadam.NavMenu.centro_practicas_usuario;
-import static es.proyecto.eva.miagendadam.NavMenu.horas_fct_usuario;
-import static es.proyecto.eva.miagendadam.NavMenu.familia_ciclo_usuario;
-import static es.proyecto.eva.miagendadam.NavMenu.ciclo_formativo_usuario;
-import static es.proyecto.eva.miagendadam.NavMenu.provincia_del_usuario;
-
 import static es.proyecto.eva.miagendadam.NavMenu.headerView;
 import static es.proyecto.eva.miagendadam.NavMenu.familiaCiclo;
 
@@ -83,9 +74,15 @@ public class MiPerfilFragment extends Fragment {
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
 
+    private String pattern_formato_letras_numeros = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
+            + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
+            + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ"
+            + "|0|1|2|3|4|5|6|7|8|9)+";
 
     // Array de provincias
     private String[] provincias;
+
+    private String nombre_del_estudiante = "", apellidos_del_usuario = "", ciclo_formativo_usuario = "", provincia_del_usuario = "", familia_ciclo_usuario = "", horas_fct_usuario = "", centro_estudios_usuario = "", centro_practicas_usuario = "";
 
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
@@ -332,7 +329,7 @@ public class MiPerfilFragment extends Fragment {
                                                 Toast.makeText(getActivity(), R.string.error_datos_invalidos_formato, Toast.LENGTH_LONG).show();
                                                 txtCentroEstudios.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                             } else {
-                                                if (!centro_practicas_usuario.matches(pattern_formato_nombre_ape)) {
+                                                if (!centro_practicas_usuario.matches(pattern_formato_letras_numeros)) {
                                                     Toast.makeText(getActivity(), R.string.error_datos_invalidos_formato, Toast.LENGTH_LONG).show();
                                                     txtCentroPracticas.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                                 } else {
@@ -387,7 +384,7 @@ public class MiPerfilFragment extends Fragment {
         // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle(R.string.dialog_cargando);
-        progressDialog.setMessage("Obteniendo registros...");
+        progressDialog.setMessage("Obteniendo datos del usuario...");
         progressDialog.show();
         // obtenemos los datos de los usuarios
         obtenerDatosUsuario();
@@ -434,6 +431,9 @@ public class MiPerfilFragment extends Fragment {
         spinnerFamiliaCiclo.setEnabled(false);
         spinnerCiclo.setEnabled(false);
         spinnerProvincia.setEnabled(false);
+        rellenarCampos();
+        rellenarSpinners();
+        // todo aun volviendo a rellenar los campos con sus valores previos, los spinner no se reestablecen...
     }
 
     /***********************************************************************************************
@@ -467,16 +467,15 @@ public class MiPerfilFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_obtener_datos_usuario, Toast.LENGTH_LONG).show();
                        progressDialog.cancel();
-                        Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                      //  Snackbar.make(getActivity().findViewById(android.R.id.content),
+                        //        R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.d("MiPerfilFragment", "Error al conectar con el servidor para obtener datos del usuario");
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("nUsuario", nombre_de_usuario);
                 return parametros;
@@ -493,8 +492,8 @@ public class MiPerfilFragment extends Fragment {
         try {
             // primero validamos que no haya habido errores al obtener los datos del usuario y los campos no estén vacíos:
             if (nombre_del_estudiante.isEmpty() || apellidos_del_usuario.isEmpty() || centro_estudios_usuario.isEmpty() || centro_practicas_usuario.isEmpty() || horas_fct_usuario.isEmpty()){
-                Snackbar.make(getActivity().findViewById(android.R.id.content),
-                        R.string.error_obtener_datos_usuario, Snackbar.LENGTH_LONG).show();
+                // Snackbar.make(getActivity().findViewById(android.R.id.content),
+                 //       R.string.error_obtener_datos_usuario, Snackbar.LENGTH_LONG).show();
             } else {
                 rellenarSpinners();
                 // asignamos los adaptadores de los spinner con los datos de cada array
@@ -610,17 +609,18 @@ public class MiPerfilFragment extends Fragment {
                             // actualizamos los datos a visualizar automáticamente, para evitar que el usuario tenga que hacerlo manualmente
                             rellenarCampos();
                         } else {
-                            Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                    "Error al actualizar los datos del usuario.", Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), R.string.error_actualizar_datos_usuario, Toast.LENGTH_LONG).show();
+                           // Snackbar.make(getActivity().findViewById(android.R.id.content),
+                             //       "Error al actualizar los datos del usuario.", Snackbar.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Toast.makeText(VerYEditarRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        //Snackbar.make(getActivity().findViewById(android.R.id.content),
+                           //     R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                         //Log.e("VerYEditarRegistroDiario", "Error al conectar con el servidor para actualizar el registro");
                     }
                 }) {
@@ -654,35 +654,35 @@ public class MiPerfilFragment extends Fragment {
         // Si alguno de los campos de la contraseña está vacío, no permitimos continuar
         if (claveNueva.isEmpty() || repiteClave.isEmpty()) {
             //Log.d("MiPerfilFragment", "Campos de clave vacíos");
-           // Toast.makeText(getActivity(), R.string.error_introduce_clave, Toast.LENGTH_SHORT).show();
-            Snackbar.make(getActivity().findViewById(android.R.id.content),
-                    R.string.error_introduce_clave, Snackbar.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.error_introduce_clave, Toast.LENGTH_SHORT).show();
+           // Snackbar.make(getActivity().findViewById(android.R.id.content),
+             //       R.string.error_introduce_clave, Snackbar.LENGTH_LONG).show();
         } else { // Los campos no están vacíos. Continuamos validando...
             // Si la clave introducida es menor a 8 caracteres, no permitimos continuar
             // (no validamos la longitud máxima porque ya hemos definido el campo para que solo acepte
             // hasta 20 caracteres)
             if (claveNueva.length() < 8) {
                 //Log.d("MiPerfilFragment", "Longitud de clave inferior a la permitida");
-                //Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.error_longitud_clave, Toast.LENGTH_LONG).show();
                 txtClave.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-                Snackbar.make(getActivity().findViewById(android.R.id.content),
-                        R.string.error_longitud_clave, Snackbar.LENGTH_LONG).show();
+               // Snackbar.make(getActivity().findViewById(android.R.id.content),
+                 //       R.string.error_longitud_clave, Snackbar.LENGTH_LONG).show();
             } else { // La longitud de clave es correcta. Continuamos validando...
                 // Si los caracteres no son los aceptados por el patrón, no permitimos continuar
                 if (!claveNueva.matches(pattern_formato)) {
                     //Log.d("MiPerfilFragment", "Formato de clave no válido");
-                   // Toast.makeText(getActivity(), R.string.error_formato_clave, Toast.LENGTH_LONG).show();
-                    Snackbar.make(getActivity().findViewById(android.R.id.content),
-                            R.string.error_formato_clave, Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.error_formato_clave, Toast.LENGTH_LONG).show();
+                  //  Snackbar.make(getActivity().findViewById(android.R.id.content),
+                    //        R.string.error_formato_clave, Snackbar.LENGTH_LONG).show();
                     txtClave.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                 } else { // La clave tiene un formato correcto. Continuamos validando...
                     // Si la clave no repite con la repetida no permitimos continuar
                     if (!claveNueva.equals(repiteClave)) {
                         txtRepiteClave.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         //Log.d("MiPerfilFragment", "Las claves no coinciden");
-                       // Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
-                        Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                R.string.error_claves_no_coinciden, Snackbar.LENGTH_LONG).show();
+                       Toast.makeText(getActivity(), R.string.error_claves_no_coinciden, Toast.LENGTH_SHORT).show();
+                      //  Snackbar.make(getActivity().findViewById(android.R.id.content),
+                        //        R.string.error_claves_no_coinciden, Snackbar.LENGTH_LONG).show();
                         System.out.println("CLAVES: " + claveNueva + repiteClave);
                         txtClave.setText(""); // Borramos los campos de clave
                         txtRepiteClave.setText("");
@@ -717,16 +717,15 @@ public class MiPerfilFragment extends Fragment {
                                                 new Response.ErrorListener() {
                                                     @Override
                                                     public void onErrorResponse(VolleyError error) {
-                                                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
-                                                        //Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_SHORT).show();
-                                                        Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+
+                                                        Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
+                                                       // Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                                         //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();
                                                         //Log.d("MiPerfilFragment", "Error al conectar con el servidor para actualizar la clave de usuario");
                                                     }
                                                 }) {
                                             @Override
                                             protected Map<String, String> getParams() throws AuthFailureError {
-                                                // AQUI SE ENVIARAN LOS DATOS EMPAQUETADOS EN UN OBJETO MAP<clave, valor>
                                                 Map<String, String> parametros = new HashMap<>();
                                                 parametros.put("nUsuario", nombre_de_usuario);
                                                 parametros.put("clave", claveNueva);

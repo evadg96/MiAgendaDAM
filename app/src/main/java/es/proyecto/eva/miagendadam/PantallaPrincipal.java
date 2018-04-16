@@ -68,7 +68,7 @@ public class PantallaPrincipal extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // SE EJECUTA CUANDO ALGO SALE MAL AL INTENTAR HACER LA CONEXION
+
                         Toast.makeText(PantallaPrincipal.this, "Error de conexión.", Toast.LENGTH_SHORT).show();
 
                     }
