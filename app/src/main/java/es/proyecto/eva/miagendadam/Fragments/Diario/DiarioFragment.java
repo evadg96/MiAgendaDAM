@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.NavMenu;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
@@ -206,6 +209,17 @@ public class DiarioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diario, container, false);
+        // para ocultar el teclado si este se ha quedado abierto de otra pantalla
+       // if (getActivity().getCurrentFocus() != null) {
+         //   InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+           // imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+       // }
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+        // Hide soft-keyboard:
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         listaResultado = (ListView) view.findViewById(R.id.lista);
         txt = (TextView) view.findViewById(R.id.txt_vacio);
         // Obtenemos de las preferencias el nombre del usuario

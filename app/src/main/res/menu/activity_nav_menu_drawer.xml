@@ -35,18 +35,22 @@
             android:title="@string/opc_contactos" />
         <item android:title="">
             <menu>
+                <!-- todo implementar cuando se pueda los que faltan -->
                 <item
                     android:id="@+id/nav_c_reco"
                     android:icon="@drawable/ic_import_contacts_black_24dp"
-                    android:title="@string/opc_mat_reco" />
+                    android:title="@string/opc_mat_reco"
+                    android:visible="false"/>
                 <item
                     android:id="@+id/nav_c_perso"
                     android:icon="@drawable/ic_book_black_24dp"
-                    android:title="@string/opc_mat_perso" />
+                    android:title="@string/opc_mat_perso"
+                    android:visible="false"/>
                 <item
                     android:id="@+id/nav_proyecto"
                     android:icon="@drawable/ic_school_black_24dp"
-                    android:title="@string/opc_proyecto" />
+                    android:title="@string/opc_proyecto"
+                    android:visible="false"/>
                 <item
                     android:id="@+id/nav_cerrar_sesion"
                     android:icon="@drawable/ic_exit_to_app_black_24dp"

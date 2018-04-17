@@ -91,7 +91,7 @@
     <string name="txt_dialog_recuperar_clave">Se ha enviado un correo con la contraseña nueva a la dirección de correo electrónico del usuario introducida. Revisa tu bandeja de entrada.</string>
 
     <string name="title_dialog_recuperar_usuario">Nombre de usuario enviado</string>
-    <string name="txt_dialog_recuperar_usuario">Se ha enviado el nombre de usuario a la dirección de correo electrónico de usuario introducidad. Revisa tu bandeja de entrada.</string>
+    <string name="txt_dialog_recuperar_usuario">Se ha enviado el nombre de usuario a la dirección de correo electrónico de usuario introducida. Revisa tu bandeja de entrada.</string>
 
     <!-- Strings opciones menu nav draw NavMenu -->
     <string name="opc_inicio">Inicio</string>
@@ -115,16 +115,14 @@
     <!-- Strings pantalla AcercaDe -->
     <string name="title_activity_acerca_de">Acerca de</string>
     <string name="acerca_de">Mi agenda FP se ampara en la Ley Orgánica 2/2006 de 3 de mayo de Educación del Ministerio de Educación, Cultura y Deporte
-        de España para proporcionar el listado de ciclos formativos y sus familias de origen, así como para establecer el cómputo
-        máximo de horas permitidas a cursar en el módulo de prácticas en centros de trabajo. Según lo establecido bajo
-        esta ley, la cifra máxima de horas a deber cursar en dicho módulo es de 400, en los casos de Grado medio y Grado superior.
-        Si tu ciclo formativo no está regulado bajo esta ley, contacta con el soporte de la app a través del correo
-        indicado.
+        de España para proporcionar el listado de ciclos formativos y sus familias de origen, así como para establecer un valor de referencia para el cómputo
+        máximo de horas permitidas a cursar en el módulo de prácticas en centros de trabajo (en adelante FCT). Si tienes cualquier problema no dudes en contactar con el soporte mediante el correo
+        de contacto que se indica arriba arriba.
         La app está abierta a ideas nuevas y cambios siempre que sea para mejorar, ya sea a la propia aplicación o a la experiencia de uso de ella. Si 
-        tienes alguna idea para mejorar su aspecto, hacer que muestre información más detallada sobre algo, o cualquier otra mejora, puedes sugerirlo a través del 
-        correo electrónico de soporte. Tu solicitud recibirá respuesta lo más pronto posible. ¡Gracias!
+        tienes alguna idea para mejorar su aspecto o cualquier otra mejora, puedes sugerirlo a través del
+        correo electrónico de soporte ya mencionado. Tu solicitud recibirá respuesta lo más pronto posible. ¡Gracias!
         </string>
-    <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo y, en menor medida, del proyecto final.
+    <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo.
     Permite el seguimiento diario de la jornada de prácticas mediante la creación de registros con fecha, horas, descripción y valoración; cálculo automático de horas
     cursadas y restantes en función de las introducidas en los registros diarios, visualización de días no lectivos y festivos, creación de anotaciones simples personales, recomendación y
         personalización de materiales útiles categorizados para el estudiante, guías para la realización de anteproyecto y proyecto final... </string>
