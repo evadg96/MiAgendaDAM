@@ -771,7 +771,7 @@ public class PantallaLogin extends AppCompatActivity {
                             familiaCiclo = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
                             horas_fct = jsonArray.getJSONObject(0).getString("horas_fct");
-                            provincia = jsonArray.getJSONObject(0).getString("provincia");
+                            provincia = codificaString(jsonArray.getJSONObject(0).getString("provincia"));
                             Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
                             Log.d("PantallaLogin","FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
                             Log.d("PantallaLogin","CORREO ELECTRÓNICO "+ correo_de_usuario);

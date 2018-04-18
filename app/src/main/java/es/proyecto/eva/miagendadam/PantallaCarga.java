@@ -249,16 +249,18 @@ public class PantallaCarga extends AppCompatActivity {
                                 if (response.equals("0")) { // si devuelve 0 significará que no ha confirmado su registro
                                     // así que le mandamos a la pantalla de confirmación de registro para que introduzca
                                     // el código que se le ha enviado al correo que introdujo en el formulario de registro
-                                    // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
-                                    //Log.i("PantallaCarga", "Usuario no confirmado");
-                                    new Handler().postDelayed(new Runnable() {
-                                        public void run() {
+
+                                    // PARA TARDAR X SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD:
+                                    // (comentado para no hacer más larga la espera, de por sí ya tarda algunos segundos)
+
+                                    //new Handler().postDelayed(new Runnable() {
+                                        //public void run() {
                                             // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
                                             Intent intent = new Intent(PantallaCarga.this, ConfirmaRegistro.class);
                                             startActivity(intent);
                                             finish();
-                                        };
-                                    }, DURACION_SPLASH);
+                                      //  };
+                                    //}, DURACION_SPLASH);
                                 } else { // si no devuelve un 0, asumimos que el usuario sí está confirmado, y pasamos a comprobar si está logeado
                                     // porque solo puede devolver un 1 o un 0. Si no es 0, tiene que ser 1.
                                     //Log.i("PantallaCarga", "Usuario confirmado");
@@ -308,15 +310,17 @@ public class PantallaCarga extends AppCompatActivity {
                                     // Almacenamos primero el dato de la fecha como dato de última sesión iniciada:
                                     actualizaFechaLogin(); // solo se actualiza (en esta clase) si isLogged está a 1, que es
                                     // cuando se hace inicio de sesión automático
-                                    // PARA TARDAR 3 SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
-                                    new Handler().postDelayed(new Runnable() {
-                                        public void run() {
+
+                                    // PARA TARDAR X SEGUNDOS DE CARGA ANTES DE ABRIR LA SIGUIENTE ACTIVIDAD
+                                    // (comentado para no hacer más larga la espera, de por sí ya tarda algunos segundos)
+                                    //new Handler().postDelayed(new Runnable() {
+                                      //  public void run() {
                                             // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
                                             Intent intent = new Intent(PantallaCarga.this, NavMenu.class);
                                             startActivity(intent);
                                             finish();
-                                        };
-                                    }, DURACION_SPLASH);
+                                        //};
+                                    //}, DURACION_SPLASH);
                                 } else {
                                     if (response.equals("0")){ // si devuelve 0 significará que no se ha logeado (o ha cerrado sesión)
                                         // así que le mandamos a la pantalla de login para que introduzca sus datos de usuario
@@ -393,17 +397,17 @@ public class PantallaCarga extends AppCompatActivity {
     public void abrePantallaLogin(){
         //Log.d("PantallaCarga", "No hay datos del usuario o no hay sesión activa");
         //Log.i("PantallaCarga", "Abrimos pantalla de inicio de sesión");
-        // Para dejar la actividad visible durante 3 segundos
+        // Para dejar la actividad visible durante X segundos
+        // (comentado para no hacer más larga la espera, de por sí ya tarda algunos segundos)
         // Después se pasa a la otra pantalla
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                // Cuando pasen los 3 segundos, pasamos a la actividad principal de la aplicación
+       // new Handler().postDelayed(new Runnable() {
+         //   public void run() {
                 Intent intent = new Intent(PantallaCarga.this, PantallaLogin.class);
                 startActivity(intent);
                 finish();
-            }
+           // }
 
-            ;
-        }, DURACION_SPLASH);
+           // ;
+       // }, DURACION_SPLASH);
     }
 }

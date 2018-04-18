@@ -78,7 +78,8 @@
         <activity
             android:name=".Fragments.Notas.NuevaNota"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".Fragments.Calendarios.WebViewCalendarios"></activity>
+        <activity android:name=".Fragments.Calendarios.WebViewCalendarios" />
+        <activity android:name=".Fragments.Calendarios.OtrasComunidades"></activity>
     </application>
 
 </manifest>

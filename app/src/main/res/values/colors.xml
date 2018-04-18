@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#2f867f</color>
+    <color name="colorAccentTrans">#9d148c83</color>
     <color name="azul_fondo">#40b7ad</color>
     <color name="azul_barra_notificaciones">#2f867f</color>
     <color name="gris_claro">#dadada</color>
@@ -54,4 +55,5 @@
 
     <color name="gris_oscuro">#7b7b7b</color>
     <color name="azul_claro">#04ffee</color>
+    <color name="naranja_trans">#3bc89706</color>
 </resources>
