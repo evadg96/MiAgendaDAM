@@ -75,8 +75,10 @@
         <activity android:name=".Fragments.Contactos.VerContacto" />
         <activity android:name=".Fragments.Contactos.EditarContacto" />
         <activity android:name=".Fragments.Notas.VerEditarNota" />
-        <activity android:name=".Fragments.Notas.NuevaNota"
-            android:windowSoftInputMode="stateVisible"/>
+        <activity
+            android:name=".Fragments.Notas.NuevaNota"
+            android:windowSoftInputMode="stateVisible" />
+        <activity android:name=".Fragments.Calendarios.WebViewCalendarios"></activity>
     </application>
 
 </manifest>

@@ -38,7 +38,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.NavMenu;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
@@ -107,7 +106,7 @@ public class NotasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_anotaciones, container, false);
+        View view = inflater.inflate(R.layout.fragment_notas, container, false);
         if (getActivity().getCurrentFocus() != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);

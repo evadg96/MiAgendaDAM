@@ -97,7 +97,7 @@
     <string name="opc_inicio">Inicio</string>
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
-    <string name="opc_festivos_no_lectivos">Días libres</string>
+    <string name="opc_festivos_no_lectivos">Festivos</string>
     <string name="opc_proyecto">Proyecto</string>
     <string name="opc_ideas_proyecto">Ideas</string>
     <string name="opc_guia_proyecto">Guía de proyecto</string>
@@ -111,6 +111,10 @@
     <string name="opc_contactos">Contactos de interés</string>
     <string name="nombre_usuario_menu">Nombre de usuario</string>
     <string name="correo_usuario_menu">Correo electrónico</string>
+
+    <!-- Strings CalendariosFragment -->
+    <string name="ver_calendario_escolar">Calendario escolar</string>
+    <string name="ver_calendario_festivos">Calendario de festivos locales</string>
 
     <!-- Strings pantalla AcercaDe -->
     <string name="title_activity_acerca_de">Acerca de</string>

@@ -407,7 +407,7 @@ public class MiPerfilFragment extends Fragment {
     }
 
     /******************************************************************************************************
-     * Método que actualiza las horas del módulo fct de las preferencias. Solo se ejecuta si se actualizan
+     * Método que actualiza los datos de las preferencias. Solo se ejecuta si se actualizan
      * los datos del perfil del usuario
      ***********************************************************************************************/
     private void guardarPreferencias() {
@@ -415,6 +415,7 @@ public class MiPerfilFragment extends Fragment {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("horas_fct", horas_fct_usuario);
         editor.putString("familia_ciclo", familia_ciclo_usuario);
+        editor.putString("provincia", provincia_del_usuario);
         editor.commit();
     }
 

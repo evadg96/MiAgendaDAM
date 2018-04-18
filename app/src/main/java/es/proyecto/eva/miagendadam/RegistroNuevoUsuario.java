@@ -79,7 +79,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     private String ciclo_formativo = "";
     private Session session;
     // Array de provincias
-    private String[] provincias = {"Selecciona una provincia", "A Coruña", "Álava", "Albacete","Alicante","Almería","Asturias","Ávila","Badajoz","Islas Baleares",
+    private String[] provincias = {"Selecciona una provincia", "A Coruña", "Álava", "Albacete","Alicante","Almería","Asturias","Ávila","Badajoz","Baleares",
             "Barcelona","Burgos","Cáceres","Cádiz","Cantabria","Castellón","Ciudad Real","Córdoba","Cuenca","Girona","Granada",
             "Guadalajara","Guipúzcoa","Huelva","Huesca","Jaén","La Rioja","Las Palmas","León","Lleida","Lugo","Madrid","Málaga",
             "Murcia","Navarra","Orense","Palencia","Pontevedra","Salamanca","Segovia","Sevilla","Soria","Tarragona","Santa Cruz de Tenerife",

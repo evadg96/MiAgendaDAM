@@ -52,9 +52,9 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
  *  Como ya se ha iniciado sesión, isLogged estará a 1, así que se va directamente a la pantalla principal sin pedirle
  *  datos al usuario.
  ********************************************************************************************************************/
-
+// TODO añadir cuadro de carga de datos QUE NO SE PUEDA CERRAR en cuanto se pulse el boton de guardar cualquier dato nuevo (notas, registros de diario...) porque a veces tarda en guardarlo y si se pulsa varias veces los crea multiplicados
 public class PantallaCarga extends AppCompatActivity {
-    private final int DURACION_SPLASH = 3000; // los segundos que se verá la pantalla (3)
+    private final int DURACION_SPLASH = 1500; // los segundos que se verá la pantalla (3)
     ProgressBar progressBar; // barra circular giratoria
     // Consultas de servidor local
 //    private String url_consulta = "http://192.168.0.12/MiAgenda/check_isLogged.php";

@@ -101,6 +101,7 @@ public class PantallaLogin extends AppCompatActivity {
     private String correo_de_usuario = ""; // será el email que le corresponde al usuario, y se obtendrá por consulta
     private String familiaCiclo = "";
     private String horas_fct = "";
+    private String provincia = "";
     private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     // a su familia
     private StringRequest request;
@@ -770,6 +771,7 @@ public class PantallaLogin extends AppCompatActivity {
                             familiaCiclo = codificaString(jsonArray.getJSONObject(0).getString("familia_ciclo"));
                             correo_de_usuario = jsonArray.getJSONObject(0).getString("correo");
                             horas_fct = jsonArray.getJSONObject(0).getString("horas_fct");
+                            provincia = jsonArray.getJSONObject(0).getString("provincia");
                             Log.d("PantallaLogin","ID DEL USUARIO "+ idUsuario);
                             Log.d("PantallaLogin","FAMILIA DEL CICLO DEL USUARIO " + familiaCiclo);
                             Log.d("PantallaLogin","CORREO ELECTRÓNICO "+ correo_de_usuario);
@@ -854,6 +856,7 @@ public class PantallaLogin extends AppCompatActivity {
         editor.putString("correo_de_usuario", correo_de_usuario);
         editor.putString("familia_ciclo", familiaCiclo);
         editor.putString("horas_fct", horas_fct);
+        editor.putString("provincia", provincia);
         editor.putString("idUsuario", idUsuario);
         editor.commit();
         Log.d("PantallaLogin", "Preferencias guardadas");

@@ -21,11 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import es.proyecto.eva.miagendadam.Fragments.Calendarios.CalendariosFragment;
 import es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment;
 import es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment;
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
@@ -136,6 +135,7 @@ public class NavMenu extends AppCompatActivity
         } else if (id == R.id.nav_festivos) {
            // Log.i("NavMenu", "Opción menú: Festivos/No lectivos");
             setTitle(R.string.opc_festivos_no_lectivos);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new CalendariosFragment()).commit();
         } else if (id == R.id.nav_ayuda) {
            // Log.i("NavMenu", "Opción menú: Acerca de");
             Intent intent = new Intent (this, AcercaDe.class);
