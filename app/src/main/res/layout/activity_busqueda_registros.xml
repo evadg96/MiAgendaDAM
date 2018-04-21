@@ -272,8 +272,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/busqueda_fechas"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:id="@+id/busqueda_fechas"
@@ -408,8 +407,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/busqueda_valoracion"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:id="@+id/busqueda_valoracion"

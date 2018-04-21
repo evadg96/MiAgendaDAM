@@ -25,28 +25,30 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageButton
                 android:id="@+id/btn_llamar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
-                android:scaleX="0.25"
-                android:scaleY="0.25"
-                android:src="@drawable/ic_telf_blue" />
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:src="@drawable/ic_call_black_24ddp2" />
 
             <ImageButton
                 android:id="@+id/btn_correo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:scaleX="0.25"
-                android:scaleY="0.25"
-                android:src="@drawable/ic_email_blue" />
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:src="@drawable/ic_email_black_24ddp2" />
 
         </LinearLayout>
 
@@ -94,5 +96,5 @@
             app:elevation="0dp" />
     </LinearLayout>
 
-    <!-- TODO: Plantearse cambiar el modo de edición de los registros de diario y ponerlo como este modo (floating button con lápiz de editar) -->
+    <!-- TODO: cambiar el tamaño de los iconos para que no quede tan espaciado -->
 </LinearLayout>

@@ -2,6 +2,7 @@ package es.proyecto.eva.miagendadam.Fragments.Diario;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -65,27 +66,28 @@ public class NuevoRegistroDiario extends AppCompatActivity {
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/check_fecha_registro.php";
     private String reunion_fct = "0";
     private String horas_reunion = "0";
-    String sDia = "", sMes = "", sAnyo = ""; // la fecha seleccionada por el usuario a través del timePicker
+    private String sDia = "", sMes = "", sAnyo = ""; // la fecha seleccionada por el usuario a través del timePicker
     // Creamos variable de horas y minutos que serán las que usemos para obtener la hora seleccionada en el timepicker
-    int tpHoras, tpMinutos;
+    private int tpHoras, tpMinutos;
     // Creamos variables para almacenar las distintas horas introducidas
-    int horaInicio1 = 0, minutoInicio1 = 0, horaInicio2 = 0, minutoInicio2 = 0, horaFin1 = 0, minutoFin1 = 0, horaFin2 = 0, minutoFin2 = 0; //quizá no hagan falta las del turno 2, pero las ponemos por si acaso
+    private int horaInicio1 = 0, minutoInicio1 = 0, horaInicio2 = 0, minutoInicio2 = 0, horaFin1 = 0, minutoFin1 = 0, horaFin2 = 0, minutoFin2 = 0; //quizá no hagan falta las del turno 2, pero las ponemos por si acaso
     // creamos las horas de la jornada también en strings para guardarlas en la base de datos como texto
-    String sHoraInicio1 = "0", sMinInicio1 = "0", sHoraFin1 = "0", sMinFin1 = "0", sHoraInicio2 = "0", sMinInicio2 = "0", sHoraFin2 = "0", sMinFin2 = "0";
+    private String sHoraInicio1 = "0", sMinInicio1 = "0", sHoraFin1 = "0", sMinFin1 = "0", sHoraInicio2 = "0", sMinInicio2 = "0", sHoraFin2 = "0", sMinFin2 = "0";
     // Creamos variables de horas y minutos para los turnos que serán el resultado de las restas de horas y minutos de arriba
-    int horasTurno1, minutosTurno1, horasTurno2, minutosTurno2;
+    private int horasTurno1, minutosTurno1, horasTurno2, minutosTurno2;
     // Creamos horas y minutos que serán el producto de sumar las horas resultantes (horasTurno1 + horasTurno2) (minutosTurno1 + minutorTurno2)
-    int horasResultado, minutosResultado;
-    String sHorasResultado, sMinutosResultado; // son las dos anteriores pasadas a string, para poder guardarlas como texto en la base de datos
+    private int horasResultado, minutosResultado;
+    private String sHorasResultado, sMinutosResultado; // son las dos anteriores pasadas a string, para poder guardarlas como texto en la base de datos
 
     // Creamos booleanos para validar desde donde se ha abierto el timepicker y guardar las cifras como correspondan
-    boolean esHoraInicio1 = false, esHoraInicio2 = false, esHoraFin1 = false, esHoraFin2 = false, hayDosJornadas = false; // por defecto en false
-    boolean verHoras = false; // valdrá para verificar que al llamar al método validarJornada, se está haciendo por haber pulsado este botón,
+    private boolean esHoraInicio1 = false, esHoraInicio2 = false, esHoraFin1 = false, esHoraFin2 = false, hayDosJornadas = false; // por defecto en false
+    private boolean verHoras = false; // valdrá para verificar que al llamar al método validarJornada, se está haciendo por haber pulsado este botón,
     // para así saber que se tiene que poner las horas en el textView que hay al lado del botón. Así no se pondrá siempre que se ejecute el método,
     // porque también se ejecuta al dar a guardar el registro
-    boolean hayReunion = false;
+    private boolean hayReunion = false;
     // Creamos la siguiente variable para determinar en la base de datos si es jornada partida o no
-    String jornada_partida = "0"; // por defecto en 0, que sería que no es partida
+    private String jornada_partida = "0"; // por defecto en 0, que sería que no es partida
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -891,16 +893,23 @@ public class NuevoRegistroDiario extends AppCompatActivity {
      * Método que comprueba si el usuario que intenta iniciar sesión está bloqueado (estado isLocked)
      **********************************************************************************************/
     private void guardarRegistro(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Guardando registro...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
         System.out.println("Guardando registro...");
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("1")) {
+                            progressDialog.dismiss();
                             Toast.makeText(NuevoRegistroDiario.this, R.string.toast_registro_creado, Toast.LENGTH_LONG).show();
                             //  Log.d("NuevoRegistroDiario", "Registro creado");
                             finish(); // cerramos la actividad tras crear un nuevo registro
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(NuevoRegistroDiario.this, R.string.error_crear_registro, Toast.LENGTH_LONG).show();
                         }
                     }
@@ -908,7 +917,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        progressDialog.dismiss();
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                         //Snackbar.make(findViewById(android.R.id.content),
                           //      R.string.error_servidor, Snackbar.LENGTH_SHORT).show();

@@ -1,17 +1,15 @@
 package es.proyecto.eva.miagendadam.Fragments.Notas;
 
-import android.app.ActionBar;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,10 +38,7 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.color_action_bar_seleccionado;
 import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.color_seleccionado;
 import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.contenido_seleccionado;
-import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.dia_edicion_seleccionado;
 import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.id_nota_seleccionada;
-import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.mes_edicion_seleccionado;
-import static es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment.anyo_edicion_seleccionado;
 
 
 public class VerEditarNota extends AppCompatActivity {
@@ -61,6 +56,7 @@ public class VerEditarNota extends AppCompatActivity {
     AlertDialog dialog;
     private boolean editando = false;
     Calendar c = new GregorianCalendar();
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +173,7 @@ public class VerEditarNota extends AppCompatActivity {
                 if (contenido.isEmpty()){
                     Toast.makeText(VerEditarNota.this, R.string.error_nota_vacia, Toast.LENGTH_SHORT).show();
                 } else { // si no está en blanco, guardamos la nota
-                    guardarNota();
+                    actualizarNota();
                 }
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
@@ -200,17 +196,24 @@ public class VerEditarNota extends AppCompatActivity {
     /***********************************************************************************************
      * Método que actualiza la nota seleccionada
      **********************************************************************************************/
-    public void guardarNota(){
+    public void actualizarNota(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Actualizando contacto...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
         // consulta para guardar la nota
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("1")) {
+                            progressDialog.dismiss();
                             Toast.makeText(VerEditarNota.this, R.string.nota_actualizada, Toast.LENGTH_SHORT).show();
                             deshabilitarEdicion();
                             // finish(); // todo permanecer en la nota o volver atrás?
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(VerEditarNota.this, R.string.error_actualizar_nota, Toast.LENGTH_SHORT).show();
                             //Snackbar.make(this.findViewById(android.R.id.content),
                             //      R.string.error_no_hay_usuario, Snackbar.LENGTH_SHORT).show();
@@ -220,6 +223,7 @@ public class VerEditarNota extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
                         Toast.makeText(VerEditarNota.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                         // Snackbar.make(getActivity().findViewById(android.R.id.content),
                         // R.string.error_servidor, Snackbar.LENGTH_SHORT).show();

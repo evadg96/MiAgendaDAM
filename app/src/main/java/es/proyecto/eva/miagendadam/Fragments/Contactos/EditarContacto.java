@@ -1,6 +1,7 @@
 package es.proyecto.eva.miagendadam.Fragments.Contactos;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -42,6 +43,7 @@ public class EditarContacto extends AppCompatActivity {
     EditText txtNombre, txtModulo, txtCorreo, txtTelefono;
     private String nombreContacto = "", correoContacto = "", modulo = "", telefono = "", idUsuario = "";
     private StringRequest request;
+    private ProgressDialog progressDialog;
     // Patrón de caracteres que queremos que ACEPTE el nombre del contacto
     private String pattern_formato_nombre = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
@@ -150,6 +152,12 @@ public class EditarContacto extends AppCompatActivity {
      * Método que ejecuta la consulta que actualiza el contacto
      **********************************************************************************************/
     public void actualizarContacto(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Actualizando contacto...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
@@ -159,9 +167,11 @@ public class EditarContacto extends AppCompatActivity {
                         modulo_seleccionado_codificado = modulo;
                         telefono_seleccionado = telefono;
                         if(response.equals("1")){
+                            progressDialog.dismiss();
                             Toast.makeText(EditarContacto.this, R.string.editar_contacto, Toast.LENGTH_LONG).show();
                             finish();
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(EditarContacto.this, R.string.error_editar_contacto, Toast.LENGTH_LONG).show();
                         }
                     }
@@ -169,6 +179,7 @@ public class EditarContacto extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
                         Toast.makeText(EditarContacto.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                     }
                 }) {

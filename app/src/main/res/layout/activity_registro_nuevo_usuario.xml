@@ -207,10 +207,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@color/colorAccent"
                         android:fontFamily="@font/roboto_light"
                         android:onClick="registro"
-                        android:text="@string/btn_registrar_usuario"
-                        android:textColor="@color/colorAccent"
+                        android:text="@string/btn_registrarse"
+                        android:textColor="@android:color/background_light"
                         android:textStyle="bold" />
 
                 </LinearLayout>

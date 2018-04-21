@@ -150,5 +150,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
+<!-- todo cambiar aspecto de este fragment -->
 </FrameLayout>

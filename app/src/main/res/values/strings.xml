@@ -14,6 +14,7 @@
     <string name="hint_clave">Contraseña</string>
     <string name="btn_iniciar_sesion">Iniciar sesión</string>
     <string name="btn_registrar_usuario">¿Aún no tienes cuenta? Registrarse</string>
+    <string name="btn_registrarse">Registrarse</string>
     <string name="btn_recuperar_clave">He olvidado mis datos de usuario :(</string>
     <string name="btn_desbloquear_cuenta">Desbloquear mi cuenta</string>
     <string name="dialog_desbloqueo_title">Código enviado</string>
@@ -326,7 +327,7 @@
     <string name="ordenar_notas">Ordenar notas...</string> <!-- todo: ordenar notas por fecha de creación, edición...? -->
 
     <!-- Strings NuevaNota -->
-    <string name="hint_contenido_nota">Escribe algo...</string> <!-- " todo " hint que se pone por defecto en las notas al crearlas. Dejar en blanco o ponerlo? -->
+    <string name="hint_contenido_nota">Escribe algo...</string>
     <string name="menu_color">Seleccionar color...</string>
     <string name="error_nueva_nota">No se ha podido guardar la nota. Por favor, vuelve a intentarlo.</string>
     <string name="nota_creada">Nota creada correctamente</string>

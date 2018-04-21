@@ -2,6 +2,7 @@ package es.proyecto.eva.miagendadam.Fragments.Notas;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -49,6 +50,8 @@ public class NuevaNota extends AppCompatActivity {
     AlertDialog.Builder alert;
     AlertDialog dialog;
     Calendar c = new GregorianCalendar();
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,15 +144,22 @@ public class NuevaNota extends AppCompatActivity {
      * Método que guarda una nota
      **********************************************************************************************/
     public void guardarNota(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Guardando nota...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
         // consulta para guardar la nota
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("1")) {
+                            progressDialog.dismiss();
                             Toast.makeText(NuevaNota.this, R.string.nota_creada, Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(NuevaNota.this, R.string.error_nueva_nota, Toast.LENGTH_SHORT).show();
                             //Snackbar.make(this.findViewById(android.R.id.content),
                               //      R.string.error_no_hay_usuario, Snackbar.LENGTH_SHORT).show();
@@ -159,6 +169,7 @@ public class NuevaNota extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
                         Toast.makeText(NuevaNota.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
                        // Snackbar.make(getActivity().findViewById(android.R.id.content),
                                // R.string.error_servidor, Snackbar.LENGTH_SHORT).show();

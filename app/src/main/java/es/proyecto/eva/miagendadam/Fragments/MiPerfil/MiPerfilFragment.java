@@ -65,6 +65,8 @@ public class MiPerfilFragment extends Fragment {
     private String claveNueva = "", repiteClave = "";
     private JSONArray jsonArray;
     private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog2;
+    private ProgressDialog progressDialog3;
 
     // Patrón para controlar el formato de la contraseña nueva
     private String pattern_formato = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
@@ -598,11 +600,17 @@ public class MiPerfilFragment extends Fragment {
     public void actualizarDatosUsuario(){
         // PASADAS CON ÉXITO TODAS LAS VALIDACIONES, GUARDAMOS LOS DATOS DEL PERFIL:
         // consulta volley para actualizar los datos del usuario
+        progressDialog2 = new ProgressDialog(getActivity());
+        progressDialog2.setTitle(R.string.dialog_cargando);
+        progressDialog2.setMessage("Actualizando datos del usuario...");
+        progressDialog2.show();
+        progressDialog2.setCancelable(false);
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (response.equals("1")) {
+                            progressDialog2.dismiss();
                             Toast.makeText(getActivity(), R.string.perfil_actualizado, Toast.LENGTH_SHORT).show();
                             // Snackbar.make(getActivity().findViewById(android.R.id.content),
                             //       R.string.perfil_actualizado, Snackbar.LENGTH_LONG).show();
@@ -616,6 +624,7 @@ public class MiPerfilFragment extends Fragment {
                             // actualizamos los datos a visualizar automáticamente, para evitar que el usuario tenga que hacerlo manualmente
                             rellenarCampos();
                         } else {
+                            progressDialog2.dismiss();
                             Toast.makeText(getActivity(), R.string.error_actualizar_datos_usuario, Toast.LENGTH_LONG).show();
                            // Snackbar.make(getActivity().findViewById(android.R.id.content),
                              //       "Error al actualizar los datos del usuario.", Snackbar.LENGTH_LONG).show();
@@ -625,6 +634,7 @@ public class MiPerfilFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressDialog2.dismiss();
                         Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
                         //Snackbar.make(getActivity().findViewById(android.R.id.content),
                            //     R.string.error_servidor, Snackbar.LENGTH_LONG).show();
@@ -706,16 +716,23 @@ public class MiPerfilFragment extends Fragment {
                                         // Todas las validaciones se han pasado correctamente, ejecutamos la consulta
                                         // para actualizar la clave
                                         //Log.i("MiPerfilFragment", "Confirmar cambio de clave");
+                                        progressDialog3 = new ProgressDialog(getActivity());
+                                        progressDialog3.setTitle(R.string.dialog_cargando);
+                                        progressDialog3.setMessage("Actualizando contacto...");
+                                        progressDialog3.show();
+                                        progressDialog3.setCancelable(false);
                                         request = new StringRequest(Request.Method.POST, url_consulta2,
                                                 new Response.Listener<String>() {
                                                     @Override
                                                     public void onResponse(String response) {
                                                         //SE EJECUTA CUANDO LA CONSULTA SALE BIEN
                                                         try {
+                                                            progressDialog3.dismiss();
                                                             System.out.println("CLAVE NUEVA DEL USUARIO: " + claveNueva);
                                                             //Log.d("MiPerfilFragment", "Clave actualizada correctamente.");
                                                             Toast.makeText(getActivity(), R.string.clave_actualizada, Toast.LENGTH_SHORT).show();
                                                         } catch (Exception e) {
+                                                            progressDialog3.dismiss();
                                                             e.printStackTrace();
                                                             //Log.e("MiPerfilFragment", "Error al actualizar la clave");
                                                         }
@@ -724,7 +741,7 @@ public class MiPerfilFragment extends Fragment {
                                                 new Response.ErrorListener() {
                                                     @Override
                                                     public void onErrorResponse(VolleyError error) {
-
+                                                        progressDialog3.dismiss();
                                                         Toast.makeText(getActivity(), R.string.error_servidor, Toast.LENGTH_LONG).show();
                                                        // Snackbar.make(getActivity().findViewById(android.R.id.content),
                                                          //       R.string.error_servidor, Snackbar.LENGTH_LONG).show();

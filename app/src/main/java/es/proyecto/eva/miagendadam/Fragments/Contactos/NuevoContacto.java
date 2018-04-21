@@ -2,6 +2,7 @@ package es.proyecto.eva.miagendadam.Fragments.Contactos;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -33,6 +34,8 @@ public class NuevoContacto extends AppCompatActivity {
     EditText txtNombre, txtCorreo, txtModulo, txtTelefono;
     private String nombreContacto = "", correoContacto = "", modulo = "", telefono = "", idUsuario = "";
     private StringRequest request;
+    private ProgressDialog progressDialog;
+
     private String pattern_formato_nombre = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
             + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
@@ -130,14 +133,21 @@ public class NuevoContacto extends AppCompatActivity {
      * Método que guarda el nuevo contacto introducido
      **********************************************************************************************/
     public void guardarContacto(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Guardando contacto...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
         request = new StringRequest(Request.Method.POST, url_consulta,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("1")){
+                            progressDialog.dismiss();
                             Toast.makeText(NuevoContacto.this, R.string.contacto_guardado, Toast.LENGTH_LONG).show();
                             finish();
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(NuevoContacto.this, R.string.error_guardar_contacto, Toast.LENGTH_LONG).show();
                         }
                     }
@@ -146,6 +156,7 @@ public class NuevoContacto extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(NuevoContacto.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
                     }
                 }) {
             @Override

@@ -46,11 +46,13 @@
         <!-- si se cambiase la longitud de los códigos de confirmación habría que cambiar el maxLength del EditText correspondiente-->
         <Button
             android:id="@+id/btn_confirmar"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_confirmar"
+            android:background="@color/colorAccent"
             android:fontFamily="@font/roboto_light"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:text="@string/btn_confirmar"
+            android:textColor="@android:color/background_light"
             android:textStyle="bold" />
 
         <Button

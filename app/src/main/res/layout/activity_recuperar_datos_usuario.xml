@@ -46,9 +46,12 @@
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
+                    android:background="@color/colorAccent"
                     android:fontFamily="@font/roboto_light"
                     android:text="@string/btn_clave_nueva"
+                    android:textColor="@android:color/background_light"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -57,9 +60,12 @@
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
                     android:layout_weight="1"
+                    android:background="@color/colorAccent"
                     android:fontFamily="@font/roboto_light"
                     android:text="@string/btn_recupera_usuario"
+                    android:textColor="@android:color/background_light"
                     android:textSize="12sp"
                     android:textStyle="bold" />
         </LinearLayout>
