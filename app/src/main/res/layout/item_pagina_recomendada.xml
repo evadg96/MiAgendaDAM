@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:gravity="left"
+    android:orientation="vertical">
+
+    <!-- TODO: Añadir en barra de acciones botón de enviar sugerencias de artículos?
+    El botón derivaría a un gestor de correo electrónico, con la dirección de soporte metida
+    como destinatario y un asunto puesto por defecto, por ejemplo "Sugerencia materiales recomendados" ?
+    El icono del botón puede ser un bocadillo o algo por el estilo para simular una 'conversación'
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_titulo_pag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_light"
+            android:text="TextView"
+            android:textColor="@color/disabled_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_categoria_pag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_light"
+            android:text="TextView"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

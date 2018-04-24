@@ -97,7 +97,6 @@ public class EditarContacto extends AppCompatActivity {
                 correoContacto = txtCorreo.getText().toString();
                 modulo = txtModulo.getText().toString();
                 telefono = txtTelefono.getText().toString();
-
                 txtNombre.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
                 txtModulo.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
                 txtCorreo.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);

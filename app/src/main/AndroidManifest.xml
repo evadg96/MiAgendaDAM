@@ -28,9 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PantallaPrincipal"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".PantallaLogin"
             android:screenOrientation="portrait" />
         <activity
@@ -58,10 +55,6 @@
             android:name=".Fragments.Diario.VerYEditarRegistroDiario"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Fragments.Diario.EstadisticasDiario"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -74,12 +67,16 @@
         <activity android:name=".Fragments.Contactos.NuevoContacto" />
         <activity android:name=".Fragments.Contactos.VerContacto" />
         <activity android:name=".Fragments.Contactos.EditarContacto" />
-        <activity android:name=".Fragments.Notas.VerEditarNota" />
+        <activity android:name=".Fragments.Notas.VerEditarNota"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Fragments.Notas.NuevaNota"
-            android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".Fragments.Calendarios.WebViewCalendarios" />
-        <activity android:name=".Fragments.Calendarios.OtrasComunidades"></activity>
+            android:windowSoftInputMode="stateVisible"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Fragments.Recursos.WebView" />
+        <activity android:name=".Fragments.Recursos.ListadoComunidadesCalendario">
+        </activity>
+        <activity android:name=".Fragments.Recursos.ListadoPaginasRecomendadas"> </activity>
     </application>
 
 </manifest>

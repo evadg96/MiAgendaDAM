@@ -24,7 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.Fragments.Calendarios.CalendariosFragment;
+import es.proyecto.eva.miagendadam.Fragments.Recursos.RecursosFragment;
 import es.proyecto.eva.miagendadam.Fragments.Notas.NotasFragment;
 import es.proyecto.eva.miagendadam.Fragments.Contactos.ContactosFragment;
 import es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment;
@@ -126,16 +126,10 @@ public class NavMenu extends AppCompatActivity
            // Log.i("NavMenu", "Opción menú: Horas");
             setTitle(R.string.opc_horas);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new HorasFragment()).commit();
-        } else if (id == R.id.nav_c_reco) {
-          //  Log.i("NavMenu", "Opción menú: Contenido recomendado");
-            setTitle(R.string.opc_mat_reco);
-        } else if (id == R.id.nav_c_perso) {
-           // Log.i("NavMenu", "Opción menú: Contenido personalizado");
-            setTitle(R.string.opc_mat_perso);
-        } else if (id == R.id.nav_festivos) {
+        } else if (id == R.id.nav_recursos) {
            // Log.i("NavMenu", "Opción menú: Festivos/No lectivos");
-            setTitle(R.string.opc_festivos_no_lectivos);
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new CalendariosFragment()).commit();
+            setTitle(R.string.opc_recursos);
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new RecursosFragment()).commit();
         } else if (id == R.id.nav_ayuda) {
            // Log.i("NavMenu", "Opción menú: Acerca de");
             Intent intent = new Intent (this, AcercaDe.class);
@@ -147,12 +141,10 @@ public class NavMenu extends AppCompatActivity
            // Log.i("NavMenu", "Opción menú: Anotaciones");
             setTitle(R.string.opc_anotaciones);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new NotasFragment()).commit();
-        } else if (id == R.id.nav_tutores) {
+        } else if (id == R.id.nav_contactos) {
            // Log.i("NavMenu", "Opción menú: Tutores");
             setTitle(R.string.opc_contactos);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new ContactosFragment()).commit();
-        } else if (id == R.id.nav_proyecto) {
-          //  Log.i("NavMenu", "Opción menú: Anteproyecto");
         } else if (id == R.id.nav_perfil) {
           //  Log.i("NavMenu", "Opción menú: Mi perfil");
             setTitle(R.string.opc_perfil);

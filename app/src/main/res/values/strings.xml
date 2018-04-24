@@ -98,7 +98,7 @@
     <string name="opc_inicio">Inicio</string>
     <string name="opc_diario">Diario</string>
     <string name="opc_horas">Horas</string>
-    <string name="opc_festivos_no_lectivos">Calendario escolar</string>
+    <string name="opc_recursos">Recursos</string>
     <string name="opc_proyecto">Proyecto</string>
     <string name="opc_ideas_proyecto">Ideas</string>
     <string name="opc_guia_proyecto">Guía de proyecto</string>
@@ -106,16 +106,25 @@
     <string name="opc_cerrar_sesion">Cerrar sesión</string>
     <string name="opc_contacto">Contacto</string>
     <string name="opc_anotaciones">Notas</string>
-    <string name="opc_mat_reco">Material recomendado</string>
-    <string name="opc_mat_perso">Material personalizado</string>
     <string name="opc_perfil">Mi perfil</string>
     <string name="opc_contactos">Contactos de interés</string>
     <string name="nombre_usuario_menu">Nombre de usuario</string>
     <string name="correo_usuario_menu">Correo electrónico</string>
 
-    <!-- Strings CalendariosFragment -->
-    <string name="ver_mi_calendario">Mi comunidad</string>
-    <string name="ver_otras_comunidades">Otras comunidades</string>
+    <!-- Strings RecursosFragment -->
+    <string name="enviar_sugerencias">Enviar sugerencias</string>
+    <string name="ver_mi_calendario">Mi calendario escolar</string>
+    <string name="ver_otras_comunidades">Calendarios de otras comunidades</string>
+    <string name="ver_paginas_recomendadas">Páginas recomendadas</string>
+
+    <!-- String WebView -->
+    <string name="info">Info</string>
+    <string name="copiar_portapapeles">Copiar dirección de enlace</string>
+    <string name="copiado">Dirección copiada al portapapeles</string>
+    <string name="info_webview">Es posible que la descarga o visualización de determinados contenidos no se lleve a cabo correctamente en la navegación interna al visualizar los calendarios.
+    Si deseas visualizar o descargar algún contenido puedes copiar la url de la página de origen del mismo a través del icono de los rectángulos en la barra superior, y después
+    copiar dicha url en el navegador de tu teléfono.</string>
+    <string name="btn_entendido">Entendido</string>
 
     <!-- Strings pantalla AcercaDe -->
     <string name="title_activity_acerca_de">Acerca de</string>
@@ -127,10 +136,6 @@
         tienes alguna idea para mejorar su aspecto o cualquier otra mejora, puedes sugerirlo a través del
         correo electrónico de soporte ya mencionado. Tu solicitud recibirá respuesta lo más pronto posible. ¡Gracias!
         </string>
-    <string name="info_app">La aplicación consiste en una herramienta de organización de prácticas en centros de trabajo.
-    Permite el seguimiento diario de la jornada de prácticas mediante la creación de registros con fecha, horas, descripción y valoración; cálculo automático de horas
-    cursadas y restantes en función de las introducidas en los registros diarios, visualización de días no lectivos y festivos, creación de anotaciones simples personales, recomendación y
-        personalización de materiales útiles categorizados para el estudiante, guías para la realización de anteproyecto y proyecto final... </string>
     <string name="creditos"></string>
     <string name="version">Versión:</string>
     <string name="contacto">Soporte:</string>

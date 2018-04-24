@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -281,9 +283,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         txtHoraFin1Seleccionada.setText(sHoraFin1 + ":" + sMinFin1);
         txtHoraInicio2Seleccionada.setText(sHoraInicio2 + ":" + sMinInicio2);
         txtHoraFin2Seleccionada.setText(sHoraFin2 + ":" + sMinFin2);
-        // Codificamos los datos de la descripción para visualizar sus tildes y otros caracteres
-        String descripcionCodificada = codificaString(descripcion_seleccionada);
-        txtDescripcionSeleccionada.setText(descripcionCodificada);
+        txtDescripcionSeleccionada.setText(descripcion_seleccionada);
         //  Inhabilitamos edición de campos
         deshabilitarEdicion();
         // marcamos el icono que se corresponda con la valoración del día
@@ -321,7 +321,13 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_actualizar: // Opción de guardar el registro actualizado
-                //Log.i("VerYEditarRegistroD", "Action Guardar (actualizar) registro");
+                txtFechaSeleccionada.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraInicio1Seleccionada.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraFin1Seleccionada.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraInicio2Seleccionada.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraFin2Seleccionada.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtTiempoReunion.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtDescripcionSeleccionada.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);// /Log.i("VerYEditarRegistroD", "Action Guardar (actualizar) registro");
                 // obtenemos los datos nuevos
                 descripcionNueva = txtDescripcionSeleccionada.getText().toString();
                 validarJornada();

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/gr1" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_inicio"
             android:icon="@drawable/ic_home_black_24dp"
@@ -25,46 +25,26 @@
             android:id="@+id/nav_anotaciones"
             android:icon="@drawable/ic_description_black_24dp"
             android:title="@string/opc_anotaciones" />
-
         <item
-            android:id="@+id/nav_festivos"
-            android:icon="@drawable/ic_date_range_black_24dp"
-            android:title="@string/opc_festivos_no_lectivos" />
-
-        <item
-            android:id="@+id/nav_tutores"
+            android:id="@+id/nav_contactos"
             android:icon="@drawable/ic_supervisor_account_black_24dp"
             android:title="@string/opc_contactos" />
+    </group>
 
-        <item android:title="">
-            <menu>
-                <!-- todo implementar cuando se pueda los que faltan -->
-                <item
-                    android:id="@+id/nav_c_reco"
-                    android:icon="@drawable/ic_import_contacts_black_24dp"
-                    android:title="@string/opc_mat_reco"
-                    android:visible="false"/>
-                <item
-                    android:id="@+id/nav_c_perso"
-                    android:icon="@drawable/ic_book_black_24dp"
-                    android:title="@string/opc_mat_perso"
-                    android:visible="false"/>
-                <item
-                    android:id="@+id/nav_proyecto"
-                    android:icon="@drawable/ic_school_black_24dp"
-                    android:title="@string/opc_proyecto"
-                    android:visible="false"/>
-                <item
-                    android:id="@+id/nav_cerrar_sesion"
-                    android:icon="@drawable/ic_exit_to_app_black_24dp"
-                    android:title="@string/opc_cerrar_sesion" />
-                <item
-                    android:id="@+id/nav_ayuda"
-                    android:icon="@drawable/ic_help_black_24dp"
-                    android:title="@string/title_activity_acerca_de" />
-            </menu>
-        </item>
-
+    <group android:id="@+id/gr2" android:checkableBehavior="single">
+        <!-- todo implementar cuando se pueda los que faltan -->
+        <item
+            android:id="@+id/nav_recursos"
+            android:icon="@drawable/ic_import_contacts_black_24dp"
+            android:title="@string/opc_recursos" />
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/opc_cerrar_sesion" />
+        <item
+            android:id="@+id/nav_ayuda"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="@string/title_activity_acerca_de" />
     </group>
 
 </menu>

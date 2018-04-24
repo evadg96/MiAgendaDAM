@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Recursos.WebView"
+    tools:context=".Fragments.Recursos.ListadoComunidadesCalendario"
     android:orientation="vertical">
 
-    <WebView
-        android:id="@+id/webview_calendario"
+    <ListView
+        android:id="@+id/lista_paginas"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

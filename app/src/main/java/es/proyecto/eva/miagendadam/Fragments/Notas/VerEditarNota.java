@@ -86,7 +86,12 @@ public class VerEditarNota extends AppCompatActivity {
      * Método que deshabilita la edición de la nota
      **********************************************************************************************/
     public void deshabilitarEdicion(){
-        txtContenido.setEnabled(false);
+        //txtContenido.setEnabled(false);
+        //txtContenido.setHorizontallyScrolling(true);
+        txtContenido.setFocusable(false);
+        txtContenido.setFocusableInTouchMode(false);
+        txtContenido.setClickable(false);
+        txtContenido.setLongClickable(false);
         editando = false;
         invalidateOptionsMenu();
     }
@@ -95,7 +100,11 @@ public class VerEditarNota extends AppCompatActivity {
      * Método que habilita la edición y muestra el teclado automáticamente
      **********************************************************************************************/
     public void habilitarEdicion(){
-        txtContenido.setEnabled(true);
+        //txtContenido.setEnabled(true);
+        txtContenido.setFocusable(true);
+        txtContenido.setFocusableInTouchMode(true);
+        txtContenido.setClickable(true);
+        txtContenido.setLongClickable(true);
         // para desplegar automáticamente el teclado cuando se pulse el botón de editar la nota
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.showSoftInput(txtContenido, InputMethodManager.SHOW_FORCED);

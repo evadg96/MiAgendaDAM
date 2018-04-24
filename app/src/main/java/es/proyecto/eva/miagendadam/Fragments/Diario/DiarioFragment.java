@@ -124,6 +124,24 @@ public class DiarioFragment extends Fragment {
     private boolean hayRegistros;
     private ProgressDialog progressDialog;
 
+    /***********************************************************************************************
+     * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
+     * caracteres especiales
+     * @param dato
+     * @return
+     **********************************************************************************************/
+    private String codificaString(String dato){
+        String datoCodificado = "";
+        try {
+            byte[] arrByteNombre = dato.getBytes("ISO-8859-1");
+            datoCodificado = new String(arrByteNombre);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return datoCodificado;
+    }
+
+
     // *************************  PENDIENTE **********************************************************************************************
     private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
     // en preferencias para saberlo)
@@ -292,7 +310,7 @@ public class DiarioFragment extends Fragment {
                     reunion_fct_seleccionada = jsonArrayDiario.getJSONObject(id).getString("reunion_fct");
                     horas_reunion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("horas_reunion");
                     fecha_seleccionada = dia_seleccionado + "/" + mes_seleccionado + "/" + anyo_seleccionado;
-                    descripcion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("descripcion");
+                    descripcion_seleccionada = codificaString(jsonArrayDiario.getJSONObject(id).getString("descripcion"));
                     valoracion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("valoracion");
                     // después de obtener los datos abrimos la nueva actividad que nos permitirá visualizarlos
                     // y editarlos en sus correspondientes campos

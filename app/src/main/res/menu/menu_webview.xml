@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_info"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="@string/info"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_copiar"
+        android:icon="@drawable/ic_content_copy_white_24dp"
+        android:title="@string/copiar_portapapeles"
+        app:showAsAction="ifRoom" />
+</menu>

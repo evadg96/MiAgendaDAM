@@ -56,4 +56,7 @@
     <color name="gris_oscuro">#7b7b7b</color>
     <color name="azul_claro">#04ffee</color>
     <color name="naranja_trans">#3bc89706</color>
+    <color name="verde_fp">#7472b740</color>
+    <color name="rojo_www">#79cf5732</color>
+    <color name="azul_cal">#7940b7ad</color>
 </resources>

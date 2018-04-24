@@ -10,12 +10,12 @@
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp"
     tools:context="es.proyecto.eva.miagendadam.Fragments.Diario.VerYEditarRegistroDiario">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,6 +26,7 @@
                 android:id="@+id/datos_dia_seleccionado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -46,8 +47,7 @@
                     android:fontFamily="@font/roboto_light"
                     android:hint="@string/fecha_registro"
                     android:inputType="date"
-                    android:maxLines="1"
-                    />
+                    android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/tv_jornada"
@@ -110,7 +110,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_inicio"
                             android:inputType="number"
-                            android:textColor="@drawable/edit_text_selector"/>
+                            android:textColor="@drawable/edit_text_selector" />
 
                         <EditText
                             android:id="@+id/txt_hora_fin_1_seleccionada"
@@ -123,7 +123,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_fin"
                             android:inputType="number"
-                            android:textColor="@drawable/edit_text_selector"/>
+                            android:textColor="@drawable/edit_text_selector" />
 
                     </LinearLayout>
 
@@ -154,7 +154,7 @@
                             android:fontFamily="@font/roboto_light"
                             android:hint="@string/hora_inicio"
                             android:inputType="number"
-                            android:textColor="@drawable/edit_text_selector"/>
+                            android:textColor="@drawable/edit_text_selector" />
 
                         <EditText
                             android:id="@+id/txt_hora_fin_2_seleccionada"
@@ -268,7 +268,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:inputType="number"
-                                android:textColor="@drawable/edit_text_selector"/>
+                                android:textColor="@drawable/edit_text_selector" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -301,7 +301,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine|textCapSentences"
                             android:maxLines="6"
-                            android:textColor="@drawable/edit_text_selector"/>
+                            android:textColor="@drawable/edit_text_selector" />
 
 
                     </ScrollView>

@@ -96,5 +96,4 @@
             app:elevation="0dp" />
     </LinearLayout>
 
-    <!-- TODO: cambiar el tamaño de los iconos para que no quede tan espaciado -->
 </LinearLayout>

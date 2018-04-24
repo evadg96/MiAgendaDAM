@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -284,6 +285,7 @@ public class NuevoRegistroDiario extends AppCompatActivity {
      * llamando al método correspondiente (guardarRegistro() )
      **********************************************************************************************/
     public void validarFecha(){
+        txtFecha.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         System.out.println("Validando fecha...");
         request = new StringRequest(Request.Method.POST, url_consulta2,
                 new Response.Listener<String>() {
@@ -291,7 +293,8 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("1")){ // Hay un registro con esa fecha
                             System.out.println("ERROR FECHA DE REGISTRO YA EXISTENTE.");
-                           // Snackbar.make(findViewById(android.R.id.content),
+                           txtFecha.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                            // Snackbar.make(findViewById(android.R.id.content),
                              //       R.string.alert_ya_existe_fecha, Snackbar.LENGTH_SHORT).show();
                             Toast.makeText(NuevoRegistroDiario.this, R.string.alert_ya_existe_fecha, Toast.LENGTH_SHORT).show();
                         } else if (response.equals("0")){ // No hay ningún registro con esa fecha
@@ -331,13 +334,29 @@ public class NuevoRegistroDiario extends AppCompatActivity {
      * También pone las horas y minutos obtenidos de la jornada en un textView
      **********************************************************************************************/
     public void validarJornada(){
+        txtHoraInicio1.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtHoraFin1.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtHoraInicio2.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        txtHoraFin2.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         // Validamos que no haya campos en blanco:
         if (hayDosJornadas) { // Si HAY DOS JORNADAS ...
             System.out.println("HAY DOS JORNADAS");
             if (horaInicio2 == 0 || horaFin2 == 0 || horaInicio1 == 0 || horaFin1 == 0) { // hay dos jornadas, y alguno de los campos está en blanco
                 Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_2, Toast.LENGTH_SHORT).show();
                 System.out.println("DATOS EN BLANCO EN DOS JORNADAS.");
-                //Snackbar.make(this.findViewById(android.R.id.content),
+                if (horaInicio1 == 0) {
+                    txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
+                if (horaFin1 == 0) {
+                    txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
+                if (horaInicio2 == 0) {
+                    txtHoraInicio2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
+                if (horaFin2 == 0) {
+                    txtHoraFin2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
+                // Snackbar.make(this.findViewById(android.R.id.content),
                   //      R.string.error_datos_jornada_2, Snackbar.LENGTH_SHORT).show();
             } else {
                 // hay dos jornadas y no hay datos en blanco en ninguna jornada, así que procedemos a hacer los cálculos y validaciones
@@ -349,6 +368,14 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 if (horaInicio1 > horaFin1 || horaInicio2 > horaFin2) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
                     Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                     System.out.println("JORNADA(S) NO VÁLIDA(S) 1.");
+                    if (horaInicio1 > horaFin1){
+                        txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                    }
+                    if (horaInicio2 > horaFin2){
+                        txtHoraInicio2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                    }
                     //Snackbar.make(this.findViewById(android.R.id.content),
                       //      R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
@@ -356,19 +383,44 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                         // la hora de inicio del segundo turno es menor o igual que la de fin del primer turno. No puede ser.
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 2.");
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        txtHoraInicio2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         //Snackbar.make(this.findViewById(android.R.id.content),
                             //    R.string.error_datos_jornada_4, Snackbar.LENGTH_LONG).show();
                     } else if (horasResultado <= 0 || horaInicio1 == horaFin1 && minutoInicio1 == minutoFin1 || horaInicio2 == horaFin2 && minutoInicio2 == minutoFin2) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 3.");
+                        if (horaInicio1 == horaFin1 && minutoInicio1 == minutoFin1) {
+                            txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                            txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        }
+                        if ( horaInicio2 == horaFin2 && minutoInicio2 == minutoFin2) {
+                            txtHoraInicio2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                            txtHoraFin2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        }
                        // Snackbar.make(this.findViewById(android.R.id.content),
                         //        R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
                         // Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 4.");
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_SHORT).show();
+                        txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+
+                    // TODO: Depurar, NO FUNCIONA BIEN
+                    } else if (horaInicio1 == horaFin1 && minutoInicio1 > minutoFin1) {
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        System.out.println("JORNADA(S) NO VÁLIDA(S) 5.");
+                        txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                     //Snackbar.make(this.findViewById(android.R.id.content),
                           //      R.string.error_datos_jornada_5, Snackbar.LENGTH_SHORT).show();
+                    } else if (horaInicio2 == horaFin2 && minutoInicio2 > minutoFin2) {
+                        Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
+                        System.out.println("JORNADA(S) NO VÁLIDA(S) 6.");
+                        txtHoraInicio2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+
                     } else { // No hay ningún error con los datos de la jornada. Pasamos a la siguiente comprobación: ¿hay reunión fct?
                         // creamos los String para poner las horas y los minutos en el textView de horas
                         sHorasResultado = String.valueOf(horasResultado); // le damos el valor del resultado de la suma de las horas
@@ -378,17 +430,20 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                             horas_reunion = txtTiempoReunion.getText().toString();
                             if (horas_reunion.isEmpty()){ // si NO HAY HORAS DE REUNIÓN introducidas...
                                 System.out.println("HORAS REUNIÓN EN BLANCO.");
+                                txtTiempoReunion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                 Toast.makeText(NuevoRegistroDiario.this, R.string.error_horas_reunion, Toast.LENGTH_SHORT).show();
                                 //Snackbar.make(findViewById(android.R.id.content),
                                   //      R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
                             } else { // SÍ HAY HORAS DE REUNIÓN, validamos formato...
                                 if (Integer.valueOf(horas_reunion) == 0){
                                     System.out.println("ERROR HORAS REUNIÓN 1.");
+                                    txtTiempoReunion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                     Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion_2, Toast.LENGTH_SHORT).show();
                                     //Snackbar.make(findViewById(android.R.id.content),
                                       //      R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
                                 } else if (Integer.valueOf(horas_reunion) > 2){
                                     System.out.println("ERROR HORAS REUNIÓN 2.");
+                                    txtTiempoReunion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                     Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion, Toast.LENGTH_SHORT).show();
                                    // Snackbar.make(findViewById(android.R.id.content),
                                      //       R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
@@ -447,17 +502,23 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                 calcularHoras();
                 // validamos previamente que no salen jornadas excesivas o negativas
                 if (horaInicio1 > horaFin1) { // alguna de las horas de inicio es más tarde que la hora de entrada, IMPOSIBLE
+                    txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                    txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                     Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                     System.out.println("JORNADA NO VÁLIDA 1.");
                    // Snackbar.make(this.findViewById(android.R.id.content),
                      //       R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                 } else { // los datos son válidos, continuamos validando
                     if (horasResultado <= 0) { // si diese un número negativo de horas, o que las horas obtenidas sean 0
+                      txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                      txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                       Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                         System.out.println("JORNADA NO VÁLIDA 2.");
                        // Snackbar.make(this.findViewById(android.R.id.content),
                           //      R.string.error_datos_jornada_4, Snackbar.LENGTH_SHORT).show();
                     } else if (horasResultado > 8) { // si da una jornada total mayor a 8 horas estaría superando la jornada permitida
+                        txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_5, Toast.LENGTH_LONG).show();
                         System.out.println("JORNADA NO VÁLIDA 3.");
                        // Snackbar.make(findViewById(android.R.id.content),
@@ -471,17 +532,20 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                             horas_reunion = txtTiempoReunion.getText().toString();
                             if (horas_reunion.isEmpty()){ // comprobamos si se han introducido las horas
                                 System.out.println("ERROR HORAS REUNIÓN 1 (UNA JORNADA).");
+                                txtTiempoReunion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                 Toast.makeText(NuevoRegistroDiario.this, R.string.error_horas_reunion, Toast.LENGTH_SHORT).show();
                                 //Snackbar.make(findViewById(android.R.id.content),
                                    //     R.string.error_horas_reunion, Snackbar.LENGTH_SHORT).show();
                             } else {
                                 if (Integer.valueOf(horas_reunion) == 0){
                                     System.out.println("ERROR HORAS REUNIÓN 2 (UNA JORNADA).");
+                                    txtTiempoReunion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                     Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion_2, Toast.LENGTH_SHORT).show();
                                    // Snackbar.make(findViewById(android.R.id.content),
                                      //       R.string.alert_horas_reunion_2, Snackbar.LENGTH_SHORT).show();
                                 } else if (Integer.valueOf(horas_reunion) > 2){
                                     System.out.println("ERROR HORAS REUNIÓN 3 (UNA JORNADA).");
+                                    txtTiempoReunion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                                     Toast.makeText(NuevoRegistroDiario.this, R.string.alert_horas_reunion, Toast.LENGTH_SHORT).show();
                                //     Snackbar.make(findViewById(android.R.id.content),
                                  //           R.string.alert_horas_reunion, Snackbar.LENGTH_SHORT).show();
@@ -534,6 +598,12 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                     }
                 }
             } else { // los CAMPOS de la jornada base están EN BLANCO
+                if (horaInicio1 == 0) {
+                    txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
+                if (horaFin1 == 0) {
+                    txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
                 Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_1, Toast.LENGTH_SHORT).show();
                 System.out.println("ERROR DATOS JORNADA EN BLANCO.");
                // Snackbar.make(this.findViewById(android.R.id.content),
@@ -549,9 +619,13 @@ public class NuevoRegistroDiario extends AppCompatActivity {
      * se determina si se guarda el registro o no.
      **********************************************************************************************/
     public void pasaValidacion(){
+        txtDescripcion.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         descripcion = txtDescripcion.getText().toString();
         if (sDia.isEmpty() || sMes.isEmpty() || sAnyo.isEmpty() || descripcion.isEmpty() || valoracionDia.isEmpty()){
-             Toast.makeText(NuevoRegistroDiario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
+            if (descripcion.isEmpty()){
+                txtDescripcion.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+            }
+            Toast.makeText(NuevoRegistroDiario.this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
             System.out.println("ALGUNO DE LOS CAMPOS DE FECHA / DESCRIPCIÓN / VALORACIÓN ESTÁ VACÍO");
            // Snackbar.make(findViewById(android.R.id.content),
              //       R.string.error_campos_vacios, Snackbar.LENGTH_SHORT).show();
@@ -845,6 +919,13 @@ public class NuevoRegistroDiario extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
             case R.id.menu_guardar: // Opción de guardar registro
                // Log.i("NuevoRegistroDiario", "Action Guardar registro");
+                txtFecha.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraInicio1.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraFin1.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraInicio2.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtHoraFin2.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtTiempoReunion.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                txtDescripcion.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
                 validarJornada(); // validamos la jornada introducida
                 return true;
             case android.R.id.home: // Opción de volver hacia atrás
