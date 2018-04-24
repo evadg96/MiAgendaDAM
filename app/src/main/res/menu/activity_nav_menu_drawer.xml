@@ -32,7 +32,6 @@
     </group>
 
     <group android:id="@+id/gr2" android:checkableBehavior="single">
-        <!-- todo implementar cuando se pueda los que faltan -->
         <item
             android:id="@+id/nav_recursos"
             android:icon="@drawable/ic_import_contacts_black_24dp"

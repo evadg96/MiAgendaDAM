@@ -41,6 +41,4 @@
         android:layout_height="wrap_content"
         android:text="Familia ciclo" />
 
-    <!-- TODO: Poner una pequeña imagen representativa de la familia del ciclo al lado de su nombre?-->
-
 </LinearLayout>

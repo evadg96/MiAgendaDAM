@@ -407,7 +407,6 @@ public class NuevoRegistroDiario extends AppCompatActivity {
                         txtHoraInicio1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         txtHoraFin1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
 
-                    // TODO: Depurar, NO FUNCIONA BIEN
                     } else if (horaInicio1 == horaFin1 && minutoInicio1 > minutoFin1) {
                         Toast.makeText(NuevoRegistroDiario.this, R.string.error_datos_jornada_4, Toast.LENGTH_SHORT).show();
                         System.out.println("JORNADA(S) NO VÁLIDA(S) 5.");

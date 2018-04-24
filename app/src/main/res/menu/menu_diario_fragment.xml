@@ -5,20 +5,6 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/menu_buqueda_registros"
         app:showAsAction="ifRoom" />
-   <!--
-        TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
-
-        <item
-        android:id="@+id/menu_ordenar_registros"
-        android:title="@string/menu_ordenar_registros"
-        app:showAsAction="never" /> -->
-
-    <!--<item
-    TODO: Pendiente, mientras tanto queda oculto
-        android:id="@+id/menu_estadisticas"
-        android:icon="@drawable/ic_assessment_white_24dp"
-        android:title="@string/menu_estadisticas_registros_diario"
-        app:showAsAction="ifRoom" />-->
 
    <item
         android:id="@+id/menu_borrar_todo"

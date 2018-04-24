@@ -42,18 +42,6 @@ import es.proyecto.eva.miagendadam.NavMenu;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
-/**
- * TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
-* TODO: Añadir visualización de estadísticas de los registros con una opción en un icono del action bar
-* Para ello crear consultas con uso de funciones como COUNT, SUM, AVG..
-* Algunas estadísticas que se pretenden implementar:
-* - Visualización de número total de registros existentes
-* - Visualización de media de horas trabajadas en total
-* - Día que más horas se ha trabajado
-* -  "   " menos "    "  "   "
-* - ... ?
-
-
 /***************************************************************************************************
  * Fragmento de la opción Diario que se incluye en la actividad NavMenu. Se muestra por defecto
  * al abrirse la aplicación tras haber iniciado sesión, o bien al seleccionar la opción manualmente
@@ -157,12 +145,6 @@ public class DiarioFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-           /** TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
-            * case R.id.menu_ordenar_registros: // Opción de guardar los datos de usuario actualizados
-                Log.i("DiarioFragment", "Action Ordenar registros");
-                seleccionaOrdenRegistros();
-                return true;
-            **/
             case R.id.menu_busqueda_registros: // Opción de guardar los datos de usuario actualizados
                Log.i("DiarioFragment", "Action Búsqueda de registros");
                 // primero validamos si hay registros sobre los que buscar
@@ -207,13 +189,6 @@ public class DiarioFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /***********************************************************************************************
-     * Método que ordena los registros del diario  por más o menos recientes
-    **********************************************************************************************
-     public void seleccionaOrdenRegistros(){
-        TODO: (ignore) ORDENAR REGISTROS DE DIARIO POR FECHA Implementación de futuro...
-    }
-    */
     public DiarioFragment() {
         // Required empty public constructor
     }

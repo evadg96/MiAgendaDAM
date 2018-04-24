@@ -329,7 +329,6 @@
     <string name="notas_borradas">Notas borradas correctamente.</string>
     <!-- Strings de menú de ActionBar -->
     <string name="borrar_todas_notas">Borrar todas las notas</string>
-    <string name="ordenar_notas">Ordenar notas...</string> <!-- todo: ordenar notas por fecha de creación, edición...? -->
 
     <!-- Strings NuevaNota -->
     <string name="hint_contenido_nota">Escribe algo...</string>

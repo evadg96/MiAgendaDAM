@@ -220,7 +220,6 @@ public class VerEditarNota extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(VerEditarNota.this, R.string.nota_actualizada, Toast.LENGTH_SHORT).show();
                             deshabilitarEdicion();
-                            // finish(); // todo permanecer en la nota o volver atrás?
                         } else {
                             progressDialog.dismiss();
                             Toast.makeText(VerEditarNota.this, R.string.error_actualizar_nota, Toast.LENGTH_SHORT).show();

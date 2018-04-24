@@ -126,5 +126,5 @@
             android:maxLength="15"
              />
     </LinearLayout>
-
+    <!-- todo cambiar aspecto de esta actividad ??? -->
 </LinearLayout>
