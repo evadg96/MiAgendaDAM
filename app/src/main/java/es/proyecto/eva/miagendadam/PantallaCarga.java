@@ -181,6 +181,9 @@ public class PantallaCarga extends AppCompatActivity {
                     });
             Dialog dialog = builder.create();
             dialog.show();
+            dialog.setCancelable(false); // impedimos que el diálogo se pueda cerrar al pulsar fuera del mismo
+            // para que no aparezca la pantalla en carga infinita, ya que al no haber internet no se accederá
+            // a la app
         }
     }
 

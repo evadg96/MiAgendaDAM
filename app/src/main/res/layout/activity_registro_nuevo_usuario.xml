@@ -87,12 +87,12 @@
 
                         <EditText
                             android:id="@+id/editText_horas_fct"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:hint="@string/sHorasFct"
                             android:fontFamily="@font/roboto_light"
+                            android:hint="@string/sHorasFct"
                             android:inputType="number"
                             android:maxLength="3" />
 

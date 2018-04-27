@@ -37,13 +37,13 @@
             android:icon="@drawable/ic_import_contacts_black_24dp"
             android:title="@string/opc_recursos" />
         <item
-            android:id="@+id/nav_cerrar_sesion"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="@string/opc_cerrar_sesion" />
-        <item
             android:id="@+id/nav_ayuda"
             android:icon="@drawable/ic_help_black_24dp"
             android:title="@string/title_activity_acerca_de" />
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/opc_cerrar_sesion" />
     </group>
 
 </menu>

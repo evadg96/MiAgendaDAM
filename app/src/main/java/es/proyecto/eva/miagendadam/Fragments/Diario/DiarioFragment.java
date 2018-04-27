@@ -7,11 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,11 +135,6 @@ public class DiarioFragment extends Fragment {
     }
 
 
-    // *************************  PENDIENTE **********************************************************************************************
-    private boolean masRecientesPrimero = false; // para saber que queremos que se vean primero los más recientes (guardaremos los datos
-    // en preferencias para saberlo)
-    private boolean menosRecientesPrimero = false; // para saber que queremos que se vean primero los menos recientes
-    // **********************************************************************************************************************************
     // Creamos el menú en el action bar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -157,9 +157,6 @@ public class DiarioFragment extends Fragment {
                             R.string.alert_no_hay_registros, Snackbar.LENGTH_LONG).show();
                 }
                 return true;
-           // case R.id.menu_estadisticas: // Opción de guardar los datos de usuario actualizados
-             //  Log.i("DiarioFragment", "Action Estadísticas de registros");
-               // return true;
             case R.id.menu_borrar_todo: // Opción de guardar los datos de usuario actualizados
                 Log.i("DiarioFragment", "Action Borrar todo");
                 // Preguntamos antes de proceder con el borrado de datos
@@ -185,6 +182,7 @@ public class DiarioFragment extends Fragment {
                     dialog.show();
                 }
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -201,7 +199,7 @@ public class DiarioFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_diario, container, false);
+        final View view = inflater.inflate(R.layout.fragment_diario, container, false);
         // para ocultar el teclado si este se ha quedado abierto de otra pantalla
        // if (getActivity().getCurrentFocus() != null) {
          //   InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -289,16 +287,17 @@ public class DiarioFragment extends Fragment {
                     valoracion_seleccionada = jsonArrayDiario.getJSONObject(id).getString("valoracion");
                     // después de obtener los datos abrimos la nueva actividad que nos permitirá visualizarlos
                     // y editarlos en sus correspondientes campos
-                   Log.d("DiarioFragment", "Vista detalle de un registro");
+                    Log.d("DiarioFragment", "Vista detalle de un registro");
                     Intent intent = new Intent(getActivity(), VerYEditarRegistroDiario.class);
                     startActivity(intent);
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                   Log.e("DiarioFragment", "Error al obtener los datos del registro a visualizar en detalle");
+                    Log.e("DiarioFragment", "Error al obtener los datos del registro a visualizar en detalle");
                 }
             }
         });
+
 
         // Creamos la ventana de diálogo con círculo de carga para la espera de carga de los datos
         progressDialog = new ProgressDialog(getActivity());

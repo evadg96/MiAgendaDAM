@@ -19,6 +19,7 @@
         android:hint="@string/hint_contenido_nota"
         android:inputType="text|textCapSentences|textMultiLine"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp" />
+        android:paddingRight="16dp"
+        android:paddingTop="10dp" />
 
 </LinearLayout>

@@ -49,6 +49,17 @@ import javax.mail.internet.MimeMessage;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import static es.proyecto.eva.miagendadam.PantallaCarga.estaBloqueado;
 
+
+/** TODO:
+*   - Validar que todos los elementos tienen la tipografía y el formato adecuado
+ *   - Comprobar paddings y márgenes, giros de pantalla, cierre y apertura de aplicación
+ *   - Comprobar el comportamiento de los cuadros de diálogo al minimizar y maximizar la app
+ *   - Hacer pruebas de carga
+ *   - Probar en diferentes dispositivos
+ *   - Comprobar que haya pantallas de carga donde debe, que se cierran adecuadamente ante posibles
+ *   excepciones, etc
+ **/
+
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave, btnDesbloquearCuenta;
     private EditText txtNombreUsuario, txtClave;
@@ -57,29 +68,6 @@ public class PantallaLogin extends AppCompatActivity {
     // al correo, y con el que desbloqueará la cuenta. Por defecto es invisible, pero se visualiza cuando
     // se ha enviado el código correctamente al usuario tras comprobar que este existe en la base de datos.
 
-//    private String url_consulta = "http://192.168.0.12/MiAgenda/check_usuario_existe.php";
-//    private String url_consulta2 = "http://192.168.0.12/MiAgenda/update_isLogged.php";
-//    private String url_consulta3 = "http://192.168.0.12/MiAgenda/check_isLocked.php";
-//    private String url_consulta4 = "http://192.168.0.12/MiAgenda/update_isLocked.php";
-//    private String url_consulta5 = "http://192.168.0.12/MiAgenda/check_isConfirmed.php";
-//    private String url_consulta6 = "http://192.168.0.12/MiAgenda/check_clave.php";
-//    private String url_consulta7 = "http://192.168.0.12/MiAgenda/check_num_intentos_login.php";
-//    private String url_consulta8 = "http://192.168.0.12/MiAgenda/update_intentos_login.php";
-//    private String url_consulta9 = "http://192.168.0.12/MiAgenda/update_fecha_bloqueo.php";
-//    private String url_consulta10 = "http://192.168.0.12/MiAgenda/consulta_recuperar_correo.php";
-//    private String url_consulta11 = "http://192.168.0.12/MiAgenda/consulta_recuperar_id_usuario.php";
-//
-//    private String url_consulta = "http://192.168.0.159/MiAgenda/check_usuario_existe.php";
-//    private String url_consulta2 = "http://192.168.0.159/MiAgenda/update_isLogged.php";
-//    private String url_consulta3 = "http://192.168.0.159/MiAgenda/check_isLocked.php";
-//    private String url_consulta4 = "http://192.168.0.159/MiAgenda/update_isLocked.php";
-//    private String url_consulta5 = "http://192.168.0.159/MiAgenda/check_isConfirmed.php";
-//    private String url_consulta6 = "http://192.168.0.159/MiAgenda/check_clave.php";
-//    private String url_consulta7 = "http://192.168.0.159/MiAgenda/check_num_intentos_login.php";
-//    private String url_consulta8 = "http://192.168.0.159/MiAgenda/update_intentos_login.php";
-//    private String url_consulta9 = "http://192.168.0.159/MiAgenda/update_fecha_bloqueo.php";
-//    private String url_consulta10 = "http://192.168.0.159/MiAgenda/consulta_recuperar_correo.php";
-//    private String url_consulta11 = "http://192.168.0.159/MiAgenda/consulta_recuperar_id_usuario.php";
     /*****************************************************************************************
      *                              SERVIDOR REMOTO
      ****************************************************************************************/

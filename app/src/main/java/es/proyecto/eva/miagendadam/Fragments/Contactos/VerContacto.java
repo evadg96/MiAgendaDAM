@@ -178,8 +178,7 @@ public class VerContacto extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", correo_seleccionado , null));
         // i.putExtra(Intent.EXTRA_SUBJECT, "Asunto"); <-- si quisiéramos poner un asunto por defecto
         try {
-            startActivity(Intent.createChooser(i, "Enviar email..."));
-            finish();
+            startActivity(Intent.createChooser(i, "Selecciona un gestor de correo electrónico: "));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "No tienes clientes de email instalados.", Toast.LENGTH_SHORT).show();
         }
@@ -187,7 +186,7 @@ public class VerContacto extends AppCompatActivity {
         /*******************************************************************************************
          *  OTRA FORMA DE HACERLO:
          *  protected void sendEmail() {
-             String[] TO = {"contacto@seogalicia.es"}; // aquí pon tu correo
+             String[] TO = {"contacto@correo.es"}; // aquí pon tu correo
              String[] CC = {""};
              Intent emailIntent = new Intent(Intent.ACTION_SEND);
              emailIntent.setData(Uri.parse("mailto:"));

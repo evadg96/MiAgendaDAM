@@ -3,11 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:paddingBottom="100dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="50dp"
     tools:context="es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/estilo_redondo_blanco"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -150,5 +156,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-<!-- todo cambiar aspecto de este fragment -->
+    <!-- todo QUITAR LOGO IDIGICODE para el proyecto, y poner mi nombre ?? -->
 </FrameLayout>

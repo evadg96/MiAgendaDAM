@@ -10,6 +10,7 @@
     <color name="transparente">#00ffffff</color>
     <color name="enabled_color">#000000</color>
     <color name="disabled_color">#515151</color>
+    <color name="selected_color_trans">#6ba5a5a5</color>
 
     <color name="lima">#cddc39</color>
     <color name="lima_dark">#a4af2f</color>

@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -59,7 +61,8 @@ public class AdaptadorListaDiario extends BaseAdapter {
         TextView tvFecha = (TextView) convertView.findViewById(R.id.tv_fecha); // la fecha del registro (dd/mm/aa)
         TextView tvHoras = (TextView) convertView.findViewById(R.id.tv_horas); // las horas del registro
         TextView tvMinutos = (TextView) convertView.findViewById(R.id.tv_minutos); // los minutos del registro
-        TextView tag_valoracion = (TextView) convertView.findViewById(R.id.tv_valoracion); // la valoración del registro.
+        final TextView tag_valoracion = (TextView) convertView.findViewById(R.id.tv_valoracion); // la valoración del registro.
+
         // Será un cuadrado en el lateral superior derecho de cada registro que servirá para indicarnos a primera vista
         // mediante un color de fondo definitorio la valoración del registro sin entrar en él para verlo.
         TextView tvReunion = (TextView) convertView.findViewById(R.id.tv_reunion); // para indicar si en el día en cuestión

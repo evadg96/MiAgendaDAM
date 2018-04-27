@@ -104,6 +104,8 @@ public class HorasFragment extends Fragment {
                                 // validamos si se han obtenido datos
                                 if (sHoras_trabajadas.isEmpty() && sMinutos_trabajados.isEmpty()){
                                     progressDialog.cancel();
+                                    txtHorasTrabajadas.setText("0");
+                                    txtMinutosTrabajados.setText("0");
                                     Snackbar.make(getActivity().findViewById(android.R.id.content),
                                             R.string.alert_horas_no_hay_registros, Snackbar.LENGTH_LONG).show();
                                 } else{

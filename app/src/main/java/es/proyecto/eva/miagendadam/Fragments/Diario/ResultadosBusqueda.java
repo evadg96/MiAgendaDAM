@@ -48,6 +48,8 @@ public class ResultadosBusqueda extends AppCompatActivity {
                 } else if (Integer.valueOf(minutos) < 1){ // si no se deja en blanco para no poner un 0
                     arrayMinutos.add("");
                 }
+                String reunion_fct = jsonArray.getJSONObject(i).getString("reunion_fct");
+                arrayReuniones.add(reunion_fct);
                 String valoracion = jsonArray.getJSONObject(i).getString("valoracion"); // obtenemos valoración
                 System.out.println("VALORACIÓN: " + valoracion);
                 arrayValoraciones.add(valoracion); // las añadimos al array de valoraciones

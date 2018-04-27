@@ -85,7 +85,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Strings RecuperarDatosUsuario -->
-    <string name="title_activity_recuperar_datos">Recuperación datos de usuario</string>
+    <string name="title_activity_recuperar_datos">Recuperar datos usuario</string>
     <string name="btn_clave_nueva">Solicitar contraseña nueva</string>
     <string name="btn_recupera_usuario">Recordar nombre de usuario</string>
     <string name="title_dialog_recuperar_clave">Contraseña enviada</string>
@@ -172,6 +172,8 @@
     <string name="alert_borrar_todo_btn_borrar">Borrar</string>
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
     <string name="no_hay_registros">No hay registros que borrar.</string>
+    <string name="menu_borrar_seleccion">Borrar elementos seleccionados</string>
+
 
     <!-- Strings fragment ContactosFragment -->
     <string name="texto_contactos_vacio">¡Vaya, parece que no has añadido ningún contacto todavía! Pulsa el botón circular de abajo para crear un contacto nuevo.</string>

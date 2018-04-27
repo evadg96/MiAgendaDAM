@@ -718,7 +718,7 @@ public class MiPerfilFragment extends Fragment {
                                         //Log.i("MiPerfilFragment", "Confirmar cambio de clave");
                                         progressDialog3 = new ProgressDialog(getActivity());
                                         progressDialog3.setTitle(R.string.dialog_cargando);
-                                        progressDialog3.setMessage("Actualizando contacto...");
+                                        progressDialog3.setMessage("Actualizando contraseña...");
                                         progressDialog3.show();
                                         progressDialog3.setCancelable(false);
                                         request = new StringRequest(Request.Method.POST, url_consulta2,
