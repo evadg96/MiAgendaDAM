@@ -173,7 +173,12 @@
     <string name="registros_borrados">Registros del diario borrados correctamente</string>
     <string name="no_hay_registros">No hay registros que borrar.</string>
     <string name="menu_borrar_seleccion">Borrar elementos seleccionados</string>
-
+    <string name="opc_crear_aviso_horas_fct">Aviso de horas FCT restantes...</string>
+    <string name="aviso_on_off">Aviso de horas FCT restantes</string>
+    <string name="txt_horas_fct_restantes">Avísame cuando me queden menos de las siguientes horas para terminar el módulo FCT: </string>
+    <string name="error_horas_aviso">Debes introducir un número de horas para crear el aviso.</string>
+    <string name="error_horas_aviso_2">Debes introducir un número de horas válido.</string>
+    <string name="aviso_horas_creado">Aviso creado correctamente.</string>
 
     <!-- Strings fragment ContactosFragment -->
     <string name="texto_contactos_vacio">¡Vaya, parece que no has añadido ningún contacto todavía! Pulsa el botón circular de abajo para crear un contacto nuevo.</string>

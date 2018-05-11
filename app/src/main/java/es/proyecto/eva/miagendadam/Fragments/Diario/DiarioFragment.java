@@ -21,7 +21,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,7 +120,9 @@ public class DiarioFragment extends Fragment {
     String sHoras_trabajadas = "", sMinutos_trabajados = "";
     private String idUsuario = "";
     private boolean esNuevoRegistro = false;
-
+    private boolean verAvisoHoras = false;
+    private String sVerAvisoHoras = "false";
+    private String horas_aviso = "";
 
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
@@ -181,7 +189,9 @@ public class DiarioFragment extends Fragment {
                     dialog.show();
                 }
                 return true;
-
+            case R.id.menu_crear_aviso: // Opción de guardar los datos de usuario actualizados
+                configurarAvisoHoras();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -204,7 +214,7 @@ public class DiarioFragment extends Fragment {
          //   InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
            // imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
        // }
-        obtenerHorasTrabajadas();
+
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
          imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         // Hide soft-keyboard:
@@ -217,7 +227,15 @@ public class DiarioFragment extends Fragment {
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
         // dejaremos crear más registros.
         horas_fct = preferences.getString("horas_fct", "");
+        sVerAvisoHoras = preferences.getString("sVerAvisoHoras", "");
+        horas_aviso = preferences.getString("horas_aviso", "");
         // ***************************************************************************************************
+        // validamos las preferencias obtenidas para el aviso de horas fct restantes
+        if (sVerAvisoHoras.equals("true")){
+            verAvisoHoras = true;
+        } else if (sVerAvisoHoras.equals("false")){
+            verAvisoHoras = false;
+        }
         Log.d("DiarioFragment", "onCreateView");
         // Al pulsar en el botón de nuevo (+) procedemos a crear un nuevo registro
         btnNuevo = (FloatingActionButton) view.findViewById(R.id.btn_nuevo_registro);
@@ -306,6 +324,7 @@ public class DiarioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("DiarioFragment", "Fragment reanudado");
+        obtenerHorasTrabajadas();
         obtenerRegistrosDiario();
     }
 
@@ -330,9 +349,11 @@ public class DiarioFragment extends Fragment {
                                     // si se cumple didcha condición, imposibilitamos la creación de nuevos registros.
                                     Toast.makeText(getActivity(), R.string.error_modulo_fct_completado, Toast.LENGTH_LONG).show();
                                 } else { // si no se ha completado, procedemos a las siguientes validaciones
-                                    if (Integer.valueOf(horas_fct) - Integer.valueOf(sHoras_trabajadas) < 20){
-                                        // si las horas restantes de trabajo son inferiores a 20, se notifica al alumno para que esté pendiente
-                                        Toast.makeText(getActivity(), "Atención: te quedan menos de 20 horas de prácticas para completar el módulo fct.", Toast.LENGTH_LONG).show();
+                                    if (verAvisoHoras) { // mostramos el aviso solo si se ha especificado que se quiere recibir dicho aviso
+                                        if (Integer.valueOf(horas_fct) - Integer.valueOf(sHoras_trabajadas) < Integer.valueOf(horas_aviso)) {
+                                            // si las horas restantes de trabajo son inferiores a 20, se notifica al alumno para que esté pendiente
+                                            Toast.makeText(getActivity(), "Atención: te quedan menos de " + horas_aviso + " horas para terminar el módulo FCT.", Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                     // si no se cumple la condición, pues no se dice nada
                                     // además también comprobamos si se viene de pulsar el botón de nuevo registro, en cuyo caso abriremos la pantalla correspondiente
@@ -522,4 +543,88 @@ public class DiarioFragment extends Fragment {
         progressDialog.cancel();
         listaResultado.setAdapter(adaptador); // lo asociamos a la lista
     }
+
+    /***********************************************************************************************
+     * Método que abre el diálogo que permite crear avisos para las horas restantes de fct
+     **********************************************************************************************/
+    public void configurarAvisoHoras() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        final Button btnAceptar;
+        final LinearLayout capaHoras;
+        final Switch switchAviso;
+        final EditText txtHoras;
+        final AlertDialog dialog = alert.create();
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.crear_aviso_horas_fct, (ViewGroup) getActivity().findViewById(R.id.crear_aviso_horas_fct));
+        btnAceptar = (Button) view.findViewById(R.id.btn_aceptar_aviso);
+        switchAviso = (Switch) view.findViewById(R.id.switch_ver_aviso);
+        capaHoras = (LinearLayout) view.findViewById(R.id.capa_horas);
+        txtHoras = (EditText) view.findViewById(R.id.txt_horas_aviso);
+        dialog.setView(view);
+        dialog.setCancelable(false);
+        dialog.show();
+        // ponemos en el campo de horas las horas marcadas
+        txtHoras.setText(horas_aviso);
+        if (verAvisoHoras){
+            // si avisoHoras se dejó marcado, aparecerá marcado por defecto
+            switchAviso.setChecked(true);
+            capaHoras.setVisibility(View.VISIBLE);
+        } else {
+            switchAviso.setChecked(false);
+            capaHoras.setVisibility(View.GONE);
+        }
+
+        switchAviso.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){ // si se activa el selector
+                    verAvisoHoras = true;
+                    sVerAvisoHoras = "true";
+                    capaHoras.setVisibility(View.VISIBLE);
+                } else { // si se desactiva
+                    verAvisoHoras = false;
+                    sVerAvisoHoras = "false";
+                    capaHoras.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (switchAviso.isChecked()) {
+                    horas_aviso = txtHoras.getText().toString();
+                    if (horas_aviso.isEmpty()) { // si está vacío, no se ha escrito nada...
+                        Toast.makeText(getActivity(), R.string.error_horas_aviso, Toast.LENGTH_SHORT).show();
+                    } else {  // si se ha escrito pero no se ha introducido un dato válido...
+                        if (Integer.valueOf(horas_aviso) > Integer.valueOf(horas_fct) || Integer.valueOf(horas_aviso) <= 0) {
+                            Toast.makeText(getActivity(), R.string.error_horas_aviso_2, Toast.LENGTH_SHORT).show();
+                        } else {  // si todas las validaciones son correctas, guardamos datos
+                            Toast.makeText(getActivity(), R.string.aviso_horas_creado, Toast.LENGTH_SHORT).show();
+                            // guardamos preferencias y cerramos diálogo
+                            guardarPreferencias();
+                            dialog.dismiss();
+                        }
+                    }
+                } else {
+                    // guardamos preferencias y cerramos diálogo
+                    guardarPreferencias();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+    }
+
+    /***********************************************************************************************
+     * Método para almacenar preferencias de aviso de horas
+     **********************************************************************************************/
+    private void guardarPreferencias() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("sVerAvisoHoras", sVerAvisoHoras);
+        editor.putString("horas_aviso", horas_aviso);
+        editor.commit();
+    }
+
+
 }

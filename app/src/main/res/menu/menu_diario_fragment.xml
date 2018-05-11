@@ -11,4 +11,9 @@
         android:title="@string/menu_borrar_todo"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_crear_aviso"
+        android:title="@string/opc_crear_aviso_horas_fct"
+        app:showAsAction="never" />
+
 </menu>
