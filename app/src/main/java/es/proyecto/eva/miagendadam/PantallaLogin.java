@@ -50,16 +50,6 @@ import es.proyecto.eva.miagendadam.VolleyController.AppController;
 import static es.proyecto.eva.miagendadam.PantallaCarga.estaBloqueado;
 
 
-/** TODO:
-*   - Validar que todos los elementos tienen la tipografía y el formato adecuado
- *   - Comprobar paddings y márgenes, giros de pantalla, cierre y apertura de aplicación
- *   - Comprobar el comportamiento de los cuadros de diálogo al minimizar y maximizar la app
- *   - Hacer pruebas de carga
- *   - Probar en diferentes dispositivos
- *   - Comprobar que haya pantallas de carga donde debe, que se cierran adecuadamente ante posibles
- *   excepciones, etc
- **/
-
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave, btnDesbloquearCuenta;
     private EditText txtNombreUsuario, txtClave;
@@ -210,6 +200,8 @@ public class PantallaLogin extends AppCompatActivity {
             }
         });
     }
+
+
 
     /***********************************************************************************************
      * Método que inicia el flujo de comprobación de datos:

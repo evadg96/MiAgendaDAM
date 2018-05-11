@@ -7,14 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import es.proyecto.eva.miagendadam.NavMenu;
 import es.proyecto.eva.miagendadam.R;
 import es.proyecto.eva.miagendadam.VolleyController.AppController;
 
@@ -111,11 +105,16 @@ public class DiarioFragment extends Fragment {
 //    private String  url_consulta = "http://192.168.0.159/MiAgenda/select_dias.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/select_dias.php";
     private String url_consulta2 = "http://miagendafp.000webhostapp.com/delete_all_registros.php";
+    private String url_consulta3 = "http://miagendafp.000webhostapp.com/select_horas_minutos_trabajados.php";
     private String nombre_de_usuario = "";
     private String horas_fct = "";
-    private String horas_trabajadas = "";
     private boolean hayRegistros;
     private ProgressDialog progressDialog;
+    private JSONArray jsonArray;
+    String sHoras_trabajadas = "", sMinutos_trabajados = "";
+    private String idUsuario = "";
+    private boolean esNuevoRegistro = false;
+
 
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
@@ -205,10 +204,9 @@ public class DiarioFragment extends Fragment {
          //   InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
            // imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
        // }
-
+        obtenerHorasTrabajadas();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
          imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-
         // Hide soft-keyboard:
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         listaResultado = (ListView) view.findViewById(R.id.lista);
@@ -216,11 +214,9 @@ public class DiarioFragment extends Fragment {
         // Obtenemos de las preferencias el nombre del usuario
         SharedPreferences preferences = this.getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");
-        // ************* Para comprobar que no se han trabajado ya todas las horas del módulo, en cuyo caso no
+        idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
         // dejaremos crear más registros.
         horas_fct = preferences.getString("horas_fct", "");
-        horas_trabajadas = preferences.getString("horas_trabajadas", "");
-        System.out.println("HORAS FCT: " + horas_fct + " HORAS TRABAJADAS: " + horas_trabajadas);
         // ***************************************************************************************************
         Log.d("DiarioFragment", "onCreateView");
         // Al pulsar en el botón de nuevo (+) procedemos a crear un nuevo registro
@@ -228,33 +224,10 @@ public class DiarioFragment extends Fragment {
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Log.d("DiarioFragment", "Nuevo registro de diario");
-               // primero comprobramos que no se haya completado el cómputo de horas del módulo FCT:
-                // TODO: PENDIENTE DE DEPURAR
-                // Primero validamos que haya horas trabajadas almacenadas
-                // ¿Por qué? Porque si es la primera vez que accedemos al diario para crear un registro,
-                // aún no existirán horas trabajadas porque no hay registros de donde cogerlas, y por tanto
-                // la variable estará vacía, así que al hacer la validación de si hay más o iguales horas trabajadas
-                // que de fct, estará comparando un dato en blanco, y saltará error y cierre
-                // También está el problema de que la variable horas_trabajadas solo se crea cuando se comprueban las horas
-                // desde el apartado Horas. Si se diese el caso de que el usuario NUNCA accede a ese apartado, nunca se creará
-                // la variable, y por tanto no se podrá validar. Además está también el problema de que la variable solo se actualiza
-                // cuando el usuario accede a las horas. Podría darse por ejemplo el caso de que el usuario lleve semanas sin ver ese
-                // apartado, pero haya ido añadiendo registros. Por tanto, las horas_trabajadas no estarán actualizadas y el valor
-                // de la variable no se corresponderá con el valor real de horas, así que la validación sería inútil...
-
-                if(!horas_trabajadas.isEmpty()) { // si hay horas, comprobamos si hay más o iguales trabajadas que de fct
-                    if (Integer.valueOf(horas_trabajadas) >= Integer.valueOf(horas_fct)) {
-                        Toast.makeText(getActivity(), R.string.error_modulo_fct_completado, Toast.LENGTH_LONG).show();
-                    } else { // si no se ha completado, procedemos a la creación del nuevo registro
-                        Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
-                        startActivity(intent);
-                    }
-                }  else { // si no hay horas, directamente pasamos a la pantalla de creación
-                    System.out.println("NO HAY HORAS");
-                    Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
-                    startActivity(intent);
-                }
+               esNuevoRegistro = true;
+                Log.d("DiarioFragment", "Nuevo registro de diario");
+               // comprobamos antes de dejar crear un nuevo registro que no se ha completado ya el número de horas del módulo
+                obtenerHorasTrabajadas();
             }
         });
 
@@ -334,6 +307,72 @@ public class DiarioFragment extends Fragment {
         super.onResume();
         Log.d("DiarioFragment", "Fragment reanudado");
         obtenerRegistrosDiario();
+    }
+
+    /***********************************************************************************************
+     * Método que ejecuta una consulta que obtiene la suma de horas trabajadas del usuario
+     * de sus registros de diario para comprobar si ya ha llegado a las horas del módulo fct
+     **********************************************************************************************/
+    public void obtenerHorasTrabajadas(){
+        request = new StringRequest(Request.Method.POST, url_consulta3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            jsonArray = new JSONArray(response);
+                            // obtenemos el sumatorio de minutos y horas trabajadas
+                            sHoras_trabajadas = jsonArray.getJSONObject(0).getString("sumaHoras");
+                            sMinutos_trabajados = jsonArray.getJSONObject(0).getString("sumaMinutos");
+                            // validamos si se han obtenido datos:
+                            if(!sHoras_trabajadas.isEmpty()) { // si hay horas, comprobamos si hay más o iguales trabajadas que de fct
+                                // verificamos si la cifra obtenida es mayor o igual al de horas del módulo del usuario
+                                if (Integer.valueOf(sHoras_trabajadas) >= Integer.valueOf(horas_fct)) {
+                                    // si se cumple didcha condición, imposibilitamos la creación de nuevos registros.
+                                    Toast.makeText(getActivity(), R.string.error_modulo_fct_completado, Toast.LENGTH_LONG).show();
+                                } else { // si no se ha completado, procedemos a las siguientes validaciones
+                                    if (Integer.valueOf(horas_fct) - Integer.valueOf(sHoras_trabajadas) < 20){
+                                        // si las horas restantes de trabajo son inferiores a 20, se notifica al alumno para que esté pendiente
+                                        Toast.makeText(getActivity(), "Atención: te quedan menos de 20 horas de prácticas para completar el módulo fct.", Toast.LENGTH_LONG).show();
+                                    }
+                                    // si no se cumple la condición, pues no se dice nada
+                                    // además también comprobamos si se viene de pulsar el botón de nuevo registro, en cuyo caso abriremos la pantalla correspondiente
+                                    if (esNuevoRegistro) {
+                                        Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
+                                        startActivity(intent);
+                                        esNuevoRegistro = false;
+                                    }
+                                }
+                                // si no se obtienen datos, abrimos la pantalla de creación de registros con normalidad si se viene de pulsar el botón. Si no no hacemos nada más
+                            }  else {
+                                if (esNuevoRegistro) {
+                                   System.out.println("NO HAY HORAS");
+                                   Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
+                                   startActivity(intent);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
+                        //Toast.makeText(NuevoRegistroDiario.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_SHORT).show();
+                        // Log.d("NuevoRegistroDiario", "Error de conexión con el servidor al intentar guardar el registro");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("idUsuario", idUsuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     /**************************************************************************************************

@@ -182,30 +182,6 @@ public class VerContacto extends AppCompatActivity {
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "No tienes clientes de email instalados.", Toast.LENGTH_SHORT).show();
         }
-
-        /*******************************************************************************************
-         *  OTRA FORMA DE HACERLO:
-         *  protected void sendEmail() {
-             String[] TO = {"contacto@correo.es"}; // aquí pon tu correo
-             String[] CC = {""};
-             Intent emailIntent = new Intent(Intent.ACTION_SEND);
-             emailIntent.setData(Uri.parse("mailto:"));
-             emailIntent.setType("text/plain");
-             emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-             emailIntent.putExtra(Intent.EXTRA_CC, CC);
-             // Esto podrás modificarlo si quieres, el asunto y el cuerpo del mensaje
-             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Asunto");
-             emailIntent.putExtra(Intent.EXTRA_TEXT, "Escribe aquí tu mensaje");
-
-             try {
-                 startActivity(Intent.createChooser(emailIntent, "Enviar email..."));
-                 finish();
-             } catch (android.content.ActivityNotFoundException ex) {
-                 Toast.makeText(MainActivity.this,
-                 "No tienes clientes de email instalados.", Toast.LENGTH_SHORT).show();
-             }
-         }
-         ******************************************************************************************/
     }
 
     /***********************************************************************************************

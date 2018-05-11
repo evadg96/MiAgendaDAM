@@ -156,5 +156,4 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-    <!-- todo QUITAR LOGO IDIGICODE para el proyecto, y poner mi nombre ?? -->
 </FrameLayout>

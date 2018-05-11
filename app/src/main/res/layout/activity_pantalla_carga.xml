@@ -58,8 +58,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:visibility="gone">
+            android:gravity="bottom">
 
             <ImageView
                 android:id="@+id/imageView2"

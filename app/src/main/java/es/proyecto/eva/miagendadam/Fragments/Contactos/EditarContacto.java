@@ -58,7 +58,6 @@ public class EditarContacto extends AppCompatActivity {
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    // todo añadir validación de teléfono aquí también
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

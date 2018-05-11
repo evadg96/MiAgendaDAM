@@ -484,7 +484,7 @@ public class VerEditarNota extends AppCompatActivity {
         btnNoColor.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 colorElegido = "#00000000";
-                colorActionBar = "#2f867f";
+                colorActionBar = "#40b7ad";
                 colorearNota();
             }
         });

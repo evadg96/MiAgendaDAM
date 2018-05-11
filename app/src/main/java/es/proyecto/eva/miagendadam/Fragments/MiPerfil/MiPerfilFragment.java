@@ -246,7 +246,6 @@ public class MiPerfilFragment extends Fragment {
                 centro_estudios_usuario = txtCentroEstudios.getText().toString();
                 horas_fct_usuario = txtHorasFCT.getText().toString();
 
-                // todo : añadir el coloreado de campos incorrectos también en el resto de pantallas que tengan validaciones en campos
                 // ponemos todos los editText con fondo negro para resetear los que pudieran estar en rojo
                 txtNombre.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
                 txtApellidos.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
@@ -442,7 +441,7 @@ public class MiPerfilFragment extends Fragment {
         spinnerProvincia.setEnabled(false);
         rellenarCampos();
         rellenarSpinners();
-        // todo aun volviendo a rellenar los campos con sus valores previos, los spinner no se reestablecen...
+        // todo FIX BUG aun volviendo a rellenar los campos con sus valores previos, los spinner no se reestablecen...
     }
 
     /***********************************************************************************************
@@ -776,7 +775,4 @@ public class MiPerfilFragment extends Fragment {
             }
         }
     }
-
-    // todo: implementar método onBackPressed para preguntar por salir sin guardar
-
 }
