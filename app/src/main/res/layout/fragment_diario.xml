@@ -4,7 +4,7 @@
     android:id="@+id/content_diario"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.proyecto.eva.miagendadam.Fragments.Diario.DiarioFragment">
+    tools:context="es.proyecto.eva.miagendafp.Fragments.Diario.DiarioFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="es.proyecto.eva.miagendadam.Fragments.Diario.BusquedaRegistros">
+    tools:context="es.proyecto.eva.miagendafp.Fragments.Diario.BusquedaRegistros">
 
     <ScrollView
         android:layout_width="match_parent"

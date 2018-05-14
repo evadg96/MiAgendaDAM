@@ -10,7 +10,7 @@
     android:paddingTop="16dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="es.proyecto.eva.miagendadam.Fragments.Diario.NuevoRegistroDiario">
+    tools:context="es.proyecto.eva.miagendafp.Fragments.Diario.NuevoRegistroDiario">
 
 
     <ScrollView

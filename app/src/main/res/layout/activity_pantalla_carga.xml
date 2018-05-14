@@ -8,7 +8,7 @@
     android:background="@color/azul_fondo"
     android:backgroundTint="@color/azul_fondo"
     android:orientation="vertical"
-    tools:context="es.proyecto.eva.miagendadam.PantallaCarga">
+    tools:context="es.proyecto.eva.miagendafp.PantallaCarga">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -8,7 +8,7 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="50dp"
-    tools:context="es.proyecto.eva.miagendadam.Fragments.Horas.HorasFragment">
+    tools:context="es.proyecto.eva.miagendafp.Fragments.Horas.HorasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
