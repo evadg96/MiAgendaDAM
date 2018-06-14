@@ -103,13 +103,13 @@ public class ListadoPaginasRecomendadas extends AppCompatActivity {
         arrayCategorias.add(categorias[1]);
         // 3ª página:
         arrayTitulos.add(titulos[3]);
-        arrayCategorias.add(categorias[3]);
+        arrayCategorias.add(categorias[4]);
         // 4ª página:
         arrayTitulos.add(titulos[4]);
         arrayCategorias.add(categorias[2]);
         // 5ª página:
         arrayTitulos.add(titulos[5]);
-        arrayCategorias.add(categorias[3]);
+        arrayCategorias.add(categorias[2]);
         // 6ª página:
         arrayTitulos.add(titulos[6]);
         arrayCategorias.add(categorias[2]);
@@ -129,8 +129,8 @@ public class ListadoPaginasRecomendadas extends AppCompatActivity {
         arrayTitulos.add(titulos[11]);
         arrayCategorias.add(categorias[2]);
         // 12ª página:
-        arrayTitulos.add(titulos[12]);
-        arrayCategorias.add(categorias[2]);
+        // arrayTitulos.add(titulos[12]);
+        // arrayCategorias.add(categorias[2]);
 
         for (int i = 0; i < arrayTitulos.size(); i++){
             System.out.println("Título: " + arrayTitulos.get(i));
