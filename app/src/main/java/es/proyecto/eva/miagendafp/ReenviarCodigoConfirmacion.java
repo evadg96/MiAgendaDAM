@@ -43,10 +43,9 @@ import es.proyecto.eva.miagendafp.VolleyController.AppController;
 public class ReenviarCodigoConfirmacion extends AppCompatActivity {
     Button btnEnviar;
     EditText txtCorreo;
-    static String nuevoCodigo="";
-    static int codigo;
-    static String correo="";
-    static String codigo_de_confirmacion;
+    private String nuevoCodigo="";
+    private int codigo;
+    private String correo="";
     private Session session;
     private StringRequest request;
 
@@ -73,7 +72,6 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Referenciamos al SharedPreferences que habíamos creado en la clase PantallaLogin
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        codigo_de_confirmacion = preferences.getString("codigo_de_confirmacion", ""); // obtenemos preferencia del código
         //Log.d("ReenviarCodigoConf", "Código actual: " + codigo_de_confirmacion );
         // Botón reenviar código
         btnEnviar.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +157,7 @@ public class ReenviarCodigoConfirmacion extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("codigo_de_confirmacion", nuevoCodigo );
+        editor.putString("correo_a_confirmar", correo);
         editor.commit();
         //Log.d("ReenviarCodigoConf", "Preferencias guardadas. Código almacenado actualizado");
     }

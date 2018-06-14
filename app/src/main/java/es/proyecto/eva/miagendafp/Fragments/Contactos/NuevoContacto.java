@@ -28,13 +28,20 @@ import java.util.regex.Pattern;
 
 import es.proyecto.eva.miagendafp.R;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class NuevoContacto extends AppCompatActivity {
     private String url_consulta = "http://miagendafp.000webhostapp.com/inserta_nuevo_contacto.php";
     EditText txtNombre, txtCorreo, txtModulo, txtTelefono;
     private String nombreContacto = "", correoContacto = "", modulo = "", telefono = "", idUsuario = "";
     private StringRequest request;
     private ProgressDialog progressDialog;
+
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     private String pattern_formato_nombre = "( |a|b|c|d|e|f|g|h|i|j|k|l|m|n|ñ|o|p|q|r|s|t|u|v|w|x|y|z" // minúsculas
             + "|A|B|C|D|E|F|G|H|I|J|K|L|M|N|Ñ|O|P|Q|R|S|T|U|V|W|X|Y|Z" // mayúsculas
@@ -62,6 +69,17 @@ public class NuevoContacto extends AppCompatActivity {
         txtTelefono = (EditText) findViewById(R.id.txt_telefono);
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
+        // **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     }
 
     // Añade los iconos a la barra de acciones (en este caso, el de guardar)

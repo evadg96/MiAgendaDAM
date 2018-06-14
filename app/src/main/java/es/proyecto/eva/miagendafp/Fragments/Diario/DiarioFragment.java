@@ -46,6 +46,12 @@ import java.util.Map;
 import es.proyecto.eva.miagendafp.R;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 /***************************************************************************************************
  * Fragmento de la opción Diario que se incluye en la actividad NavMenu. Se muestra por defecto
  * al abrirse la aplicación tras haber iniciado sesión, o bien al seleccionar la opción manualmente
@@ -122,6 +128,9 @@ public class DiarioFragment extends Fragment {
     private boolean verAvisoHoras = false;
     private String sVerAvisoHoras = "false";
     private String horas_aviso = "";
+
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
@@ -214,10 +223,29 @@ public class DiarioFragment extends Fragment {
            // imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
        // }
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-        // Hide soft-keyboard:
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        // **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        // TODO: Se produce BUG de NullPointerException cuando se reabre la app tras un tiempo minimizada en este método. Observar...
+       // InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        //  línea que da error: ¬v
+       // imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+        if (getActivity().getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+
+        //**************************************************************************************************************
+
         listaResultado = (ListView) view.findViewById(R.id.lista);
         txt = (TextView) view.findViewById(R.id.txt_vacio);
         // Obtenemos de las preferencias el nombre del usuario
@@ -359,10 +387,9 @@ public class DiarioFragment extends Fragment {
                                     if (esNuevoRegistro) {
                                         Intent intent = new Intent(getActivity(), NuevoRegistroDiario.class);
                                         startActivity(intent);
-                                        esNuevoRegistro = false;
                                     }
                                 }
-                                // si no se obtienen datos, abrimos la pantalla de creación de registros con normalidad si se viene de pulsar el botón. Si no no hacemos nada más
+                            // si no se obtienen datos de horas trabajadas, abrimos la pantalla de creación de registros con normalidad si se viene de pulsar el botón. Si no no hacemos nada más
                             }  else {
                                 if (esNuevoRegistro) {
                                    System.out.println("NO HAY HORAS");
@@ -370,6 +397,7 @@ public class DiarioFragment extends Fragment {
                                    startActivity(intent);
                                 }
                             }
+                            esNuevoRegistro = false;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -409,6 +437,7 @@ public class DiarioFragment extends Fragment {
                         // que no hay registros y no aparezcan los que había creados en pantalla
                         listaResultado.setAdapter(null); // vaciamos la lista para no ver los registros
                         // ponemos el texto de que no hay registros
+                        txt.setVisibility(View.VISIBLE);
                         txt.setText(R.string.texto_diario_vacio);
                         hayRegistros = false;
                     }
@@ -445,6 +474,7 @@ public class DiarioFragment extends Fragment {
                     public void onResponse(String response) {
                         if (!nombre_de_usuario.isEmpty()) { // aseguramos que las preferencias no están vacías
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene registros en el diario
+                                txt.setVisibility(View.VISIBLE);
                                 txt.setText(R.string.texto_diario_vacio);
                                 progressDialog.cancel();
                                 hayRegistros = false;
@@ -455,7 +485,8 @@ public class DiarioFragment extends Fragment {
                             } else { // El usuario tiene registros
                                 try {
                                     hayRegistros = true;
-                                    txt.setText(""); // ponemos el texto de que no hay registros en blanco por si acaso, y obtenemos datos
+                                    txt.setVisibility(View.GONE);
+
                                     response = response.replace("][", ","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
                                     // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
                                     // DENTRO DE UN ÚNICO ARRAY

@@ -13,6 +13,11 @@ import java.util.ArrayList;
 
 import es.proyecto.eva.miagendafp.R;
 
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class ListadoPaginasRecomendadas extends AppCompatActivity {
     private ArrayList<String> arrayTitulos;
     private ArrayList<String> arrayCategorias;
@@ -25,15 +30,15 @@ public class ListadoPaginasRecomendadas extends AppCompatActivity {
             "http://www.fplandia.es/",                                              // 1
             "https://apuntes.rincondelvago.com/apuntes_fp/",                        // 2
             "https://forofp.es/",                                                   // 3
-            "http://www.formacion-profesional.org/",                                // 4
-            "http://www.descubrelafp.org/",                                         // 5
-            "http://todofp.es/que-como-y-donde-estudiar/que-estudiar/ciclos.html",  // 6
-            "http://todofp.es/que-como-y-donde-estudiar/que-estudiar/familia.html", // 7
-            "http://todofp.es/pruebas-convalidaciones.html",                        // 8
-            "http://todofp.es/sobre-fp/modulo-profesional-proyecto.html",           // 9
-            "http://todofp.es/sobre-fp/formacion-en-centros-de-trabajo.html",       // 10
-            "http://todofp.es/que-como-y-donde-estudiar/donde-estudiar/comunidades.html", // 11
-            "http://todofp.es/que-como-y-donde-estudiar/cuando-inscribirse.html"   // 12
+           // "http://www.formacion-profesional.org/",        NO FUNCIONA                        // 4
+            "http://www.descubrelafp.org/",                                         // 4
+            "http://todofp.es/que-como-y-donde-estudiar/que-estudiar/ciclos.html",  // 5
+            "http://todofp.es/que-como-y-donde-estudiar/que-estudiar/familia.html", // 6
+            "http://todofp.es/pruebas-convalidaciones.html",                        // 7
+            "http://todofp.es/sobre-fp/modulo-profesional-proyecto.html",           // 8
+            "http://todofp.es/sobre-fp/formacion-en-centros-de-trabajo.html",       // 9
+            "http://todofp.es/que-como-y-donde-estudiar/donde-estudiar/comunidades.html", // 10
+            "http://todofp.es/que-como-y-donde-estudiar/cuando-inscribirse.html"   // 11
     };
 
     // Array de títulos a las páginas
@@ -42,15 +47,15 @@ public class ListadoPaginasRecomendadas extends AppCompatActivity {
             "Información general",          // 1
             "Apuntes, exámenes y más",      // 2
             "Forofp.es",                    // 3
-            "Más info sobre la fp",         // 4
-            "Descubre la fp",               // 5
-            "Ciclos por niveles",           // 6
-            "Ciclos por familias",          // 7
-            "Pruebas y convalidaciones",    // 8
-            "El proyecto final en fp superior", // 9
-            "La formación en centros de trabajo", // 10
-            "Centros por comunidad autónoma",  // 11
-            "Fechas de inscripciones y pruebas" // 12
+           // "Más info sobre la fp",  NO FUNCIONA       // 4
+            "Descubre la fp",               // 4
+            "Ciclos por niveles",           // 5
+            "Ciclos por familias",          // 6
+            "Pruebas y convalidaciones",    // 7
+            "El proyecto final en fp superior", // 8
+            "La formación en centros de trabajo", // 9
+            "Centros por comunidad autónoma",  // 10
+            "Fechas de inscripciones y pruebas" // 11
     };
 
     // Array de categorías de las páginas
@@ -62,6 +67,8 @@ public class ListadoPaginasRecomendadas extends AppCompatActivity {
             "Foros"                    // 4
     };
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,17 @@ public class ListadoPaginasRecomendadas extends AppCompatActivity {
         setContentView(R.layout.activity_paginas_recomendadas);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listaResultado = (ListView) findViewById(R.id.lista_paginas);
+
+        // **************************** PUBLICIDAD *****************************************
+    // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         arrayTitulos = new ArrayList<String>();
         arrayCategorias = new ArrayList<String>();

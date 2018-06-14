@@ -1,8 +1,13 @@
 package es.proyecto.eva.miagendafp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -11,9 +16,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,6 +40,7 @@ import es.proyecto.eva.miagendafp.Fragments.Inicio.InicioFragment;
 import es.proyecto.eva.miagendafp.Fragments.MiPerfil.MiPerfilFragment;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
+
 /***************************************************************************************************
  *  Menú lateral desplegable con las opciones de la aplicación.                                    *
  *  Será a su vez la clase contenedora del layout que contenga los fragments                       *
@@ -49,11 +57,11 @@ public class NavMenu extends AppCompatActivity
     private String correo_de_usuario;
     private String familia_ciclo;
     private StringRequest request;
-
+    private String idUsuario = ""; // el identificador de usuario que utilizaremos para realizar consultas posteriores
     //    private String url_consulta = "http://192.168.0.12/MiAgenda/cerrar_sesion.php";
     private String url_consulta = "http://miagendafp.000webhostapp.com/cerrar_sesion.php";
+    private String url_consulta2 = "http://miagendafp.000webhostapp.com/eliminar_cuenta.php";
 //    private String url_consulta = "http://192.168.0.159/MiAgenda/cerrar_sesion.php";
-
 
     private android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
     SharedPreferences preferences;
@@ -65,6 +73,9 @@ public class NavMenu extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_menu);
+        // Obtenemos de las preferencias el nombre del usuario
+        SharedPreferences preferences = this.getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        idUsuario = preferences.getString("idUsuario", "");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
@@ -149,10 +160,94 @@ public class NavMenu extends AppCompatActivity
           //  Log.i("NavMenu", "Opción menú: Mi perfil");
             setTitle(R.string.opc_perfil);
             fragmentManager.beginTransaction().replace(R.id.contenedor, new MiPerfilFragment()).commit();
-        }
+        } else if (id == R.id.nav_borrar_cuenta) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(NavMenu.this);
+            builder.setMessage(R.string.msj_eliminar_cuenta)
+                    .setPositiveButton(R.string.msj_si_borrar, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Ejecutamos método de borrado de datos
+                            eliminarCuentaUsuario();
+                        }
+                    })
+                    .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Al dar a cancelar la ventana simplemente se cierra.
+                        }
+                    });
+            // Creamos el diálogo y lo mostramos
+            Dialog dialog = builder.create();
+            dialog.show();
+
+        } /**else if (id == R.id.nav_pro) {
+         AlertDialog.Builder builder = new AlertDialog.Builder(NavMenu.this);
+         builder.setMessage(R.string.dialog_pro_Version)
+         .setPositiveButton(R.string.abrir_tienda, new DialogInterface.OnClickListener() {
+         public void onClick(DialogInterface dialog, int id) {
+         // Al dar a confirmar se manda a la pantalla de confirmación de registro
+
+         Uri uri = Uri.parse("http://www.andreaardions.com/");
+         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+         startActivity(intent);
+         }
+         })
+         .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
+         public void onClick(DialogInterface dialog, int id) {
+         // Al dar a cancelar la ventana simplemente se cierra.
+         }
+         });
+         // Creamos el diálogo y lo mostramos
+         Dialog dialog = builder.create();
+         dialog.show();
+         }*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    /**************************************************************************************************************************
+     * Método que elimina los datos de un usuario y cambia su estado a usuario no activo, para que "no exista"
+     * (se borrarán todos sus registros, contactos, notas y demás, y su cuenta de usuario dejará de tener validez
+     * para utilizar la aplicación, es decir, no podrá iniciar sesión nunca más porque será como si no existiera ese usuario,
+     * pero sus datos de cuenta seguirán almacenados en la base de datos.)
+     ***************************************************************************************************************************/
+    public void eliminarCuentaUsuario(){
+        final ProgressDialog progressDialog = new ProgressDialog(NavMenu.this);
+        progressDialog.setTitle(R.string.dialog_cargando);
+        progressDialog.setMessage("Borrando datos. Por favor, espera un momento.");
+        progressDialog.show();
+        request = new StringRequest(Request.Method.POST, url_consulta2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       if (response.equals("1")){
+                           progressDialog.dismiss();
+                           Toast.makeText(NavMenu.this, R.string.msj_datos_borrados, Toast.LENGTH_LONG).show();
+                           // vamos a pantalla login
+                           Intent intent = new Intent(NavMenu.this, PantallaLogin.class);
+                           startActivity(intent);
+                       } else {
+                           Toast.makeText(NavMenu.this, R.string.error_borrar_datos, Toast.LENGTH_LONG).show();
+                       }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Toast.makeText(NavMenu.this, R.string.error_servidor, Toast.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(android.R.id.content),
+                                R.string.error_servidor, Snackbar.LENGTH_LONG).show();
+                        //  Log.e("NavMenu", "Error al conectar con el servidor para cerrar la sesión del usuario");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("idUsuario", idUsuario);
+                return parametros;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
     }
 
 
@@ -192,4 +287,5 @@ public class NavMenu extends AppCompatActivity
         startActivity(intent);
         finish(); // cerramos para imposibilitar vuelta
     }
+
 }

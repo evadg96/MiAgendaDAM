@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="es.proyecto.eva.miagendafp.Fragments.Diario.BusquedaRegistros">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,10 +15,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/title_horas"
@@ -322,9 +322,9 @@
                     android:id="@+id/textView38"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_light"
                     android:text="@string/busq_rango_dias"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/roboto_light"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/txt_busqueda_rango_fechas"
@@ -414,7 +414,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="60dp">
 
                 <TextView
                     android:id="@+id/textView39"
@@ -455,4 +456,14 @@
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:foregroundGravity="bottom"
+        android:visibility="gone"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+
+</FrameLayout>

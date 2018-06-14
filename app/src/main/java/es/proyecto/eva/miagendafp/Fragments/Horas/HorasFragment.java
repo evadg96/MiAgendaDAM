@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,11 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendafp.R;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 /***************************************************************************************************
  * Fragmento de la opción Horas que permite la visualización de las horas de prácticas que lleva
  * trabajadas el usuario activo, así como de las horas restantes para finalizar el módulo.
@@ -42,6 +47,8 @@ public class HorasFragment extends Fragment {
     private String idUsuario = "";
     private JSONArray jsonArray;
     ProgressDialog progressDialog;
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     public HorasFragment() {
         // Required empty public constructor
@@ -60,6 +67,19 @@ public class HorasFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
+
+        // **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        Log.d("HorasFragment", "onCreateView");
         SharedPreferences preferences = getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario al que vamos a introducir el registro.
         horas_fct = preferences.getString("horas_fct", ""); // obtenemos horas del módulo fct del usuario

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Mi agenda FP</string>
-    <string name="version_num" translatable="false">1.0</string>
+    <string name="version_num" translatable="false">1.0.1</string>
 
     <!-- Strings PantallaCarga -->
     <string name="title_dialog_conexion">Error de conexión</string>
@@ -69,7 +69,11 @@
     <string name="hint_codigo_confirmacion">Código de confirmación</string>
     <string name="btn_confirmar">Confirmar registro</string>
     <string name="btn_reenviar_codigo">Reenviar código de confirmación</string>
+    <string name="error_correo_no_coincide">El correo introducido no es correcto.</string>
     <string name="dialog_confirmacion_correcta">¡Usuario confirmado! Ya puedes iniciar sesión.</string>
+    <string name="tv_correo_a_confirmar">Cuenta de usuario a activar:</string>
+    <string name="codigo_reenviado">Código enviado. Revisa tu bandeja de entrada.</string>
+
 
     <!-- Strings activity ReenviarCodigoConfirmacion -->
     <string name="info_reenvio_codigo">Introduce el correo electrónico con el que estés registrado y se te enviará
@@ -257,7 +261,7 @@
     <string name="turno_1">Turno 1</string>
     <string name="turno_2">Turno 2</string>
     <string name="descripcion_registro">Descripción del día</string>
-    <string name="valoracion_registro">Valoración del día:</string>
+    <string name="valoracion_registro">Valoración del día</string>
     <string name="titulo_info_minutos">Minutos</string>
     <string name="alert_ya_existe_fecha">Ya existe un registro en el diario con esa fecha.</string>
     <!-- Strings diálogo salir sin guardar -->
@@ -362,7 +366,7 @@
     <string name="error_introducir_correo">Debes introducir algún correo electrónico.</string>
     <string name="error_confirmar_registro">Se ha producido un error al confirmar el registro. Por favor, vuelve
    a intentarlo.</string>
-    <string name="error_codigo_expirado">El código ha expirado o no hay ningún usuario que confirmar.</string>
+    <string name="error_codigo_expirado">El código ha expirado. Solicita uno nuevo.</string>
     <string name="error_codigo_incorrecto">El código introducido no es correcto.</string>
     <string name="error_introducir_nombre_usuario">Debes introducir tu nombre de usuario.</string>
     <string name="error_introducir_clave">Debes introducir tu contraseña.</string>
@@ -387,5 +391,19 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_instrucciones">Instrucciones</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- Otros errores -->
+    <string name="error_activacion_cuenta">Se ha producido un error al intentar activar la cuenta de usuario. Por favor, vuelve a intentarlo.</string>
+    <string name="error_reenvio_correo_activacion">Se ha producido un error al reenviar el código de activación de cuenta.</string>
+
+    <string name="pro_version">Versión PRO</string>
+    <string name="dialog_pro_Version">¿Deseas descargar Mi agenda FP Pro para disfrutar de la aplicación sin publicidad?</string>
+    <string name="abrir_tienda">Abrir Play Store</string>
+
+    <string name="opc_eliminar_cuenta">Eliminar cuenta</string>
+    <string name="msj_eliminar_cuenta">¿Estás seguro de que quieres eliminar tu cuenta? Si lo haces perderás todos los datos que hayas creado.</string>
+    <string name="msj_si_borrar">Sí, eliminar cuenta</string>
+    <string name="error_borrar_datos">Se ha producido un error al intentar borrar los datos. Por favor, vuelve a intentarlo.</string>
+    <string name="msj_datos_borrados">Datos de usuario borrados correctamente</string>
 
 </resources>

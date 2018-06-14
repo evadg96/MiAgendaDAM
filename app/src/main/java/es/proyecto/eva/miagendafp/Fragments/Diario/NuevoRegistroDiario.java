@@ -40,7 +40,11 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 import es.proyecto.eva.miagendafp.R;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 /***************************************************************************************************
  *  Clase que se abre con la pulsación del botón "+" del diario (nuevo registro de diario)         *
  *  y que sirve para crear un nuevo registro en el diario del usuario.                             *
@@ -86,6 +90,9 @@ public class NuevoRegistroDiario extends AppCompatActivity {
     private String jornada_partida = "0"; // por defecto en 0, que sería que no es partida
     private ProgressDialog progressDialog;
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +101,18 @@ public class NuevoRegistroDiario extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // para evitar que el teclado se abra solo automáticamente al abrirse la pantalla
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        // **************************** PUBLICIDAD *****************************************
+    // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         btnBueno = (ImageButton) findViewById(R.id.btn_bueno);
         btnRegular = (ImageButton) findViewById(R.id.btn_regular);
         btnMalo = (ImageButton) findViewById(R.id.btn_malo);

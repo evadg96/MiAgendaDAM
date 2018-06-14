@@ -11,9 +11,15 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import es.proyecto.eva.miagendafp.R;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class RecursosFragment extends Fragment {
     ImageButton btnCalEscolar, btnOtrosCalendarios, btnEnviarSugerencias, btnPaginasReco;
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
     public static boolean esMiCalendario = false, otrosCalendarios = false;// para indicar al webView qué página mostrar
     public RecursosFragment() {
         // Required empty public constructor
@@ -28,6 +34,16 @@ public class RecursosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recursos, container, false);
+        // **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         btnCalEscolar = (ImageButton) view.findViewById(R.id.btn_mi_calendario);
         btnOtrosCalendarios = (ImageButton) view.findViewById(R.id.btn_otros_calendarios);
         btnEnviarSugerencias = (ImageButton) view.findViewById(R.id.btn_fp);

@@ -37,6 +37,11 @@ import javax.mail.internet.MimeMessage;
 
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class RecuperarDatosUsuario extends AppCompatActivity {
     EditText txtCorreo;
     Button btnEnviarClave;
@@ -99,6 +104,8 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +117,18 @@ public class RecuperarDatosUsuario extends AppCompatActivity {
         btnEnviarClave = (Button) findViewById(R.id.btn_enviar_nueva_clave);
         btnEnviarUsuario = (Button) findViewById(R.id.btn_enviar_nombre_usuario);
         txtCorreo = (EditText) findViewById(R.id.txt_nombre_usuario);
+
+        // **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         // Botón He olvidado mi contraseña, abre actividad de RecuperarDatosUsuario
         btnEnviarClave.setOnClickListener(new View.OnClickListener() {
             @Override

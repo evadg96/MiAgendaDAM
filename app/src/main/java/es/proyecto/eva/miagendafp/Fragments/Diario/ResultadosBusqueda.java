@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import static es.proyecto.eva.miagendafp.Fragments.Diario.BusquedaRegistros.jsonArray;
 
 import es.proyecto.eva.miagendafp.R;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class ResultadosBusqueda extends AppCompatActivity {
     ListView listaResultado;
     ArrayList<String> arrayFechas = new ArrayList<>(); // array en el que introduciremos las fechas obtenidas
@@ -19,11 +23,26 @@ public class ResultadosBusqueda extends AppCompatActivity {
     ArrayList <String> arrayValoraciones = new ArrayList<>(); // array en el que introduciremos las valoraciones obtenidas
     ArrayList <String> arrayReuniones = new ArrayList<>(); // array en el que se introducen las reuniones obtenidas
     AdaptadorListaDiario adaptador;
+
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultados_busqueda);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         listaResultado = (ListView) findViewById(R.id.lista_resultados_busqueda);
         // recorremos el array para obtener los datos y añadirlos a la lista
         for (int i = 0; i < jsonArray.length(); i++){
@@ -57,6 +76,7 @@ public class ResultadosBusqueda extends AppCompatActivity {
         adaptador = new AdaptadorListaDiario(this, arrayFechas, arrayHoras, arrayMinutos, arrayValoraciones, arrayReuniones);
         listaResultado.setAdapter(adaptador); // lo asociamos a la lista
 /**
+ * TODO: IMPLEMENTAR VISUALIZACIÓN DE ITEM SELECCIONADO
         // Al pulsar sobre algún item de la lista (sobre algún registro del diario) lo mostramos en detalle en otra actividad:
         listaResultado.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

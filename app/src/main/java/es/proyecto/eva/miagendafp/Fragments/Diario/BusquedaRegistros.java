@@ -35,7 +35,11 @@ import java.util.Map;
 
 import es.proyecto.eva.miagendafp.R;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class BusquedaRegistros extends AppCompatActivity {
     EditText txtHorasExactas, txtRangoHoras1, txtRangoHoras2, txtHoraInicioJornada, txtHoraFinJornada, txtFechaExacta, txtRangoFechas1, txtRangoFechas2;
     Spinner spinnerMeses, spinnerValoraciones;
@@ -71,6 +75,9 @@ public class BusquedaRegistros extends AppCompatActivity {
     // Patrón para controlar el formato de la contraseña nueva
     private String pattern_formato = "(0|1|2|3|4|5|6|7|8|9)+"; // solo aceptamos números
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +106,16 @@ public class BusquedaRegistros extends AppCompatActivity {
         btnBuscarRangoFechas = (ImageButton) findViewById(R.id.btn_buscar_rango_fechas);
         btnBuscarMes = (ImageButton) findViewById(R.id.btn_buscar_mes);
         btnBuscarValoracion = (ImageButton) findViewById(R.id.btn_buscar_valoraciones);
+
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // controlamos la selección del spinner y lo añadimos al String valoracion
         spinnerValoraciones.setOnItemSelectedListener(

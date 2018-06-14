@@ -45,6 +45,11 @@ import javax.mail.internet.MimeMessage;
 
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class RegistroNuevoUsuario extends AppCompatActivity {
     Button btnRegistro;
     Spinner spinnerProvincia, spinnerFamiliasCiclo, spinnerCiclo;
@@ -66,13 +71,13 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
     }
     private String fecha_registro = getFecha();
 
-    public static String correo = "";
-    private static int codigoConfirmacion;
-    private static String sCodigoConfirmacion;
-    private static String nombre = "";
-    private static String n_Usuario = "";
-    private static String clave = "";
-    private static String horas_fct = "";
+    public  String correo = "";
+    private  int codigoConfirmacion;
+    private  String sCodigoConfirmacion;
+    private  String nombre = "";
+    private  String n_Usuario = "";
+    private  String clave = "";
+    private  String horas_fct = "";
     private String provincia = "";
     private String familiaCiclo = "";
     private String ciclo_formativo = "";
@@ -190,6 +195,9 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
             + "|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ç|Ç|à|è|ì|ò|ù|À|È|Ì|Ò|Ù|ä|ë|ï|ö|ü|Ä|Ë|Ï|Ö|Ü|â|ê|î|ô|û|Â|Ê|Î|Ô|Û|ã|õ|Ã|Õ)+"; // letras con tildes u otros caracteres
 
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,6 +222,17 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
         txtClave2 = (EditText) findViewById(R.id.editText_confirma_clave);
+
+        // **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // controlamos la selección del spinner y lo añadimos al String provincia
         spinnerProvincia.setOnItemSelectedListener(
@@ -522,11 +541,12 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
         guardarPreferencias(); // guardamos el dato
     }
 
-    // guardamos como preferencia el código de confirmación
+    // guardamos como preferencia el código de confirmación y el correo que le corresponde
     public void guardarPreferencias() {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("codigo_de_confirmacion", sCodigoConfirmacion);
+        editor.putString("correo_de_usuario", correo);
         editor.commit();
         //Log.d("RegistroNuevoUsuario", "Preferencias guardadas (código de confirmación)");
     }
@@ -590,7 +610,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
                 message.setSubject("No-reply: Confirmación de registro");
                 message.setContent("<p style=\"text-align:justify\">¡Hola " + nombre + "! Ya estás un paso más cerca de finalizar tu registro como usuario de <b>Mi agenda FP</b>, tan solo nos queda confirmar" +
-                        "tu cuenta introduciendo el código de confirmación que se indica aquí abajo.</p>" +
+                        " tu cuenta introduciendo el código de confirmación que se indica aquí abajo.</p>" +
                         "<p style=\"text-align:justify\">Código de confirmación: <b>" + codigoConfirmacion + "</b></p> " +
                         "<p style=\"text-align:justify\">Usuario: <b>" + n_Usuario + "</b></p>" +
                         "<br/>Atentamente, <b>Mi agenda FP</b>." +

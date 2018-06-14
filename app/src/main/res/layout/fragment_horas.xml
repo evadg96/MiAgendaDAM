@@ -4,156 +4,182 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
-    android:paddingBottom="100dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     android:paddingTop="50dp"
     tools:context="es.proyecto.eva.miagendafp.Fragments.Horas.HorasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/estilo_redondo_blanco"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="100dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <LinearLayout
-            android:id="@+id/horas_trabajadas"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/estilo_redondo_blanco"
+            android:orientation="vertical"
+            android:paddingBottom="70dp">
 
-            <TextView
-                android:id="@+id/txt_horas_trabajadas"
+            <LinearLayout
+                android:id="@+id/horas_trabajadas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_horas_trabajadas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/azul_fondo"
+                    android:textSize="60sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" h " />
+
+                <TextView
+                    android:id="@+id/txt_minutos_trabajados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" m" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:text="/"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/txt_horas_modulo_fct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_h2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:text=" h" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_trabajado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:fontFamily="@font/roboto_light"
-                android:textColor="@color/azul_fondo"
-                android:textSize="60sp"
+                android:gravity="center"
+                android:text="@string/horas_trabajadas"
+                android:textColor="@color/colorAccent"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txt_h"
+            <LinearLayout
+                android:id="@+id/horas_restantes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=" h " />
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_horas_restantes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_h_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" h " />
+
+                <TextView
+                    android:id="@+id/txt_minutos_restantes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_min_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" m" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/txt_minutos_trabajados"
+                android:id="@+id/txt_restante"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
                 android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:text="@string/horas_restantes"
                 android:textColor="@color/colorAccent"
-                android:textSize="30sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txt_min"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=" m" />
-
-            <TextView
-                android:id="@+id/textView26"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:text="/"
-                android:textColor="@color/colorAccent"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/txt_horas_modulo_fct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto_light"
-                android:textColor="@color/colorAccent"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txt_h2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:text=" h" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_trabajado"
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/roboto_light"
-            android:gravity="center"
-            android:text="@string/horas_trabajadas"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/horas_restantes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txt_horas_restantes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto_light"
-                android:textColor="@color/colorAccent"
-                android:textSize="50sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txt_h_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=" h " />
-
-            <TextView
-                android:id="@+id/txt_minutos_restantes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto_light"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txt_min_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=" m" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt_restante"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/roboto_light"
-            android:gravity="center"
-            android:text="@string/horas_restantes"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:layout_gravity="bottom"
+            android:foregroundGravity="bottom"
+            android:visibility="gone"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
 
     </LinearLayout>
 </FrameLayout>

@@ -36,6 +36,10 @@
             android:id="@+id/nav_recursos"
             android:icon="@drawable/ic_import_contacts_black_24dp"
             android:title="@string/opc_recursos" />
+        <!--<item
+            android:id="@+id/nav_pro"
+            android:icon="@drawable/baseline_offline_bolt_black_48dp"
+            android:title="@string/pro_version" />-->
         <item
             android:id="@+id/nav_ayuda"
             android:icon="@drawable/ic_help_black_24dp"
@@ -44,6 +48,14 @@
             android:id="@+id/nav_cerrar_sesion"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="@string/opc_cerrar_sesion" />
+
+    </group>
+
+    <group android:id="@+id/gr3" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_borrar_cuenta"
+            android:icon="@drawable/baseline_highlight_off_black_48dp"
+            android:title="@string/opc_eliminar_cuenta"/>
     </group>
 
 </menu>

@@ -15,7 +15,11 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import es.proyecto.eva.miagendafp.R;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class ListadoComunidadesCalendario extends AppCompatActivity {
     private String provincia = ""; // para el cal. de festivos locales
     private String comunidad_autonoma = ""; // para el cal. escolar
@@ -27,11 +31,26 @@ public class ListadoComunidadesCalendario extends AppCompatActivity {
     private String[] comunidades = {"Andalucía", "Aragón", "Principado de Asturias", "Islas Baleares","Canarias","Cantabria","Castilla-La Mancha","Castilla y León",
             "Cataluña","Comunidad Valenciana", "Extremadura","Galicia","La Rioja","Comunidad de Madrid","Región de Murcia","Comunidad Foral de Navarra","País Vasco"};
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otras_comunidades);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // **************************** PUBLICIDAD *****************************************
+    // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         listaResultado = (ListView) findViewById(R.id.lista_comunidades);
         // Obtenemos la provincia del usuario para saber qué calendario debemos cargar
         SharedPreferences preferences = this.getSharedPreferences("credenciales", Context.MODE_PRIVATE);

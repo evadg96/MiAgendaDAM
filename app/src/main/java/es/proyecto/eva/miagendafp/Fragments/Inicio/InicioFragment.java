@@ -13,12 +13,19 @@ import java.util.Calendar;
 import java.util.Date;
 
 import es.proyecto.eva.miagendafp.R;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class InicioFragment extends Fragment {
     int dia, mes, anyo, diaSemana;
     String sDia, sMes, sAnyo, sDiaSemana;
     TextView txtDia, txtMesAnyo, txtDiaSemana;
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     public InicioFragment() {
         // Required empty public constructor
     }
@@ -87,6 +94,20 @@ public class InicioFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
+
+        // **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+
         txtDia = (TextView) view.findViewById(R.id.txt_dia_actual);
         txtMesAnyo = (TextView) view.findViewById(R.id.txt_mes_anyo);
         txtDiaSemana = (TextView) view.findViewById(R.id.txt_dia_semana);

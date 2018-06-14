@@ -38,6 +38,13 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
+
 import es.proyecto.eva.miagendafp.R;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
@@ -87,6 +94,10 @@ public class NotasFragment extends Fragment {
         return datoCodificado;
     }
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
+
     public NotasFragment() {
         // Required empty public constructor
     }
@@ -111,6 +122,20 @@ public class NotasFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
+
+
+// **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         SharedPreferences preferences = getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario
         listaResultado = (ListView) view.findViewById(R.id.lista);
@@ -171,6 +196,7 @@ public class NotasFragment extends Fragment {
                     public void onResponse(String response) {
                         if (!idUsuario.isEmpty()) { // aseguramos que las preferencias no están vacías
                             if (response.equals("0")) { // Respuesta 0 = El usuario no tiene contactos creados
+                                txt.setVisibility(View.VISIBLE);
                                 txt.setText(R.string.texto_notas_vacio);
                                 progressDialog.cancel();
                                 hayNotas = false;
@@ -179,8 +205,8 @@ public class NotasFragment extends Fragment {
                                 }
                             } else { // El usuario tiene contactos
                                 try {
+                                    txt.setVisibility(View.GONE);
                                     hayNotas = true;
-                                    txt.setText(""); // ponemos el texto de que no hay contactos en blanco por si acaso, y obtenemos datos
                                     response = response.replace("][", ","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
                                     // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
                                     // DENTRO DE UN ÚNICO ARRAY

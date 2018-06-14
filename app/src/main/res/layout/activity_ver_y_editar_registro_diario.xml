@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vista_detalle_registro"
@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     tools:context="es.proyecto.eva.miagendafp.Fragments.Diario.VerYEditarRegistroDiario">
@@ -20,7 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="60dp">
 
             <LinearLayout
                 android:id="@+id/datos_dia_seleccionado"
@@ -313,11 +313,12 @@
                 android:id="@+id/textView_valoracion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/valoracion_registro"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -334,9 +335,7 @@
                     android:layout_weight="1"
                     android:alpha="0.5"
                     android:background="@color/transparente"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/ic_mood_green_24dp" />
+                    app:srcCompat="@drawable/mood_green" />
 
                 <ImageButton
                     android:id="@+id/btn_regular_seleccionado"
@@ -345,9 +344,7 @@
                     android:layout_weight="1"
                     android:alpha="0.5"
                     android:background="@color/transparente"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/ic_sentiment_neutral_yellow_24dp" />
+                    app:srcCompat="@drawable/mood_yellow" />
 
                 <ImageButton
                     android:id="@+id/btn_malo_seleccionado"
@@ -356,14 +353,30 @@
                     android:layout_weight="1"
                     android:alpha="0.5"
                     android:background="@color/transparente"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_red_24dp" />
+                    app:srcCompat="@drawable/mood_red" />
 
             </LinearLayout>
 
         </LinearLayout> <!-- cierre contenedor -->
     </ScrollView> <!-- cierre de scroll pantalla -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:foregroundGravity="bottom"
+            android:visibility="gone"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+    </LinearLayout>
+</FrameLayout>
 

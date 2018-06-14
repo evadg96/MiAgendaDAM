@@ -40,6 +40,12 @@ import java.util.Map;
 import es.proyecto.eva.miagendafp.R;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 public class ContactosFragment extends Fragment {
     FloatingActionButton btnNuevo;
     ListView listaResultado;
@@ -57,6 +63,9 @@ public class ContactosFragment extends Fragment {
     public static String id_contacto_seleccionado = "", nombre_seleccionado_codificado = "", modulo_seleccionado_codificado = "", correo_seleccionado = "", telefono_seleccionado = "";
     private ProgressDialog progressDialog;
     private boolean hayContactos;
+
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     public ContactosFragment() {
         // Required empty public constructor
@@ -138,6 +147,17 @@ public class ContactosFragment extends Fragment {
         progressDialog.setMessage("Obteniendo contactos...");
         progressDialog.show();
 
+        // **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         return view;
     }
 
@@ -161,13 +181,15 @@ public class ContactosFragment extends Fragment {
                                 txt.setText(R.string.texto_contactos_vacio);
                                 progressDialog.cancel();
                                 hayContactos = false;
+                                txt.setVisibility(View.VISIBLE);
                                 if (!hayContactos) {
                                     System.out.println("NO HAY CONTACTOS");
                                 }
                             } else { // El usuario tiene contactos
                                 try {
+                                    txt.setVisibility(View.GONE);
                                     hayContactos = true;
-                                    txt.setText(""); // ponemos el texto de que no hay contactos en blanco por si acaso, y obtenemos datos
+
                                     response = response.replace("][", ","); // SUSTITUIMOS LOS CARACTERES QUE SEPARAN CADA RESULTADO DEL ARRAY
                                     // PORQUE SI NO NOS TOMARÍA SOLO EL PRIMER ARRAY. DE ESTA MANERA HACEMOS QUE LOS DETECTE COMO OBJETOS (EN VEZ DE COMO ARRAYS DIFERENTES)
                                     // DENTRO DE UN ÚNICO ARRAY

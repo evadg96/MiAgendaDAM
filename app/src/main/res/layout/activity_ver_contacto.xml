@@ -81,19 +81,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom|right"
+        android:foregroundGravity="bottom"
+        android:gravity="bottom"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="10dp">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_editar_contacto"
             style="@style/Widget.Design.FloatingActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
             android:clickable="true"
+            android:foregroundGravity="bottom"
             android:src="@drawable/ic_create_black_24dp"
             app:backgroundTint="@color/colorAccent"
             app:elevation="0dp" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:foregroundGravity="right"
+            android:visibility="gone"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
     </LinearLayout>
 
 </LinearLayout>

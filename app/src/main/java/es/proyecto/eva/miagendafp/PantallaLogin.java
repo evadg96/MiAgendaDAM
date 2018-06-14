@@ -47,7 +47,11 @@ import javax.mail.internet.MimeMessage;
 import es.proyecto.eva.miagendafp.VolleyController.AppController;
 import static es.proyecto.eva.miagendafp.PantallaCarga.estaBloqueado;
 
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 public class PantallaLogin extends AppCompatActivity {
     private Button btnIniciarSesion,  btnRegistroUsuario,  btnRecuperarClave, btnDesbloquearCuenta;
     private EditText txtNombreUsuario, txtClave;
@@ -116,6 +120,9 @@ public class PantallaLogin extends AppCompatActivity {
         return datoCodificado;
     }
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +135,19 @@ public class PantallaLogin extends AppCompatActivity {
         txtNombreUsuario = (EditText) findViewById(R.id.editText_nombre_usuario);
         txtClave = (EditText) findViewById(R.id.editText_clave);
         desbloquearCuenta = (LinearLayout) findViewById(R.id.opc_recuperar_cuenta);
+
+
+// **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         // Si se detecta desde la pantalla de carga que está bloqueado el usuario en preferencias,
         // mostramos el campo directamente
         if (estaBloqueado){
@@ -234,9 +254,9 @@ public class PantallaLogin extends AppCompatActivity {
                         } else { // Sí existe el usuario
                             nombre_usuario = nUsuario;
                             // ******* NO MOVER PORQUE SI NO NO SE OBTIENEN CORRECTAMENTE ********** //
-                            obtenerDatosUsuario();
+                            // obtenerDatosUsuario();
                             //**********************************************************************//
-                            check_isConfirmed();
+                            comprobarClave();
                         }
                     }
                 },
@@ -335,7 +355,7 @@ public class PantallaLogin extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.equals("0")) { // usuario NO BLOQUEADO
                             //  Log.i("PantallaLogin", "El usuario no está bloqueado");
-                            comprobarClave(); // comprobamos si la clave es correcta para hacer el login
+                            loginCorrecto(); // comprobamos si la clave es correcta para hacer el login
                         } else {
                             progressDialog.cancel(); // cerramos el diálogo de cargando para mostrar el error
                             // AL DETECTAR QUE ESTÁ BLOQUEADO, MOSTRAMOS DIRECTAMENTE EL CAMPO DE DESBLOQUEO
@@ -392,8 +412,8 @@ public class PantallaLogin extends AppCompatActivity {
                         } else { // Usuario y contraseña correctos
                             if (response.equals("4")) { // Respuesta "4" = login correcto.
                                 //Log.i("PantallaLogin", "Contraseña correcta");
-                                guardarPreferencias(); // guardamos los datos del usuario en las preferencias, para usarlo en clases futuras para
-                                loginCorrecto(); // hacemos login
+                                obtenerDatosUsuario();
+                                check_isConfirmed();
                             }
                         }
                     }
@@ -758,6 +778,7 @@ public class PantallaLogin extends AppCompatActivity {
                             e.printStackTrace();
                             Log.e("PantallaLogin", "Error al obtener datos del usuario");
                         }
+                        guardarPreferencias();
                     }
                 },
                 new Response.ErrorListener() {

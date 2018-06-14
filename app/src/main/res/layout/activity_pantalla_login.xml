@@ -6,11 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
     android:orientation="vertical"
-    android:padding="25dp"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp"
+    android:paddingTop="25dp"
     tools:context="es.proyecto.eva.miagendafp.PantallaLogin">
 
     <!-- Login progress -->
@@ -150,6 +148,17 @@
                 android:textColor="@android:color/background_light"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:foregroundGravity="right"
+                android:visibility="gone"
+                app:adSize="SMART_BANNER"
+                app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+
         </LinearLayout>
 
     </LinearLayout>

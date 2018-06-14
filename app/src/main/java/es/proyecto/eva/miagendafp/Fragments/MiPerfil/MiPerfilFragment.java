@@ -41,7 +41,11 @@ import es.proyecto.eva.miagendafp.VolleyController.AppController;
 
 import static es.proyecto.eva.miagendafp.NavMenu.headerView;
 import static es.proyecto.eva.miagendafp.NavMenu.familiaCiclo;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 /***************************************************************************************************
  * Fragmento de la opción Mi perfil, que permite la visualización de los datos del usuario, así como
  * la modificación de algunos de estos datos.
@@ -106,6 +110,9 @@ public class MiPerfilFragment extends Fragment {
 
     // Array de ciclos formativos
     private String[] ciclos;
+
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     public MiPerfilFragment() {
         // Required empty public constructor
@@ -363,6 +370,17 @@ public class MiPerfilFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
+        // **************************** PUBLICIDAD *****************************************
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(getActivity());
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         // Obtenemos preferencias:
         SharedPreferences preferences = this.getActivity().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         nombre_de_usuario = preferences.getString("nombre_de_usuario", "");

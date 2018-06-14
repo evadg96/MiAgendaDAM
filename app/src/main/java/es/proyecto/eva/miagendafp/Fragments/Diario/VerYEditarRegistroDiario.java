@@ -54,7 +54,11 @@ import static es.proyecto.eva.miagendafp.Fragments.Diario.DiarioFragment.minuto_
 import static es.proyecto.eva.miagendafp.Fragments.Diario.DiarioFragment.valoracion_seleccionada;
 import static es.proyecto.eva.miagendafp.Fragments.Diario.DiarioFragment.reunion_fct_seleccionada;
 import static es.proyecto.eva.miagendafp.Fragments.Diario.DiarioFragment.horas_reunion_seleccionada;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 /***************************************************************************************************
  * Clase que permite la visualización y actualización de datos de un registro seleccionado del
  * listado de registros de diario del usuario activo
@@ -63,7 +67,7 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     EditText txtFechaSeleccionada, txtHoraInicio1Seleccionada, txtHoraFin1Seleccionada, txtHoraInicio2Seleccionada, txtHoraFin2Seleccionada, txtDescripcionSeleccionada, txtTiempoReunion;
     ImageButton btnValoracionSeleccionadaBueno, btnValoracionSeleccionadaRegular, btnValoracionSeleccionadaMalo;
     Switch switchReunionSeleccionada, switchJornadaSeleccionada;
-    LinearLayout vistaDetalle, bloqueTurno2, tiempoReunion;
+    LinearLayout bloqueTurno2, tiempoReunion;
     Button btnVerHoras;
     TextView turno1, turno2, txtHoras, txtInfoReunion, txtInfoReunion2; // para mostrar u ocultar los títulos que identifican a cada turno en caso de que haya varios
     private StringRequest request;
@@ -99,6 +103,8 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
     private boolean editando = false;
     private ProgressDialog progressDialog;
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
     /***********************************************************************************************
      * Método que codifica un dato que se le pase por parámetro para visualizar sus tildes y otros
      * caracteres especiales
@@ -122,6 +128,16 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         setContentView(R.layout.activity_ver_y_editar_registro_diario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
+        // **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         idUsuario = preferences.getString("idUsuario", ""); // obtenemos el id del usuario
         // Mostramos el dato obtenido para verificar que es correcto
@@ -137,7 +153,6 @@ public class VerYEditarRegistroDiario extends AppCompatActivity {
         btnValoracionSeleccionadaMalo = (ImageButton) findViewById(R.id.btn_malo_seleccionado);
         switchReunionSeleccionada = (Switch) findViewById(R.id.switch_reunion_seleccionada);
         switchJornadaSeleccionada = (Switch) findViewById(R.id.switch_jornada_seleccionada);
-        vistaDetalle = (LinearLayout) findViewById(R.id.vista_detalle_registro);
         btnVerHoras = (Button) findViewById(R.id.btn_ver_horas); // obtiene las horas resultantes de las jornadas introducidas
         turno1 = (TextView) findViewById(R.id.tv_turno1_seleccionado);
         turno2 = (TextView) findViewById(R.id.tv_turno2_seleccionado);

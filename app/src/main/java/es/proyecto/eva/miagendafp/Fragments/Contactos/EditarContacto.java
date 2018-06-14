@@ -33,7 +33,11 @@ import static es.proyecto.eva.miagendafp.Fragments.Contactos.ContactosFragment.i
 import static es.proyecto.eva.miagendafp.Fragments.Contactos.ContactosFragment.modulo_seleccionado_codificado;
 import static es.proyecto.eva.miagendafp.Fragments.Contactos.ContactosFragment.nombre_seleccionado_codificado;
 import static es.proyecto.eva.miagendafp.Fragments.Contactos.ContactosFragment.telefono_seleccionado;
-
+// ****************** PUBLICIDAD ************************
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 /**********************************************************************************************************************
  * Mediante esta clase se lleva a cabo el proceso de actualización de un contacto para el que se ha editado alguno de
  * los datos personales que lo componen
@@ -58,6 +62,8 @@ public class EditarContacto extends AppCompatActivity {
     private static final String pattern_email = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    // ******* PUBLICIDAD *******
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,17 @@ public class EditarContacto extends AppCompatActivity {
         txtModulo.setText(modulo_seleccionado_codificado);
         txtCorreo.setText(correo_seleccionado);
         txtTelefono.setText(telefono_seleccionado);
+
+        // **************************** PUBLICIDAD *****************************************
+// Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     // Añade los iconos a la barra de acciones (en este caso, el de guardar)
