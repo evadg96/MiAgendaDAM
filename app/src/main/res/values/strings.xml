@@ -57,6 +57,9 @@
         tu bandeja de entrada.
     </string>
 
+    <string name="registro_completo">¡Registro completado!</string>
+    <string name="registro_completo_msg">Se ha registrado correctamente el usuario.</string>
+
     <!-- Strings diálogo al pulsar botón de registro en PantallaLogin -->
     <string name="btn_aceptar_confirm">Confirmar registro</string>
     <string name="text_dialog_confirm">No se ha confirmado el registro de este usuario. Por favor, introduce el código de confirmación que se te ha enviado.</string>
@@ -405,5 +408,7 @@
     <string name="msj_si_borrar">Sí, eliminar cuenta</string>
     <string name="error_borrar_datos">Se ha producido un error al intentar borrar los datos. Por favor, vuelve a intentarlo.</string>
     <string name="msj_datos_borrados">Datos de usuario borrados correctamente</string>
+
+    <string name="confirma_cerrar_sesion">¿Estás seguro de que deseas cerrar sesión?</string>
 
 </resources>

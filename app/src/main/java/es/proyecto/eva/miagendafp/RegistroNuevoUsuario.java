@@ -448,6 +448,28 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                                             // Se procede al registro del usuario y se le envía correo electrónico con código de activación de cuenta
                                                                                             try {
                                                                                                 //  Log.d("RegistroNuevoUsuario", "Usuario creado correctamente");
+                                                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RegistroNuevoUsuario.this);
+                                                                                                builder.setTitle(R.string.registro_completo); // titulo del diálogo
+                                                                                                builder.setMessage(R.string.registro_completo_msg)
+                                                                                                        .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
+                                                                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                                                                // mandamos a la pantalla de confirmación de registro
+                                                                                                                // La idea es que al abrir la pantalla de confirmación esta se cierre,
+                                                                                                                // para que al cerrar la pantalla de confirmación al pulsar atrás y destruir
+                                                                                                                // la actividad no se pueda volver a esta pantalla
+                                                                                                                Intent intent = new Intent(RegistroNuevoUsuario.this, PantallaLogin.class);
+                                                                                                                startActivity(intent);
+                                                                                                                finish();
+                                                                                                            }
+                                                                                                        });
+                                                                                                 // Create the AlertDialog object and return it
+                                                                                                 Dialog dialog = builder.create();
+                                                                                                 dialog.show();
+
+                                                                                                // SE COMENTA PORQUE NO SE ENVÍAN BIEN LOS CORREOS POR MOTIVOS DE SEGURIDAD DE GOOGLE... DE MOMENTO
+                                                                                                // SE DEJA SIN IMPLEMENTAR LA CONFIRMACIÓN, ACTIVÁNDOSE ASÍ DIRECTAMENTE LA CUENTA DEL USUARIO
+                                                                                                // AL FINALIZAR EL REGISTRO.
+                                                                                                /*
                                                                                                 enviarCorreoConfirmacion();
                                                                                                 // Creamos alerta de confirmación  para decir que se ha creado correctamente
                                                                                                 // y mandamos a la pantalla de confirmación de usuario
@@ -469,10 +491,11 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                                                                                                  public void onClick(DialogInterface dialog, int id) {
                                                                                                  // User cancelled the dialog
                                                                                                  }
-                                                                                                 });*/
+                                                                                                 });
                                                                                                 // Create the AlertDialog object and return it
                                                                                                 Dialog dialog = builder.create();
                                                                                                 dialog.show();
+                                                                                                */
 
                                                                                             } catch (Exception e) {
                                                                                                 e.printStackTrace();
@@ -564,15 +587,24 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                         try {
                             final String clave_gmail = response;
                             Properties props = new Properties();
+
+                           /* Properties Gmail sender
                             props.put("mail.smtp.host", "smtp.gmail.com");
                             props.put("mail.smtp.socketFactory.port", "465");
                             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
                             props.put("mail.smtp.auth", "true");
                             props.put("mail.smtp.port", "465");
+                            */
 
-                            session = Session.getDefaultInstance(props, new Authenticator() {
+                            // Properties Outlook sender
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.starttls.enable", "true");
+                            props.put("mail.smtp.host", "smtp-mail.outlook.com");
+                            props.put("mail.smtp.port", "587");
+
+                           session = Session.getDefaultInstance(props, new Authenticator() {
                                 protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication("noreply.miagendafp@gmail.com", clave_gmail);
+                                    return new PasswordAuthentication("soportemiagendafp@outlook.es", clave_gmail);
                                 }
                             });
 
@@ -595,6 +627,7 @@ public class RegistroNuevoUsuario extends AppCompatActivity {
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
+
     }
 
     // Clase con el contenido del correo electrónico que se enviará

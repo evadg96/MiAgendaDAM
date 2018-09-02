@@ -147,7 +147,23 @@ public class NavMenu extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_cerrar_sesion) {
            // Log.i("NavMenu", "Opción menú: Cerrar sesión");
-            cerrarSesion();
+            AlertDialog.Builder builder = new AlertDialog.Builder(NavMenu.this);
+            builder.setTitle(R.string.opc_cerrar_sesion); // titulo del diálogo
+            builder.setMessage(R.string.confirma_cerrar_sesion)
+                    .setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            cerrarSesion();
+                        }
+                    })
+            .setNegativeButton(R.string.btn_cancelar, new DialogInterface.OnClickListener() {
+             public void onClick(DialogInterface dialog, int id) {
+             // User cancelled the dialog
+             }
+             });
+             // Create the AlertDialog object and return it
+             Dialog dialog = builder.create();
+             dialog.show();
+
         } else if (id == R.id.nav_anotaciones) {
            // Log.i("NavMenu", "Opción menú: Anotaciones");
             setTitle(R.string.opc_anotaciones);
